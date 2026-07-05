@@ -1,6 +1,5 @@
 "use client"
 
-import { useState } from "react"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { Clock, Route, TrendingUp } from "lucide-react"
@@ -8,8 +7,7 @@ import { type Trek, getTrekSlug, DIFFICULTY_META } from "@/lib/data"
 
 /**
  * Trek card art: gradient built from the trek's own colors with a grain layer
- * and a peak silhouette. If a real photo exists at /treks/[slug].jpg it is
- * shown instead automatically (drop-in convention, no code changes needed).
+ * and a peak silhouette. Uses coverImage from trek data if available.
  */
 export function TrekArt({
   trek,
@@ -18,8 +16,7 @@ export function TrekArt({
   trek: Trek
   className?: string
 }) {
-  const [photoState, setPhotoState] = useState<"loading" | "loaded" | "missing">("loading")
-  const slug = getTrekSlug(trek)
+  const imageSrc = trek.coverImage
 
   return (
     <div
@@ -28,23 +25,22 @@ export function TrekArt({
         background: `linear-gradient(150deg, ${trek.color1} 0%, ${trek.color2} 100%)`,
       }}
     >
-      {photoState !== "missing" && (
+      {imageSrc && (
         // eslint-disable-next-line @next/next/no-img-element
         <img
-          src={`/treks/${slug}.jpg`}
+          src={imageSrc}
           alt=""
           aria-hidden="true"
-          className={`absolute inset-0 size-full object-cover transition-opacity duration-500 ${
-            photoState === "loaded" ? "opacity-100" : "opacity-0"
-          }`}
-          onLoad={() => setPhotoState("loaded")}
-          onError={() => setPhotoState("missing")}
+          className="absolute inset-0 size-full object-cover"
+          onError={(e) => {
+            e.currentTarget.style.display = 'none'
+          }}
         />
       )}
-      {photoState !== "loaded" && (
+      {!imageSrc && (
         <svg
           aria-hidden="true"
-          className="absolute inset-x-0 bottom-0 h-2/3 w-full"
+          className="absolute inset-x-0 bottom-0 h-2/3 w-full pointer-events-none"
           viewBox="0 0 400 160"
           preserveAspectRatio="none"
         >
@@ -59,7 +55,7 @@ export function TrekArt({
         </svg>
       )}
       <div
-        className="absolute inset-0"
+        className="absolute inset-0 pointer-events-none"
         style={{
           background: `radial-gradient(ellipse at 30% 20%, ${trek.accent}26 0%, transparent 55%)`,
         }}

@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import {
@@ -59,6 +60,7 @@ export function TrekDetail({
   prev: NavRef
   next: NavRef
 }) {
+  const router = useRouter()
   const [tab, setTab] = useState<TabId>("overview")
   const { openComingSoon } = useOverlays()
   const diff = DIFFICULTY_META[trek.difficulty]
@@ -69,7 +71,9 @@ export function TrekDetail({
       <section
         className="relative overflow-hidden"
         style={{
-          background: `linear-gradient(135deg, ${trek.color1} 0%, ${trek.color2} 100%)`,
+          background: trek.coverImage 
+            ? `url(${trek.coverImage}) center/cover no-repeat`
+            : `linear-gradient(135deg, ${trek.color1} 0%, ${trek.color2} 100%)`,
         }}
       >
         {/* topo-style decorative rings */}
@@ -97,7 +101,7 @@ export function TrekDetail({
             fill="black"
           />
         </svg>
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20" aria-hidden="true" />
+        <div className={`absolute inset-0 ${trek.coverImage ? 'bg-gradient-to-t from-black/70 via-black/30 to-black/20' : 'bg-gradient-to-t from-black/50 via-transparent to-black/20'}`} aria-hidden="true" />
 
         <div className="relative mx-auto max-w-6xl px-4 py-14 md:px-6 md:py-20">
           <motion.div
@@ -105,13 +109,13 @@ export function TrekDetail({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
-            <Link
-              href="/treks"
+            <button
+              onClick={() => router.back()}
               className="mb-6 inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-widest text-white/80 transition-colors hover:text-white"
             >
               <ChevronLeft className="size-3.5" aria-hidden="true" />
-              All Treks
-            </Link>
+              Back
+            </button>
 
             <div className="flex flex-wrap items-center gap-3">
               <span

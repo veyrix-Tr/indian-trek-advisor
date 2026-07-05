@@ -54,6 +54,11 @@ export interface Trek {
   accent: string
   itinerary: ItineraryDay[]
   category?: "kailash_yatra" | "panch_kedar"
+  coverImage?: string
+  coverImageThumbnail?: string
+  coverImageCredit?: string
+  coverImageCreditUrl?: string
+  coverImageFilename?: string
 }
 
 export interface MapWaypoint {

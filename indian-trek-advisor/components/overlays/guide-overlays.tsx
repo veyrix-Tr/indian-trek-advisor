@@ -2,6 +2,7 @@
 
 import { useEffect } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import {
   Baby,
@@ -379,7 +380,7 @@ export function GuideOverlay({
         type="button"
         onClick={onClose}
         aria-label="Close guide"
-        className="fixed right-4 top-4 z-10 flex size-10 items-center justify-center rounded-full border border-border bg-card/80 text-muted-foreground backdrop-blur transition-colors hover:text-foreground"
+        className="fixed right-4 top-4 z-10 flex size-10 items-center justify-center rounded-full border-2 border-foreground/20 bg-background/95 text-foreground shadow-lg backdrop-blur transition-colors hover:bg-foreground hover:text-background"
       >
         <X className="size-5" aria-hidden="true" />
       </button>
@@ -395,7 +396,7 @@ export function GuideOverlay({
 /* Solo guide                                                          */
 /* ------------------------------------------------------------------ */
 
-function SoloGuide({ onClose }: { onClose: () => void }) {
+export function SoloGuide({ onClose }: { onClose?: () => void }) {
   return (
     <article className="pb-20">
       {/* Hero */}
@@ -594,6 +595,17 @@ function SoloGuide({ onClose }: { onClose: () => void }) {
                 </Link>
               }
             />
+            <Button
+              variant="ghost"
+              className="mt-3 rounded-full"
+              nativeButton={false}
+              render={
+                <Link href="/guide/find" onClick={onClose}>
+                  <Compass className="size-4" aria-hidden="true" />
+                  Find a Local Guide
+                </Link>
+              }
+            />
           </div>
         </Reveal>
       </div>
@@ -605,7 +617,8 @@ function SoloGuide({ onClose }: { onClose: () => void }) {
 /* Group guide                                                         */
 /* ------------------------------------------------------------------ */
 
-function GroupGuide({ onClose }: { onClose: () => void }) {
+export function GroupGuide({ onClose }: { onClose?: () => void }) {
+  const router = useRouter()
   const { openGuide } = useOverlays()
 
   return (
@@ -782,7 +795,7 @@ function GroupGuide({ onClose }: { onClose: () => void }) {
               no strangers, ever.
             </p>
             <div className="mt-6 flex flex-wrap justify-center gap-3">
-              <Button className="rounded-full" onClick={() => openGuide("findGuide")}>
+              <Button className="rounded-full" onClick={() => onClose ? openGuide("findGuide") : router.push("/guide/find")}>
                 <Handshake className="size-4" aria-hidden="true" />
                 Find a Private Guide
               </Button>
@@ -809,7 +822,7 @@ function GroupGuide({ onClose }: { onClose: () => void }) {
 /* Find a Local Guide                                                  */
 /* ------------------------------------------------------------------ */
 
-function FindGuide({ onClose }: { onClose: () => void }) {
+export function FindGuide({ onClose }: { onClose?: () => void }) {
   const { openComingSoon } = useOverlays()
 
   return (

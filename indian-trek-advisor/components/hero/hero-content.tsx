@@ -6,7 +6,6 @@ import dynamic from "next/dynamic"
 import { motion, useReducedMotion } from "framer-motion"
 import { Search, MapPin, Compass, Users, ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { useOverlays } from "@/components/overlays/overlay-provider"
 
 const Hero3D = dynamic(() => import("./hero-3d"), {
   ssr: false,
@@ -20,7 +19,6 @@ const HEADLINE_LINE_2 = ["Trek", "On", "Your", "Terms."]
 
 export function HeroSection() {
   const router = useRouter()
-  const { openGuide } = useOverlays()
   const prefersReduced = useReducedMotion()
   const [query, setQuery] = useState("")
   const [mounted, setMounted] = useState(false)
@@ -136,17 +134,17 @@ export function HeroSection() {
           <PillButton
             icon={<MapPin className="size-3.5" aria-hidden="true" />}
             label="Find a Local Guide"
-            onClick={() => openGuide("findGuide")}
+            onClick={() => router.push("/guide/find")}
           />
           <PillButton
             icon={<Compass className="size-3.5" aria-hidden="true" />}
             label="Why Trek Solo?"
-            onClick={() => openGuide("solo")}
+            onClick={() => router.push("/guide/solo")}
           />
           <PillButton
             icon={<Users className="size-3.5" aria-hidden="true" />}
             label="Trek With Your Crew"
-            onClick={() => openGuide("group")}
+            onClick={() => router.push("/guide/group")}
           />
         </motion.div>
       </div>
