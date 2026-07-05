@@ -1,14 +1,13 @@
 "use client"
 
 import Link from "next/link"
-import { useRouter } from "next/navigation"
+import { BackButton } from "@/components/ui/back-button"
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import {
   ArrowLeft,
   ArrowRight,
   Calendar,
-  ChevronLeft,
   Clock,
   FileCheck,
   Image as ImageIcon,
@@ -60,7 +59,6 @@ export function TrekDetail({
   prev: NavRef
   next: NavRef
 }) {
-  const router = useRouter()
   const [tab, setTab] = useState<TabId>("overview")
   const { openComingSoon } = useOverlays()
   const diff = DIFFICULTY_META[trek.difficulty]
@@ -109,13 +107,7 @@ export function TrekDetail({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
-            <button
-              onClick={() => router.back()}
-              className="mb-6 inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-widest text-white/80 transition-colors hover:text-white"
-            >
-              <ChevronLeft className="size-3.5" aria-hidden="true" />
-              Back
-            </button>
+            <BackButton light className="mb-6" />
 
             <div className="flex flex-wrap items-center gap-3">
               <span
