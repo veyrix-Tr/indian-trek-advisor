@@ -1,0 +1,123 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: var(--font-space-grotesk), 'Space Grotesk Fallback', system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), 'JetBrains Mono Fallback', monospace;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --color-difficulty-easy: var(--difficulty-easy);
+  --color-difficulty-moderate: var(--difficulty-moderate);
+  --color-difficulty-hard: var(--difficulty-hard);
+  --color-difficulty-expert: var(--difficulty-expert);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* Dark expedition theme — the platform is always dark */
+:root {
+  color-scheme: dark;
+  --background: oklch(0.17 0.008 165);
+  --foreground: oklch(0.95 0.008 95);
+  --card: oklch(0.21 0.01 165);
+  --card-foreground: oklch(0.95 0.008 95);
+  --popover: oklch(0.2 0.01 165);
+  --popover-foreground: oklch(0.95 0.008 95);
+  --primary: oklch(0.78 0.095 165);
+  --primary-foreground: oklch(0.18 0.02 165);
+  --secondary: oklch(0.26 0.012 165);
+  --secondary-foreground: oklch(0.95 0.008 95);
+  --muted: oklch(0.24 0.01 165);
+  --muted-foreground: oklch(0.68 0.012 150);
+  --accent: oklch(0.28 0.02 165);
+  --accent-foreground: oklch(0.95 0.008 95);
+  --destructive: oklch(0.62 0.19 25);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 12%);
+  --ring: oklch(0.78 0.095 165 / 60%);
+  --chart-1: oklch(0.78 0.095 165);
+  --chart-2: oklch(0.75 0.12 80);
+  --chart-3: oklch(0.68 0.15 45);
+  --chart-4: oklch(0.62 0.19 25);
+  --chart-5: oklch(0.68 0.012 150);
+  --radius: 0.75rem;
+  --sidebar: oklch(0.19 0.01 165);
+  --sidebar-foreground: oklch(0.95 0.008 95);
+  --sidebar-primary: oklch(0.78 0.095 165);
+  --sidebar-primary-foreground: oklch(0.18 0.02 165);
+  --sidebar-accent: oklch(0.26 0.012 165);
+  --sidebar-accent-foreground: oklch(0.95 0.008 95);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.78 0.095 165 / 60%);
+  --difficulty-easy: oklch(0.8 0.14 155);
+  --difficulty-moderate: oklch(0.82 0.13 85);
+  --difficulty-hard: oklch(0.74 0.15 55);
+  --difficulty-expert: oklch(0.66 0.19 27);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply bg-background;
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+@layer utilities {
+  /* Subtle film grain overlay used on gradient art and hero */
+  .grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.5;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E");
+  }
+}

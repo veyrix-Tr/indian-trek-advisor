@@ -1,0 +1,102 @@
+[
+  {
+    "id": "gr_1",
+    "name": "Himalayan Gear Hub",
+    "town": "Sankri",
+    "region": "Uttarakhand",
+    "gear": ["tent", "sleeping bag", "trekking poles", "jacket", "backpack"],
+    "desc": "Base-camp gear rentals for Kedarkantha, Har Ki Dun and Bali Pass. Quality-checked tents and minus-rated sleeping bags.",
+    "phone": "+91 94100 00001",
+    "rates": "Tents from Rs 250/day, sleeping bags from Rs 150/day"
+  },
+  {
+    "id": "gr_2",
+    "name": "Joshimath Trek Store",
+    "town": "Joshimath",
+    "region": "Uttarakhand",
+    "gear": ["crampons", "ice axe", "gaiters", "helmet", "harness", "tent"],
+    "desc": "Technical gear for Kuari Pass, Pangarchulla and high-altitude expeditions. Microspikes and crampons in all sizes.",
+    "phone": "+91 94100 00002",
+    "rates": "Crampons Rs 200/day, full technical kit Rs 900/day"
+  },
+  {
+    "id": "gr_3",
+    "name": "Rishikesh Outdoor Co.",
+    "town": "Rishikesh",
+    "region": "Uttarakhand",
+    "gear": ["backpack", "trekking poles", "jacket", "sleeping bag"],
+    "desc": "Pick up gear before heading into Garhwal. Rucksacks 40-70L, down jackets and poles. Return at our Dehradun counter.",
+    "phone": "+91 94100 00003",
+    "rates": "Backpacks from Rs 180/day, jackets from Rs 120/day"
+  },
+  {
+    "id": "gr_4",
+    "name": "Manali Mountain Works",
+    "town": "Old Manali",
+    "region": "Himachal Pradesh",
+    "gear": ["tent", "sleeping bag", "crampons", "ice axe", "trekking poles", "jacket", "backpack"],
+    "desc": "Complete rental floor for Hampta Pass, Beas Kund, Bhrigu Lake and Pin Parvati. Gear serviced after every rental.",
+    "phone": "+91 98160 00004",
+    "rates": "Full trek kit from Rs 550/day"
+  },
+  {
+    "id": "gr_5",
+    "name": "Kasol Trail Rentals",
+    "town": "Kasol",
+    "region": "Himachal Pradesh",
+    "gear": ["tent", "sleeping bag", "trekking poles", "backpack"],
+    "desc": "Budget-friendly rentals for Kheerganga, Sar Pass and Parvati valley trails. Same-day pickup.",
+    "phone": "+91 98160 00005",
+    "rates": "Tents from Rs 200/day, poles Rs 50/day"
+  },
+  {
+    "id": "gr_6",
+    "name": "McLeod Trekking Supplies",
+    "town": "McLeod Ganj",
+    "region": "Himachal Pradesh",
+    "gear": ["sleeping bag", "jacket", "trekking poles", "gaiters", "backpack"],
+    "desc": "Gear for Triund, Indrahar Pass and Kareri Lake. Warm layers and waterproofs for Dhauladhar weather.",
+    "phone": "+91 98160 00006",
+    "rates": "Sleeping bags from Rs 130/day"
+  },
+  {
+    "id": "gr_7",
+    "name": "Sonamarg Alpine Store",
+    "town": "Sonamarg",
+    "region": "Jammu & Kashmir",
+    "gear": ["tent", "sleeping bag", "jacket", "trekking poles", "gaiters"],
+    "desc": "Outfitting Kashmir Great Lakes and Tarsar Marsar trekkers. Four-season tents and minus-10 rated bags.",
+    "phone": "+91 96220 00007",
+    "rates": "Four-season tents from Rs 400/day"
+  },
+  {
+    "id": "gr_8",
+    "name": "Leh Expedition Gear",
+    "town": "Leh",
+    "region": "Ladakh",
+    "gear": ["tent", "sleeping bag", "crampons", "ice axe", "helmet", "harness", "jacket"],
+    "desc": "High-altitude and winter gear for Markha Valley, Chadar and Stok Kangri. Expedition-grade equipment only.",
+    "phone": "+91 94190 00008",
+    "rates": "Expedition kit from Rs 800/day, Chadar winter kit Rs 1200/day"
+  },
+  {
+    "id": "gr_9",
+    "name": "Yuksom Basecamp Rentals",
+    "town": "Yuksom",
+    "region": "Sikkim",
+    "gear": ["tent", "sleeping bag", "trekking poles", "gaiters", "backpack"],
+    "desc": "Gateway store for Goecha La and Dzongri. Gear delivered to your homestay before the trek.",
+    "phone": "+91 95930 00009",
+    "rates": "Tents from Rs 300/day, full kit Rs 650/day"
+  },
+  {
+    "id": "gr_10",
+    "name": "Eastern Trails Outfitters",
+    "town": "Dirang",
+    "region": "Eastern Himalayas",
+    "gear": ["tent", "sleeping bag", "jacket", "trekking poles", "backpack"],
+    "desc": "Serving Arunachal and North-East trails including Bailey Trail and Gorichen base treks.",
+    "phone": "+91 87940 00010",
+    "rates": "Full kit from Rs 500/day"
+  }
+]

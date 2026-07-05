@@ -1,0 +1,4614 @@
+{
+ "101": [
+  {
+   "label": "Sankri",
+   "elv": 1967,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Juda Ka Talab",
+   "elv": 2773,
+   "dist": 4,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "KK Base Camp",
+   "elv": 3429,
+   "dist": 4,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "KK Summit",
+   "elv": 3810,
+   "dist": 3,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Hargaon",
+   "elv": 2713,
+   "dist": 4,
+   "camp": true,
+   "ret": true
+  },
+  {
+   "label": "Sankri",
+   "elv": 1967,
+   "dist": 4,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "102": [
+  {
+   "label": "Sonamarg",
+   "elv": 2740,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Nichnai",
+   "elv": 3505,
+   "dist": 9,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Nichnai Pass",
+   "elv": 4100,
+   "dist": 3,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Vishansar",
+   "elv": 3596,
+   "dist": 10,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Krishansar",
+   "elv": 3801,
+   "dist": 2,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Gadsar Pass",
+   "elv": 4206,
+   "dist": 5,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Gadsar Lake",
+   "elv": 3600,
+   "dist": 3,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Satsar",
+   "elv": 3620,
+   "dist": 13,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Gangabal",
+   "elv": 3576,
+   "dist": 10,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Naranag",
+   "elv": 2100,
+   "dist": 13,
+   "camp": false,
+   "ret": false
+  }
+ ],
+ "103": [
+  {
+   "label": "Wan Village",
+   "elv": 2438,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Gehroli Patal",
+   "elv": 3048,
+   "dist": 7,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Ali Bugyal",
+   "elv": 3450,
+   "dist": 4,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Bedni Bugyal",
+   "elv": 3354,
+   "dist": 5,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Patar Nachauni",
+   "elv": 3880,
+   "dist": 7,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Kalu Vinayak",
+   "elv": 4268,
+   "dist": 3,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Bhagwabasa",
+   "elv": 4300,
+   "dist": 3,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Roopkund",
+   "elv": 5029,
+   "dist": 3,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Junargali",
+   "elv": 4876,
+   "dist": 0.5,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Patar Nachauni",
+   "elv": 3880,
+   "dist": 8,
+   "camp": true,
+   "ret": true
+  },
+  {
+   "label": "Bedni Bugyal",
+   "elv": 3354,
+   "dist": 7,
+   "camp": false,
+   "ret": true
+  },
+  {
+   "label": "Wan Village",
+   "elv": 2438,
+   "dist": 12,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "104": [
+  {
+   "label": "Pulna",
+   "elv": 2050,
+   "dist": 0,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Bhyundar",
+   "elv": 2500,
+   "dist": 5,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Ghangaria",
+   "elv": 3048,
+   "dist": 5,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "VoF Gate",
+   "elv": 3368,
+   "dist": 2,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Valley of ✿",
+   "elv": 3658,
+   "dist": 3,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "VoF Gate",
+   "elv": 3368,
+   "dist": 3,
+   "camp": false,
+   "ret": true
+  },
+  {
+   "label": "Ghangaria",
+   "elv": 3048,
+   "dist": 2,
+   "camp": false,
+   "ret": true
+  },
+  {
+   "label": "Pulna",
+   "elv": 2050,
+   "dist": 10,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "105": [
+  {
+   "label": "Taluka",
+   "elv": 1900,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Gangaad",
+   "elv": 2200,
+   "dist": 7,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Osla",
+   "elv": 2560,
+   "dist": 6,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Har Ki Dun",
+   "elv": 3566,
+   "dist": 11,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Osla",
+   "elv": 2560,
+   "dist": 11,
+   "camp": true,
+   "ret": true
+  },
+  {
+   "label": "Taluka",
+   "elv": 1900,
+   "dist": 13,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "106": [
+  {
+   "label": "Dhak",
+   "elv": 2050,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Gulling",
+   "elv": 2900,
+   "dist": 6,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Khullara",
+   "elv": 3350,
+   "dist": 5,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Kuari Pass",
+   "elv": 3640,
+   "dist": 7,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Khullara",
+   "elv": 3350,
+   "dist": 6,
+   "camp": false,
+   "ret": true
+  },
+  {
+   "label": "Tali",
+   "elv": 3550,
+   "dist": 3,
+   "camp": true,
+   "ret": true
+  },
+  {
+   "label": "Gorson Bugyal",
+   "elv": 3090,
+   "dist": 4,
+   "camp": false,
+   "ret": true
+  },
+  {
+   "label": "Auli",
+   "elv": 2519,
+   "dist": 4,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "107": [
+  {
+   "label": "Lohajung",
+   "elv": 2350,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Gujreni",
+   "elv": 2700,
+   "dist": 6,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Bekaltal",
+   "elv": 2950,
+   "dist": 4,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Jhandi Top",
+   "elv": 3710,
+   "dist": 5,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Brahmatal",
+   "elv": 3453,
+   "dist": 1.5,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Brahm. Top",
+   "elv": 3734,
+   "dist": 0.5,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Lohajung",
+   "elv": 2350,
+   "dist": 10,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "108": [
+  {
+   "label": "Aru",
+   "elv": 2400,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Lidderwat",
+   "elv": 2950,
+   "dist": 11,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Shekhwas",
+   "elv": 3580,
+   "dist": 7,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Tarsar Lake",
+   "elv": 3750,
+   "dist": 3,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Marsar Lake",
+   "elv": 3800,
+   "dist": 4,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Sundarsar",
+   "elv": 3700,
+   "dist": 4,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Aru",
+   "elv": 2400,
+   "dist": 13,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "109": [
+  {
+   "label": "Jobra",
+   "elv": 3060,
+   "dist": 0,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Chika",
+   "elv": 3078,
+   "dist": 3.5,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Jwara",
+   "elv": 3150,
+   "dist": 3.5,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Balu Ka Ghera",
+   "elv": 3810,
+   "dist": 8,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Hampta Pass",
+   "elv": 4270,
+   "dist": 8,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Shea Goru",
+   "elv": 3750,
+   "dist": 5,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Chatru",
+   "elv": 3360,
+   "dist": 5,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Chandratal",
+   "elv": 4300,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  }
+ ],
+ "110": [
+  {
+   "label": "Kafnu",
+   "elv": 2400,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Mulling",
+   "elv": 3250,
+   "dist": 11,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Kara",
+   "elv": 3550,
+   "dist": 6,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Phutsirang",
+   "elv": 4100,
+   "dist": 5,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Pin Bhaba Pass",
+   "elv": 4900,
+   "dist": 5,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Mangrungse",
+   "elv": 4150,
+   "dist": 7,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Mudh Village",
+   "elv": 3750,
+   "dist": 17,
+   "camp": false,
+   "ret": false
+  }
+ ],
+ "111": [
+  {
+   "label": "Chilling",
+   "elv": 3140,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Skiu",
+   "elv": 3300,
+   "dist": 5,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Markha",
+   "elv": 3700,
+   "dist": 14,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Hankar",
+   "elv": 3900,
+   "dist": 11,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Nimaling",
+   "elv": 4730,
+   "dist": 9,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Kongmaru La",
+   "elv": 5260,
+   "dist": 5,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Hemis",
+   "elv": 3600,
+   "dist": 11,
+   "camp": false,
+   "ret": false
+  }
+ ],
+ "112": [
+  {
+   "label": "Chilling",
+   "elv": 3100,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Shingra Koma",
+   "elv": 3200,
+   "dist": 10,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Tsomo Paldar",
+   "elv": 3250,
+   "dist": 4,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Tibb Cave",
+   "elv": 3300,
+   "dist": 15,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Nerak Falls",
+   "elv": 3400,
+   "dist": 12,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Tibb Cave",
+   "elv": 3300,
+   "dist": 12,
+   "camp": true,
+   "ret": true
+  },
+  {
+   "label": "Chilling",
+   "elv": 3100,
+   "dist": 29,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "113": [
+  {
+   "label": "Yuksom",
+   "elv": 1780,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Sachen",
+   "elv": 2293,
+   "dist": 7.5,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Tshoka",
+   "elv": 3048,
+   "dist": 5.4,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Dzongri",
+   "elv": 4020,
+   "dist": 8.4,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Dzongri Top",
+   "elv": 4400,
+   "dist": 1,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Thansing",
+   "elv": 3930,
+   "dist": 6.5,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Lamuney",
+   "elv": 4180,
+   "dist": 4,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Samiti Lake",
+   "elv": 4200,
+   "dist": 2,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Goechala VP1",
+   "elv": 4940,
+   "dist": 4,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Tshoka",
+   "elv": 3048,
+   "dist": 17,
+   "camp": true,
+   "ret": true
+  },
+  {
+   "label": "Yuksom",
+   "elv": 1780,
+   "dist": 13,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "114": [
+  {
+   "label": "Manebhanjang",
+   "elv": 2134,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Chitre",
+   "elv": 2600,
+   "dist": 5,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Tumling",
+   "elv": 2970,
+   "dist": 9,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Kalipokhri",
+   "elv": 3100,
+   "dist": 10,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Sandakphu",
+   "elv": 3636,
+   "dist": 8,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Sabarkum",
+   "elv": 3600,
+   "dist": 7,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Phalut",
+   "elv": 3600,
+   "dist": 6,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Gorkhey",
+   "elv": 2590,
+   "dist": 13,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Rimbick",
+   "elv": 2290,
+   "dist": 4,
+   "camp": false,
+   "ret": false
+  }
+ ],
+ "200": [
+  {
+   "label": "Pantwari",
+   "elv": 1800,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Nag Tibba BC",
+   "elv": 2600,
+   "dist": 5,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Nag Tibba",
+   "elv": 3022,
+   "dist": 1,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Pantwari",
+   "elv": 1800,
+   "dist": 6,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "201": [
+  {
+   "label": "Raithal",
+   "elv": 2286,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Gui",
+   "elv": 2935,
+   "dist": 5,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Dayara Top",
+   "elv": 3750,
+   "dist": 8,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Raithal",
+   "elv": 2286,
+   "dist": 5,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "202": [
+  {
+   "label": "Sangamchatti      ",
+   "elv": 1490,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Agoda             ",
+   "elv": 2200,
+   "dist": 6,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Dodital           ",
+   "elv": 3307,
+   "dist": 7,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Darwa Pass        ",
+   "elv": 4150,
+   "dist": 4,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Dodital           ",
+   "elv": 3307,
+   "dist": 4,
+   "camp": true,
+   "ret": true
+  },
+  {
+   "label": "Sangamchatti      ",
+   "elv": 1490,
+   "dist": 5,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "203": [
+  {
+   "label": "Sari",
+   "elv": 1800,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Deoriatal",
+   "elv": 2438,
+   "dist": 3,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Rohini Bugyal",
+   "elv": 2800,
+   "dist": 3.5,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Chopta",
+   "elv": 2680,
+   "dist": 6,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Tungnath",
+   "elv": 3680,
+   "dist": 3.5,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Chandrashila",
+   "elv": 3672,
+   "dist": 1.5,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Ukhimath",
+   "elv": 1317,
+   "dist": 7.6,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "204": [
+  {
+   "label": "Gangotri",
+   "elv": 3042,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Chirbasa",
+   "elv": 3600,
+   "dist": 9,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Bhojbasa",
+   "elv": 3790,
+   "dist": 5,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Gaumukh",
+   "elv": 4023,
+   "dist": 4,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Tapovan",
+   "elv": 4460,
+   "dist": 4,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Bhojbasa",
+   "elv": 3790,
+   "dist": 8,
+   "camp": true,
+   "ret": true
+  },
+  {
+   "label": "Gangotri",
+   "elv": 3042,
+   "dist": 14,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "205": [
+  {
+   "label": "Gangotri",
+   "elv": 3042,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Bhojkharak",
+   "elv": 3900,
+   "dist": 8,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Kedartal",
+   "elv": 4750,
+   "dist": 7,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Bhojkharak",
+   "elv": 3900,
+   "dist": 7,
+   "camp": true,
+   "ret": true
+  },
+  {
+   "label": "Gangotri",
+   "elv": 3042,
+   "dist": 8,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "206": [
+  {
+   "label": "Dhaula",
+   "elv": 1554,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Sewa / Jakha",
+   "elv": 2100,
+   "dist": 5,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Udaknal",
+   "elv": 3081,
+   "dist": 8,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Dhanderas",
+   "elv": 3566,
+   "dist": 3.5,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Upper WF Camp",
+   "elv": 4080,
+   "dist": 3,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Rupin Pass",
+   "elv": 4650,
+   "dist": 5,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Ronti Gad",
+   "elv": 4003,
+   "dist": 5,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Sangla",
+   "elv": 2680,
+   "dist": 8,
+   "camp": false,
+   "ret": false
+  }
+ ],
+ "207": [
+  {
+   "label": "Sankri            ",
+   "elv": 1920,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Phulara Ridge     ",
+   "elv": 3400,
+   "dist": 8,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Ridge Walk        ",
+   "elv": 3600,
+   "dist": 6,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Osla              ",
+   "elv": 2560,
+   "dist": 8,
+   "camp": true,
+   "ret": true
+  },
+  {
+   "label": "Sankri            ",
+   "elv": 1920,
+   "dist": 6,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "208": [
+  {
+   "label": "Sankri",
+   "elv": 1920,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Taluka",
+   "elv": 1900,
+   "dist": 3,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Osla",
+   "elv": 2560,
+   "dist": 13,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Ruinsara Tal",
+   "elv": 3500,
+   "dist": 9,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Bali Pass",
+   "elv": 4950,
+   "dist": 12,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Kyarkoti",
+   "elv": 3560,
+   "dist": 10,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Janki Chatti",
+   "elv": 1424,
+   "dist": 13,
+   "camp": false,
+   "ret": false
+  }
+ ],
+ "209": [
+  {
+   "label": "Kharkia",
+   "elv": 2100,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Khati",
+   "elv": 2200,
+   "dist": 3,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Dwali",
+   "elv": 2580,
+   "dist": 12,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Phurkia",
+   "elv": 3353,
+   "dist": 8,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Pindari Glacier",
+   "elv": 3660,
+   "dist": 3,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Dwali",
+   "elv": 2580,
+   "dist": 11,
+   "camp": true,
+   "ret": true
+  },
+  {
+   "label": "Kharkia",
+   "elv": 2100,
+   "dist": 15,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "210": [
+  {
+   "label": "Munsiyari",
+   "elv": 2200,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Lilam",
+   "elv": 2134,
+   "dist": 11,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Bugdiyar",
+   "elv": 2438,
+   "dist": 8,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Rilkot",
+   "elv": 2591,
+   "dist": 8,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Milam Village",
+   "elv": 3427,
+   "dist": 10,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Milam Glacier",
+   "elv": 3870,
+   "dist": 6,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Milam Village",
+   "elv": 3427,
+   "dist": 6,
+   "camp": true,
+   "ret": true
+  },
+  {
+   "label": "Munsiyari",
+   "elv": 2200,
+   "dist": 37,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "211": [
+  {
+   "label": "Dhak              ",
+   "elv": 1890,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Gulling           ",
+   "elv": 2800,
+   "dist": 7,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Khullara          ",
+   "elv": 3068,
+   "dist": 8,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Pangarchulla      ",
+   "elv": 4700,
+   "dist": 8,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Tugasi            ",
+   "elv": 1890,
+   "dist": 12,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "212": [
+  {
+   "label": "Badrinath",
+   "elv": 3133,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Mana Village",
+   "elv": 3219,
+   "dist": 3,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Laxmivan",
+   "elv": 3800,
+   "dist": 5,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Chakratirth",
+   "elv": 4120,
+   "dist": 7,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Satopanth Tal",
+   "elv": 4600,
+   "dist": 7,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Laxmivan",
+   "elv": 3800,
+   "dist": 14,
+   "camp": true,
+   "ret": true
+  },
+  {
+   "label": "Badrinath",
+   "elv": 3133,
+   "dist": 8,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "213": [
+  {
+   "label": "Gangotri",
+   "elv": 3042,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Bhojbasa",
+   "elv": 3790,
+   "dist": 14,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Nandanvan",
+   "elv": 4380,
+   "dist": 8,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Vasuki Tal",
+   "elv": 5291,
+   "dist": 6,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Auden's Col",
+   "elv": 5490,
+   "dist": 5,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Khatling Base",
+   "elv": 3700,
+   "dist": 14,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Ghuttu",
+   "elv": 1800,
+   "dist": 30,
+   "camp": false,
+   "ret": false
+  }
+ ],
+ "300": [
+  {
+   "label": "Lohajung",
+   "elv": 2350,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Wan Village",
+   "elv": 2438,
+   "dist": 0,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Gehroli Patal",
+   "elv": 3048,
+   "dist": 7,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Bedni Bugyal",
+   "elv": 3354,
+   "dist": 8,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Bedni Kund",
+   "elv": 3600,
+   "dist": 1,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Ali Bugyal",
+   "elv": 3450,
+   "dist": 4,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Lohajung",
+   "elv": 2350,
+   "dist": 12,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "301": [
+  {
+   "label": "Gangotri",
+   "elv": 3042,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Chirbasa",
+   "elv": 3600,
+   "dist": 9,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Bhojbasa",
+   "elv": 3790,
+   "dist": 5,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Gaumukh",
+   "elv": 4023,
+   "dist": 4,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Tapovan",
+   "elv": 4460,
+   "dist": 4,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Bhojbasa",
+   "elv": 3790,
+   "dist": 8,
+   "camp": true,
+   "ret": true
+  },
+  {
+   "label": "Gangotri",
+   "elv": 3042,
+   "dist": 14,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "302": [
+  {
+   "label": "Budgaon",
+   "elv": 1800,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Khet",
+   "elv": 2300,
+   "dist": 5,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Sari Khet",
+   "elv": 2800,
+   "dist": 5,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Panwali Kantha",
+   "elv": 3600,
+   "dist": 7,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Sahastra Tal",
+   "elv": 4250,
+   "dist": 6,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Khet",
+   "elv": 2300,
+   "dist": 18,
+   "camp": true,
+   "ret": true
+  },
+  {
+   "label": "Budgaon",
+   "elv": 1800,
+   "dist": 5,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "303": [
+  {
+   "label": "Ghangaria",
+   "elv": 3048,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Bhyundar",
+   "elv": 3200,
+   "dist": 3,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Bagji Bugyal",
+   "elv": 3650,
+   "dist": 8,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Ghangaria",
+   "elv": 3048,
+   "dist": 11,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "304": [
+  {
+   "label": "Lohajung",
+   "elv": 2350,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Bedni Bugyal",
+   "elv": 3354,
+   "dist": 15,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Bhagwabasa",
+   "elv": 4100,
+   "dist": 11,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Roopkund",
+   "elv": 4800,
+   "dist": 4,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Ronti Saddle",
+   "elv": 5100,
+   "dist": 3,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Bhagwabasa",
+   "elv": 4100,
+   "dist": 7,
+   "camp": true,
+   "ret": true
+  },
+  {
+   "label": "Lohajung",
+   "elv": 2350,
+   "dist": 26,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "305": [
+  {
+   "label": "Lohajung          ",
+   "elv": 2270,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Sutol             ",
+   "elv": 2200,
+   "dist": 7,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Dev Kyara         ",
+   "elv": 3800,
+   "dist": 5,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Sutol             ",
+   "elv": 2200,
+   "dist": 5,
+   "camp": false,
+   "ret": true
+  },
+  {
+   "label": "Lohajung          ",
+   "elv": 2270,
+   "dist": 9,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "306": [
+  {
+   "label": "Govindghat",
+   "elv": 1828,
+   "dist": 0,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Ghangaria",
+   "elv": 3050,
+   "dist": 14,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Bhyundar Camp",
+   "elv": 3400,
+   "dist": 8,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Kagbhushandi",
+   "elv": 4400,
+   "dist": 10,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Ghangaria",
+   "elv": 3050,
+   "dist": 14,
+   "camp": false,
+   "ret": true
+  },
+  {
+   "label": "Govindghat",
+   "elv": 1828,
+   "dist": 14,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "307": [
+  {
+   "label": "Gangotri",
+   "elv": 3042,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Bhojbasa",
+   "elv": 3790,
+   "dist": 14,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Nandanvan",
+   "elv": 4380,
+   "dist": 8,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Vasuki Tal",
+   "elv": 5291,
+   "dist": 6,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Kalindi Khal",
+   "elv": 5946,
+   "dist": 8,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Ghastoli",
+   "elv": 4500,
+   "dist": 10,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Badrinath",
+   "elv": 3133,
+   "dist": 15,
+   "camp": false,
+   "ret": false
+  }
+ ],
+ "308": [
+  {
+   "label": "Dharchula         ",
+   "elv": 940,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Gunji             ",
+   "elv": 3300,
+   "dist": 15,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Kuti Village      ",
+   "elv": 3750,
+   "dist": 5,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Jolingkong        ",
+   "elv": 4500,
+   "dist": 6,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Parvati Sarovar   ",
+   "elv": 4700,
+   "dist": 2,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Gauri Kund        ",
+   "elv": 4640,
+   "dist": 2,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Gunji             ",
+   "elv": 3300,
+   "dist": 8,
+   "camp": true,
+   "ret": true
+  },
+  {
+   "label": "Kala Pani         ",
+   "elv": 3600,
+   "dist": 6,
+   "camp": false,
+   "ret": true
+  },
+  {
+   "label": "Nabhidhang        ",
+   "elv": 3600,
+   "dist": 3,
+   "camp": false,
+   "ret": true
+  },
+  {
+   "label": "Dharchula         ",
+   "elv": 940,
+   "dist": 9,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "309": [
+  {
+   "label": "Kharkia",
+   "elv": 2100,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Khati",
+   "elv": 2200,
+   "dist": 3,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Dwali",
+   "elv": 2580,
+   "dist": 12,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Jatoli",
+   "elv": 2750,
+   "dist": 7,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Kathaliya",
+   "elv": 3600,
+   "dist": 9,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Sunderdhunga",
+   "elv": 4200,
+   "dist": 7,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Khati",
+   "elv": 2200,
+   "dist": 30,
+   "camp": true,
+   "ret": true
+  },
+  {
+   "label": "Kharkia",
+   "elv": 2100,
+   "dist": 3,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "310": [
+  {
+   "label": "Kharkia",
+   "elv": 2100,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Khati",
+   "elv": 2200,
+   "dist": 3,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Dwali",
+   "elv": 2580,
+   "dist": 12,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Kafni Glacier",
+   "elv": 3800,
+   "dist": 10,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Khati",
+   "elv": 2200,
+   "dist": 22,
+   "camp": true,
+   "ret": true
+  },
+  {
+   "label": "Kharkia",
+   "elv": 2100,
+   "dist": 3,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "311": [
+  {
+   "label": "Ghuttu",
+   "elv": 1800,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Reeh",
+   "elv": 2438,
+   "dist": 8,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Gangi",
+   "elv": 2744,
+   "dist": 9,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Khuni",
+   "elv": 3200,
+   "dist": 9,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Khatling",
+   "elv": 3720,
+   "dist": 9,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Gangi",
+   "elv": 2744,
+   "dist": 18,
+   "camp": true,
+   "ret": true
+  },
+  {
+   "label": "Ghuttu",
+   "elv": 1800,
+   "dist": 17,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "312": [
+  {
+   "label": "Chopta            ",
+   "elv": 2680,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Tungnath          ",
+   "elv": 3680,
+   "dist": 4,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Chandrashila      ",
+   "elv": 4000,
+   "dist": 2,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Chopta            ",
+   "elv": 2680,
+   "dist": 6,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "313": [
+  {
+   "label": "Sari",
+   "elv": 1800,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Rohini Bugyal",
+   "elv": 3000,
+   "dist": 10,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Panwali Kantha",
+   "elv": 3600,
+   "dist": 6,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Sari",
+   "elv": 1800,
+   "dist": 16,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "314": [
+  {
+   "label": "Jumma",
+   "elv": 2200,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Dunagiri",
+   "elv": 3359,
+   "dist": 7,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Dibrugheta",
+   "elv": 3680,
+   "dist": 7,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Bagini Glacier",
+   "elv": 4400,
+   "dist": 6,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Dunagiri",
+   "elv": 3359,
+   "dist": 13,
+   "camp": true,
+   "ret": true
+  },
+  {
+   "label": "Jumma",
+   "elv": 2200,
+   "dist": 7,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "315": [
+  {
+   "label": "Devgram           ",
+   "elv": 1700,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Kalpeshwar        ",
+   "elv": 2200,
+   "dist": 6,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Bansi Narayan     ",
+   "elv": 2800,
+   "dist": 7,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Dumak             ",
+   "elv": 2440,
+   "dist": 5,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Panar             ",
+   "elv": 3200,
+   "dist": 8,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Rudranath         ",
+   "elv": 3600,
+   "dist": 7,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Sagar             ",
+   "elv": 1700,
+   "dist": 12,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "316": [
+  {
+   "label": "Binsar",
+   "elv": 2412,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Zero Point",
+   "elv": 2500,
+   "dist": 3,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Khali Estate",
+   "elv": 2300,
+   "dist": 2,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Binsar",
+   "elv": 2412,
+   "dist": 5,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "317": [
+  {
+   "label": "Lata Village",
+   "elv": 2080,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Lata Kharak",
+   "elv": 3660,
+   "dist": 9,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Dharansi Pass",
+   "elv": 4250,
+   "dist": 6,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Dibrugheta",
+   "elv": 3660,
+   "dist": 6,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Nanda Devi BC",
+   "elv": 4270,
+   "dist": 9,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Lata Village",
+   "elv": 2080,
+   "dist": 21,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "318": [
+  {
+   "label": "Munsiyari",
+   "elv": 2200,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Martoli",
+   "elv": 3298,
+   "dist": 20,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Ralam Glacier",
+   "elv": 4100,
+   "dist": 10,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Munsiyari",
+   "elv": 2200,
+   "dist": 30,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "319": [
+  {
+   "label": "Gangotri",
+   "elv": 3042,
+   "dist": 0,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Chirbasa",
+   "elv": 3600,
+   "dist": 9,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Gaumukh",
+   "elv": 4023,
+   "dist": 9,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Gangotri",
+   "elv": 3042,
+   "dist": 18,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "400": [
+  {
+   "label": "Auli              ",
+   "elv": 2519,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Gorson Bugyal     ",
+   "elv": 3050,
+   "dist": 6,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Tali              ",
+   "elv": 2900,
+   "dist": 4,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Auli              ",
+   "elv": 2519,
+   "dist": 8,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "401": [
+  {
+   "label": "Chopta",
+   "elv": 2680,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Tungnath",
+   "elv": 3680,
+   "dist": 3.5,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Chandrashila",
+   "elv": 3672,
+   "dist": 1.5,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Chopta",
+   "elv": 2680,
+   "dist": 5,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "402": [
+  {
+   "label": "Ransi             ",
+   "elv": 2200,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Gaundhar          ",
+   "elv": 2600,
+   "dist": 6,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Lower Bantoli     ",
+   "elv": 3000,
+   "dist": 8,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Khatara           ",
+   "elv": 3200,
+   "dist": 5,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Madmaheshwar      ",
+   "elv": 3497,
+   "dist": 7,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Buda Madm.        ",
+   "elv": 3600,
+   "dist": 2,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Lower Bantoli     ",
+   "elv": 3000,
+   "dist": 9,
+   "camp": false,
+   "ret": true
+  },
+  {
+   "label": "Ransi             ",
+   "elv": 2200,
+   "dist": 18,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "403": [
+  {
+   "label": "Gaurikund",
+   "elv": 1982,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Jungle Chatti",
+   "elv": 2650,
+   "dist": 6,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Bhimbali",
+   "elv": 3110,
+   "dist": 4,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Linchauli",
+   "elv": 3450,
+   "dist": 3,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Kedarnath",
+   "elv": 3583,
+   "dist": 3,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Gaurikund",
+   "elv": 1982,
+   "dist": 16,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "404": [
+  {
+   "label": "Janki Chatti",
+   "elv": 1424,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Phool Chatti",
+   "elv": 1800,
+   "dist": 2,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Hanuman Chatti",
+   "elv": 2400,
+   "dist": 2,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Yamunotri",
+   "elv": 3293,
+   "dist": 2,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Janki Chatti",
+   "elv": 1424,
+   "dist": 6,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "405": [
+  {
+   "label": "Govindghat        ",
+   "elv": 1828,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Pulna             ",
+   "elv": 2100,
+   "dist": 3,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Ghangaria         ",
+   "elv": 3048,
+   "dist": 10,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Hemkund Sahib     ",
+   "elv": 4329,
+   "dist": 6,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Ghangaria         ",
+   "elv": 3048,
+   "dist": 6,
+   "camp": false,
+   "ret": true
+  },
+  {
+   "label": "Govindghat        ",
+   "elv": 1828,
+   "dist": 3,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "406": [
+  {
+   "label": "Munsiyari         ",
+   "elv": 2200,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Khaliya Top       ",
+   "elv": 3500,
+   "dist": 8,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Munsiyari         ",
+   "elv": 2200,
+   "dist": 8,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "407": [
+  {
+   "label": "Duktu Village",
+   "elv": 3048,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Dantu Village",
+   "elv": 3060,
+   "dist": 1,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Glacier Viewpoint",
+   "elv": 3800,
+   "dist": 2,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Panchachuli Gl.",
+   "elv": 4620,
+   "dist": 1,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Duktu Village",
+   "elv": 3048,
+   "dist": 4,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "408": [
+  {
+   "label": "Ukhimath",
+   "elv": 1317,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Sari",
+   "elv": 1800,
+   "dist": 8,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Rohini Bugyal",
+   "elv": 2800,
+   "dist": 10,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Chopta",
+   "elv": 2680,
+   "dist": 6,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Ukhimath",
+   "elv": 1317,
+   "dist": 14,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "409": [
+  {
+   "label": "Govindghat        ",
+   "elv": 1828,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Gidara Bugyal     ",
+   "elv": 3400,
+   "dist": 19,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Govindghat        ",
+   "elv": 1828,
+   "dist": 19,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "410": [
+  {
+   "label": "Kedarnath         ",
+   "elv": 3583,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Vasuki Tal        ",
+   "elv": 4135,
+   "dist": 24,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Kedarnath         ",
+   "elv": 3583,
+   "dist": 24,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "411": [
+  {
+   "label": "Gangotri",
+   "elv": 3042,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Bhojbasa",
+   "elv": 3790,
+   "dist": 14,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Nandanvan",
+   "elv": 4380,
+   "dist": 8,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Alkapuri Gl.",
+   "elv": 4940,
+   "dist": 7,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Gangotri",
+   "elv": 3042,
+   "dist": 29,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "412": [
+  {
+   "label": "Osla              ",
+   "elv": 2560,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Ruinsara Tal      ",
+   "elv": 3900,
+   "dist": 22,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Borasu Pass       ",
+   "elv": 5450,
+   "dist": 14,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Chitkul           ",
+   "elv": 3450,
+   "dist": 34,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "413": [
+  {
+   "label": "Debal",
+   "elv": 1850,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Ramni",
+   "elv": 2750,
+   "dist": 12,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Trishul BC",
+   "elv": 4000,
+   "dist": 14,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Debal",
+   "elv": 1850,
+   "dist": 26,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "414": [
+  {
+   "label": "Kanakchauri",
+   "elv": 2350,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Kartik Swami",
+   "elv": 3048,
+   "dist": 3,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Kanakchauri",
+   "elv": 2350,
+   "dist": 3,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "415": [
+  {
+   "label": "Bhukki",
+   "elv": 2240,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Dokriani Gl.",
+   "elv": 3818,
+   "dist": 16,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Bhukki",
+   "elv": 2240,
+   "dist": 16,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "501": [
+  {
+   "label": "Solang Nullah",
+   "elv": 2480,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Dhundi",
+   "elv": 2856,
+   "dist": 4,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Bakarthach",
+   "elv": 3350,
+   "dist": 5,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Beas Kund",
+   "elv": 3700,
+   "dist": 3,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Bakarthach",
+   "elv": 3350,
+   "dist": 3,
+   "camp": true,
+   "ret": true
+  },
+  {
+   "label": "Solang Nullah",
+   "elv": 2480,
+   "dist": 9,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "502": [
+  {
+   "label": "McLeodganj",
+   "elv": 1787,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Gallu Devi",
+   "elv": 2100,
+   "dist": 2,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Triund",
+   "elv": 2825,
+   "dist": 7,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Laka Got",
+   "elv": 3500,
+   "dist": 7,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Lahesh Cave",
+   "elv": 3900,
+   "dist": 3,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Indrahar Pass",
+   "elv": 4342,
+   "dist": 5,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "McLeodganj",
+   "elv": 1787,
+   "dist": 16,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "503": [
+  {
+   "label": "Barshaini",
+   "elv": 2200,
+   "dist": 0,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Kheerganga",
+   "elv": 2960,
+   "dist": 12,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Tunda Bhuj",
+   "elv": 3400,
+   "dist": 22,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Mantalai Lake",
+   "elv": 4100,
+   "dist": 34,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "High Camp",
+   "elv": 4800,
+   "dist": 41,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Pin Parvati",
+   "elv": 5320,
+   "dist": 46,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Spiti Camp",
+   "elv": 4600,
+   "dist": 52,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Mudh Village",
+   "elv": 3760,
+   "dist": 72,
+   "camp": true,
+   "ret": true
+  },
+  {
+   "label": "Kaza",
+   "elv": 3800,
+   "dist": 82,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "504": [
+  {
+   "label": "Naggar",
+   "elv": 1800,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Rumsu",
+   "elv": 2600,
+   "dist": 5,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Chandrakhan",
+   "elv": 3660,
+   "dist": 8,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Deo Tibba View",
+   "elv": 3500,
+   "dist": 3,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Malana",
+   "elv": 2652,
+   "dist": 7,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Kasol",
+   "elv": 1580,
+   "dist": 20,
+   "camp": false,
+   "ret": false
+  }
+ ],
+ "505": [
+  {
+   "label": "Janglik",
+   "elv": 2804,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Dayara Thatch",
+   "elv": 3370,
+   "dist": 7,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Litham",
+   "elv": 3533,
+   "dist": 5,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Dhunda",
+   "elv": 4000,
+   "dist": 5,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Buran Ghati",
+   "elv": 4572,
+   "dist": 3,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Munirang",
+   "elv": 3400,
+   "dist": 4,
+   "camp": true,
+   "ret": true
+  },
+  {
+   "label": "Barua Village",
+   "elv": 2900,
+   "dist": 5,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "506": [
+  {
+   "label": "Tangling",
+   "elv": 2149,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Bara Pathar",
+   "elv": 2900,
+   "dist": 4,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Ganesh Park",
+   "elv": 3600,
+   "dist": 5,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Kailash Darr",
+   "elv": 3700,
+   "dist": 1,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Gufa Camp",
+   "elv": 3780,
+   "dist": 3,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Parvati Kund",
+   "elv": 4000,
+   "dist": 3,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Kinner Shivling",
+   "elv": 4500,
+   "dist": 3,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Gufa Camp",
+   "elv": 3780,
+   "dist": 3,
+   "camp": true,
+   "ret": true
+  },
+  {
+   "label": "Ganesh Park",
+   "elv": 3600,
+   "dist": 3,
+   "camp": true,
+   "ret": true
+  },
+  {
+   "label": "Tangling",
+   "elv": 2149,
+   "dist": 9,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "507": [
+  {
+   "label": "Jagatsukh",
+   "elv": 1900,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Chikha",
+   "elv": 2700,
+   "dist": 8,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Khanol",
+   "elv": 3300,
+   "dist": 6,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Deo Tibba BC",
+   "elv": 4260,
+   "dist": 8,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Jagatsukh",
+   "elv": 1900,
+   "dist": 22,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "508": [
+  {
+   "label": "Billing           ",
+   "elv": 2200,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Thamsar Pass      ",
+   "elv": 4710,
+   "dist": 30,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Bara Bhangal      ",
+   "elv": 2200,
+   "dist": 25,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Kulu              ",
+   "elv": 1219,
+   "dist": 40,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "509": [
+  {
+   "label": "Hadsar",
+   "elv": 2280,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Dibri",
+   "elv": 2500,
+   "dist": 3,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Dhancho",
+   "elv": 2900,
+   "dist": 4,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Sundarasi",
+   "elv": 3300,
+   "dist": 4,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Gauri Kund",
+   "elv": 3900,
+   "dist": 2,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Manimahesh ⛰",
+   "elv": 4080,
+   "dist": 1,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Dhancho",
+   "elv": 2900,
+   "dist": 7,
+   "camp": true,
+   "ret": true
+  },
+  {
+   "label": "Hadsar",
+   "elv": 2280,
+   "dist": 6,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "510": [
+  {
+   "label": "McLeodganj",
+   "elv": 1787,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Dharamkot",
+   "elv": 1650,
+   "dist": 1.5,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Gallu Devi",
+   "elv": 2100,
+   "dist": 2,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Triund",
+   "elv": 2825,
+   "dist": 5.5,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "McLeodganj",
+   "elv": 1787,
+   "dist": 9,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "511": [
+  {
+   "label": "Kareri Village",
+   "elv": 1400,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Reoti",
+   "elv": 2000,
+   "dist": 6,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Kareri Lake",
+   "elv": 2934,
+   "dist": 7,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Kareri Village",
+   "elv": 1400,
+   "dist": 13,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "512": [
+  {
+   "label": "Kaza",
+   "elv": 3800,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Ki Monastery",
+   "elv": 4166,
+   "dist": 12,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Kibber",
+   "elv": 4205,
+   "dist": 4,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Hikkim",
+   "elv": 4400,
+   "dist": 5,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Komic",
+   "elv": 4587,
+   "dist": 3,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Kaza",
+   "elv": 3800,
+   "dist": 24,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "513": [
+  {
+   "label": "Nohradhar",
+   "elv": 1900,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Teesri",
+   "elv": 2600,
+   "dist": 8,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Churdhar",
+   "elv": 3647,
+   "dist": 8,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Nohradhar",
+   "elv": 1900,
+   "dist": 16,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "514": [
+  {
+   "label": "Jalori Pass",
+   "elv": 3120,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Oak Forest",
+   "elv": 2980,
+   "dist": 2,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Serolsar Lake",
+   "elv": 3100,
+   "dist": 3,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Bujham Top",
+   "elv": 3380,
+   "dist": 2,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Serolsar Lake",
+   "elv": 3100,
+   "dist": 2,
+   "camp": false,
+   "ret": true
+  },
+  {
+   "label": "Jalori Pass",
+   "elv": 3120,
+   "dist": 3,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "515": [
+  {
+   "label": "Barshaini",
+   "elv": 1750,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Nakthan",
+   "elv": 2100,
+   "dist": 5,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Rudra Nag",
+   "elv": 2550,
+   "dist": 4,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Kheerganga",
+   "elv": 2960,
+   "dist": 3,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Barshaini",
+   "elv": 1750,
+   "dist": 12,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "516": [
+  {
+   "label": "Kibber            ",
+   "elv": 4205,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Thaltak           ",
+   "elv": 4800,
+   "dist": 30,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Parang La         ",
+   "elv": 5578,
+   "dist": 25,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Lato              ",
+   "elv": 4600,
+   "dist": 40,
+   "camp": true,
+   "ret": true
+  },
+  {
+   "label": "Korzok            ",
+   "elv": 4522,
+   "dist": 45,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "517": [
+  {
+   "label": "Pulga             ",
+   "elv": 2200,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Tulga             ",
+   "elv": 2800,
+   "dist": 8,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Tunda Bhuj        ",
+   "elv": 3500,
+   "dist": 12,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Kalihani Pass     ",
+   "elv": 4900,
+   "dist": 15,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Chhatru           ",
+   "elv": 3050,
+   "dist": 23,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "518": [
+  {
+   "label": "Udaipur",
+   "elv": 2750,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Khanjar",
+   "elv": 3200,
+   "dist": 18,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Urgos",
+   "elv": 3600,
+   "dist": 10,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Miyar Glacier",
+   "elv": 4200,
+   "dist": 12,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Udaipur",
+   "elv": 2750,
+   "dist": 40,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "519": [
+  {
+   "label": "Tosh Village      ",
+   "elv": 2400,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Upper Tosh        ",
+   "elv": 3200,
+   "dist": 8,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Tosh Glacier      ",
+   "elv": 4250,
+   "dist": 9,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Tosh Village      ",
+   "elv": 2400,
+   "dist": 18,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "524": [
+  {
+   "label": "Shimla",
+   "elv": 2200,
+   "dist": 0,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Jakhu Temple",
+   "elv": 2455,
+   "dist": 2.5,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Shimla",
+   "elv": 2200,
+   "dist": 2.5,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "525": [
+  {
+   "label": "Baggi Village",
+   "elv": 1490,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Prashar Lake",
+   "elv": 2730,
+   "dist": 7.5,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Baggi Village",
+   "elv": 1490,
+   "dist": 7.5,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "526": [
+  {
+   "label": "Bhagsu Nag        ",
+   "elv": 1401,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Bhagsu Falls      ",
+   "elv": 1500,
+   "dist": 2,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Karthani          ",
+   "elv": 2000,
+   "dist": 6,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Bhagsu Nag        ",
+   "elv": 1401,
+   "dist": 8,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "527": [
+  {
+   "label": "Boh Valley",
+   "elv": 1200,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Khabru Falls",
+   "elv": 1600,
+   "dist": 5,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Boh Valley",
+   "elv": 1200,
+   "dist": 5,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "528": [
+  {
+   "label": "Bonthu",
+   "elv": 2200,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Gaj Pass",
+   "elv": 3400,
+   "dist": 12,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Bonthu",
+   "elv": 2200,
+   "dist": 12,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "529": [
+  {
+   "label": "Nohradhar",
+   "elv": 1900,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Teesri",
+   "elv": 2600,
+   "dist": 8,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Churdhar",
+   "elv": 3647,
+   "dist": 8,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Nohradhar",
+   "elv": 1900,
+   "dist": 16,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "530": [
+  {
+   "label": "Deedag",
+   "elv": 2100,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Churdhar",
+   "elv": 3647,
+   "dist": 14,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Deedag",
+   "elv": 2100,
+   "dist": 14,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "531": [
+  {
+   "label": "Habban",
+   "elv": 1200,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Banalidhar",
+   "elv": 2200,
+   "dist": 10,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Churdhar",
+   "elv": 3647,
+   "dist": 12,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Habban",
+   "elv": 1200,
+   "dist": 22,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "532": [
+  {
+   "label": "Bawa Village      ",
+   "elv": 1800,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Forest Camp       ",
+   "elv": 2400,
+   "dist": 10,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Bawa Pass         ",
+   "elv": 3400,
+   "dist": 17,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Bawa Village      ",
+   "elv": 1800,
+   "dist": 28,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "533": [
+  {
+   "label": "Nalagarh",
+   "elv": 450,
+   "dist": 0,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Bhangayini",
+   "elv": 800,
+   "dist": 4,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Nalagarh Fort",
+   "elv": 600,
+   "dist": 2,
+   "camp": false,
+   "ret": false
+  }
+ ],
+ "534": [
+  {
+   "label": "Banethi           ",
+   "elv": 600,
+   "dist": 0,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Forest Path       ",
+   "elv": 820,
+   "dist": 2,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Jamta             ",
+   "elv": 750,
+   "dist": 5,
+   "camp": false,
+   "ret": false
+  }
+ ],
+ "535": [
+  {
+   "label": "Chitkul           ",
+   "elv": 3450,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Charang           ",
+   "elv": 4200,
+   "dist": 20,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Lamkhaga Pass     ",
+   "elv": 5282,
+   "dist": 14,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Kyarkoti          ",
+   "elv": 4000,
+   "dist": 18,
+   "camp": true,
+   "ret": true
+  },
+  {
+   "label": "Harshil           ",
+   "elv": 2620,
+   "dist": 38,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "538": [
+  {
+   "label": "Jaon              ",
+   "elv": 1950,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Singhad           ",
+   "elv": 2400,
+   "dist": 5,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Thachru           ",
+   "elv": 2900,
+   "dist": 7,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Kali Ghati        ",
+   "elv": 3400,
+   "dist": 5,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Kunsha            ",
+   "elv": 3800,
+   "dist": 4,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Bheem Dwar        ",
+   "elv": 4200,
+   "dist": 3,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Parvati Bagh      ",
+   "elv": 4400,
+   "dist": 2,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Nain Sarovar      ",
+   "elv": 4900,
+   "dist": 2,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Shrikhand Top     ",
+   "elv": 5227,
+   "dist": 2,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Parvati Bagh      ",
+   "elv": 4400,
+   "dist": 2,
+   "camp": false,
+   "ret": true
+  },
+  {
+   "label": "Thachru           ",
+   "elv": 2900,
+   "dist": 12,
+   "camp": false,
+   "ret": true
+  },
+  {
+   "label": "Jaon              ",
+   "elv": 1950,
+   "dist": 9,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "539": [
+  {
+   "label": "Bharmaur          ",
+   "elv": 2195,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Kugti             ",
+   "elv": 3140,
+   "dist": 6,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Yulla Kanda       ",
+   "elv": 4733,
+   "dist": 5,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Bharmaur          ",
+   "elv": 2195,
+   "dist": 5,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "540": [
+  {
+   "label": "Kukke Subramanya  ",
+   "elv": 347,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Batte Hole        ",
+   "elv": 900,
+   "dist": 4,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Shesha Parvatha   ",
+   "elv": 1600,
+   "dist": 5,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Kumara Parvatha   ",
+   "elv": 1712,
+   "dist": 4,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Shesha Parvatha   ",
+   "elv": 1600,
+   "dist": 4,
+   "camp": false,
+   "ret": true
+  },
+  {
+   "label": "Kukke Subramanya  ",
+   "elv": 347,
+   "dist": 5,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "541": [
+  {
+   "label": "Rhodovalley       ",
+   "elv": 2100,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Peak 1            ",
+   "elv": 2300,
+   "dist": 2,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Peak 4            ",
+   "elv": 2500,
+   "dist": 3,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Meesapulimala     ",
+   "elv": 2640,
+   "dist": 2,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Peak 4            ",
+   "elv": 2500,
+   "dist": 2,
+   "camp": false,
+   "ret": true
+  },
+  {
+   "label": "Rhodovalley       ",
+   "elv": 2100,
+   "dist": 5,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "542": [
+  {
+   "label": "Solang Nullah",
+   "elv": 2480,
+   "dist": 0,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Dhundi",
+   "elv": 2600,
+   "dist": 4,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Bakarthach",
+   "elv": 3400,
+   "dist": 12,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Beas Kund",
+   "elv": 3700,
+   "dist": 15,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Lady Leg Camp",
+   "elv": 4200,
+   "dist": 19,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "High Camp",
+   "elv": 4700,
+   "dist": 22,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Friendship Peak",
+   "elv": 5289,
+   "dist": 25,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Lady Leg Camp",
+   "elv": 4200,
+   "dist": 28,
+   "camp": false,
+   "ret": true
+  },
+  {
+   "label": "Solang Nullah",
+   "elv": 2480,
+   "dist": 45,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "543": [
+  {
+   "label": "Jispa",
+   "elv": 3200,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Darcha",
+   "elv": 3360,
+   "dist": 5,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Approach Camp",
+   "elv": 3800,
+   "dist": 12,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Adv Base Camp",
+   "elv": 4600,
+   "dist": 18,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Camp 1",
+   "elv": 5100,
+   "dist": 22,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "High Camp",
+   "elv": 5400,
+   "dist": 25,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Yunam Peak",
+   "elv": 6111,
+   "dist": 28,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Jispa",
+   "elv": 3200,
+   "dist": 40,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "544": [
+  {
+   "label": "Baggi Bridge",
+   "elv": 2100,
+   "dist": 0,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Prashar Lake",
+   "elv": 2730,
+   "dist": 7,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Baggi Bridge",
+   "elv": 2100,
+   "dist": 14,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "600": [
+  {
+   "label": "Viswema Gate",
+   "elv": 1600,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Ridge Entry",
+   "elv": 2000,
+   "dist": 3,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Valley Rim",
+   "elv": 2350,
+   "dist": 3,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Dzukou Valley",
+   "elv": 2452,
+   "dist": 3,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Valley Rim",
+   "elv": 2350,
+   "dist": 3,
+   "camp": false,
+   "ret": true
+  },
+  {
+   "label": "Viswema Gate",
+   "elv": 1600,
+   "dist": 6,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "601": [
+  {
+   "label": "Tyrna Village",
+   "elv": 1484,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Nohwet",
+   "elv": 1250,
+   "dist": 1.5,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Root Bridge 1",
+   "elv": 1200,
+   "dist": 1,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Nongriat Village",
+   "elv": 1150,
+   "dist": 1,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Dbl Decker Bridge",
+   "elv": 1150,
+   "dist": 0,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Tyrna Village",
+   "elv": 1484,
+   "dist": 3.5,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "602": [
+  {
+   "label": "Ziro Town",
+   "elv": 1524,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Hong Village",
+   "elv": 1600,
+   "dist": 6,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Mudang Tage",
+   "elv": 1700,
+   "dist": 7,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Talle Valley",
+   "elv": 1780,
+   "dist": 6,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Hari Village",
+   "elv": 1650,
+   "dist": 8,
+   "camp": false,
+   "ret": true
+  },
+  {
+   "label": "Ziro Town",
+   "elv": 1524,
+   "dist": 9,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "603": [
+  {
+   "label": "Phawngpui Village",
+   "elv": 1450,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Forest Zone",
+   "elv": 1700,
+   "dist": 2,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Ridge Line",
+   "elv": 1950,
+   "dist": 2.5,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Phawngpui Summit",
+   "elv": 2157,
+   "dist": 3.5,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Ridge Line",
+   "elv": 1950,
+   "dist": 3.5,
+   "camp": false,
+   "ret": true
+  },
+  {
+   "label": "Phawngpui Village",
+   "elv": 1450,
+   "dist": 4,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "604": [
+  {
+   "label": "Bonacaud Estate",
+   "elv": 600,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Forest Camp",
+   "elv": 900,
+   "dist": 5,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Shola Grassland",
+   "elv": 1300,
+   "dist": 5,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Rocky Approach",
+   "elv": 1650,
+   "dist": 4,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Agasthyamalai",
+   "elv": 1868,
+   "dist": 2,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Bonacaud Estate",
+   "elv": 600,
+   "dist": 16,
+   "camp": false,
+   "ret": true
+  }
+ ],
+ "700": [
+  {
+   "label": "Sagar",
+   "elv": 1700,
+   "dist": 0,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Lyuti Bugyal",
+   "elv": 2800,
+   "dist": 9,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Panar",
+   "elv": 3400,
+   "dist": 5,
+   "camp": true,
+   "ret": false
+  },
+  {
+   "label": "Rudranath",
+   "elv": 3600,
+   "dist": 7,
+   "camp": false,
+   "ret": false
+  },
+  {
+   "label": "Panar",
+   "elv": 3400,
+   "dist": 7,
+   "camp": true,
+   "ret": true
+  },
+  {
+   "label": "Sagar",
+   "elv": 1700,
+   "dist": 14,
+   "camp": false,
+   "ret": true
+  }
+ ]
+}
