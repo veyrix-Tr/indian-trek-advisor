@@ -14,6 +14,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { useOverlays } from "@/components/overlays/overlay-provider"
+import { TrekSearch } from "@/components/trek-search"
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -75,6 +76,7 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden items-center gap-2 lg:flex">
+          <TrekSearch />
           <Button
             variant="outline"
             size="sm"

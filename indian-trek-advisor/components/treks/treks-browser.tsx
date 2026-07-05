@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState, useCallback } from "react"
+import { useMemo, useState, useCallback, useEffect } from "react"
 import { useSearchParams, useRouter, usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { Search, SlidersHorizontal, X, Mountain } from "lucide-react"
@@ -139,9 +139,15 @@ export function TreksBrowser() {
     | "panch-kedar"
   const query = searchParams.get("q") ?? ""
 
+  const [searchValue, setSearchValue] = useState(searchParams.get("q") ?? "")
   const [activeDifficulties, setActiveDifficulties] = useState<Difficulty[]>([])
   const [daysRange, setDaysRange] = useState<[number, number]>([1, MAX_DAYS])
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
+
+  // Keep local search value in sync when URL changes (back/forward)
+  useEffect(() => {
+    setSearchValue(searchParams.get("q") ?? "")
+  }, [searchParams])
 
   const setParam = useCallback(
     (key: string, value: string | null) => {
@@ -234,11 +240,14 @@ export function TreksBrowser() {
             />
             <Input
               type="search"
-              defaultValue={query}
+              value={searchValue}
               placeholder="Search by name, state, region, base camp..."
               aria-label="Search treks"
               className="h-11 rounded-full pl-10"
-              onChange={(e) => setParam("q", e.target.value)}
+              onChange={(e) => {
+                setSearchValue(e.target.value)
+                setParam("q", e.target.value)
+              }}
             />
           </div>
 

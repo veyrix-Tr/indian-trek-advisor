@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import dynamic from "next/dynamic"
 import { motion, useReducedMotion } from "framer-motion"
 import { Search, MapPin, Compass, Users, ChevronDown } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { TrekSearch } from "@/components/trek-search"
 
 const Hero3D = dynamic(() => import("./hero-3d"), {
   ssr: false,
@@ -20,15 +20,9 @@ const HEADLINE_LINE_2 = ["Trek", "On", "Your", "Terms."]
 export function HeroSection() {
   const router = useRouter()
   const prefersReduced = useReducedMotion()
-  const [query, setQuery] = useState("")
   const [mounted, setMounted] = useState(false)
 
-  useEffect(() => setMounted(true), [])
-
-  function handleSearch(e: React.FormEvent) {
-    e.preventDefault()
-    router.push(query.trim() ? `/treks?q=${encodeURIComponent(query.trim())}` : "/treks")
-  }
+  useEffect(() => { setMounted(true) }, [])
 
   const wordVariants = {
     hidden: { opacity: 0, y: 28, rotateX: 40 },
@@ -101,29 +95,29 @@ export function HeroSection() {
           tours.
         </motion.p>
 
-        <motion.form
+        <motion.div
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.2, duration: 0.7 }}
-          onSubmit={handleSearch}
-          className="flex w-full max-w-xl items-center gap-2 rounded-full border border-border bg-card/80 p-1.5 pl-5 backdrop-blur-md"
+          className="w-full max-w-xl"
         >
-          <Search className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
-          <label htmlFor="hero-search" className="sr-only">
-            Search treks by name, region or state
-          </label>
-          <input
-            id="hero-search"
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search 100 trails: Kedarkantha, Ladakh, Kashmir..."
-            className="min-w-0 flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground/70 focus:outline-none"
+          <TrekSearch
+            trigger={
+              <button
+                type="button"
+                className="flex w-full cursor-text items-center gap-2 rounded-full border border-border bg-card/80 p-1.5 pl-5 backdrop-blur-md"
+              >
+                <Search className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+                <span className="min-w-0 flex-1 text-left text-sm text-muted-foreground/70">
+                  Search 100 trails: Kedarkantha, Ladakh, Kashmir...
+                </span>
+                <span className="shrink-0 rounded-full bg-primary px-5 py-1.5 text-sm font-medium text-primary-foreground">
+                  Explore
+                </span>
+              </button>
+            }
           />
-          <Button type="submit" className="shrink-0 rounded-full px-5">
-            Explore
-          </Button>
-        </motion.form>
+        </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 14 }}
