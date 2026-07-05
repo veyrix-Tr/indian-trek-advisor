@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import { Space_Grotesk, JetBrains_Mono } from 'next/font/google'
@@ -58,7 +59,9 @@ export default function RootLayout({
     >
       <body className="font-sans antialiased">
         <OverlayProvider>
-          <SiteHeader />
+          <Suspense>
+            <SiteHeader />
+          </Suspense>
           {children}
           <SiteFooter />
         </OverlayProvider>
