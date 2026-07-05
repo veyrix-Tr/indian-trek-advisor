@@ -2,7 +2,9 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import { usePathname, useSearchParams } from "next/navigation"
 import { Mountain, Sparkles, Menu, UserRound } from "lucide-react"
+import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
   Sheet,
@@ -14,6 +16,7 @@ import {
 import { useOverlays } from "@/components/overlays/overlay-provider"
 
 const NAV_LINKS = [
+  { href: "/", label: "Home" },
   { href: "/treks", label: "Treks" },
   { href: "/treks?section=kailash", label: "Kailash Yatra" },
   { href: "/treks?section=panch-kedar", label: "Panch Kedar" },
@@ -23,6 +26,20 @@ const NAV_LINKS = [
 export function SiteHeader() {
   const { openAi, openAuth } = useOverlays()
   const [mobileOpen, setMobileOpen] = useState(false)
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+
+  function isActive(link: (typeof NAV_LINKS)[number]): boolean {
+    if (link.href === "/") return pathname === "/"
+    const [path, qs] = link.href.split("?")
+    if (path !== pathname) return false
+    if (!qs) return !searchParams.toString()
+    const params = new URLSearchParams(qs)
+    for (const [k, v] of params) {
+      if (searchParams.get(k) !== v) return false
+    }
+    return true
+  }
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-border/60 bg-background/70 backdrop-blur-xl">
@@ -45,7 +62,12 @@ export function SiteHeader() {
             <Link
               key={link.label}
               href={link.href}
-              className="rounded-full px-3.5 py-2 font-mono text-xs uppercase tracking-widest text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+              className={cn(
+                "rounded-full px-3.5 py-2 font-mono text-xs uppercase tracking-widest transition-colors",
+                isActive(link)
+                  ? "bg-primary/10 text-primary"
+                  : "text-muted-foreground hover:bg-accent hover:text-foreground",
+              )}
             >
               {link.label}
             </Link>
@@ -98,7 +120,12 @@ export function SiteHeader() {
                   key={link.label}
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
-                  className="rounded-lg px-3 py-2.5 font-mono text-sm uppercase tracking-widest text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                  className={cn(
+                    "rounded-lg px-3 py-2.5 font-mono text-sm uppercase tracking-widest transition-colors",
+                    isActive(link)
+                      ? "bg-primary/10 text-primary"
+                      : "text-muted-foreground hover:bg-accent hover:text-foreground",
+                  )}
                 >
                   {link.label}
                 </Link>
