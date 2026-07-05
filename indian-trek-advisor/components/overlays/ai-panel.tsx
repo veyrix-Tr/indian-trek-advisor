@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Mountain, SendHorizonal, Sparkles } from "lucide-react"
+import { Mountain, SendHorizonal, Sparkles, Trash2 } from "lucide-react"
 import {
   Sheet,
   SheetContent,
@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+
+const STORAGE_KEY = "trek-ai-messages"
 
 const QUICK_PROMPTS = [
   "Best beginner Indian Himalayan trek",
@@ -29,16 +31,34 @@ interface Message {
 }
 
 export function AiPanel({ onClose }: { onClose: () => void }) {
-  const [messages, setMessages] = useState<Message[]>([])
+  const [messages, setMessages] = useState<Message[]>(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY)
+      return saved ? JSON.parse(saved) : []
+    } catch {
+      return []
+    }
+  })
   const [input, setInput] = useState("")
   const [typing, setTyping] = useState(false)
-  const nextId = useRef(1)
+  const nextId = useRef(messages.reduce((max, m) => Math.max(max, m.id), 0) + 1)
   const scrollRef = useRef<HTMLDivElement>(null)
   const abortRef = useRef<AbortController | null>(null)
 
   useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(messages))
+  }, [messages])
+
+  useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" })
   }, [messages, typing])
+
+  function clearChat() {
+    abortRef.current?.abort()
+    setMessages([])
+    localStorage.removeItem(STORAGE_KEY)
+    nextId.current = 1
+  }
 
   async function send(text: string) {
     const trimmed = text.trim()
@@ -94,8 +114,8 @@ export function AiPanel({ onClose }: { onClose: () => void }) {
 
   return (
     <Sheet open onOpenChange={(open) => !open && onClose()}>
-      <SheetContent side="right" className="flex w-full flex-col gap-0 border-border bg-card p-0 sm:max-w-md">
-        <SheetHeader className="border-b border-border px-5 py-4">
+      <SheetContent side="right" className="flex w-full flex-col gap-0 border-border bg-card p-0 data-[side=right]:sm:max-w-xl">
+        <SheetHeader className="relative border-b border-border px-5 py-4">
           <SheetTitle className="flex items-center gap-2 text-foreground">
             <span className="flex size-8 items-center justify-center rounded-full bg-primary/15">
               <Sparkles className="size-4 text-primary" aria-hidden="true" />
@@ -105,6 +125,16 @@ export function AiPanel({ onClose }: { onClose: () => void }) {
           <SheetDescription className="text-muted-foreground">
             Ask anything about India&apos;s trails, permits, gear, and seasons.
           </SheetDescription>
+          {messages.length > 0 && (
+            <button
+              type="button"
+              onClick={clearChat}
+              className="absolute bottom-4 right-12 flex items-center gap-1.5 rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-1.5 text-xs font-medium text-red-500 shadow-xs transition-all hover:bg-red-500/20 hover:text-red-400 active:scale-95"
+            >
+              <Trash2 className="size-3.5" aria-hidden="true" />
+              Clear
+            </button>
+          )}
         </SheetHeader>
 
         <div ref={scrollRef} className="flex-1 overflow-y-auto px-5 py-4">
@@ -144,10 +174,10 @@ export function AiPanel({ onClose }: { onClose: () => void }) {
                     className={
                       m.role === "user"
                         ? "max-w-[85%] rounded-2xl rounded-br-sm bg-primary px-4 py-2.5 text-sm leading-relaxed text-primary-foreground"
-                        : "max-w-[85%] rounded-2xl rounded-bl-sm bg-secondary px-4 py-2.5 text-sm leading-relaxed text-foreground"
+                        : "max-w-[85%] whitespace-pre-wrap rounded-2xl rounded-bl-sm bg-secondary px-4 py-2.5 text-sm leading-relaxed text-foreground"
                     }
                   >
-                    {m.text}
+                    {m.role === "assistant" ? m.text.replaceAll("*", "") : m.text}
                   </div>
                 </motion.li>
               ))}
