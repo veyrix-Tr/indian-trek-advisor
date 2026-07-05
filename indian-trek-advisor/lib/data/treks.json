@@ -4313,8 +4313,8 @@
   {
     "id": 315,
     "category": "panch_kedar",
-    "panchaKedarOrder": 4,
-    "name": "Kalpeshwar & Rudranath Yatra",
+    "panchaKedarOrder": 5,
+    "name": "Kalpeshwar Yatra",
     "baseCamp": "Helang",
     "district": "Chamoli",
     "country": "India",
@@ -4326,7 +4326,7 @@
     "distance": "58 km",
     "elevation": 3600,
     "elevationStr": "3,600m",
-    "description": "A rare spiritual trek connecting two of the Panch Kedars — Kalpeshwar and Rudranath — through remote Garhwal villages, lush meadows, and ancient dense forest. Rudranath at 3,600m is the most remote of the five Kedars and sees a fraction of Kedarnath's crowds. One of the most beautiful and overlooked treks in Chamoli district.",
+    "description": "The fifth and final Panch Kedar — Kalpeshwar, where Lord Shiva is worshipped as Jata (matted hair). Nestled in the Urgam Valley at 2,134m, it is the only Panch Kedar shrine accessible year-round. The approach through a natural cave passage and the ancient Kalpavriksha tree make this a uniquely serene pilgrimage destination. Often combined with Rudranath for a complete Panch Kedar circuit through remote Garhwal villages and lush meadows.",
     "overview": {
       "location": "This circuit links two of the Panch Kedars in Chamoli district, Uttarakhand: Kalpeshwar temple (2,134m) in the Urgam Valley — the only Panch Kedar shrine accessible year-round — and Rudranath temple (3,600m) in a high meadow above Gopeshwar. The connecting route traverses remote Garhwali village country through the Mandal Valley, following one of the least-walked sections of the entire Panch Kedar pilgrimage circuit.",
       "history": "The Panch Kedar circuit is one of Hinduism's most significant pilgrimage routes — the five temples mark the body parts of Shiva that dispersed when Vishnu (disguised as a bull) broke his divine form to prevent the Pandavas from receiving his blessing. At Kalpeshwar, Shiva's matted hair (jata) are enshrined; at Rudranath, his face (mukh). The circuit predates written history and is referenced in the Skanda Purana. Rudranath is the most remote and rarely visited of the five Kedars.",
@@ -4429,11 +4429,11 @@
         "desc": "5 km to Gopeshwar/Chamoli then 215 km to Rishikesh via Nandprayag, Rudraprayag, Devprayag."
       }
     ],
-    "coverImage": "https://imgs.search.brave.com/OVfhvnzIZHOC3qsZIbJOrisGxRB-d-v2TQxBevusyjA/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/dG91cm15aG9saWRh/eS5jb20vdXBsb2Fk/L2Jsb2dpbWFnZS9y/dWRyYW5hdGglMjB0/cmVrLndlYnA",
-    "coverImageThumbnail": "https://images.pexels.com/photos/10432965/pexels-photo-10432965.jpeg?auto=compress&cs=tinysrgb&h=350",
-    "coverImageCredit": "Photo by Vikas Bhandari on Pexels",
-    "coverImageCreditUrl": "https://www.pexels.com/photo/the-tungnath-temple-in-india-10432965/",
-    "coverImageFilename": "kalpeshwar-and-rudranath-yatra.jpg"
+    "coverImage": "https://imgs.search.brave.com/sKKT-Psl9X1EMfClZKeCLJUQ4S1G8k_7V7RzgRwlGSM/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9oaW1h/bGF5YW5kcmVhbXRy/ZWtzLmluL3dwLWNv/bnRlbnQvdXBsb2Fk/cy8yMDIzLzA4L0th/bHBlc2h3YXItVGVt/cGxlLTEuanBn",
+    "coverImageThumbnail": "https://imgs.search.brave.com/sKKT-Psl9X1EMfClZKeCLJUQ4S1G8k_7V7RzgRwlGSM/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9oaW1h/bGF5YW5kcmVhbXRy/ZWtzLmluL3dwLWNv/bnRlbnQvdXBsb2Fk/cy8yMDIzLzA4L0th/bHBlc2h3YXItVGVt/cGxlLTEuanBn",
+    "coverImageCredit": "Photo by Himlayan Dream Treks",
+    "coverImageCreditUrl": "https://himlayandreamtreks.in/",
+    "coverImageFilename": "kalpeshwar-yatra.jpg"
   },
   {
     "id": 316,
@@ -10131,10 +10131,10 @@
         "desc": "Descend 8.5-9 km from Lyuti back to Sagar via Mauli Kharak, Kalchant Bugyal, and Pung Bugyal (4-5 hrs). Drive 215 km from Sagar/Gopeshwar to Rishikesh via Chamoli, Nandprayag, Karnaprayag, Rudraprayag, and Devprayag."
       }
     ],
-    "coverImage": "https://images.pexels.com/photos/10432965/pexels-photo-10432965.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "coverImageThumbnail": "https://images.pexels.com/photos/10432965/pexels-photo-10432965.jpeg?auto=compress&cs=tinysrgb&h=350",
-    "coverImageCredit": "Photo by Vikas Bhandari on Pexels",
-    "coverImageCreditUrl": "https://www.pexels.com/photo/the-tungnath-temple-in-india-10432965/",
+    "coverImage": "https://imgs.search.brave.com/OVfhvnzIZHOC3qsZIbJOrisGxRB-d-v2TQxBevusyjA/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/dG91cm15aG9saWRh/eS5jb20vdXBsb2Fk/L2Jsb2dpbWFnZS9y/dWRyYW5hdGglMjB0/cmVrLndlYnA",
+    "coverImageThumbnail": "https://imgs.search.brave.com/OVfhvnzIZHOC3qsZIbJOrisGxRB-d-v2TQxBevusyjA/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/dG91cm15aG9saWRh/eS5jb20vdXBsb2Fk/L2Jsb2dpbWFnZS9y/dWRyYW5hdGglMjB0/cmVrLndlYnA",
+    "coverImageCredit": "Photo by Tourmyholiday",
+    "coverImageCreditUrl": "https://www.tourmyholiday.com/blog/panch-kedarnath-yatra/",
     "coverImageFilename": "rudranath-yatra.jpg"
   }
 ]

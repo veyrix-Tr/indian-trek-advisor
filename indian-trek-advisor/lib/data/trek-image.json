@@ -443,13 +443,16 @@
   },
   {
     "id": 44,
-    "name": "Kalpeshwar & Rudranath Yatra",
+    "name": "Kalpeshwar Yatra",
     "region": "Uttarakhand",
-    "slug": "kalpeshwar-and-rudranath-yatra",
-    "filename": "kalpeshwar-and-rudranath-yatra.jpg",
-    "searchQuery": "Rudranath temple Panch Kedar Uttarakhand",
-    "image": "https://picsum.photos/seed/kalpeshwar-and-rudranath-yatra/900/600",
-    "isPlaceholder": true
+    "slug": "kalpeshwar-yatra",
+    "filename": "kalpeshwar-yatra.jpg",
+    "searchQuery": "Kalpeshwar temple Panch Kedar Uttarakhand",
+    "image": "https://imgs.search.brave.com/sKKT-Psl9X1EMfClZKeCLJUQ4S1G8k_7V7RzgRwlGSM/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9oaW1h/bGF5YW5kcmVhbXRy/ZWtzLmluL3dwLWNv/bnRlbnQvdXBsb2Fk/cy8yMDIzLzA4L0th/bHBlc2h3YXItVGVt/cGxlLTEuanBn",
+    "isPlaceholder": false,
+    "imageThumbnail": "https://imgs.search.brave.com/sKKT-Psl9X1EMfClZKeCLJUQ4S1G8k_7V7RzgRwlGSM/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9oaW1h/bGF5YW5kcmVhbXRy/ZWtzLmluL3dwLWNv/bnRlbnQvdXBsb2Fk/cy8yMDIzLzA4L0th/bHBlc2h3YXItVGVt/cGxlLTEuanBn",
+    "imageCredit": "Photo by Himlayan Dream Treks",
+    "imageCreditUrl": "https://himlayandreamtreks.in/"
   },
   {
     "id": 45,
@@ -1114,7 +1117,10 @@
     "slug": "rudranath-yatra",
     "filename": "rudranath-yatra.jpg",
     "searchQuery": "Rudranath temple Panch Kedar Uttarakhand",
-    "image": "https://picsum.photos/seed/rudranath-yatra/900/600",
-    "isPlaceholder": true
+    "image": "https://imgs.search.brave.com/OVfhvnzIZHOC3qsZIbJOrisGxRB-d-v2TQxBevusyjA/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/dG91cm15aG9saWRh/eS5jb20vdXBsb2Fk/L2Jsb2dpbWFnZS9y/dWRyYW5hdGglMjB0/cmVrLndlYnA",
+    "isPlaceholder": false,
+    "imageThumbnail": "https://imgs.search.brave.com/OVfhvnzIZHOC3qsZIbJOrisGxRB-d-v2TQxBevusyjA/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/dG91cm15aG9saWRh/eS5jb20vdXBsb2Fk/L2Jsb2dpbWFnZS9y/dWRyYW5hdGglMjB0/cmVrLndlYnA",
+    "imageCredit": "Photo by Tourmyholiday",
+    "imageCreditUrl": "https://www.tourmyholiday.com/blog/panch-kedarnath-yatra/"
   }
 ]

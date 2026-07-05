@@ -554,16 +554,15 @@
   },
   {
     "id": 44,
-    "name": "Kalpeshwar & Rudranath Yatra",
+    "name": "Kalpeshwar Yatra",
     "region": "Uttarakhand",
-    "slug": "kalpeshwar-and-rudranath-yatra",
-    "filename": "kalpeshwar-and-rudranath-yatra.jpg",
-    "searchQuery": "Rudranath temple Panch Kedar Uttarakhand",
-    "image": "https://imgs.search.brave.com/EZ-lTl_3SyfgXJFrsL4-Hh8wAxZS0XACYbEvi8PKrlY/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/dG91cm15aG9saWRh/eS5jb20vdXBsb2Fk/L2Jsb2dpbWFnZS9S/dWRyYW5hdGgtVGVt/cGxlLVV0dGFyYWto/YW5kJTIwKDEpLmpw/Zw",
-    "isPlaceholder": false,
-    "imageThumbnail": "https://imgs.search.brave.com/EZ-lTl_3SyfgXJFrsL4-Hh8wAxZS0XACYbEvi8PKrlY/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/dG91cm15aG9saWRh/eS5jb20vdXBsb2Fk/L2Jsb2dpbWFnZS9S/dWRyYW5hdGgtVGVt/cGxlLVV0dGFyYWto/YW5kJTIwKDEpLmpw/Zw",
-    "imageCredit": "Photo by Tourmyholiday",
-    "eCreditUrl": "https://www.tourmyholiday.com/blog/panch-kedarnath-yatra/"
+    "slug": "kalpeshwar-yatra",
+    "filename": "kalpeshwar-yatra.jpg",
+    "searchQuery": "Kalpeshwar temple Panch Kedar Uttarakhand",
+    "image": "https://imgs.search.brave.com/sKKT-Psl9X1EMfClZKeCLJUQ4S1G8k_7V7RzgRwlGSM/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9oaW1h/bGF5YW5kcmVhbXRy/ZWtzLmluL3dwLWNv/bnRlbnQvdXBsb2Fk/cy8yMDIzLzA4L0th/bHBlc2h3YXItVGVt/cGxlLTEuanBn",
+    "imageThumbnail": "https://imgs.search.brave.com/sKKT-Psl9X1EMfClZKeCLJUQ4S1G8k_7V7RzgRwlGSM/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9oaW1h/bGF5YW5kcmVhbXRy/ZWtzLmluL3dwLWNv/bnRlbnQvdXBsb2Fk/cy8yMDIzLzA4L0th/bHBlc2h3YXItVGVt/cGxlLTEuanBn",
+    "imageCredit": "Photo by Himlayan Dream Treks",
+    "eCreditUrl": "https://himlayandreamtreks.in/"
   },
   {
     "id": 45,
@@ -1414,10 +1413,10 @@
     "slug": "rudranath-yatra",
     "filename": "rudranath-yatra.jpg",
     "searchQuery": "Rudranath temple Panch Kedar Uttarakhand",
-    "image": "https://images.pexels.com/photos/10432965/pexels-photo-10432965.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "image": "https://imgs.search.brave.com/OVfhvnzIZHOC3qsZIbJOrisGxRB-d-v2TQxBevusyjA/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/dG91cm15aG9saWRh/eS5jb20vdXBsb2Fk/L2Jsb2dpbWFnZS9y/dWRyYW5hdGglMjB0/cmVrLndlYnA",
     "isPlaceholder": false,
-    "imageThumbnail": "https://images.pexels.com/photos/10432965/pexels-photo-10432965.jpeg?auto=compress&cs=tinysrgb&h=350",
-    "imageCredit": "Photo by Vikas Bhandari on Pexels",
-    "imageCreditUrl": "https://www.pexels.com/photo/the-tungnath-temple-in-india-10432965/"
+    "imageThumbnail": "https://imgs.search.brave.com/OVfhvnzIZHOC3qsZIbJOrisGxRB-d-v2TQxBevusyjA/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/dG91cm15aG9saWRh/eS5jb20vdXBsb2Fk/L2Jsb2dpbWFnZS9y/dWRyYW5hdGglMjB0/cmVrLndlYnA",
+    "imageCredit": "Photo by Tourmyholiday",
+    "imageCreditUrl": "https://www.tourmyholiday.com/blog/panch-kedarnath-yatra/"
   }
 ]

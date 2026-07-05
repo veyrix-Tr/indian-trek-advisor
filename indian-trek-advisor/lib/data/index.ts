@@ -195,8 +195,10 @@ export const GEAR_TYPES = [
   { value: "backpack", label: "Backpacks" },
 ]
 
+export type Difficulty = Trek["difficulty"]
+
 export const DIFFICULTY_META: Record<
-  Trek["difficulty"],
+  Difficulty,
   { label: string; className: string }
 > = {
   easy: { label: "Easy", className: "text-difficulty-easy" },

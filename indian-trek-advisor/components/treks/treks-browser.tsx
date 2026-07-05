@@ -138,10 +138,14 @@ export function TreksBrowser() {
     | "kailash"
     | "panch-kedar"
   const query = searchParams.get("q") ?? ""
+  const activeDifficulties: Difficulty[] = (searchParams.get("difficulty") ?? "")
+    .split(",")
+    .filter((d): d is Difficulty => DIFFICULTIES.includes(d as Difficulty))
+  const minDays = Number(searchParams.get("minDays")) || 1
+  const maxDays = Number(searchParams.get("maxDays")) || MAX_DAYS
+  const daysRange: [number, number] = [Math.max(1, minDays), Math.min(MAX_DAYS, maxDays)]
 
   const [searchValue, setSearchValue] = useState(searchParams.get("q") ?? "")
-  const [activeDifficulties, setActiveDifficulties] = useState<Difficulty[]>([])
-  const [daysRange, setDaysRange] = useState<[number, number]>([1, MAX_DAYS])
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
 
   // Keep local search value in sync when URL changes (back/forward)
@@ -159,19 +163,38 @@ export function TreksBrowser() {
     [searchParams, router, pathname],
   )
 
-  const toggleDifficulty = useCallback((d: Difficulty) => {
-    setActiveDifficulties((prev) =>
-      prev.includes(d) ? prev.filter((x) => x !== d) : [...prev, d],
-    )
-  }, [])
+  const toggleDifficulty = useCallback(
+    (d: Difficulty) => {
+      const next = activeDifficulties.includes(d)
+        ? activeDifficulties.filter((x) => x !== d)
+        : [...activeDifficulties, d]
+      setParam("difficulty", next.length > 0 ? next.join(",") : null)
+    },
+    [activeDifficulties, setParam],
+  )
+
+  const setDaysRange = useCallback(
+    (range: [number, number]) => {
+      const params = new URLSearchParams(searchParams.toString())
+      if (range[0] > 1) params.set("minDays", String(range[0]))
+      else params.delete("minDays")
+      if (range[1] < MAX_DAYS) params.set("maxDays", String(range[1]))
+      else params.delete("maxDays")
+      router.replace(`${pathname}?${params.toString()}`, { scroll: false })
+    },
+    [searchParams, router, pathname],
+  )
 
   const hasActiveFilters =
     activeDifficulties.length > 0 || daysRange[0] !== 1 || daysRange[1] !== MAX_DAYS
 
   const reset = useCallback(() => {
-    setActiveDifficulties([])
-    setDaysRange([1, MAX_DAYS])
-  }, [])
+    const params = new URLSearchParams(searchParams.toString())
+    params.delete("difficulty")
+    params.delete("minDays")
+    params.delete("maxDays")
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false })
+  }, [searchParams, router, pathname])
 
   const sectionTreks = useMemo(() => {
     if (section === "kailash") return getKailashTreks()
