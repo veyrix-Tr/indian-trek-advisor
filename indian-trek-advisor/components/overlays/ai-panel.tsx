@@ -22,9 +22,6 @@ const QUICK_PROMPTS = [
   "Best season for Uttarakhand treks",
 ]
 
-const COMING_SOON_REPLY =
-  "I'm almost ready to hit the trail. The Trail Guide AI is being trained on all 110 trails — permits, itineraries, seasons, and solo safety notes. Check back soon, and until then, every answer you need is on the trail detail pages."
-
 interface Message {
   id: number
   role: "user" | "assistant"
@@ -37,31 +34,62 @@ export function AiPanel({ onClose }: { onClose: () => void }) {
   const [typing, setTyping] = useState(false)
   const nextId = useRef(1)
   const scrollRef = useRef<HTMLDivElement>(null)
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-
-  useEffect(() => {
-    return () => {
-      if (timerRef.current) clearTimeout(timerRef.current)
-    }
-  }, [])
+  const abortRef = useRef<AbortController | null>(null)
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" })
   }, [messages, typing])
 
-  function send(text: string) {
+  async function send(text: string) {
     const trimmed = text.trim()
     if (!trimmed || typing) return
-    setMessages((m) => [...m, { id: nextId.current++, role: "user", text: trimmed }])
+
+    abortRef.current?.abort()
+    abortRef.current = new AbortController()
+
+    const userMsg: Message = { id: nextId.current++, role: "user", text: trimmed }
+    const assistantMsg: Message = { id: nextId.current++, role: "assistant", text: "" }
+
+    setMessages((m) => [...m, userMsg, assistantMsg])
     setInput("")
     setTyping(true)
-    timerRef.current = setTimeout(() => {
+
+    try {
+      const res = await fetch("/api/ai", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: [...messages, userMsg].map((m) => ({ role: m.role, text: m.text })),
+        }),
+        signal: abortRef.current.signal,
+      })
+
+      if (!res.ok || !res.body) throw new Error("Request failed")
+
+      const reader = res.body.getReader()
+      const decoder = new TextDecoder()
+      let buffer = ""
+
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+        buffer += decoder.decode(value, { stream: true })
+        setMessages((m) =>
+          m.map((msg) => (msg.id === assistantMsg.id ? { ...msg, text: buffer } : msg)),
+        )
+      }
+    } catch (err: unknown) {
+      if (err instanceof DOMException && err.name === "AbortError") return
+      setMessages((m) =>
+        m.map((msg) =>
+          msg.id === assistantMsg.id
+            ? { ...msg, text: "Sorry, I couldn't reach the trail guide. Please try again." }
+            : msg,
+        ),
+      )
+    } finally {
       setTyping(false)
-      setMessages((m) => [
-        ...m,
-        { id: nextId.current++, role: "assistant", text: COMING_SOON_REPLY },
-      ])
-    }, 1400)
+    }
   }
 
   return (
@@ -105,7 +133,7 @@ export function AiPanel({ onClose }: { onClose: () => void }) {
 
           <ul className="space-y-3" aria-live="polite">
             <AnimatePresence initial={false}>
-              {messages.map((m) => (
+              {messages.filter((m) => m.text).map((m) => (
                 <motion.li
                   key={m.id}
                   initial={{ opacity: 0, y: 8 }}
