@@ -97,6 +97,21 @@ export default function ProfilePage() {
       setLoading(false)
     }
     load()
+
+    const interval = setInterval(async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) return
+      const { data: profileData } = await supabase.from("profiles").select("*").eq("id", user.id).single()
+      if (profileData) {
+        setProfile(profileData)
+        if (profileData.account_type === "guide") {
+          const { data: guideData } = await supabase.from("guides").select("*").eq("user_id", user.id).single()
+          if (guideData) setGuide(guideData)
+        }
+      }
+    }, 5000)
+
+    return () => clearInterval(interval)
   }, [supabase, router])
 
   async function handleSave() {

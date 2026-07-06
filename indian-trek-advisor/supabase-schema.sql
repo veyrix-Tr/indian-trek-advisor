@@ -105,3 +105,8 @@ create policy "Guides viewable by everyone"
 
 create policy "Users can update own guide"
   on public.guides for update using (auth.uid() = user_id);
+
+create policy "Admins can update any guide"
+  on public.guides for update using (
+    exists (select 1 from public.profiles where id = auth.uid() and account_type = 'admin')
+  );

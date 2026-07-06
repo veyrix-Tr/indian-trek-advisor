@@ -83,11 +83,28 @@ export default function AdminPage() {
       setLoading(false)
     }
     load()
+
+    const interval = setInterval(async () => {
+      const [profilesRes, guidesRes, trekkersRes] = await Promise.all([
+        supabase.from("profiles").select("*").order("created_at", { ascending: false }),
+        supabase.from("guides").select("*").order("created_at", { ascending: false }),
+        supabase.from("trekkers").select("*"),
+      ])
+      setAllProfiles(profilesRes.data || [])
+      setAllGuides(guidesRes.data || [])
+      setAllTrekkers(trekkersRes.data || [])
+    }, 5000)
+
+    return () => clearInterval(interval)
   }, [supabase, router])
 
   async function handleVerifyGuide(userId: string, verified: boolean) {
     setVerifying(userId)
-    await supabase.from("guides").update({ verified }).eq("user_id", userId)
+    await fetch("/api/admin/verify-guide", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId, verified }),
+    })
     setAllGuides((prev) =>
       prev.map((g) => (g.user_id === userId ? { ...g, verified } : g))
     )
