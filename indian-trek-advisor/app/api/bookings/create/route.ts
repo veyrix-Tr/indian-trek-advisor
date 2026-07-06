@@ -1,0 +1,61 @@
+import { NextResponse } from "next/server"
+import { createClient } from "@supabase/supabase-js"
+
+export async function POST(request: Request) {
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  )
+
+  const { data: { user }, error: authError } = await supabase.auth.getUser()
+  if (authError || !user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  }
+
+  const body = await request.json()
+  const { trek_id, guide_id, booking_date, notes } = body
+
+  // Check if guide is available on this date
+  const { data: availability, error: availError } = await supabase
+    .from("guide_availability")
+    .select("*")
+    .eq("guide_id", guide_id)
+    .eq("date", booking_date)
+    .single()
+
+  if (availability && availability.status !== 'available') {
+    return NextResponse.json({ error: "Guide not available on this date" }, { status: 400 })
+  }
+
+  // Create booking
+  const { data: booking, error: bookingError } = await supabase
+    .from("bookings")
+    .insert({
+      trek_id,
+      trekker_id: user.id,
+      guide_id,
+      booking_date,
+      status: 'pending',
+      payment_status: 'pending'
+    })
+    .select()
+    .single()
+
+  if (bookingError) {
+    return NextResponse.json({ error: bookingError.message }, { status: 500 })
+  }
+
+  // Mark date as booked
+  await supabase
+    .from("guide_availability")
+    .upsert({
+      guide_id,
+      date: booking_date,
+      status: 'booked',
+      booking_id: booking.id
+    })
+
+  // TODO: Send SMS notification to guide
+
+  return NextResponse.json({ booking })
+}
