@@ -1,9 +1,9 @@
 "use client"
 
-import Link from "next/link"
 import { motion } from "framer-motion"
 import { Clock, Route, TrendingUp } from "lucide-react"
 import { type Trek, getTrekSlug, DIFFICULTY_META } from "@/lib/data"
+import { AuthGatedLink } from "@/components/auth-gated-link"
 
 /**
  * Trek card art: gradient built from the trek's own colors with a grain layer
@@ -88,7 +88,7 @@ export function TrekCard({ trek, index = 0 }: { trek: Trek; index?: number }) {
       transition={{ duration: 0.55, delay: Math.min(index % 6, 5) * 0.06, ease: [0.22, 1, 0.36, 1] }}
       className="group"
     >
-      <Link
+      <AuthGatedLink
         href={`/treks/${slug}`}
         className="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/35 hover:shadow-[0_16px_44px_-16px_rgba(0,0,0,0.65)]"
       >
@@ -142,7 +142,7 @@ export function TrekCard({ trek, index = 0 }: { trek: Trek; index?: number }) {
             </div>
           </dl>
         </div>
-      </Link>
+      </AuthGatedLink>
     </motion.article>
   )
 }

@@ -1,8 +1,8 @@
 "use client"
 
-import Link from "next/link"
 import { motion } from "framer-motion"
 import { ArrowRight } from "lucide-react"
+import { AuthGatedLink } from "@/components/auth-gated-link"
 
 export function SectionHeading({
   eyebrow,
@@ -38,7 +38,7 @@ export function SectionHeading({
 
 export function BandLink({ href, label }: { href: string; label: string }) {
   return (
-    <Link
+    <AuthGatedLink
       href={href}
       className="group inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-6 py-3 font-mono text-xs uppercase tracking-widest text-primary transition-all hover:bg-primary hover:text-primary-foreground"
     >
@@ -47,6 +47,6 @@ export function BandLink({ href, label }: { href: string; label: string }) {
         className="size-4 transition-transform group-hover:translate-x-1"
         aria-hidden="true"
       />
-    </Link>
+    </AuthGatedLink>
   )
 }

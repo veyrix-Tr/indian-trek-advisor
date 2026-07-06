@@ -1,9 +1,12 @@
 import Link from "next/link"
+import { Suspense } from "react"
 import { Tent, ArrowRight } from "lucide-react"
 import { HeroSection } from "@/components/hero/hero-content"
 import { StatsStrip } from "@/components/stats-strip"
 import { TrekCard } from "@/components/trek-card"
 import { SectionHeading, BandLink } from "@/components/section-band"
+import { GearTeaserLink } from "@/components/gear-teaser-link"
+import { AuthRequiredHandler } from "@/components/auth-required-handler"
 import {
   getFeaturedTreks,
   getKailashTreks,
@@ -19,6 +22,9 @@ export default function HomePage() {
 
   return (
     <main>
+      <Suspense fallback={null}>
+        <AuthRequiredHandler />
+      </Suspense>
       <HeroSection />
 
       <StatsStrip
@@ -102,16 +108,7 @@ export default function HomePage() {
               </p>
             </div>
           </div>
-          <Link
-            href="/gear"
-            className="group inline-flex shrink-0 items-center gap-2 rounded-full bg-primary px-6 py-3 font-mono text-xs uppercase tracking-widest text-primary-foreground transition-transform hover:scale-105"
-          >
-            Browse Gear Shops
-            <ArrowRight
-              className="size-4 transition-transform group-hover:translate-x-1"
-              aria-hidden="true"
-            />
-          </Link>
+          <GearTeaserLink />
         </div>
       </section>
     </main>

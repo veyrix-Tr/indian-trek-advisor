@@ -1,8 +1,8 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import Link from "next/link"
 import { motion, useInView, useReducedMotion } from "framer-motion"
+import { AuthGatedLink } from "@/components/auth-gated-link"
 
 interface Stat {
   value: number
@@ -51,7 +51,7 @@ export function StatsStrip({ stats }: { stats: Stat[] }) {
             transition={{ duration: 0.5, delay: i * 0.08 }}
             className={i === stats.length - 1 ? "col-span-2 md:col-span-1" : ""}
           >
-            <Link
+            <AuthGatedLink
               href={stat.href}
               className="group flex flex-col items-center gap-1 border-border px-4 py-8 text-center transition-colors hover:bg-primary/5 md:border-l md:first:border-l-0"
             >
@@ -61,7 +61,7 @@ export function StatsStrip({ stats }: { stats: Stat[] }) {
               <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground transition-colors group-hover:text-foreground">
                 {stat.label}
               </span>
-            </Link>
+            </AuthGatedLink>
           </motion.div>
         ))}
       </div>

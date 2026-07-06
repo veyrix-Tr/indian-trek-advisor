@@ -10,6 +10,7 @@ import {
   DialogContent,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { useAuthGuard } from "@/hooks/use-auth-guard"
 
 function matchesQuery(trek: Trek, q: string) {
   const hay = `${trek.name} ${trek.state} ${trek.region ?? ""} ${trek.district ?? ""} ${trek.baseCamp ?? ""} ${trek.description}`.toLowerCase()
@@ -90,6 +91,7 @@ export function TrekSearch({
   trigger?: React.ReactElement
 }) {
   const router = useRouter()
+  const { requireAuth } = useAuthGuard()
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState("")
   const [selectedIndex, setSelectedIndex] = useState(0)
@@ -134,7 +136,9 @@ export function TrekSearch({
     function handleKeyDown(e: KeyboardEvent) {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault()
-        setOpen((o) => !o)
+        if (requireAuth()) {
+          setOpen((o) => !o)
+        }
       }
       if (e.key === "Escape") {
         setOpen(false)
@@ -142,7 +146,7 @@ export function TrekSearch({
     }
     document.addEventListener("keydown", handleKeyDown)
     return () => document.removeEventListener("keydown", handleKeyDown)
-  }, [])
+  }, [requireAuth])
 
   function handleKeyDown(e: React.KeyboardEvent) {
     if (e.key === "ArrowDown") {
@@ -167,8 +171,15 @@ export function TrekSearch({
     </button>
   )
 
+  function handleOpenChange(value: boolean) {
+    if (value && !requireAuth()) {
+      return
+    }
+    setOpen(value)
+  }
+
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger render={trigger ?? defaultTrigger} />
       <DialogContent
         showCloseButton={false}

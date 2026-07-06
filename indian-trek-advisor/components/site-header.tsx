@@ -17,6 +17,8 @@ import { useOverlays } from "@/components/overlays/overlay-provider"
 import { TrekSearch } from "@/components/trek-search"
 import { useUser } from "@/hooks/use-user"
 import { createClient } from "@/utils/supabase/client"
+import { AuthGatedLink } from "@/components/auth-gated-link"
+import { useAuthGuard } from "@/hooks/use-auth-guard"
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -29,6 +31,7 @@ const NAV_LINKS = [
 export function SiteHeader() {
   const { openAi, openAuth } = useOverlays()
   const { user, loading } = useUser()
+  const { requireAuth } = useAuthGuard()
   const router = useRouter()
   const [mobileOpen, setMobileOpen] = useState(false)
   const pathname = usePathname()
@@ -70,7 +73,7 @@ export function SiteHeader() {
           className="hidden items-center gap-1 lg:flex"
         >
           {NAV_LINKS.map((link) => (
-            <Link
+            <AuthGatedLink
               key={link.label}
               href={link.href}
               className={cn(
@@ -81,7 +84,7 @@ export function SiteHeader() {
               )}
             >
               {link.label}
-            </Link>
+            </AuthGatedLink>
           ))}
         </nav>
 
@@ -90,7 +93,11 @@ export function SiteHeader() {
           <Button
             variant="outline"
             size="sm"
-            onClick={openAi}
+            onClick={() => {
+              if (requireAuth()) {
+                openAi()
+              }
+            }}
             className="gap-1.5 border-primary/30 bg-primary/5 font-mono text-xs uppercase tracking-wider text-primary hover:bg-primary/15 hover:text-primary"
           >
             <Sparkles className="size-3.5" aria-hidden="true" />
@@ -144,7 +151,7 @@ export function SiteHeader() {
               className="flex flex-col gap-1 px-4"
             >
               {NAV_LINKS.map((link) => (
-                <Link
+                <AuthGatedLink
                   key={link.label}
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
@@ -156,7 +163,7 @@ export function SiteHeader() {
                   )}
                 >
                   {link.label}
-                </Link>
+                </AuthGatedLink>
               ))}
             </nav>
             <div className="mt-auto flex flex-col gap-2 px-4 pb-6">
@@ -164,7 +171,9 @@ export function SiteHeader() {
                 variant="outline"
                 onClick={() => {
                   setMobileOpen(false)
-                  openAi()
+                  if (requireAuth()) {
+                    openAi()
+                  }
                 }}
                 className="gap-1.5 border-primary/30 bg-primary/5 text-primary hover:bg-primary/15 hover:text-primary"
               >

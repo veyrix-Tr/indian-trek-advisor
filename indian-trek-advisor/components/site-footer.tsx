@@ -1,5 +1,7 @@
-import Link from "next/link"
+"use client"
+
 import { Mountain } from "lucide-react"
+import { AuthGatedLink } from "@/components/auth-gated-link"
 
 const FOOTER_LINKS = [
   {
@@ -27,7 +29,7 @@ export function SiteFooter() {
     <footer className="border-t border-border bg-card/50">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 md:grid-cols-[2fr_1fr_1fr] md:px-6">
         <div className="flex flex-col gap-4">
-          <Link
+          <AuthGatedLink
             href="/"
             className="flex items-center gap-2 text-lg font-bold tracking-tight"
           >
@@ -35,7 +37,7 @@ export function SiteFooter() {
             <span>
               Trek<span className="text-primary">Advisor</span>
             </span>
-          </Link>
+          </AuthGatedLink>
           <p className="max-w-sm text-pretty text-sm leading-relaxed text-muted-foreground">
             100 trails across India with real permit info, solo safety notes,
             and independent local guides. No large groups. No packaged tours.
@@ -50,12 +52,12 @@ export function SiteFooter() {
             <ul className="flex flex-col gap-2.5">
               {group.links.map((link) => (
                 <li key={link.label}>
-                  <Link
+                  <AuthGatedLink
                     href={link.href}
                     className="text-sm text-muted-foreground transition-colors hover:text-foreground"
                   >
                     {link.label}
-                  </Link>
+                  </AuthGatedLink>
                 </li>
               ))}
             </ul>

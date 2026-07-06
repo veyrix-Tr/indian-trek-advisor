@@ -6,6 +6,7 @@ import dynamic from "next/dynamic"
 import { motion, useReducedMotion } from "framer-motion"
 import { Search, MapPin, Compass, Users, ChevronDown } from "lucide-react"
 import { TrekSearch } from "@/components/trek-search"
+import { useAuthGuard } from "@/hooks/use-auth-guard"
 
 const Hero3D = dynamic(() => import("./hero-3d"), {
   ssr: false,
@@ -19,6 +20,7 @@ const HEADLINE_LINE_2 = ["Trek", "On", "Your", "Terms."]
 
 export function HeroSection() {
   const router = useRouter()
+  const { requireAuth } = useAuthGuard()
   const prefersReduced = useReducedMotion()
   const [mounted, setMounted] = useState(false)
 
@@ -128,17 +130,29 @@ export function HeroSection() {
           <PillButton
             icon={<MapPin className="size-3.5" aria-hidden="true" />}
             label="Find a Local Guide"
-            onClick={() => router.push("/guide/find")}
+            onClick={() => {
+              if (requireAuth()) {
+                router.push("/guide/find")
+              }
+            }}
           />
           <PillButton
             icon={<Compass className="size-3.5" aria-hidden="true" />}
             label="Why Trek Solo?"
-            onClick={() => router.push("/guide/solo")}
+            onClick={() => {
+              if (requireAuth()) {
+                router.push("/guide/solo")
+              }
+            }}
           />
           <PillButton
             icon={<Users className="size-3.5" aria-hidden="true" />}
             label="Trek With Your Crew"
-            onClick={() => router.push("/guide/group")}
+            onClick={() => {
+              if (requireAuth()) {
+                router.push("/guide/group")
+              }
+            }}
           />
         </motion.div>
       </div>
