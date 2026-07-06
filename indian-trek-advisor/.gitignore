@@ -16,3 +16,4 @@ node_modules
 .env
 
 trek_advisor*
+/lib/generated/prisma

@@ -1,6 +1,8 @@
 "use client"
 
 import { useState, useMemo, Fragment } from "react"
+import { useRouter } from "next/navigation"
+import { createClient } from "@/utils/supabase/client"
 import { Backpack, Compass, Mountain, ArrowLeft, Check } from "lucide-react"
 import {
   Dialog,
@@ -71,16 +73,23 @@ const KNOWN_TREKS = [
 
 export function AuthModal({ onClose }: { onClose: () => void }) {
   const { openComingSoon } = useOverlays()
+  const router = useRouter()
   const [tab, setTab] = useState<AuthTab>("join")
   const [step, setStep] = useState<AuthStep>(1)
   const [accountType, setAccountType] = useState<AccountType>("trekker")
   const [roleChosen, setRoleChosen] = useState(false)
   const [legalAccepted, setLegalAccepted] = useState(false)
+  const [loading, setLoading] = useState(false)
+
+  // Sign in fields
+  const [signInEmail, setSignInEmail] = useState("")
+  const [signInPassword, setSignInPassword] = useState("")
 
   // Step 1 fields
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
 
   // Step 2 fields (guide only)
   const [experience, setExperience] = useState("")
@@ -147,6 +156,10 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
       setError("Password must be at least 6 characters.")
       return false
     }
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.")
+      return false
+    }
     if (!legalAccepted) {
       setError("Please accept the Terms & Conditions to continue.")
       return false
@@ -190,26 +203,112 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
     handleSubmit("guide")
   }
 
-  function handleSubmit(type: AccountType) {
-    onClose()
-    openComingSoon({
-      title:
-        type === "trekker" ? "Create Trekker Account" : "Create Guide Account",
-      message:
-        type === "trekker"
-          ? "Trekker accounts are coming soon. You'll be able to save treks, write reviews, and book local guides directly."
-          : "Guide accounts open soon. We'll verify your experience and certifications, then list your profile so trekkers can find and book you.",
-    })
+  async function handleSubmit(type: AccountType) {
+    setError("")
+    setLoading(true)
+
+    try {
+      const supabase = createClient()
+
+      // Sign up with Supabase Auth
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            name,
+            account_type: type,
+          },
+        },
+      })
+
+      if (authError) {
+        setError(authError.message)
+        setLoading(false)
+        return
+      }
+
+      if (!authData.user) {
+        setError("Sign up failed.")
+        setLoading(false)
+        return
+      }
+
+      // Upload documents to Cloudinary if guide
+      if (type === "guide") {
+        if (idProofFile) {
+          const formData = new FormData()
+          formData.append("file", idProofFile)
+          formData.append("folder", "guide-documents")
+          formData.append("userId", authData.user.id)
+          const res = await fetch("/api/upload", { method: "POST", body: formData })
+          if (res.ok) {
+            const { url } = await res.json()
+            await supabase.from("guides").update({ id_proof_url: url }).eq("user_id", authData.user.id)
+          }
+        }
+
+        if (certFile) {
+          const formData = new FormData()
+          formData.append("file", certFile)
+          formData.append("folder", "guide-certificates")
+          formData.append("userId", authData.user.id)
+          const res = await fetch("/api/upload", { method: "POST", body: formData })
+          if (res.ok) {
+            const { url } = await res.json()
+            await supabase.from("guides").update({ cert_doc_url: url }).eq("user_id", authData.user.id)
+          }
+        }
+
+        // Update guide profile fields
+        const guideUpdates: Record<string, unknown> = {}
+        if (experience) guideUpdates.experience = experience
+        if (phone) guideUpdates.phone = phone
+        if (address) guideUpdates.base_location = address
+        if (certifications.length > 0) guideUpdates.certifications = certifications
+        if (knownTreks.length > 0) guideUpdates.known_treks = knownTreks
+
+        if (Object.keys(guideUpdates).length > 0) {
+          await supabase.from("guides").update(guideUpdates).eq("user_id", authData.user.id)
+        }
+      }
+
+      setLoading(false)
+      router.refresh()
+      onClose()
+    } catch (err) {
+      console.error("Sign-up error:", err)
+      setError("Something went wrong. Please try again.")
+      setLoading(false)
+    }
   }
 
-  function handleSignIn(e: React.FormEvent) {
+  async function handleSignIn(e: React.FormEvent) {
     e.preventDefault()
-    onClose()
-    openComingSoon({
-      title: "Sign In",
-      message:
-        "Accounts are almost ready. Soon you'll sign in to save treks, write reviews, and message guides directly.",
-    })
+    setError("")
+    setLoading(true)
+
+    try {
+      const supabase = createClient()
+      const { error } = await supabase.auth.signInWithPassword({
+        email: signInEmail,
+        password: signInPassword,
+      })
+
+      if (error) {
+        setError("Invalid email or password.")
+        setLoading(false)
+        return
+      }
+
+      setLoading(false)
+      router.refresh()
+      onClose()
+    } catch (err) {
+      console.error("Sign-in error:", err)
+      setError("Something went wrong. Please try again.")
+      setLoading(false)
+    }
   }
 
   const isGuide = accountType === "guide"
@@ -256,6 +355,8 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
                     type="email"
                     placeholder="you@example.com"
                     className="h-11"
+                    value={signInEmail}
+                    onChange={(e) => setSignInEmail(e.target.value)}
                     required
                   />
                 </div>
@@ -266,18 +367,21 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
                     type="password"
                     placeholder="Enter your password"
                     className="h-11"
+                    value={signInPassword}
+                    onChange={(e) => setSignInPassword(e.target.value)}
                     required
                   />
                 </div>
-                <Button type="submit" className="w-full rounded-full h-11">
-                  Sign In
+                {error && <p className="auth-error-msg">{error}</p>}
+                <Button type="submit" className="w-full rounded-full h-11" disabled={loading}>
+                  {loading ? "Signing in..." : "Sign In"}
                 </Button>
-                <p className="text-center text-xs text-muted-foreground">
+                <p className="text-center text-sm text-muted-foreground">
                   Don&apos;t have an account?{" "}
                   <button
                     type="button"
                     onClick={() => setTab("join")}
-                    className="text-primary underline hover:opacity-80"
+                    className="text-primary font-medium underline hover:opacity-80"
                   >
                     Join Free
                   </button>
@@ -318,6 +422,7 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
                           setRoleChosen(true)
                           setStep(1)
                           setError("")
+                          setConfirmPassword("")
                         }}
                         className="group flex-1 rounded-xl border-2 border-border bg-card p-6 text-left transition-all hover:border-primary/40 hover:bg-primary/5 cursor-pointer"
                       >
@@ -354,7 +459,7 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
                 <div className="px-8">
                   <button
                     type="button"
-                    onClick={() => { setRoleChosen(false); setError(""); setLegalAccepted(false) }}
+                    onClick={() => { setRoleChosen(false); setError(""); setLegalAccepted(false); setConfirmPassword("") }}
                     className="mb-4 flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
                   >
                     <ArrowLeft className="size-3" /> Change role
@@ -396,6 +501,19 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
                         required
                       />
                     </div>
+                    <div className="space-y-1.5">
+                      <Label htmlFor="join-confirm-password" className="text-xs">Confirm Password *</Label>
+                      <Input
+                        id="join-confirm-password"
+                        type="password"
+                        placeholder="Re-enter your password"
+                        className="h-11"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        minLength={6}
+                        required
+                      />
+                    </div>
                     {error && <p className="auth-error-msg mt-3">{error}</p>}
                     <div
                       className={`auth-legal-wrap mt-2 ${legalAccepted ? "checked" : ""}`}
@@ -420,8 +538,9 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
                       type="button"
                       className="mt-4 w-full rounded-full h-11"
                       onClick={handleStep1Next}
+                      disabled={loading}
                     >
-                      Create Trekker Account
+                      {loading ? "Creating account..." : "Create Trekker Account"}
                     </Button>
                   </div>
                 </div>
@@ -432,7 +551,7 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
                 <div className="px-8">
                   <button
                     type="button"
-                    onClick={() => { setRoleChosen(false); setError(""); setStep(1); setLegalAccepted(false) }}
+                    onClick={() => { setRoleChosen(false); setError(""); setStep(1); setLegalAccepted(false); setConfirmPassword("") }}
                     className="mb-4 flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
                   >
                     <ArrowLeft className="size-3" /> Change role
@@ -511,6 +630,19 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
                           required
                         />
                       </div>
+                      <div className="space-y-1.5">
+                        <Label htmlFor="join-confirm-password" className="text-xs">Confirm Password *</Label>
+                        <Input
+                          id="join-confirm-password"
+                          type="password"
+                          placeholder="Re-enter your password"
+                          className="h-10"
+                          value={confirmPassword}
+                          onChange={(e) => setConfirmPassword(e.target.value)}
+                          minLength={6}
+                          required
+                        />
+                      </div>
                       {error && <p className="auth-error-msg mt-2">{error}</p>}
                       <div
                         className={`auth-legal-wrap mt-2 ${legalAccepted ? "checked" : ""}`}
@@ -535,6 +667,7 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
                         type="button"
                         className="mt-3 w-full rounded-full h-10"
                         onClick={handleStep1Next}
+                        disabled={loading}
                       >
                         Next Step →
                       </Button>
@@ -705,8 +838,9 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
                           type="button"
                           className="flex-1 rounded-full h-10"
                           onClick={handleFinalSubmit}
+                          disabled={loading}
                         >
-                          Create Guide Account
+                          {loading ? "Creating account..." : "Create Guide Account"}
                         </Button>
                       </div>
                     </div>

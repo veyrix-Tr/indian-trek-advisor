@@ -2,8 +2,8 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { usePathname, useSearchParams } from "next/navigation"
-import { Mountain, Sparkles, Menu, UserRound } from "lucide-react"
+import { usePathname, useSearchParams, useRouter } from "next/navigation"
+import { Mountain, Sparkles, Menu, UserRound, LogOut } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/sheet"
 import { useOverlays } from "@/components/overlays/overlay-provider"
 import { TrekSearch } from "@/components/trek-search"
+import { useUser } from "@/hooks/use-user"
+import { createClient } from "@/utils/supabase/client"
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -26,9 +28,17 @@ const NAV_LINKS = [
 
 export function SiteHeader() {
   const { openAi, openAuth } = useOverlays()
+  const { user, loading } = useUser()
+  const router = useRouter()
   const [mobileOpen, setMobileOpen] = useState(false)
   const pathname = usePathname()
   const searchParams = useSearchParams()
+
+  async function handleSignOut() {
+    const supabase = createClient()
+    await supabase.auth.signOut()
+    router.refresh()
+  }
 
   function isActive(link: (typeof NAV_LINKS)[number]): boolean {
     if (link.href === "/") return pathname === "/"
@@ -86,10 +96,26 @@ export function SiteHeader() {
             <Sparkles className="size-3.5" aria-hidden="true" />
             Trail Guide AI
           </Button>
-          <Button size="sm" onClick={openAuth} className="gap-1.5">
-            <UserRound className="size-3.5" aria-hidden="true" />
-            Sign In / Join
-          </Button>
+          {!loading && user ? (
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-medium text-foreground max-w-[120px] truncate">
+                {user.user_metadata?.name || user.email}
+              </span>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={handleSignOut}
+                className="gap-1.5 text-muted-foreground hover:text-foreground"
+              >
+                <LogOut className="size-3.5" aria-hidden="true" />
+              </Button>
+            </div>
+          ) : (
+            <Button size="sm" onClick={openAuth} className="gap-1.5">
+              <UserRound className="size-3.5" aria-hidden="true" />
+              Sign In / Join
+            </Button>
+          )}
         </div>
 
         {/* Mobile menu */}
@@ -145,16 +171,35 @@ export function SiteHeader() {
                 <Sparkles className="size-4" aria-hidden="true" />
                 Trail Guide AI
               </Button>
-              <Button
-                onClick={() => {
-                  setMobileOpen(false)
-                  openAuth()
-                }}
-                className="gap-1.5"
-              >
-                <UserRound className="size-4" aria-hidden="true" />
-                Sign In / Join
-              </Button>
+              {!loading && user ? (
+                <div className="flex items-center justify-between rounded-lg border border-border px-3 py-2.5">
+                  <span className="text-sm font-medium text-foreground truncate max-w-[140px]">
+                    {user.user_metadata?.name || user.email}
+                  </span>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => {
+                      setMobileOpen(false)
+                      handleSignOut()
+                    }}
+                    className="size-8 text-muted-foreground hover:text-foreground"
+                  >
+                    <LogOut className="size-4" aria-hidden="true" />
+                  </Button>
+                </div>
+              ) : (
+                <Button
+                  onClick={() => {
+                    setMobileOpen(false)
+                    openAuth()
+                  }}
+                  className="gap-1.5"
+                >
+                  <UserRound className="size-4" aria-hidden="true" />
+                  Sign In / Join
+                </Button>
+              )}
             </div>
           </SheetContent>
         </Sheet>
