@@ -3,7 +3,7 @@
 import { useState, useMemo, Fragment } from "react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/utils/supabase/client"
-import { Backpack, Compass, Mountain, ArrowLeft, Check } from "lucide-react"
+import { Backpack, Compass, Mountain, ArrowLeft, Check, Eye, EyeOff } from "lucide-react"
 import {
   Dialog,
   DialogContent,
@@ -84,12 +84,15 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
   // Sign in fields
   const [signInEmail, setSignInEmail] = useState("")
   const [signInPassword, setSignInPassword] = useState("")
+  const [showSignInPassword, setShowSignInPassword] = useState(false)
 
   // Step 1 fields
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
   // Step 2 fields (guide only)
   const [experience, setExperience] = useState("")
@@ -173,8 +176,8 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
       setError("Please select your years of experience.")
       return false
     }
-    if (!phone.trim()) {
-      setError("Please enter your phone number.")
+    if (!phone.trim() || phone.trim().length < 10) {
+      setError("Please enter a valid phone number (min 10 digits).")
       return false
     }
     if (!address.trim()) {
@@ -210,41 +213,49 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
     try {
       const supabase = createClient()
 
-      // Sign up with Supabase Auth
-      const { data: authData, error: authError } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            name,
-            account_type: type,
-          },
-        },
+      // Sign up via server API (auto-confirms email)
+      const res = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password, name, account_type: type }),
       })
 
-      if (authError) {
-        setError(authError.message)
+      const json = await res.json()
+
+      if (!res.ok) {
+        setError(json.error || "Sign up failed.")
         setLoading(false)
         return
       }
 
-      if (!authData.user) {
-        setError("Sign up failed.")
+      const authDataUser = json.user
+
+      // Sign in automatically so they don't need to re-enter credentials
+      const { error: signInError } = await supabase.auth.signInWithPassword({ email, password })
+      if (signInError) {
+        setError("Account created but sign-in failed. Please sign in manually.")
         setLoading(false)
         return
       }
 
       // Upload documents to Cloudinary if guide
       if (type === "guide") {
+        // Wait for guides row to exist (avoids trigger race condition)
+        for (let i = 0; i < 10; i++) {
+          const { data: guideRow } = await supabase.from("guides").select("id").eq("user_id", authDataUser.id).maybeSingle()
+          if (guideRow) break
+          await new Promise((r) => setTimeout(r, 300))
+        }
+
         if (idProofFile) {
           const formData = new FormData()
           formData.append("file", idProofFile)
           formData.append("folder", "guide-documents")
-          formData.append("userId", authData.user.id)
+          formData.append("userId", authDataUser.id)
           const res = await fetch("/api/upload", { method: "POST", body: formData })
           if (res.ok) {
             const { url } = await res.json()
-            await supabase.from("guides").update({ id_proof_url: url }).eq("user_id", authData.user.id)
+            await supabase.from("guides").update({ id_proof_url: url }).eq("user_id", authDataUser.id)
           }
         }
 
@@ -252,11 +263,11 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
           const formData = new FormData()
           formData.append("file", certFile)
           formData.append("folder", "guide-certificates")
-          formData.append("userId", authData.user.id)
+          formData.append("userId", authDataUser.id)
           const res = await fetch("/api/upload", { method: "POST", body: formData })
           if (res.ok) {
             const { url } = await res.json()
-            await supabase.from("guides").update({ cert_doc_url: url }).eq("user_id", authData.user.id)
+            await supabase.from("guides").update({ cert_doc_url: url }).eq("user_id", authDataUser.id)
           }
         }
 
@@ -269,7 +280,12 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
         if (knownTreks.length > 0) guideUpdates.known_treks = knownTreks
 
         if (Object.keys(guideUpdates).length > 0) {
-          await supabase.from("guides").update(guideUpdates).eq("user_id", authData.user.id)
+          await supabase.from("guides").update(guideUpdates).eq("user_id", authDataUser.id)
+        }
+
+        // Sync phone to profiles table
+        if (phone) {
+          await supabase.from("profiles").update({ phone }).eq("id", authDataUser.id)
         }
       }
 
@@ -317,13 +333,13 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
   return (
     <>
       <Dialog open onOpenChange={(open) => !open && onClose()}>
-        <DialogContent className={`auth-modal-dialog border-border bg-card p-0 max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl w-[95vw] flex ${showTerms ? "sm:max-w-4xl" : "sm:max-w-xl"} transition-all`}>
-          {/* ── LEFT: SIGN UP FORM ── */}
-          <div className={`${showTerms ? "w-1/2" : "w-full"} transition-all`}>
+        <DialogContent className={`auth-modal-dialog border-border bg-card p-0 max-h-[85vh] overflow-y-auto rounded-2xl shadow-2xl w-[95vw] flex ${showTerms ? "sm:max-w-3xl" : "sm:max-w-xl"} transition-all`}>
+          {/* ── SIGN UP / SIGN IN FORM ── */}
+          <div className={`${showTerms ? "hidden sm:block sm:w-1/2" : "w-full"} w-full transition-all`}>
             <DialogHeader className="px-8 pt-8 pb-0">
               <DialogTitle className="flex items-center gap-2.5 text-xl text-foreground">
                 <Mountain className="size-6 text-primary" aria-hidden="true" />
-                Welcome to TrekAdvisor
+                Welcome to Indian Trek Advisor
               </DialogTitle>
               <DialogDescription className="text-sm text-muted-foreground">
                 One account for saving treks, reviews, and booking local guides.
@@ -362,15 +378,25 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="signin-password">Password</Label>
-                  <Input
-                    id="signin-password"
-                    type="password"
-                    placeholder="Enter your password"
-                    className="h-11"
-                    value={signInPassword}
-                    onChange={(e) => setSignInPassword(e.target.value)}
-                    required
-                  />
+                  <div className="relative">
+                    <Input
+                      id="signin-password"
+                      type={showSignInPassword ? "text" : "password"}
+                      placeholder="Enter your password"
+                      className="h-11 pr-10"
+                      value={signInPassword}
+                      onChange={(e) => setSignInPassword(e.target.value)}
+                      required
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowSignInPassword(!showSignInPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                      tabIndex={-1}
+                    >
+                      {showSignInPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                    </button>
+                  </div>
                 </div>
                 {error && <p className="auth-error-msg">{error}</p>}
                 <Button type="submit" className="w-full rounded-full h-11" disabled={loading}>
@@ -395,7 +421,7 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
               {!roleChosen && (
                 <div className="px-8">
                   <p className="mb-5 text-center text-sm text-muted-foreground">
-                    How would you like to use TrekAdvisor?
+                    How would you like to use Indian Trek Advisor?
                   </p>
                   <div className="flex gap-4">
                     {(
@@ -490,29 +516,49 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
                     </div>
                     <div className="space-y-1.5">
                       <Label htmlFor="join-password" className="text-xs">Password *</Label>
-                      <Input
-                        id="join-password"
-                        type="password"
-                        placeholder="Min 6 characters"
-                        className="h-11"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        minLength={6}
-                        required
-                      />
+                      <div className="relative">
+                        <Input
+                          id="join-password"
+                          type={showPassword ? "text" : "password"}
+                          placeholder="Min 6 characters"
+                          className="h-11 pr-10"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          minLength={6}
+                          required
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                          tabIndex={-1}
+                        >
+                          {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                        </button>
+                      </div>
                     </div>
                     <div className="space-y-1.5">
                       <Label htmlFor="join-confirm-password" className="text-xs">Confirm Password *</Label>
-                      <Input
-                        id="join-confirm-password"
-                        type="password"
-                        placeholder="Re-enter your password"
-                        className="h-11"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        minLength={6}
-                        required
-                      />
+                      <div className="relative">
+                        <Input
+                          id="join-confirm-password"
+                          type={showConfirmPassword ? "text" : "password"}
+                          placeholder="Re-enter your password"
+                          className="h-11 pr-10"
+                          value={confirmPassword}
+                          onChange={(e) => setConfirmPassword(e.target.value)}
+                          minLength={6}
+                          required
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                          tabIndex={-1}
+                        >
+                          {showConfirmPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                        </button>
+                      </div>
                     </div>
                     {error && <p className="auth-error-msg mt-3">{error}</p>}
                     <div
@@ -619,29 +665,49 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
                       </div>
                       <div className="space-y-1.5">
                         <Label htmlFor="join-password" className="text-xs">Password *</Label>
-                        <Input
-                          id="join-password"
-                          type="password"
-                          placeholder="Min 6 characters"
-                          className="h-10"
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          minLength={6}
-                          required
-                        />
+                        <div className="relative">
+                          <Input
+                            id="join-password"
+                            type={showPassword ? "text" : "password"}
+                            placeholder="Min 6 characters"
+                            className="h-10 pr-10"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            minLength={6}
+                            required
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                            tabIndex={-1}
+                          >
+                            {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                          </button>
+                        </div>
                       </div>
                       <div className="space-y-1.5">
                         <Label htmlFor="join-confirm-password" className="text-xs">Confirm Password *</Label>
-                        <Input
-                          id="join-confirm-password"
-                          type="password"
-                          placeholder="Re-enter your password"
-                          className="h-10"
-                          value={confirmPassword}
-                          onChange={(e) => setConfirmPassword(e.target.value)}
-                          minLength={6}
-                          required
-                        />
+                        <div className="relative">
+                          <Input
+                            id="join-confirm-password"
+                            type={showConfirmPassword ? "text" : "password"}
+                            placeholder="Re-enter your password"
+                            className="h-10 pr-10"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            minLength={6}
+                            required
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                            tabIndex={-1}
+                          >
+                            {showConfirmPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                          </button>
+                        </div>
                       </div>
                       {error && <p className="auth-error-msg mt-2">{error}</p>}
                       <div
@@ -851,10 +917,65 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
           </Tabs>
           </div>
 
-          {/* ── RIGHT: TERMS & CONDITIONS PANEL ── */}
+          {/* ── MOBILE TERMS (replaces form on small screens) ── */}
           {showTerms && (
-            <div className="w-1/2 border-l border-border overflow-y-auto animate-slide-in-right">
-              <div className="flex items-center justify-between border-b border-border px-6 py-4 sticky top-0 bg-card z-10">
+            <div className="sm:hidden w-full animate-slide-in-right">
+              <div className="flex items-center justify-between border-b border-border px-4 py-3">
+                <h3 className="flex items-center gap-2 text-sm font-semibold text-foreground">
+                  <span className="text-lg">⚖️</span>
+                  Terms &amp; Conditions
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => setShowTerms(false)}
+                  className="mr-8 rounded-full border border-border bg-muted px-3 py-1 text-xs font-medium text-foreground hover:bg-muted/80 transition-colors"
+                >
+                  ← Back
+                </button>
+              </div>
+              <div className="space-y-4 px-4 py-4 text-sm leading-relaxed text-muted-foreground">
+                <section>
+                  <h4 className="mb-1 font-mono text-[11px] font-semibold uppercase tracking-wider text-primary">1. Nature of the Platform</h4>
+                  <p>Indian Trek Advisor is an information and community listing service only. We are not a travel agency, tour operator, trekking company, or adventure sports organiser.</p>
+                  <p className="mt-2">All guides and service providers listed are independent third parties.</p>
+                </section>
+                <section>
+                  <h4 className="mb-1 font-mono text-[11px] font-semibold uppercase tracking-wider text-primary">2. Assumption of Risk</h4>
+                  <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-3 text-xs leading-relaxed">
+                    <strong className="text-destructive">⚠ CRITICAL:</strong> Trekking involves serious, inherent risks including death, altitude sickness, hypothermia, avalanche, rockfall, flash floods, and getting lost.
+                  </div>
+                </section>
+                <section>
+                  <h4 className="mb-1 font-mono text-[11px] font-semibold uppercase tracking-wider text-primary">3. Limitation of Liability</h4>
+                  <p>To the maximum extent permitted by law, Indian Trek Advisor shall not be liable for any death, personal injury, property loss, or financial loss arising from use of this Platform.</p>
+                </section>
+                <section>
+                  <h4 className="mb-1 font-mono text-[11px] font-semibold uppercase tracking-wider text-primary">4. Guide &amp; Operator Liability</h4>
+                  <p>Guides are independent contractors. Verify credentials independently and obtain comprehensive travel insurance.</p>
+                </section>
+                <section>
+                  <h4 className="mb-1 font-mono text-[11px] font-semibold uppercase tracking-wider text-primary">5. Trail &amp; Permit Information</h4>
+                  <p>Trail data is for general guidance only. Verify all permit requirements before any trek.</p>
+                </section>
+                <section>
+                  <h4 className="mb-1 font-mono text-[11px] font-semibold uppercase tracking-wider text-primary">6. Indemnification</h4>
+                  <p>You agree to indemnify and hold harmless Indian Trek Advisor from any claims arising from your use of the Platform.</p>
+                </section>
+                <section>
+                  <h4 className="mb-1 font-mono text-[11px] font-semibold uppercase tracking-wider text-primary">7. Guide Responsibilities</h4>
+                  <p>Local Guides warrant that all information is accurate, certifications are valid, and adequate insurance is carried.</p>
+                </section>
+                <div className="rounded-lg border border-primary/20 bg-primary/5 p-3 text-xs leading-relaxed text-primary">
+                  <strong>This platform is an information service only. Not a tour operator.</strong>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ── DESKTOP SIDE PANEL: TERMS & CONDITIONS ── */}
+          {showTerms && (
+            <div className="hidden sm:block sm:w-1/2 border-l border-border animate-slide-in-right">
+              <div className="flex items-center justify-between border-b border-border px-6 py-4">
                 <h3 className="flex items-center gap-2 text-base font-semibold text-foreground">
                   <span className="text-lg">⚖️</span>
                   Terms &amp; Conditions
@@ -862,7 +983,7 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
                 <button
                   type="button"
                   onClick={() => setShowTerms(false)}
-                  className="rounded-full border border-border bg-muted px-3 py-1 text-xs font-medium text-foreground hover:bg-muted/80 transition-colors"
+                  className="mr-10 rounded-full border border-border bg-muted px-3 py-1 text-xs font-medium text-foreground hover:bg-muted/80 transition-colors"
                 >
                   ← Back
                 </button>

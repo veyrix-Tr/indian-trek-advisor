@@ -1,9 +1,9 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import Link from "next/link"
 import { usePathname, useSearchParams, useRouter } from "next/navigation"
-import { Mountain, Sparkles, Menu, UserRound, LogOut } from "lucide-react"
+import { Mountain, Sparkles, Menu, UserRound, LogOut, ChevronDown, User } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -34,8 +34,20 @@ export function SiteHeader() {
   const { requireAuth } = useAuthGuard()
   const router = useRouter()
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [profileOpen, setProfileOpen] = useState(false)
+  const profileRef = useRef<HTMLDivElement>(null)
   const pathname = usePathname()
   const searchParams = useSearchParams()
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (profileRef.current && !profileRef.current.contains(e.target as Node)) {
+        setProfileOpen(false)
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [])
 
   async function handleSignOut() {
     const supabase = createClient()
@@ -64,7 +76,7 @@ export function SiteHeader() {
         >
           <Mountain className="size-5 text-primary" aria-hidden="true" />
           <span>
-            Trek<span className="text-primary">Advisor</span>
+            Indian Trek <span className="text-primary">Advisor</span>
           </span>
         </Link>
 
@@ -103,26 +115,66 @@ export function SiteHeader() {
             <Sparkles className="size-3.5" aria-hidden="true" />
             Trail Guide AI
           </Button>
-          {!loading && user ? (
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-medium text-foreground max-w-[120px] truncate">
-                {user.user_metadata?.name || user.email}
-              </span>
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={handleSignOut}
-                className="gap-1.5 text-muted-foreground hover:text-foreground"
-              >
-                <LogOut className="size-3.5" aria-hidden="true" />
+          <div className="ml-2 flex items-center">
+            {!loading && user ? (
+              <div className="relative" ref={profileRef}>
+                <button
+                  onClick={() => setProfileOpen(!profileOpen)}
+                  className="group flex items-center gap-1.5 rounded-full bg-white/5 p-1 pr-2.5 transition-colors hover:bg-white/15"
+                >
+                  <span className="flex size-8 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-amber-600 text-sm font-bold text-white shadow-sm ring-1 ring-white/20">
+                    {(user.user_metadata?.name || user.email).charAt(0).toUpperCase()}
+                  </span>
+                  <ChevronDown className={`size-3 text-white/60 transition-all duration-200 group-hover:text-white/90 ${profileOpen ? "rotate-180" : ""}`} />
+                </button>
+                {profileOpen && (
+                  <>
+                    <div className="fixed inset-0 z-40" onClick={() => setProfileOpen(false)} />
+                    <div className="absolute right-0 top-full z-50 mt-2 w-64 origin-top-right overflow-hidden rounded-2xl border border-white/15 bg-neutral-900 shadow-2xl shadow-black/50 backdrop-blur-2xl">
+                      <div className="bg-gradient-to-br from-amber-500/10 to-transparent px-4 pb-3 pt-4">
+                        <div className="flex items-center gap-3">
+                          <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-amber-600 text-sm font-bold text-white shadow-sm ring-1 ring-white/20">
+                            {(user.user_metadata?.name || user.email).charAt(0).toUpperCase()}
+                          </span>
+                          <div className="min-w-0">
+                            <p className="truncate text-sm font-semibold text-white">
+                              {user.user_metadata?.name || "User"}
+                            </p>
+                            <p className="truncate text-xs text-white/50">
+                              {user.email}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    <div className="border-t border-white/10" />
+                    <div className="p-1.5">
+                      <Link
+                        href="/profile"
+                        onClick={() => setProfileOpen(false)}
+                        className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-white/60 transition-colors hover:bg-white/10 hover:text-white"
+                      >
+                        <User className="size-4" />
+                        Profile
+                      </Link>
+                      <button
+                        onClick={handleSignOut}
+                        className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-white/60 transition-colors hover:bg-red-500/15 hover:text-red-400"
+                      >
+                        <LogOut className="size-4" />
+                        Sign Out
+                      </button>
+                    </div>
+                    </div>
+                  </>
+                )}
+              </div>
+            ) : (
+              <Button size="sm" onClick={openAuth} className="gap-1.5">
+                <UserRound className="size-3.5" aria-hidden="true" />
+                Sign In / Join
               </Button>
-            </div>
-          ) : (
-            <Button size="sm" onClick={openAuth} className="gap-1.5">
-              <UserRound className="size-3.5" aria-hidden="true" />
-              Sign In / Join
-            </Button>
-          )}
+            )}
+          </div>
         </div>
 
         {/* Mobile menu */}
@@ -143,7 +195,7 @@ export function SiteHeader() {
             <SheetHeader>
               <SheetTitle className="flex items-center gap-2">
                 <Mountain className="size-5 text-primary" aria-hidden="true" />
-                TrekAdvisor
+                Indian Trek Advisor
               </SheetTitle>
             </SheetHeader>
             <nav

@@ -34,7 +34,8 @@ export async function POST(req: NextRequest) {
     const buffer = Buffer.from(bytes)
 
     const uploadFolder = folder || "guide-documents"
-    const publicId = `${userId || "anon"}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.-]/g, "_")}`
+    const cleanName = file.name.replace(/[^a-zA-Z0-9.-]/g, "_").replace(/\.[^.]+$/, "")
+    const publicId = `${userId || "anon"}/${Date.now()}-${cleanName}`
 
     const result = await new Promise<{ secure_url: string }>((resolve, reject) => {
       const uploadStream = cloudinary.uploader.upload_stream(

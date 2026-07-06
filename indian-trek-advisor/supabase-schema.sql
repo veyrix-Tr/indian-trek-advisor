@@ -11,6 +11,9 @@ create table public.profiles (
   email text not null,
   account_type text not null check (account_type in ('trekker', 'guide')),
   image text,
+  city text,
+  phone text,
+  bio text,
   created_at timestamptz default now(),
   updated_at timestamptz default now()
 );
