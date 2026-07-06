@@ -35,6 +35,7 @@ export async function POST(request: Request) {
       trekker_id: user.id,
       guide_id,
       booking_date,
+      notes,
       status: 'pending',
       payment_status: 'pending'
     })
@@ -55,7 +56,22 @@ export async function POST(request: Request) {
       booking_id: booking.id
     })
 
-  // TODO: Send SMS notification to guide
+  // Send SMS notification to guide
+  const { data: guideData } = await supabase
+    .from("guides")
+    .select("*, profiles(*)")
+    .eq("id", guide_id)
+    .single()
+
+  if (guideData?.profiles?.phone) {
+    const { sendBookingRequestSMS } = await import("@/lib/sms/brevo")
+    await sendBookingRequestSMS(
+      guideData.profiles.phone,
+      user.user_metadata?.name || 'Trekker',
+      trek_id,
+      booking_date
+    )
+  }
 
   return NextResponse.json({ booking })
 }

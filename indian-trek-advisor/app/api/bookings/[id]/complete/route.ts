@@ -16,9 +16,6 @@ export async function POST(
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  const body = await request.json()
-  const { reason } = body
-
   // Verify user is guide or admin
   const { data: booking } = await supabase
     .from("bookings")
@@ -36,15 +33,22 @@ export async function POST(
     .eq("id", user.id)
     .single()
 
-  const canCancel = booking.guide_id === user.id || profile?.account_type === 'admin'
-  if (!canCancel) {
+  const canComplete = booking.guide_id === user.id || profile?.account_type === 'admin'
+  if (!canComplete) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 })
+  }
+
+  if (booking.status !== 'confirmed') {
+    return NextResponse.json({ error: "Booking must be confirmed to complete" }, { status: 400 })
   }
 
   // Update booking status
   const { data: updated, error } = await supabase
     .from("bookings")
-    .update({ status: 'cancelled' })
+    .update({
+      status: 'completed',
+      trek_completion_date: new Date().toISOString().split('T')[0]
+    })
     .eq("id", id)
     .select()
     .single()
@@ -53,31 +57,26 @@ export async function POST(
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 
-  // Free up the date
-  await supabase
-    .from("guide_availability")
-    .update({ status: 'available', booking_id: null })
-    .eq("booking_id", id)
-
-  // Send SMS notifications
-  const { data: guideProfile } = await supabase
-    .from("profiles")
-    .select("phone")
-    .eq("id", booking.guide_id)
-    .single()
-
+  // Send SMS to trekker for rating
   const { data: trekkerProfile } = await supabase
     .from("profiles")
     .select("phone")
     .eq("id", booking.trekker_id)
     .single()
 
-  if (guideProfile?.phone && trekkerProfile?.phone) {
-    const { sendCancellationSMS } = await import("@/lib/sms/brevo")
-    await sendCancellationSMS(
-      guideProfile.phone,
+  if (trekkerProfile?.phone) {
+    // Get guide name for SMS
+    const { data: guideProfile } = await supabase
+      .from("profiles")
+      .select("name")
+      .eq("id", booking.guide_id)
+      .single()
+
+    const { sendRatingRequestSMS } = await import("@/lib/sms/brevo")
+    await sendRatingRequestSMS(
       trekkerProfile.phone,
-      reason || 'Booking cancelled'
+      guideProfile?.name || 'Guide',
+      booking.trek_id
     )
   }
 

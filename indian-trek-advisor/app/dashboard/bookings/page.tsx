@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Calendar, Clock, CheckCircle, XCircle, Star } from "lucide-react"
+import { RatingModal } from "@/components/rating-modal"
 
 interface Booking {
   id: string
@@ -26,6 +27,8 @@ interface Booking {
 export default function BookingsPage() {
   const [bookings, setBookings] = useState<Booking[]>([])
   const [loading, setLoading] = useState(true)
+  const [ratingModalOpen, setRatingModalOpen] = useState(false)
+  const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null)
 
   useEffect(() => {
     fetchBookings()
@@ -71,6 +74,57 @@ export default function BookingsPage() {
       }
     } catch (error) {
       console.error("Error confirming payment:", error)
+    }
+  }
+
+  const handleRateGuide = (booking: Booking) => {
+    setSelectedBooking(booking)
+    setRatingModalOpen(true)
+  }
+
+  const submitRating = async (rating: number, review: string) => {
+    if (!selectedBooking) return
+
+    try {
+      const response = await fetch("/api/trekker/rate-guide", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          booking_id: selectedBooking.id,
+          rating,
+          review
+        })
+      })
+
+      if (response.ok) {
+        fetchBookings()
+        alert("Rating submitted successfully!")
+      }
+    } catch (error) {
+      console.error("Error submitting rating:", error)
+    }
+  }
+
+  const handleCancelBooking = async (bookingId: string) => {
+    const reason = prompt("Enter cancellation reason:")
+    if (!reason) return
+
+    try {
+      const response = await fetch(`/api/bookings/${bookingId}/cancel`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reason })
+      })
+
+      if (response.ok) {
+        fetchBookings()
+        alert("Booking cancelled")
+      } else {
+        const data = await response.json()
+        alert(data.error || "Error cancelling booking")
+      }
+    } catch (error) {
+      console.error("Error cancelling booking:", error)
     }
   }
 
@@ -136,18 +190,36 @@ export default function BookingsPage() {
                   <Button
                     variant="outline"
                     className="mt-4"
-                    onClick={() => {
-                      alert("Rating feature coming soon!")
-                    }}
+                    onClick={() => handleRateGuide(booking)}
                   >
                     <Star className="size-4 mr-2" />
                     Rate Guide
+                  </Button>
+                )}
+
+                {booking.status !== 'completed' && booking.status !== 'cancelled' && (
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    className="mt-4"
+                    onClick={() => handleCancelBooking(booking.id)}
+                  >
+                    Cancel Booking
                   </Button>
                 )}
               </CardContent>
             </Card>
           ))}
         </div>
+      )}
+
+      {selectedBooking && (
+        <RatingModal
+          isOpen={ratingModalOpen}
+          onClose={() => setRatingModalOpen(false)}
+          onSubmit={submitRating}
+          guideName={selectedBooking.guides?.profiles?.name || 'Guide'}
+        />
       )}
     </div>
   )

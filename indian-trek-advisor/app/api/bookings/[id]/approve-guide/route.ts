@@ -3,8 +3,9 @@ import { createClient } from "@supabase/supabase-js"
 
 export async function POST(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!
@@ -19,7 +20,7 @@ export async function POST(
   const { data: booking } = await supabase
     .from("bookings")
     .select("*")
-    .eq("id", params.id)
+    .eq("id", id)
     .single()
 
   if (!booking || booking.guide_id !== user.id) {
@@ -30,7 +31,7 @@ export async function POST(
   const { data: updated, error } = await supabase
     .from("bookings")
     .update({ status: 'guide_approved' })
-    .eq("id", params.id)
+    .eq("id", id)
     .select()
     .single()
 
@@ -38,7 +39,30 @@ export async function POST(
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 
-  // TODO: Send SMS to admin
+  // Send SMS to admin
+  const { data: adminProfile } = await supabase
+    .from("profiles")
+    .select("phone")
+    .eq("account_type", "admin")
+    .limit(1)
+    .single()
+
+  if (adminProfile?.phone) {
+    // Get trekker name for SMS
+    const { data: trekkerProfile } = await supabase
+      .from("profiles")
+      .select("name")
+      .eq("id", booking.trekker_id)
+      .single()
+
+    const { sendGuideApprovalSMS } = await import("@/lib/sms/brevo")
+    await sendGuideApprovalSMS(
+      adminProfile.phone,
+      user.user_metadata?.name || 'Guide',
+      trekkerProfile?.name || 'Trekker',
+      booking.trek_id
+    )
+  }
 
   return NextResponse.json({ booking: updated })
 }
