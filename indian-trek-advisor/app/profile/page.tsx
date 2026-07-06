@@ -124,122 +124,158 @@ export default function ProfilePage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="size-6 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <Loader2 className="size-6 animate-spin text-primary" />
       </div>
     )
   }
 
+  const accountType = profile?.account_type || ""
+  const isGuide = !!guide
+
   return (
-    <main className="mx-auto max-w-4xl px-4 pb-16 pt-20 sm:px-6">
-      <div className="flex items-start gap-4 sm:gap-6">
-        <button
-          onClick={() => router.back()}
-          className="mt-1 flex size-10 shrink-0 items-center justify-center rounded-xl border border-border bg-card text-foreground/60 shadow-sm transition-colors hover:bg-accent hover:text-foreground"
-          aria-label="Go back"
-        >
-          <ArrowLeft className="size-4" />
-        </button>
+    <main className="min-h-screen bg-background">
+      {/* Ambient top glow, echoes the landing page hero */}
+      <div className="pointer-events-none fixed inset-x-0 top-0 h-72 bg-gradient-to-b from-primary/10 via-primary/[0.03] to-transparent" />
 
-        <div className="min-w-0 flex-1 space-y-5">
-          {/* ── PROFILE CARD ── */}
-          <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
-            <div className="h-24 bg-gradient-to-r from-primary/25 via-primary/10 to-transparent sm:h-28" />
+      <div className="relative mx-auto max-w-4xl px-4 pb-20 pt-24 sm:px-6 sm:pt-20">
+        {/* Top bar */}
+        <div className="mb-8 flex items-center justify-between">
+          <button
+            onClick={() => router.back()}
+            className="group inline-flex items-center gap-2 text-sm font-medium text-foreground/70 transition-colors hover:text-foreground"
+          >
+            <span className="flex size-8 items-center justify-center rounded-full border border-border bg-muted/40 transition-colors group-hover:border-primary/40 group-hover:bg-primary/10">
+              <ArrowLeft className="size-4" />
+            </span>
+            Back
+          </button>
 
-            <div className="px-6 pb-6 sm:px-8">
-              <div className="-mt-10 flex flex-col items-start gap-4 sm:-mt-12 sm:flex-row sm:items-end sm:justify-between">
-                <div className="flex items-end gap-4">
-                  <span className="flex size-20 shrink-0 items-center justify-center rounded-full border-4 border-card bg-gradient-to-br from-primary to-primary/60 text-2xl font-bold text-primary-foreground shadow-md sm:size-24 sm:text-3xl">
-                    {(profile?.name || user?.email || "U").charAt(0).toUpperCase()}
-                  </span>
-                  <div className="min-w-0 pb-1">
-                    <h1 className="truncate text-lg font-semibold text-foreground sm:text-xl">
+          <span className="font-mono text-[20px] uppercase tracking-[0.2em] text-muted-foreground/50">
+            My Profile
+          </span>
+        </div>
+
+        <div className="space-y-6">
+          {/* ── IDENTITY HEADER ── */}
+          <section className="overflow-hidden rounded-2xl border border-border/60 bg-card">
+            {/* Trail-map style banner strip */}
+            <div className="relative h-28 overflow-hidden bg-gradient-to-br from-primary/20 via-primary/5 to-transparent sm:h-32">
+              <svg
+                className="absolute inset-0 h-full w-full opacity-[0.15]"
+                viewBox="0 0 400 100"
+                preserveAspectRatio="none"
+              >
+                <path
+                  d="M0 80 L60 40 L110 65 L170 20 L230 55 L290 15 L340 45 L400 25"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  className="text-primary"
+                />
+              </svg>
+            </div>
+
+            <div className="px-6 pb-7 sm:px-8">
+              <div className="-mt-11 flex flex-col items-start gap-5 sm:-mt-12 sm:flex-row sm:items-end">
+                <span className="flex size-[88px] shrink-0 items-center justify-center rounded-2xl border-4 border-card bg-gradient-to-br from-primary to-primary/70 text-3xl font-bold text-primary-foreground shadow-lg">
+                  {(profile?.name || user?.email || "U").charAt(0).toUpperCase()}
+                </span>
+
+                <div className="min-w-0 flex-1 pb-1">
+                  <div className="flex flex-wrap items-center gap-2.5">
+                    <h1 className="truncate text-xl font-semibold text-foreground">
                       {profile?.name || "User"}
                     </h1>
-                    <div className="mt-1 flex items-center gap-2">
-                      <span className="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium capitalize text-primary">
-                        {profile?.account_type}
+                    {isGuide && guide?.verified && (
+                      <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-2.5 py-0.5 text-[11px] font-medium text-emerald-400">
+                        <ShieldCheck className="size-3" />
+                        Verified
                       </span>
-                      {guide?.verified && (
-                        <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-xs font-medium text-emerald-400">
-                          <ShieldCheck className="size-3" />
-                          Verified
-                        </span>
+                    )}
+                  </div>
+                  <div className="mt-1.5 flex items-center gap-2 font-mono text-[11px] uppercase tracking-wider text-muted-foreground/60">
+                    <span className="inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-muted/30 px-2.5 py-1">
+                      {accountType === "guide" ? (
+                        <Briefcase className="size-3" />
+                      ) : (
+                        <UserRound className="size-3" />
                       )}
-                    </div>
+                      {accountType || "Trekker"}
+                    </span>
                   </div>
                 </div>
               </div>
 
               {/* Email */}
-              <div className="mt-6 flex items-center gap-3 rounded-xl border border-border bg-muted/30 px-4 py-3.5">
-                <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground/70">
-                  <Mail className="size-4" />
-                </span>
+              <div className="mt-6 flex items-center gap-3 rounded-xl border border-border/50 bg-muted/20 px-4 py-3">
+                <Mail className="size-4 shrink-0 text-muted-foreground/50" />
                 <div className="min-w-0">
-                  <p className="text-xs text-muted-foreground/60">Email</p>
-                  <p className="truncate text-sm font-medium text-foreground/90">{profile?.email}</p>
+                  <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/80">
+                    Email
+                  </p>
+                  <p className="truncate text-sm text-foreground/85">{profile?.email}</p>
                 </div>
               </div>
 
               {/* Editable fields */}
               <div className="mt-6 space-y-4">
                 <div className="space-y-1.5">
-                  <label className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground/70">
-                    <UserRound className="size-3.5" />
+                  <label className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground/80">
+                    <UserRound className="size-3" />
                     Name
                   </label>
                   <input
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="flex h-11 w-full items-center rounded-lg border border-border bg-muted/20 px-3.5 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground/30 focus:border-primary/50 focus:bg-muted/40"
+                    className="flex h-11 w-full items-center rounded-lg border border-border bg-muted/30 px-3.5 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground/50 focus:border-primary/50 focus:bg-muted/40"
                     placeholder="Your name"
                   />
                 </div>
 
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div className="space-y-1.5">
-                    <label className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground/70">
-                      <Phone className="size-3.5" />
+                    <label className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground/80">
+                      <Phone className="size-3" />
                       Phone
                     </label>
                     <input
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
-                      className="flex h-11 w-full items-center rounded-lg border border-border bg-muted/20 px-3.5 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground/30 focus:border-primary/50 focus:bg-muted/40"
-                      placeholder="+91 98765 43210"
+                      className="flex h-11 w-full items-center rounded-lg border border-border bg-muted/30 px-3.5 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground/50 focus:border-primary/50 focus:bg-muted/40"
+                      placeholder="12345 67890"
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground/70">
-                      <MapPin className="size-3.5" />
+                    <label className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground/80">
+                      <MapPin className="size-3" />
                       City
                     </label>
                     <input
                       value={city}
                       onChange={(e) => setCity(e.target.value)}
-                      className="flex h-11 w-full items-center rounded-lg border border-border bg-muted/20 px-3.5 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground/30 focus:border-primary/50 focus:bg-muted/40"
+                      className="flex h-11 w-full items-center rounded-lg border border-border bg-muted/30 px-3.5 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground/50 focus:border-primary/50 focus:bg-muted/40"
                       placeholder="Mumbai"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground/70">
-                    <Quote className="size-3.5" />
+                  <label className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground/80">
+                    <Quote className="size-3" />
                     Bio
                   </label>
                   <textarea
                     value={bio}
                     onChange={(e) => setBio(e.target.value)}
                     rows={4}
-                    className="flex w-full resize-none rounded-lg border border-border bg-muted/20 px-3.5 py-3 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground/30 focus:border-primary/50 focus:bg-muted/40"
+                    className="flex w-full resize-none rounded-lg border border-border bg-muted/30 px-3.5 py-3 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground/50 focus:border-primary/50 focus:bg-muted/40"
                     placeholder="Tell us about yourself..."
                   />
                 </div>
 
                 {error && (
-                  <p className="rounded-lg border border-red-400/20 bg-red-400/5 px-3.5 py-2.5 text-sm text-red-400">
+                  <p className="rounded-lg border border-red-500/25 bg-red-500/5 px-3.5 py-2.5 text-sm text-red-400">
                     {error}
                   </p>
                 )}
@@ -247,34 +283,53 @@ export default function ProfilePage() {
                 <button
                   onClick={handleSave}
                   disabled={saving}
-                  className="flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-primary text-sm font-semibold text-primary-foreground shadow-sm transition-opacity hover:opacity-90 disabled:opacity-50"
+                  className="flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-primary text-sm font-semibold text-primary-foreground shadow-sm shadow-primary/20 transition-all hover:opacity-90 hover:shadow-primary/30 disabled:opacity-50"
                 >
-                  <Save className="size-3.5" />
+                  {saving ? (
+                    <Loader2 className="size-3.5 animate-spin" />
+                  ) : (
+                    <Save className="size-3.5" />
+                  )}
                   {saving ? "Saving…" : saved ? "Saved!" : "Save Changes"}
                 </button>
               </div>
             </div>
-          </div>
+          </section>
 
-          {/* ── GUIDE INFO CARD ── */}
+          {/* ── GUIDE PROFILE CARD ── */}
           {guide && (
-            <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
-              <div className="flex items-center gap-2 border-b border-border px-6 py-4">
-                <Briefcase className="size-4 text-primary" />
-                <h2 className="text-sm font-semibold text-foreground">Guide Profile</h2>
+            <section className="overflow-hidden rounded-2xl border border-border/60 bg-card">
+              <div className="flex items-center justify-between border-b border-border/60 px-6 py-4 sm:px-8">
+                <div className="flex items-center gap-2">
+                  <span className="flex size-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                    <Briefcase className="size-3.5" />
+                  </span>
+                  <h2 className="text-sm font-semibold text-foreground">Guide Profile</h2>
+                </div>
+                <span
+                  className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-medium ${
+                    guide.verified
+                      ? "border border-emerald-500/25 bg-emerald-500/10 text-emerald-400"
+                      : "border border-amber-500/25 bg-amber-500/10 text-amber-400"
+                  }`}
+                >
+                  <BadgeCheck className="size-3" />
+                  {guide.verified ? "Verified" : "Pending Verification"}
+                </span>
               </div>
-              <div className="divide-y divide-border px-6 py-4">
+
+              <div className="divide-y divide-border/50 px-6 sm:px-8">
                 {/* Experience */}
-                <div className="flex items-start justify-between py-3">
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Award className="size-4 shrink-0" />
+                <div className="flex flex-wrap items-center justify-between gap-3 py-4">
+                  <div className="flex items-center gap-2.5 text-sm font-medium text-foreground/80">
+                    <Award className="size-4 shrink-0 text-primary/70" />
                     Experience
                   </div>
                   <select
                     value={experience}
                     onChange={(e) => setExperience(e.target.value)}
                     onBlur={() => { if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current); saveGuideFields(false) }}
-                    className="max-w-44 cursor-pointer rounded-lg border border-border bg-muted/50 px-3 py-1.5 text-sm text-foreground outline-none transition-colors focus:border-primary/50 focus:bg-muted/70"
+                    className="max-w-44 cursor-pointer rounded-lg border border-border bg-muted/30 px-3 py-1.5 text-sm text-foreground outline-none transition-colors focus:border-primary/50 focus:bg-muted/40"
                   >
                     <option value="" className="bg-card text-muted-foreground">Select…</option>
                     <option value="1-2 years" className="bg-card">1-2 years</option>
@@ -285,9 +340,9 @@ export default function ProfilePage() {
                 </div>
 
                 {/* Base Location */}
-                <div className="flex items-start justify-between py-3">
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <MapPin className="size-4 shrink-0" />
+                <div className="flex flex-wrap items-center justify-between gap-3 py-4">
+                  <div className="flex items-center gap-2.5 text-sm font-medium text-foreground/80">
+                    <MapPin className="size-4 shrink-0 text-primary/70" />
                     Base Location
                   </div>
                   <input
@@ -295,55 +350,55 @@ export default function ProfilePage() {
                     onChange={(e) => setBaseLocation(e.target.value)}
                     onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current); saveGuideFields(false) } }}
                     onBlur={() => { if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current); saveGuideFields(false) }}
-                    className="max-w-44 rounded-lg border border-border bg-muted/20 px-3 py-1.5 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground/30 focus:border-primary/50 focus:bg-muted/40"
+                    className="max-w-44 rounded-lg border border-border bg-muted/30 px-3 py-1.5 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground/50 focus:border-primary/50 focus:bg-muted/40"
                     placeholder="Manali, Himachal"
                   />
                 </div>
 
                 {/* Certifications */}
-                <div className="flex items-start justify-between py-3">
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Award className="size-4 shrink-0" />
+                <div className="flex flex-wrap items-start justify-between gap-3 py-4">
+                  <div className="flex items-center gap-2.5 pt-0.5 text-sm font-medium text-foreground/80">
+                    <Award className="size-4 shrink-0 text-primary/70" />
                     Certifications
                   </div>
-                  <div className="flex flex-wrap gap-1.5">
+                  <div className="flex max-w-xs flex-wrap justify-end gap-1.5">
                     {guide.certifications?.length > 0 ? guide.certifications.map((c) => (
-                      <span key={c} className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary capitalize">
+                      <span key={c} className="rounded-full border border-primary/20 bg-primary/10 px-2.5 py-0.5 text-xs font-medium capitalize text-primary">
                         {c}
                       </span>
-                    )) : <span className="text-sm text-muted-foreground/50">—</span>}
+                    )) : <span className="text-sm text-muted-foreground/40">N/A</span>}
                   </div>
                 </div>
 
                 {/* Known Treks */}
-                <div className="flex items-start justify-between py-3">
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <BookOpen className="size-4 shrink-0" />
+                <div className="flex flex-wrap items-start justify-between gap-3 py-4">
+                  <div className="flex items-center gap-2.5 pt-0.5 text-sm font-medium text-foreground/80">
+                    <BookOpen className="size-4 shrink-0 text-primary/70" />
                     Known Treks
                   </div>
-                  <div className="flex flex-wrap gap-1.5">
+                  <div className="flex max-w-xs flex-wrap justify-end gap-1.5">
                     {guide.known_treks?.length > 0 ? guide.known_treks.map((t) => (
-                      <span key={t} className="rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-xs font-medium text-emerald-400">
+                      <span key={t} className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-0.5 text-xs font-medium text-emerald-400">
                         {t}
                       </span>
-                    )) : <span className="text-sm text-muted-foreground/50">—</span>}
+                    )) : <span className="text-sm text-muted-foreground/40">N/A</span>}
                   </div>
                 </div>
 
                 {/* Documents */}
                 {(guide.id_proof_url || guide.cert_doc_url) && (
-                  <div className="flex items-start justify-between py-3">
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <FileText className="size-4 shrink-0" />
+                  <div className="flex flex-wrap items-center justify-between gap-3 py-4">
+                    <div className="flex items-center gap-2.5 text-sm font-medium text-foreground/80">
+                      <FileText className="size-4 shrink-0 text-primary/70" />
                       Documents
                     </div>
-                    <div className="flex flex-col gap-1.5 text-right">
+                    <div className="flex flex-col items-end gap-1.5">
                       {guide.id_proof_url && (
                         <a
                           href={guide.id_proof_url.replace("/image/upload/", "/image/upload/f_auto/").replace("/raw/upload/", "/raw/upload/f_auto/")}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
+                          className="inline-flex items-center gap-1 text-sm text-primary transition-opacity hover:opacity-80"
                         >
                           <ExternalLink className="size-3" />
                           ID Proof
@@ -354,7 +409,7 @@ export default function ProfilePage() {
                           href={guide.cert_doc_url.replace("/image/upload/", "/image/upload/f_auto/").replace("/raw/upload/", "/raw/upload/f_auto/")}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
+                          className="inline-flex items-center gap-1 text-sm text-primary transition-opacity hover:opacity-80"
                         >
                           <ExternalLink className="size-3" />
                           Certificate
@@ -363,19 +418,8 @@ export default function ProfilePage() {
                     </div>
                   </div>
                 )}
-
-                {/* Verification */}
-                <div className="flex items-start justify-between py-3">
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <BadgeCheck className="size-4 shrink-0" />
-                    Status
-                  </div>
-                  <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium ${guide.verified ? "bg-emerald-500/10 text-emerald-400" : "bg-amber-500/10 text-amber-400"}`}>
-                    {guide.verified ? "Verified" : "Pending Verification"}
-                  </span>
-                </div>
               </div>
-            </div>
+            </section>
           )}
         </div>
       </div>

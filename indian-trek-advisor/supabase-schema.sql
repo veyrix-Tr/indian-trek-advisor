@@ -9,7 +9,7 @@ create table public.profiles (
   id uuid references auth.users on delete cascade primary key,
   name text not null,
   email text not null,
-  account_type text not null check (account_type in ('trekker', 'guide')),
+  account_type text not null check (account_type in ('trekker', 'guide', 'admin')),
   image text,
   city text,
   phone text,

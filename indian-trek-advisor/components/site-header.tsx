@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react"
 import Link from "next/link"
 import { usePathname, useSearchParams, useRouter } from "next/navigation"
-import { Mountain, Sparkles, Menu, UserRound, LogOut, ChevronDown, User } from "lucide-react"
+import { Mountain, Sparkles, Menu, UserRound, LogOut, ChevronDown, User, Shield } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -35,9 +35,17 @@ export function SiteHeader() {
   const router = useRouter()
   const [mobileOpen, setMobileOpen] = useState(false)
   const [profileOpen, setProfileOpen] = useState(false)
+  const [accountType, setAccountType] = useState<string | null>(null)
   const profileRef = useRef<HTMLDivElement>(null)
   const pathname = usePathname()
   const searchParams = useSearchParams()
+
+  useEffect(() => {
+    if (!user) { setAccountType(null); return }
+    const supabase = createClient()
+    supabase.from("profiles").select("account_type").eq("id", user.id).single()
+      .then(({ data }) => setAccountType(data?.account_type ?? null))
+  }, [user])
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -125,6 +133,15 @@ export function SiteHeader() {
                   <span className="flex size-8 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-amber-600 text-sm font-bold text-white shadow-sm ring-1 ring-white/20">
                     {(user.user_metadata?.name || user.email).charAt(0).toUpperCase()}
                   </span>
+                  {accountType === "admin" && (
+                    <Link
+                      href="/admin"
+                      onClick={(e) => e.stopPropagation()}
+                      className="flex size-5 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-orange-500 shadow-sm ring-1 ring-white/20 transition-transform hover:scale-110"
+                    >
+                      <Shield className="size-3 text-black" />
+                    </Link>
+                  )}
                   <ChevronDown className={`size-3 text-white/60 transition-all duration-200 group-hover:text-white/90 ${profileOpen ? "rotate-180" : ""}`} />
                 </button>
                 {profileOpen && (
@@ -156,6 +173,16 @@ export function SiteHeader() {
                         <User className="size-4" />
                         Profile
                       </Link>
+                      {accountType === "admin" && (
+                        <Link
+                          href="/admin"
+                          onClick={() => setProfileOpen(false)}
+                          className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-amber-400/80 transition-colors hover:bg-amber-500/15 hover:text-amber-400"
+                        >
+                          <Shield className="size-4" />
+                          Admin View
+                        </Link>
+                      )}
                       <button
                         onClick={handleSignOut}
                         className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-white/60 transition-colors hover:bg-red-500/15 hover:text-red-400"
