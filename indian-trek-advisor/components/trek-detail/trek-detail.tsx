@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { BackButton } from "@/components/ui/back-button"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import {
   ArrowLeft,
@@ -22,7 +22,6 @@ import {
 import type { Trek, MapWaypoint } from "@/lib/data"
 import { DIFFICULTY_META } from "@/lib/data"
 import { Button } from "@/components/ui/button"
-import { useOverlays } from "@/components/overlays/overlay-provider"
 import { OverviewTab } from "./overview-tab"
 import { ItineraryTab } from "./itinerary-tab"
 import { PermitsTab } from "./permits-tab"
@@ -60,13 +59,22 @@ export function TrekDetail({
   next: NavRef
 }) {
   const [tab, setTab] = useState<TabId>("overview")
-  const { openComingSoon } = useOverlays()
   const diff = DIFFICULTY_META[trek.difficulty]
+  const tabsNavRef = useRef<HTMLDivElement>(null)
+
+  function goToTab(id: TabId) {
+    setTab(id)
+    tabsNavRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
+  }
 
   useEffect(() => {
     const requested = new URLSearchParams(window.location.search).get("tab")
     if (requested && TABS.some((t) => t.id === requested)) {
       setTab(requested as TabId)
+      // Deep-linked to a non-default tab (e.g. from /guide/find) — the hero
+      // banner is tall enough that the tab content would otherwise be
+      // entirely off-screen with no indication it's already selected.
+      tabsNavRef.current?.scrollIntoView({ block: "start" })
     }
   }, [])
 
@@ -193,12 +201,7 @@ export function TrekDetail({
               <Button
                 size="lg"
                 className="rounded-full bg-white text-gray-950 hover:bg-white/90"
-                onClick={() =>
-                  openComingSoon({
-                    title: "Guide Booking",
-                    message: `Booking a local guide for ${trek.name} is coming soon. We're onboarding verified guides from ${trek.region ?? trek.state} right now.`,
-                  })
-                }
+                onClick={() => goToTab("guides")}
               >
                 <Users className="size-4" aria-hidden="true" />
                 Book a Guide
@@ -218,7 +221,7 @@ export function TrekDetail({
       </section>
 
       {/* ---- Tabs ---- */}
-      <div className="sticky top-16 z-30 border-b border-border bg-background/90 backdrop-blur-md">
+      <div ref={tabsNavRef} className="sticky top-16 z-30 border-b border-border bg-background/90 backdrop-blur-md">
         <nav
           className="mx-auto flex max-w-6xl gap-1 overflow-x-auto px-4 md:px-6"
           aria-label="Trek sections"
