@@ -33,7 +33,13 @@ export async function POST(
     .eq("id", user.id)
     .single()
 
-  const canComplete = booking.guide_id === user.id || profile?.account_type === 'admin'
+  const { data: guide } = await supabase
+    .from("guides")
+    .select("id")
+    .eq("user_id", user.id)
+    .single()
+
+  const canComplete = (guide && booking.guide_id === guide.id) || profile?.account_type === 'admin'
   if (!canComplete) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 })
   }
@@ -66,16 +72,16 @@ export async function POST(
 
   if (trekkerProfile?.phone) {
     // Get guide name for SMS
-    const { data: guideProfile } = await supabase
-      .from("profiles")
-      .select("name")
+    const { data: guideRow } = await supabase
+      .from("guides")
+      .select("profiles(name)")
       .eq("id", booking.guide_id)
       .single()
 
     const { sendRatingRequestSMS } = await import("@/lib/sms/brevo")
     await sendRatingRequestSMS(
       trekkerProfile.phone,
-      guideProfile?.name || 'Guide',
+      (guideRow?.profiles as any)?.name || 'Guide',
       booking.trek_id
     )
   }

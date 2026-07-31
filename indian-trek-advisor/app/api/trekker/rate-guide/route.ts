@@ -56,13 +56,24 @@ export async function POST(request: Request) {
 
   const avgRating = (ratings?.reduce((sum, r) => sum + r.rating, 0) ?? 0) / (ratings?.length || 1)
 
-  await supabase
+  const { data: guideRow } = await supabase
     .from("guides")
     .update({
       rating: avgRating,
       total_ratings: ratings?.length || 0
     })
     .eq("id", booking.guide_id)
+    .select("user_id")
+    .single()
+
+  if (guideRow?.user_id) {
+    await supabase.from("notifications").insert({
+      user_id: guideRow.user_id,
+      type: "review_received",
+      booking_id,
+      message: `You received a ${rating}-star review for your ${booking.trek_id} trek.`,
+    })
+  }
 
   return NextResponse.json({ rating: newRating })
 }

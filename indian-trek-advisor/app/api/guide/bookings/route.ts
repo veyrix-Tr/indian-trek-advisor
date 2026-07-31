@@ -12,13 +12,23 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
+  const { data: guide, error: guideError } = await supabase
+    .from("guides")
+    .select("id")
+    .eq("user_id", user.id)
+    .single()
+
+  if (guideError || !guide) {
+    return NextResponse.json({ error: "Guide profile not found" }, { status: 404 })
+  }
+
   const { searchParams } = new URL(request.url)
   const status = searchParams.get('status')
 
   let query = supabase
     .from("bookings")
     .select("*, trekker:profiles!bookings_trekker_id_fkey(*), guides(*)")
-    .eq("guide_id", user.id)
+    .eq("guide_id", guide.id)
 
   if (status) {
     query = query.eq("status", status)

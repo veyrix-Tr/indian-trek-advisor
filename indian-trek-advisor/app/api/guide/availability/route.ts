@@ -12,11 +12,21 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
+  const { data: guide, error: guideError } = await supabase
+    .from("guides")
+    .select("id")
+    .eq("user_id", user.id)
+    .single()
+
+  if (guideError || !guide) {
+    return NextResponse.json({ error: "Guide profile not found" }, { status: 404 })
+  }
+
   const body = await request.json()
   const { dates, action } = body // action: 'available' or 'unavailable'
 
   const updates = dates.map((date: string) => ({
-    guide_id: user.id,
+    guide_id: guide.id,
     date,
     status: action === 'available' ? 'available' : 'unavailable'
   }))
@@ -43,10 +53,20 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
+  const { data: guide, error: guideError } = await supabase
+    .from("guides")
+    .select("id")
+    .eq("user_id", user.id)
+    .single()
+
+  if (guideError || !guide) {
+    return NextResponse.json({ error: "Guide profile not found" }, { status: 404 })
+  }
+
   const { data: availability, error } = await supabase
     .from("guide_availability")
     .select("*")
-    .eq("guide_id", user.id)
+    .eq("guide_id", guide.id)
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 })

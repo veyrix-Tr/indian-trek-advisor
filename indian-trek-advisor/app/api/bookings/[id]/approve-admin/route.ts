@@ -56,11 +56,12 @@ export async function POST(
   }
 
   // Get guide name for SMS
-  const { data: guideProfile } = await supabase
-    .from("profiles")
-    .select("name")
+  const { data: guideRow } = await supabase
+    .from("guides")
+    .select("profiles(name)")
     .eq("id", updated.guide_id)
     .single()
+  const guideProfile = guideRow?.profiles as any
 
   // Send SMS to trekker
   const { data: trekkerProfile } = await supabase

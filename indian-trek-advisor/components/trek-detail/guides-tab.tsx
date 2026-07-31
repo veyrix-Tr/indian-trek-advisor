@@ -14,15 +14,17 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 
+// Shape returned by GET /api/bookings/trek/[trekId]/guides: rows of
+// guide_trek_associations with a nested `guides` (embedded via Supabase's
+// `guides(*, profiles(*))` select) — `id`/`guide_id`/`base_rate` are the
+// association's own columns, NOT nested. `guide_id` is the real guides.id
+// and must be what's sent as bookings.guide_id on submit.
 interface Guide {
   id: string
-  profiles: {
-    name: string
-    email: string
-    phone?: string
-    bio?: string
-  }
+  guide_id: string
+  base_rate: number
   guides: {
+    id: string
     experience?: string
     rating: number
     total_ratings: number
@@ -30,9 +32,12 @@ interface Guide {
     known_treks: string[]
     verified?: boolean
     profile_photo_url?: string
-  }
-  guide_trek_associations: {
-    base_rate: number
+    profiles: {
+      name: string
+      email: string
+      phone?: string
+      bio?: string
+    }
   }
   unavailable?: boolean
 }
@@ -84,7 +89,7 @@ export function GuidesTab({ trek }: { trek: Trek }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           trek_id: trek.id,
-          guide_id: selectedGuide.id,
+          guide_id: selectedGuide.guide_id,
           booking_date: selectedDate,
           notes
         })
@@ -181,7 +186,7 @@ export function GuidesTab({ trek }: { trek: Trek }) {
                     <CheckCircle2 className="size-6 text-primary" />
                   </div>
                   <p className="text-sm text-muted-foreground">
-                    Your request has been sent to <strong className="text-foreground">{selectedGuide.profiles.name}</strong>.
+                    Your request has been sent to <strong className="text-foreground">{selectedGuide.guides.profiles.name}</strong>.
                     They typically respond within 48 hours — you&apos;ll be notified once they accept.
                   </p>
                   <Button
@@ -197,9 +202,9 @@ export function GuidesTab({ trek }: { trek: Trek }) {
               ) : (
                 <>
                   <div className="space-y-3 mb-4">
-                    <p><strong>Guide:</strong> {selectedGuide.profiles.name}</p>
+                    <p><strong>Guide:</strong> {selectedGuide.guides.profiles.name}</p>
                     <p><strong>Date:</strong> {selectedDate}</p>
-                    <p><strong>Rate:</strong> ₹{selectedGuide.guide_trek_associations.base_rate.toLocaleString("en-IN")}/day</p>
+                    <p><strong>Rate:</strong> ₹{selectedGuide.base_rate.toLocaleString("en-IN")}/day</p>
                   </div>
                   <Textarea
                     placeholder="Add any notes for the guide..."
@@ -255,7 +260,7 @@ function GuideCard({
   unavailable?: boolean
   onBook?: () => void
 }) {
-  const initial = guide.profiles.name?.charAt(0).toUpperCase() || "?"
+  const initial = guide.guides.profiles.name?.charAt(0).toUpperCase() || "?"
 
   return (
     <motion.div
@@ -268,7 +273,7 @@ function GuideCard({
           {guide.guides.profile_photo_url ? (
             <img
               src={guide.guides.profile_photo_url}
-              alt={guide.profiles.name}
+              alt={guide.guides.profiles.name}
               className="size-11 shrink-0 rounded-full object-cover"
             />
           ) : (
@@ -278,7 +283,7 @@ function GuideCard({
           )}
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-2">
-              <h4 className="font-semibold">{guide.profiles.name}</h4>
+              <h4 className="font-semibold">{guide.guides.profiles.name}</h4>
               {guide.guides.verified && (
                 <span className="flex items-center gap-0.5 rounded-full bg-primary/10 px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-wider text-primary">
                   <BadgeCheck className="size-3" />
@@ -303,7 +308,7 @@ function GuideCard({
               </p>
             )}
             <p className="mt-2 font-semibold">
-              ₹{guide.guide_trek_associations.base_rate.toLocaleString("en-IN")}/day
+              ₹{guide.base_rate.toLocaleString("en-IN")}/day
             </p>
           </div>
         </div>

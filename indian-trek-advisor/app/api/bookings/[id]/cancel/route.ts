@@ -36,7 +36,14 @@ export async function POST(
     .eq("id", user.id)
     .single()
 
-  const canCancel = booking.guide_id === user.id || profile?.account_type === 'admin'
+  const { data: guide } = await supabase
+    .from("guides")
+    .select("id")
+    .eq("user_id", user.id)
+    .single()
+
+  const isGuideActor = Boolean(guide) && booking.guide_id === guide?.id
+  const canCancel = isGuideActor || profile?.account_type === 'admin'
   if (!canCancel) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 })
   }
@@ -44,7 +51,11 @@ export async function POST(
   // Update booking status
   const { data: updated, error } = await supabase
     .from("bookings")
-    .update({ status: 'cancelled' })
+    .update({
+      status: 'cancelled',
+      rejection_reason: reason || null,
+      ...(isGuideActor ? { guide_responded_at: new Date().toISOString() } : {}),
+    })
     .eq("id", id)
     .select()
     .single()
@@ -60,11 +71,12 @@ export async function POST(
     .eq("booking_id", id)
 
   // Send SMS notifications
-  const { data: guideProfile } = await supabase
-    .from("profiles")
-    .select("phone")
+  const { data: guideRow } = await supabase
+    .from("guides")
+    .select("profiles(phone)")
     .eq("id", booking.guide_id)
     .single()
+  const guidePhone = (guideRow?.profiles as any)?.phone
 
   const { data: trekkerProfile } = await supabase
     .from("profiles")
@@ -72,10 +84,10 @@ export async function POST(
     .eq("id", booking.trekker_id)
     .single()
 
-  if (guideProfile?.phone && trekkerProfile?.phone) {
+  if (guidePhone && trekkerProfile?.phone) {
     const { sendCancellationSMS } = await import("@/lib/sms/brevo")
     await sendCancellationSMS(
-      guideProfile.phone,
+      guidePhone,
       trekkerProfile.phone,
       reason || 'Booking cancelled'
     )

@@ -52,17 +52,27 @@ export async function POST(
   }
 
   // Get guide and trekker profiles for SMS
-  const { data: guideProfile } = await supabase
-    .from("profiles")
-    .select("phone, name")
+  const { data: guideRow } = await supabase
+    .from("guides")
+    .select("user_id, profiles(phone, name)")
     .eq("id", booking.guide_id)
     .single()
+  const guideProfile = guideRow?.profiles as any
 
   const { data: trekkerProfile } = await supabase
     .from("profiles")
     .select("phone, name")
     .eq("id", booking.trekker_id)
     .single()
+
+  if (guideRow?.user_id) {
+    await supabase.from("notifications").insert({
+      user_id: guideRow.user_id,
+      type: "booking_status_change",
+      booking_id: booking.id,
+      message: `Payment confirmed for your ${booking.booking_date} trek — it's locked in.`,
+    })
+  }
 
   if (guideProfile?.phone && trekkerProfile?.phone) {
     const { sendPaymentConfirmationSMS } = await import("@/lib/sms/brevo")

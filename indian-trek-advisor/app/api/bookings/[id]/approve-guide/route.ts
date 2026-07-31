@@ -16,6 +16,12 @@ export async function POST(
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
+  const { data: guide } = await supabase
+    .from("guides")
+    .select("id")
+    .eq("user_id", user.id)
+    .single()
+
   // Verify user is the guide
   const { data: booking } = await supabase
     .from("bookings")
@@ -23,14 +29,14 @@ export async function POST(
     .eq("id", id)
     .single()
 
-  if (!booking || booking.guide_id !== user.id) {
+  if (!booking || !guide || booking.guide_id !== guide.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 })
   }
 
   // Update booking status
   const { data: updated, error } = await supabase
     .from("bookings")
-    .update({ status: 'guide_approved' })
+    .update({ status: 'guide_approved', guide_responded_at: new Date().toISOString() })
     .eq("id", id)
     .select()
     .single()

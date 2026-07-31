@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Save, MapPin, Award, Mountain, Phone, BadgeCheck, ShieldAlert } from "lucide-react"
 import { GuideRatesSection } from "./guide-rates-section"
+import { GuidePayoutSection } from "./guide-payout-section"
 
 interface GuideProfile {
   experience?: string
@@ -330,6 +331,7 @@ export function GuideSettingsTab({ profile }: { profile: GuideProfile | null }) 
       </motion.div>
 
       <GuideRatesSection />
+      <GuidePayoutSection />
     </div>
   )
 }

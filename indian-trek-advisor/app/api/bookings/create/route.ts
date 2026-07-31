@@ -63,6 +63,17 @@ export async function POST(request: Request) {
     .eq("id", guide_id)
     .single()
 
+  // In-app notification for the guide's own dashboard bell.
+  // notifications.user_id is the guide's auth id (guides.user_id), not guides.id.
+  if (guideData?.user_id) {
+    await supabase.from("notifications").insert({
+      user_id: guideData.user_id,
+      type: "booking_request",
+      booking_id: booking.id,
+      message: `${user.user_metadata?.name || "A trekker"} requested a booking for ${booking_date}.`,
+    })
+  }
+
   if (guideData?.profiles?.phone) {
     const { sendBookingRequestSMS } = await import("@/lib/sms/brevo")
     await sendBookingRequestSMS(

@@ -13,6 +13,7 @@ import { GuideEarningsTab } from "@/components/guide-dashboard/guide-earnings-ta
 import { GuideReviewsTab } from "@/components/guide-dashboard/guide-reviews-tab"
 import { GuideSettingsTab } from "@/components/guide-dashboard/guide-settings-tab"
 import { GuideAvailabilityCalendar } from "@/components/guide-availability-calendar"
+import { NotificationBell } from "@/components/guide-dashboard/notification-bell"
 
 interface Booking {
   id: string
@@ -156,16 +157,19 @@ export default function GuideDashboardPage() {
               Welcome back, {profile?.profiles?.name || "Guide"}
             </h1>
           </div>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleRefresh}
-            disabled={refreshing}
-            className="gap-2"
-          >
-            <RefreshCw className={`size-4 ${refreshing ? "animate-spin" : ""}`} />
-            Refresh
-          </Button>
+          <div className="flex items-center gap-2">
+            <NotificationBell />
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleRefresh}
+              disabled={refreshing}
+              className="gap-2"
+            >
+              <RefreshCw className={`size-4 ${refreshing ? "animate-spin" : ""}`} />
+              Refresh
+            </Button>
+          </div>
         </motion.div>
 
         {/* Stats */}
