@@ -18,14 +18,16 @@ export function RatingModal({ isOpen, onClose, onSubmit, guideName }: RatingModa
   const [rating, setRating] = useState(0)
   const [hoverRating, setHoverRating] = useState(0)
   const [review, setReview] = useState("")
+  const [error, setError] = useState(false)
 
   if (!isOpen) return null
 
   const handleSubmit = () => {
     if (rating === 0) {
-      alert("Please select a rating")
+      setError(true)
       return
     }
+    setError(false)
     onSubmit(rating, review)
     setRating(0)
     setReview("")
@@ -56,11 +58,14 @@ export function RatingModal({ isOpen, onClose, onSubmit, guideName }: RatingModa
                   className="focus:outline-none"
                 >
                   <Star
-                    className={`size-8 ${(hoverRating || rating) >= star ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}`}
+                    className={`size-8 ${(hoverRating || rating) >= star ? "fill-yellow-400 text-yellow-400" : "text-muted-foreground/30"}`}
                   />
                 </button>
               ))}
             </div>
+            {error && (
+              <p className="mt-2 text-xs text-destructive">Please select a rating</p>
+            )}
           </div>
 
           <div className="mb-4">

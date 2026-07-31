@@ -43,9 +43,14 @@ export async function POST(
     .single()
 
   const isGuideActor = Boolean(guide) && booking.guide_id === guide?.id
-  const canCancel = isGuideActor || profile?.account_type === 'admin'
+  const isTrekkerActor = booking.trekker_id === user.id
+  const canCancel = isGuideActor || isTrekkerActor || profile?.account_type === 'admin'
   if (!canCancel) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 })
+  }
+
+  if (booking.status === 'completed' || booking.status === 'cancelled') {
+    return NextResponse.json({ error: `Booking is already ${booking.status}` }, { status: 400 })
   }
 
   // Update booking status
