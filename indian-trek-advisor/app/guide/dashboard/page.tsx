@@ -30,10 +30,10 @@ interface Booking {
 interface Review {
   id: string
   rating: number
-  review_text?: string
+  review?: string
   created_at: string
   trekker?: { name: string }
-  guides?: { trek_name: string }
+  booking?: { trek_id: string }
 }
 
 interface GuideProfile {
@@ -43,6 +43,7 @@ interface GuideProfile {
   certifications?: string[]
   known_treks?: string[]
   rating?: number
+  total_ratings?: number
   verified?: boolean
   profile_photo_url?: string
   profiles?: { name: string; email: string }
@@ -227,7 +228,11 @@ export default function GuideDashboardPage() {
           </TabsContent>
 
           <TabsContent value="reviews" className="mt-0">
-            <GuideReviewsTab reviews={reviews} />
+            <GuideReviewsTab
+              reviews={reviews}
+              guideRating={rating}
+              guideTotalRatings={profile?.total_ratings || 0}
+            />
           </TabsContent>
 
           <TabsContent value="availability" className="mt-0">

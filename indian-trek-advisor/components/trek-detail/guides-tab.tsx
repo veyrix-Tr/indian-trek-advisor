@@ -292,8 +292,8 @@ function GuideCard({
               )}
               <div className="flex items-center gap-1 text-sm text-muted-foreground">
                 <Star className="size-4 fill-yellow-400 text-yellow-400" />
-                <span>{guide.guides.rating.toFixed(1)}</span>
-                <span>({guide.guides.total_ratings})</span>
+                <span>{(guide.guides.rating ?? 0).toFixed(1)}</span>
+                <span>({guide.guides.total_ratings ?? 0})</span>
               </div>
             </div>
             {guide.guides.experience && (

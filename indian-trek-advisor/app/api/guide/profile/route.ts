@@ -22,7 +22,13 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 
-  return NextResponse.json({ guide })
+  const { data: reviews } = await supabase
+    .from("guide_ratings")
+    .select("id, rating, review, created_at, trekker:profiles(name), booking:bookings(trek_id)")
+    .eq("guide_id", guide.id)
+    .order("created_at", { ascending: false })
+
+  return NextResponse.json({ guide: { ...guide, reviews: reviews || [] } })
 }
 
 export async function PUT(request: Request) {

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
+import { computeDisplayRating } from "@/lib/guide-rating"
 
 export async function POST(request: Request) {
   const supabase = createClient(
@@ -48,23 +49,32 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: ratingError.message }, { status: 500 })
   }
 
-  // Update guide average rating
+  // Update guide's displayed rating — a weighted blend of real reviews plus
+  // a baseline, not a raw average (see lib/guide-rating.ts for why).
   const { data: ratings } = await supabase
     .from("guide_ratings")
     .select("rating")
     .eq("guide_id", booking.guide_id)
 
-  const avgRating = (ratings?.reduce((sum, r) => sum + r.rating, 0) ?? 0) / (ratings?.length || 1)
+  const { rating: displayRating, totalRatings } = computeDisplayRating(
+    (ratings ?? []).map((r) => r.rating)
+  )
 
-  const { data: guideRow } = await supabase
+  const { data: guideRow, error: updateError } = await supabase
     .from("guides")
     .update({
-      rating: avgRating,
-      total_ratings: ratings?.length || 0
+      rating: displayRating,
+      total_ratings: totalRatings
     })
     .eq("id", booking.guide_id)
     .select("user_id")
     .single()
+
+  if (updateError) {
+    // The review itself was already saved above — don't fail the request,
+    // but this must never be silently swallowed again.
+    console.error("Failed to update guide's blended rating:", updateError.message)
+  }
 
   if (guideRow?.user_id) {
     await supabase.from("notifications").insert({
