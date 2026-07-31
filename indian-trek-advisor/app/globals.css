@@ -42,6 +42,12 @@
   --color-difficulty-moderate: var(--difficulty-moderate);
   --color-difficulty-hard: var(--difficulty-hard);
   --color-difficulty-expert: var(--difficulty-expert);
+  --color-status-pending: var(--status-pending);
+  --color-status-guide-approved: var(--status-guide-approved);
+  --color-status-admin-approved: var(--status-admin-approved);
+  --color-status-confirmed: var(--status-confirmed);
+  --color-status-completed: var(--status-completed);
+  --color-status-cancelled: var(--status-cancelled);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -90,6 +96,15 @@
   --difficulty-moderate: oklch(0.82 0.13 85);
   --difficulty-hard: oklch(0.74 0.15 55);
   --difficulty-expert: oklch(0.66 0.19 27);
+
+  /* Booking lifecycle status colors — amber=needs guide action,
+     blue/violet=waiting on someone else, green=locked in, red=stopped */
+  --status-pending: oklch(0.82 0.15 80);
+  --status-guide-approved: oklch(0.72 0.13 240);
+  --status-admin-approved: oklch(0.72 0.14 300);
+  --status-confirmed: oklch(0.78 0.095 165);
+  --status-completed: oklch(0.68 0.012 150);
+  --status-cancelled: oklch(0.62 0.19 25);
 }
 
 @layer base {

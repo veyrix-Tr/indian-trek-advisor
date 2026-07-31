@@ -1,11 +1,17 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
+import { motion } from "framer-motion"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Calendar, DollarSign, Star, CheckCircle, XCircle, Clock } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { LayoutDashboard, Calendar, Mountain, IndianRupee, Star, Settings, RefreshCw } from "lucide-react"
+import { GuideStatsCards } from "@/components/guide-dashboard/guide-stats-cards"
+import { GuideOverviewTab } from "@/components/guide-dashboard/guide-overview-tab"
+import { GuideBookingsTab } from "@/components/guide-dashboard/guide-bookings-tab"
+import { GuideTreksTab } from "@/components/guide-dashboard/guide-treks-tab"
+import { GuideEarningsTab } from "@/components/guide-dashboard/guide-earnings-tab"
+import { GuideReviewsTab } from "@/components/guide-dashboard/guide-reviews-tab"
+import { GuideSettingsTab } from "@/components/guide-dashboard/guide-settings-tab"
 import { GuideAvailabilityCalendar } from "@/components/guide-availability-calendar"
 
 interface Booking {
@@ -13,249 +19,222 @@ interface Booking {
   trek_id: string
   status: string
   booking_date: string
-  trekker: {
-    name: string
-    email: string
-  }
+  notes?: string
+  payment_amount?: number
+  payment_status?: string
+  trekker?: { name: string; email: string }
+  guides?: { trek_name: string; id: string }
 }
+
+interface Review {
+  id: string
+  rating: number
+  review_text?: string
+  created_at: string
+  trekker?: { name: string }
+  guides?: { trek_name: string }
+}
+
+interface GuideProfile {
+  experience?: string
+  phone?: string
+  base_location?: string
+  certifications?: string[]
+  known_treks?: string[]
+  rating?: number
+  verified?: boolean
+  profile_photo_url?: string
+  profiles?: { name: string; email: string }
+}
+
+const TABS = [
+  { value: "overview", label: "Overview", icon: LayoutDashboard },
+  { value: "bookings", label: "Bookings", icon: Calendar },
+  { value: "treks", label: "Treks", icon: Mountain },
+  { value: "earnings", label: "Earnings", icon: IndianRupee },
+  { value: "reviews", label: "Reviews", icon: Star },
+  { value: "availability", label: "Availability", icon: Calendar },
+  { value: "settings", label: "Settings", icon: Settings },
+]
 
 export default function GuideDashboardPage() {
   const [bookings, setBookings] = useState<Booking[]>([])
+  const [reviews, setReviews] = useState<Review[]>([])
+  const [profile, setProfile] = useState<GuideProfile | null>(null)
   const [loading, setLoading] = useState(true)
-  const [guideRating, setGuideRating] = useState(0)
+  const [refreshing, setRefreshing] = useState(false)
+  const [activeTab, setActiveTab] = useState("overview")
+  const [bookingsFilterHint, setBookingsFilterHint] = useState<{ filter: string; nonce: number } | undefined>(undefined)
 
   useEffect(() => {
-    fetchBookings()
-    fetchGuideProfile()
+    Promise.all([fetchBookings(), fetchReviews(), fetchProfile()]).then(() => setLoading(false))
   }, [])
 
-  const fetchBookings = async () => {
+  async function fetchBookings() {
     try {
-      const response = await fetch("/api/guide/bookings")
-      const data = await response.json()
+      const res = await fetch("/api/guide/bookings")
+      const data = await res.json()
       setBookings(data.bookings || [])
-    } catch (error) {
-      console.error("Error fetching bookings:", error)
+    } catch (err) {
+      console.error("Error fetching bookings:", err)
     }
-    setLoading(false)
   }
 
-  const fetchGuideProfile = async () => {
+  async function fetchReviews() {
     try {
-      const response = await fetch("/api/guide/profile")
-      const data = await response.json()
-      if (data.guide?.rating) {
-        setGuideRating(data.guide.rating)
-      }
-    } catch (error) {
-      console.error("Error fetching guide profile:", error)
+      const res = await fetch("/api/guide/profile")
+      const data = await res.json()
+      if (data.guide?.reviews) setReviews(data.guide.reviews)
+    } catch (err) {
+      console.error("Error fetching reviews:", err)
     }
   }
 
-  const handleApprove = async (bookingId: string) => {
+  async function fetchProfile() {
     try {
-      const response = await fetch(`/api/bookings/${bookingId}/approve-guide`, {
-        method: "POST"
-      })
-
-      if (response.ok) {
-        fetchBookings()
-        alert("Booking approved and sent to admin for verification")
-      } else {
-        const data = await response.json()
-        alert(data.error || "Error approving booking")
-      }
-    } catch (error) {
-      console.error("Error approving booking:", error)
+      const res = await fetch("/api/guide/profile")
+      const data = await res.json()
+      setProfile(data.guide || null)
+    } catch (err) {
+      console.error("Error fetching profile:", err)
     }
   }
 
-  const handleReject = async (bookingId: string) => {
-    try {
-      const response = await fetch(`/api/bookings/${bookingId}/cancel`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ reason: "Guide unavailable" })
-      })
-
-      if (response.ok) {
-        fetchBookings()
-        alert("Booking rejected")
-      } else {
-        const data = await response.json()
-        alert(data.error || "Error rejecting booking")
-      }
-    } catch (error) {
-      console.error("Error rejecting booking:", error)
-    }
+  async function handleRefresh() {
+    setRefreshing(true)
+    await Promise.all([fetchBookings(), fetchReviews(), fetchProfile()])
+    setRefreshing(false)
   }
 
-  const handleComplete = async (bookingId: string) => {
-    if (!confirm("Mark this booking as completed? The trekker will be asked to rate you.")) return
-
-    try {
-      const response = await fetch(`/api/bookings/${bookingId}/complete`, {
-        method: "POST"
-      })
-
-      if (response.ok) {
-        fetchBookings()
-        alert("Booking marked as completed")
-      } else {
-        const data = await response.json()
-        alert(data.error || "Error completing booking")
-      }
-    } catch (error) {
-      console.error("Error completing booking:", error)
-    }
-  }
+  const pending = bookings.filter((b) => b.status === "pending").length
+  const active = bookings.filter((b) =>
+    ["guide_approved", "confirmed"].includes(b.status)
+  ).length
+  const completed = bookings.filter((b) => b.status === "completed").length
+  const earnings = bookings
+    .filter((b) => b.status === "completed" && b.payment_status === "paid")
+    .reduce((sum, b) => sum + (b.payment_amount || 0), 0)
+  const rating = profile?.rating || 0
+  const thisMonth = bookings.filter((b) => {
+    const d = new Date(b.booking_date)
+    const now = new Date()
+    return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear() && b.status === "completed"
+  }).length
 
   if (loading) {
-    return <div className="p-8 text-center">Loading dashboard...</div>
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="text-center"
+        >
+          <div className="mx-auto mb-4 size-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+          <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+            Loading dashboard...
+          </p>
+        </motion.div>
+      </div>
+    )
   }
 
-  const pendingBookings = bookings.filter(b => b.status === 'pending')
-  const guideApprovedBookings = bookings.filter(b => b.status === 'guide_approved')
-  const confirmedBookings = bookings.filter(b => b.status === 'confirmed')
-  const completedBookings = bookings.filter(b => b.status === 'completed')
-
   return (
-    <div className="max-w-6xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-6">Guide Dashboard</h1>
+    <div className="min-h-screen pt-20 pb-12">
+      <div className="mx-auto max-w-7xl px-4 md:px-6">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="mb-8 flex items-center justify-between"
+        >
+          <div>
+            <p className="font-mono text-[10px] uppercase tracking-widest text-primary">
+              Guide Dashboard
+            </p>
+            <h1 className="mt-1 text-3xl font-bold tracking-tight">
+              Welcome back, {profile?.profiles?.name || "Guide"}
+            </h1>
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleRefresh}
+            disabled={refreshing}
+            className="gap-2"
+          >
+            <RefreshCw className={`size-4 ${refreshing ? "animate-spin" : ""}`} />
+            Refresh
+          </Button>
+        </motion.div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center gap-2">
-              <Calendar className="size-5 text-primary" />
-              <div>
-                <p className="text-2xl font-bold">{pendingBookings.length}</p>
-                <p className="text-sm text-muted-foreground">Pending Requests</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center gap-2">
-              <CheckCircle className="size-5 text-green-600" />
-              <div>
-                <p className="text-2xl font-bold">{confirmedBookings.length}</p>
-                <p className="text-sm text-muted-foreground">Confirmed Bookings</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center gap-2">
-              <Star className="size-5 text-yellow-500" />
-              <div>
-                <p className="text-2xl font-bold">{guideRating.toFixed(1)}</p>
-                <p className="text-sm text-muted-foreground">Average Rating</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+        {/* Stats */}
+        <div className="mb-8">
+          <GuideStatsCards
+            stats={{ pending, active, completed, earnings, rating, thisMonth }}
+            onGoToProfile={() => setActiveTab("settings")}
+          />
+        </div>
 
-      {/* Bookings */}
-      <Tabs defaultValue="pending">
-        <TabsList>
-          <TabsTrigger value="pending">Pending ({pendingBookings.length})</TabsTrigger>
-          <TabsTrigger value="guide-approved">Awaiting Admin ({guideApprovedBookings.length})</TabsTrigger>
-          <TabsTrigger value="confirmed">Confirmed ({confirmedBookings.length})</TabsTrigger>
-          <TabsTrigger value="completed">Completed ({completedBookings.length})</TabsTrigger>
-          <TabsTrigger value="availability">Availability</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="pending" className="space-y-4 mt-4">
-          {pendingBookings.length === 0 ? (
-            <p className="text-muted-foreground">No pending bookings</p>
-          ) : (
-            pendingBookings.map((booking) => (
-              <Card key={booking.id}>
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-semibold">{booking.trekker?.name || 'Unknown Trekker'}</p>
-                      <p className="text-sm text-muted-foreground">{booking.booking_date}</p>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button size="sm" onClick={() => handleApprove(booking.id)}>
-                        <CheckCircle className="size-4 mr-1" />
-                        Approve
-                      </Button>
-                      <Button size="sm" variant="destructive" onClick={() => handleReject(booking.id)}>
-                        <XCircle className="size-4 mr-1" />
-                        Reject
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))
-          )}
-        </TabsContent>
-
-        <TabsContent value="guide-approved" className="space-y-4 mt-4">
-          {guideApprovedBookings.length === 0 ? (
-            <p className="text-muted-foreground">No bookings awaiting admin approval</p>
-          ) : (
-            guideApprovedBookings.map((booking) => (
-              <Card key={booking.id}>
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-semibold">{booking.trekker?.name || 'Unknown Trekker'}</p>
-                      <p className="text-sm text-muted-foreground">{booking.booking_date}</p>
-                    </div>
-                    <Badge className="bg-blue-100 text-blue-800">
-                      <Clock className="size-3 mr-1" />
-                      Awaiting Admin
-                    </Badge>
-                  </div>
-                </CardContent>
-              </Card>
-            ))
-          )}
-        </TabsContent>
-
-        <TabsContent value="confirmed" className="space-y-4 mt-4">
-          {confirmedBookings.map((booking) => (
-            <Card key={booking.id}>
-              <CardContent className="p-6">
-                <p className="font-semibold">{booking.trekker?.name || 'Unknown Trekker'}</p>
-                <p className="text-sm text-muted-foreground">{booking.booking_date}</p>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="mt-2"
-                  onClick={() => handleComplete(booking.id)}
+        {/* Tabs */}
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+          <div className="overflow-x-auto">
+            <TabsList className="inline-flex h-auto w-auto gap-1 bg-transparent p-0">
+              {TABS.map((tab) => (
+                <TabsTrigger
+                  key={tab.value}
+                  value={tab.value}
+                  className="gap-1.5 rounded-xl border border-border/40 bg-background/40 px-4 py-2.5 font-mono text-[10px] uppercase tracking-widest text-muted-foreground transition-all data-[state=active]:border-primary/40 data-[state=active]:bg-primary/10 data-[state=active]:text-primary"
                 >
-                  Mark Complete
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
-        </TabsContent>
+                  <tab.icon className="size-3.5" />
+                  <span className="hidden sm:inline">{tab.label}</span>
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </div>
 
-        <TabsContent value="completed" className="space-y-4 mt-4">
-          {completedBookings.map((booking) => (
-            <Card key={booking.id}>
-              <CardContent className="p-6">
-                <p className="font-semibold">{booking.trekker?.name || 'Unknown Trekker'}</p>
-                <p className="text-sm text-muted-foreground">{booking.booking_date}</p>
-              </CardContent>
-            </Card>
-          ))}
-        </TabsContent>
+          <TabsContent value="overview" className="mt-0">
+            <GuideOverviewTab
+              bookings={bookings}
+              guideName={profile?.profiles?.name || "Guide"}
+              rating={rating}
+              onRefresh={fetchBookings}
+              onViewAllRequests={() => {
+                setBookingsFilterHint({ filter: "pending", nonce: Date.now() })
+                setActiveTab("bookings")
+              }}
+            />
+          </TabsContent>
 
-        <TabsContent value="availability" className="mt-4">
-          <GuideAvailabilityCalendar />
-        </TabsContent>
-      </Tabs>
+          <TabsContent value="bookings" className="mt-0">
+            <GuideBookingsTab
+              bookings={bookings}
+              onRefresh={fetchBookings}
+              filterHint={bookingsFilterHint}
+            />
+          </TabsContent>
+
+          <TabsContent value="treks" className="mt-0">
+            <GuideTreksTab bookings={bookings} />
+          </TabsContent>
+
+          <TabsContent value="earnings" className="mt-0">
+            <GuideEarningsTab bookings={bookings} />
+          </TabsContent>
+
+          <TabsContent value="reviews" className="mt-0">
+            <GuideReviewsTab reviews={reviews} />
+          </TabsContent>
+
+          <TabsContent value="availability" className="mt-0">
+            <GuideAvailabilityCalendar bookings={bookings} />
+          </TabsContent>
+
+          <TabsContent value="settings" className="mt-0">
+            <GuideSettingsTab profile={profile} />
+          </TabsContent>
+        </Tabs>
+      </div>
     </div>
   )
 }

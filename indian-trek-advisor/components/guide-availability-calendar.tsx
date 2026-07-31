@@ -1,23 +1,52 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { ChevronLeft, ChevronRight, X, Check } from "lucide-react"
+import { ChevronLeft, ChevronRight, MapPin, CalendarRange, CheckCircle2, AlertCircle } from "lucide-react"
+
+interface Booking {
+  id: string
+  status: string
+  booking_date: string
+  trekker?: { name: string; email: string }
+  guides?: { trek_name: string; id: string }
+}
 
 interface AvailabilityCalendarProps {
+  bookings?: Booking[]
   onSave?: (availableDates: string[], unavailableDates: string[]) => void
 }
 
-export function GuideAvailabilityCalendar({ onSave }: AvailabilityCalendarProps) {
+const ACTIVE_STATUSES = ["guide_approved", "admin_approved", "confirmed"]
+
+function todayStart() {
+  return new Date(new Date().setHours(0, 0, 0, 0))
+}
+
+export function GuideAvailabilityCalendar({ bookings = [], onSave }: AvailabilityCalendarProps) {
   const [currentDate, setCurrentDate] = useState(new Date())
   const [availableDates, setAvailableDates] = useState<Set<string>>(new Set())
   const [unavailableDates, setUnavailableDates] = useState<Set<string>>(new Set())
   const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
+  const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null)
+  const [showBlockRange, setShowBlockRange] = useState(false)
+  const [rangeStart, setRangeStart] = useState("")
+  const [rangeEnd, setRangeEnd] = useState("")
 
   useEffect(() => {
     fetchAvailability()
   }, [])
+
+  const bookedByDate = useMemo(() => {
+    const map = new Map<string, Booking>()
+    bookings
+      .filter((b) => ACTIVE_STATUSES.includes(b.status))
+      .forEach((b) => map.set(b.booking_date, b))
+    return map
+  }, [bookings])
 
   const fetchAvailability = async () => {
     try {
@@ -54,38 +83,59 @@ export function GuideAvailabilityCalendar({ onSave }: AvailabilityCalendarProps)
     return { daysInMonth, startDayOfWeek }
   }
 
-  const toggleDate = (dateStr: string) => {
+  // Single click cycles: not-set -> available -> unavailable -> not-set.
+  // Discoverable on touch devices, unlike the old right-click-only shortcut.
+  const cycleDate = (dateStr: string) => {
     const newAvailable = new Set(availableDates)
     const newUnavailable = new Set(unavailableDates)
 
-    if (availableDates.has(dateStr)) {
+    if (!availableDates.has(dateStr) && !unavailableDates.has(dateStr)) {
+      newAvailable.add(dateStr)
+    } else if (availableDates.has(dateStr)) {
       newAvailable.delete(dateStr)
-    } else if (unavailableDates.has(dateStr)) {
-      newUnavailable.delete(dateStr)
-      newAvailable.add(dateStr)
+      newUnavailable.add(dateStr)
     } else {
-      newAvailable.add(dateStr)
+      newUnavailable.delete(dateStr)
     }
 
     setAvailableDates(newAvailable)
     setUnavailableDates(newUnavailable)
   }
 
-  const markUnavailable = (dateStr: string) => {
+  const blockRange = () => {
+    if (!rangeStart || !rangeEnd) return
+    const start = new Date(rangeStart)
+    const end = new Date(rangeEnd)
+    if (start > end) return
+
     const newAvailable = new Set(availableDates)
     const newUnavailable = new Set(unavailableDates)
+    const cursor = new Date(start)
 
-    newAvailable.delete(dateStr)
-    newUnavailable.add(dateStr)
+    while (cursor <= end) {
+      const dateStr = `${cursor.getFullYear()}-${String(cursor.getMonth() + 1).padStart(2, '0')}-${String(cursor.getDate()).padStart(2, '0')}`
+      if (cursor >= todayStart() && !bookedByDate.has(dateStr)) {
+        newAvailable.delete(dateStr)
+        newUnavailable.add(dateStr)
+      }
+      cursor.setDate(cursor.getDate() + 1)
+    }
 
     setAvailableDates(newAvailable)
     setUnavailableDates(newUnavailable)
+    setShowBlockRange(false)
+    setRangeStart("")
+    setRangeEnd("")
   }
 
   const handleSave = async () => {
+    setSaving(true)
+    setFeedback(null)
     try {
+      let ok = true
+
       if (availableDates.size > 0) {
-        await fetch("/api/guide/availability", {
+        const res = await fetch("/api/guide/availability", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -93,10 +143,11 @@ export function GuideAvailabilityCalendar({ onSave }: AvailabilityCalendarProps)
             action: 'available'
           })
         })
+        ok = ok && res.ok
       }
 
       if (unavailableDates.size > 0) {
-        await fetch("/api/guide/availability", {
+        const res = await fetch("/api/guide/availability", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -104,17 +155,23 @@ export function GuideAvailabilityCalendar({ onSave }: AvailabilityCalendarProps)
             action: 'unavailable'
           })
         })
+        ok = ok && res.ok
       }
 
-      if (onSave) {
-        onSave(Array.from(availableDates), Array.from(unavailableDates))
+      if (!ok) {
+        setFeedback({ type: "error", message: "Failed to save. Please try again." })
+      } else {
+        if (onSave) {
+          onSave(Array.from(availableDates), Array.from(unavailableDates))
+        }
+        setFeedback({ type: "success", message: "Availability updated" })
       }
-
-      alert("Availability updated successfully!")
     } catch (error) {
       console.error("Error saving availability:", error)
-      alert("Error saving availability")
+      setFeedback({ type: "error", message: "Failed to save. Please try again." })
     }
+    setSaving(false)
+    setTimeout(() => setFeedback(null), 2500)
   }
 
   const { daysInMonth, startDayOfWeek } = getDaysInMonth(currentDate)
@@ -128,84 +185,179 @@ export function GuideAvailabilityCalendar({ onSave }: AvailabilityCalendarProps)
     const dateStr = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
     const isAvailable = availableDates.has(dateStr)
     const isUnavailable = unavailableDates.has(dateStr)
-    const isPast = new Date(dateStr) < new Date(new Date().setHours(0, 0, 0, 0))
+    const booking = bookedByDate.get(dateStr)
+    const isBooked = Boolean(booking)
+    const isPast = new Date(dateStr) < todayStart()
 
     days.push(
       <button
         key={day}
-        onClick={() => !isPast && toggleDate(dateStr)}
-        onContextMenu={(e) => {
-          e.preventDefault()
-          !isPast && markUnavailable(dateStr)
-        }}
-        disabled={isPast}
+        type="button"
+        onClick={() => !isPast && !isBooked && cycleDate(dateStr)}
+        disabled={isPast || isBooked}
+        title={
+          isBooked
+            ? `Booked — ${booking?.trekker?.name || "Trekker"}${booking?.guides?.trek_name ? `, ${booking.guides.trek_name}` : ""}`
+            : undefined
+        }
         className={`
-          p-2 rounded-lg text-sm font-medium transition-all
-          ${isPast ? 'text-muted-foreground cursor-not-allowed opacity-50' : 'cursor-pointer hover:bg-muted'}
-          ${isAvailable ? 'bg-green-100 text-green-800 hover:bg-green-200' : ''}
-          ${isUnavailable ? 'bg-red-100 text-red-800 hover:bg-red-200' : ''}
-          ${!isAvailable && !isUnavailable && !isPast ? 'bg-muted/50' : ''}
+          relative p-2 rounded-lg text-sm font-medium border transition-colors duration-150
+          ${isPast && !isBooked ? 'text-muted-foreground border-transparent cursor-not-allowed opacity-40' : ''}
+          ${!isPast && !isBooked ? 'cursor-pointer hover:bg-muted' : ''}
+          ${isBooked ? `bg-status-confirmed/15 text-status-confirmed border-status-confirmed/25 cursor-help ${isPast ? 'opacity-60' : ''}` : ''}
+          ${isAvailable && !isBooked ? 'bg-primary/15 text-primary border-primary/25 hover:bg-primary/25' : ''}
+          ${isUnavailable && !isBooked ? 'bg-destructive/15 text-destructive border-destructive/25 hover:bg-destructive/25' : ''}
+          ${!isAvailable && !isUnavailable && !isBooked && !isPast ? 'bg-muted/50 border-transparent' : ''}
         `}
-        title={isUnavailable ? 'Right-click to mark available' : 'Click to toggle, right-click to mark unavailable'}
       >
         {day}
+        {isBooked && (
+          <MapPin className="absolute -top-1 -right-1 size-3 text-status-confirmed" />
+        )}
       </button>
     )
   }
 
-  if (loading) {
-    return <div className="text-center">Loading calendar...</div>
-  }
-
   return (
-    <Card>
-      <CardHeader>
-        <div className="flex items-center justify-between">
-          <CardTitle>Availability Calendar</CardTitle>
-          <div className="flex items-center gap-2">
-            <Button size="sm" variant="outline" onClick={() => setCurrentDate(new Date(currentDate.setMonth(currentDate.getMonth() - 1)))}>
-              <ChevronLeft className="size-4" />
-            </Button>
-            <span className="font-medium">
-              {currentDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
-            </span>
-            <Button size="sm" variant="outline" onClick={() => setCurrentDate(new Date(currentDate.setMonth(currentDate.getMonth() + 1)))}>
-              <ChevronRight className="size-4" />
-            </Button>
-          </div>
-        </div>
-      </CardHeader>
-      <CardContent>
-        <div className="grid grid-cols-7 gap-1 mb-2">
-          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
-            <div key={day} className="text-center text-sm font-medium text-muted-foreground">
-              {day}
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+    >
+      <Card className="border-border/60 bg-card/60 backdrop-blur-xl">
+        <CardHeader>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <CardTitle className="flex items-center gap-2 text-sm font-semibold">
+              <CalendarRange className="size-4 text-primary" />
+              Availability Calendar
+            </CardTitle>
+            <div className="flex items-center gap-2">
+              <Button
+                size="sm"
+                variant="outline"
+                className="border-border/60"
+                onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1))}
+              >
+                <ChevronLeft className="size-4" />
+              </Button>
+              <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+                {currentDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+              </span>
+              <Button
+                size="sm"
+                variant="outline"
+                className="border-border/60"
+                onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1))}
+              >
+                <ChevronRight className="size-4" />
+              </Button>
             </div>
-          ))}
-        </div>
-        <div className="grid grid-cols-7 gap-1">
-          {days}
-        </div>
-        <div className="flex items-center gap-4 mt-4 text-sm">
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded bg-green-100" />
-            <span>Available</span>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded bg-red-100" />
-            <span>Unavailable</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded bg-muted/50" />
-            <span>Not set</span>
-          </div>
-        </div>
-        <div className="mt-4 flex gap-2">
-          <Button onClick={handleSave} className="flex-1">
-            Save Availability
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
+        </CardHeader>
+        <CardContent>
+          {loading ? (
+            <div className="grid grid-cols-7 gap-1">
+              {Array.from({ length: 35 }).map((_, i) => (
+                <div key={i} className="aspect-square animate-pulse rounded-lg bg-muted/40" />
+              ))}
+            </div>
+          ) : (
+            <>
+              <div className="grid grid-cols-7 gap-1 mb-2">
+                {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
+                  <div key={day} className="text-center font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                    {day}
+                  </div>
+                ))}
+              </div>
+              <div className="grid grid-cols-7 gap-1">
+                {days}
+              </div>
+
+              <div className="flex flex-wrap items-center gap-4 mt-4 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <div className="size-3.5 rounded border border-primary/25 bg-primary/15" />
+                  <span>Available</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="size-3.5 rounded border border-destructive/25 bg-destructive/15" />
+                  <span>Unavailable</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="size-3.5 rounded border border-status-confirmed/25 bg-status-confirmed/15" />
+                  <span>Booked</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="size-3.5 rounded bg-muted/50" />
+                  <span>Not set</span>
+                </div>
+              </div>
+
+              <AnimatePresence>
+                {showBlockRange && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="mt-4 flex flex-wrap items-end gap-2 rounded-xl border border-border/40 bg-background/40 p-3">
+                      <div className="flex-1 min-w-[120px]">
+                        <label className="mb-1 block font-mono text-[9px] uppercase tracking-widest text-muted-foreground">From</label>
+                        <input
+                          type="date"
+                          value={rangeStart}
+                          onChange={(e) => setRangeStart(e.target.value)}
+                          className="w-full rounded-lg border border-border/60 bg-background/60 px-3 py-1.5 text-sm text-foreground outline-none focus:border-primary/40"
+                        />
+                      </div>
+                      <div className="flex-1 min-w-[120px]">
+                        <label className="mb-1 block font-mono text-[9px] uppercase tracking-widest text-muted-foreground">To</label>
+                        <input
+                          type="date"
+                          value={rangeEnd}
+                          onChange={(e) => setRangeEnd(e.target.value)}
+                          className="w-full rounded-lg border border-border/60 bg-background/60 px-3 py-1.5 text-sm text-foreground outline-none focus:border-primary/40"
+                        />
+                      </div>
+                      <Button size="sm" onClick={blockRange} disabled={!rangeStart || !rangeEnd}>
+                        Mark Unavailable
+                      </Button>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              <div className="mt-4 flex flex-wrap items-center gap-2">
+                <Button onClick={handleSave} disabled={saving} className="flex-1 min-w-[140px]">
+                  {saving ? "Saving..." : "Save Availability"}
+                </Button>
+                <Button
+                  variant="outline"
+                  className="border-border/60"
+                  onClick={() => setShowBlockRange((v) => !v)}
+                >
+                  <CalendarRange className="size-3.5" />
+                  Block a Range
+                </Button>
+                <AnimatePresence>
+                  {feedback && (
+                    <motion.span
+                      initial={{ opacity: 0, x: -8 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0 }}
+                      className={`flex items-center gap-1 font-mono text-xs ${feedback.type === "success" ? "text-primary" : "text-destructive"}`}
+                    >
+                      {feedback.type === "success" ? <CheckCircle2 className="size-3.5" /> : <AlertCircle className="size-3.5" />}
+                      {feedback.message}
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              </div>
+            </>
+          )}
+        </CardContent>
+      </Card>
+    </motion.div>
   )
 }

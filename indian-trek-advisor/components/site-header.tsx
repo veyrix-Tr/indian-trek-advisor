@@ -20,12 +20,23 @@ import { createClient } from "@/utils/supabase/client"
 import { AuthGatedLink } from "@/components/auth-gated-link"
 import { useAuthGuard } from "@/hooks/use-auth-guard"
 
-const NAV_LINKS = [
+const BASE_LINKS = [
   { href: "/", label: "Home" },
   { href: "/treks", label: "Treks" },
+]
+
+const TREKKER_LINKS = [
   { href: "/treks?section=kailash", label: "Kailash Yatra" },
   { href: "/treks?section=panch-kedar", label: "Panch Kedar" },
   { href: "/gear", label: "Gear Rental" },
+]
+
+const GUIDE_LINKS = [
+  { href: "/guide/dashboard", label: "My Dashboard" },
+]
+
+const ADMIN_LINKS = [
+  { href: "/admin", label: "Admin Panel" },
 ]
 
 export function SiteHeader() {
@@ -63,7 +74,7 @@ export function SiteHeader() {
     router.refresh()
   }
 
-  function isActive(link: (typeof NAV_LINKS)[number]): boolean {
+  function isActive(link: { href: string; label: string }): boolean {
     if (link.href === "/") return pathname === "/"
     const [path, qs] = link.href.split("?")
     if (path !== pathname) return false
@@ -92,7 +103,10 @@ export function SiteHeader() {
           aria-label="Main navigation"
           className="hidden items-center gap-1 lg:flex"
         >
-          {NAV_LINKS.map((link) => (
+          {[
+            ...BASE_LINKS,
+            ...(accountType === "guide" ? GUIDE_LINKS : accountType === "admin" ? ADMIN_LINKS : TREKKER_LINKS),
+          ].map((link) => (
             <AuthGatedLink
               key={link.label}
               href={link.href}
@@ -183,6 +197,16 @@ export function SiteHeader() {
                           Admin View
                         </Link>
                       )}
+                      {accountType === "guide" && (
+                        <Link
+                          href="/guide/dashboard"
+                          onClick={() => setProfileOpen(false)}
+                          className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-primary/80 transition-colors hover:bg-primary/15 hover:text-primary"
+                        >
+                          <Mountain className="size-4" />
+                          Guide Dashboard
+                        </Link>
+                      )}
                       <button
                         onClick={handleSignOut}
                         className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-white/60 transition-colors hover:bg-red-500/15 hover:text-red-400"
@@ -229,7 +253,10 @@ export function SiteHeader() {
               aria-label="Mobile navigation"
               className="flex flex-col gap-1 px-4"
             >
-              {NAV_LINKS.map((link) => (
+              {[
+                ...BASE_LINKS,
+                ...(accountType === "guide" ? GUIDE_LINKS : accountType === "admin" ? ADMIN_LINKS : TREKKER_LINKS),
+              ].map((link) => (
                 <AuthGatedLink
                   key={link.label}
                   href={link.href}

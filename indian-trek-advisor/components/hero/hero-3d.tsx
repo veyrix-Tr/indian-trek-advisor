@@ -76,7 +76,7 @@ function Ridge({
 
 // ── snow particles ─────────────────────────────────────────────────────
 
-function Snow({ count = 600 }: { count?: number }) {
+function Snow({ count = 780 }: { count?: number }) {
   const ref = useRef<THREE.Points>(null)
   const positions = useMemo(() => {
     const arr = new Float32Array(count * 3)
@@ -113,7 +113,7 @@ function Snow({ count = 600 }: { count?: number }) {
       </bufferGeometry>
       <pointsMaterial
         color="#ffffff"
-        size={0.1}
+        size={0.14}
         transparent
         opacity={0.7}
         sizeAttenuation
@@ -469,10 +469,13 @@ export default function Hero3D({ reduced = false }: { reduced?: boolean }) {
       <color attach="background" args={["#0c110e"]} />
       <fog attach="fog" args={["#0c110e", 14, 52]} />
 
-      <hemisphereLight args={["#8aa8a0", "#1a201c", 1.2]} />
-      <directionalLight position={[-14, 18, -8]} intensity={2.0} color="#d4e8e0" />
-      <directionalLight position={[10, 6, 4]} intensity={0.6} color="#a8d4c0" />
-      <directionalLight position={[0, -2, 10]} intensity={0.4} color="#c8dcd4" />
+      <hemisphereLight args={["#8aa8a0", "#1a201c", 1.3]} />
+      <directionalLight position={[-14, 18, -8]} intensity={2.2} color="#d4e8e0" />
+      <directionalLight position={[10, 6, 4]} intensity={0.7} color="#a8d4c0" />
+      <directionalLight position={[0, -2, 10]} intensity={0.45} color="#c8dcd4" />
+      <directionalLight position={[-30, 8, 10]} intensity={1.6} color="#bcd8cc" />
+      <directionalLight position={[30, 8, -10]} intensity={0.9} color="#bcd8cc" />
+      <ambientLight intensity={0.15} color="#2a332c" />
 
       {/* Sky elements */}
       <StarField />
@@ -481,9 +484,9 @@ export default function Hero3D({ reduced = false }: { reduced?: boolean }) {
       <ShootingStar />
 
       {/* Far, mid, near ridges — tall solid walls extending far below */}
-      <Ridge z={-38} seed={7.3} color="#1c2e25" amplitude={9} baseY={-10} />
-      <Ridge z={-26} seed={3.1} color="#1e3228" amplitude={7} baseY={-8} />
-      <Ridge z={-14} seed={11.7} color="#162c20" amplitude={5} baseY={-6} />
+      <Ridge z={-38} seed={7.3} color="#243b30" amplitude={9} baseY={-10} />
+      <Ridge z={-26} seed={3.1} color="#2a4438" amplitude={7} baseY={-8} />
+      <Ridge z={-14} seed={11.7} color="#1e352a" amplitude={5} baseY={-6} />
 
       {/* Trees on the near ridge */}
       <TreeScatter />

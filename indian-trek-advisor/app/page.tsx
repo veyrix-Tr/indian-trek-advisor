@@ -7,6 +7,7 @@ import { TrekCard } from "@/components/trek-card"
 import { SectionHeading, BandLink } from "@/components/section-band"
 import { GearTeaserLink } from "@/components/gear-teaser-link"
 import { AuthRequiredHandler } from "@/components/auth-required-handler"
+import { RoleGuard } from "@/components/role-guard"
 import {
   getFeaturedTreks,
   getKailashTreks,
@@ -55,62 +56,68 @@ export default function HomePage() {
       </section>
 
       {/* Kailash Yatra band */}
-      <section className="border-y border-border bg-card/40">
-        <div className="mx-auto flex max-w-7xl flex-col gap-10 px-4 py-20 md:px-6 md:py-24">
+      <RoleGuard hideFor={["guide"]}>
+        <section className="border-y border-border bg-card/40">
+          <div className="mx-auto flex max-w-7xl flex-col gap-10 px-4 py-20 md:px-6 md:py-24">
+            <div className="flex flex-wrap items-end justify-between gap-6">
+              <SectionHeading
+                eyebrow="Sacred Circuits"
+                title="Kailash Yatra"
+                description="The great pilgrimage circuits — Adi Kailash, Om Parvat and the sacred Kailash routes, with permits, itineraries and acclimatisation guidance."
+              />
+              <BandLink href="/treks?section=kailash" label="Explore the Circuit" />
+            </div>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {kailash.map((trek, i) => (
+                <TrekCard key={trek.id} trek={trek} index={i} />
+              ))}
+            </div>
+          </div>
+        </section>
+      </RoleGuard>
+
+      {/* Panch Kedar band */}
+      <RoleGuard hideFor={["guide"]}>
+        <section className="mx-auto flex max-w-7xl flex-col gap-10 px-4 py-20 md:px-6 md:py-24">
           <div className="flex flex-wrap items-end justify-between gap-6">
             <SectionHeading
-              eyebrow="Sacred Circuits"
-              title="Kailash Yatra"
-              description="The great pilgrimage circuits — Adi Kailash, Om Parvat and the sacred Kailash routes, with permits, itineraries and acclimatisation guidance."
+              eyebrow="Five Temples of Shiva"
+              title="Panch Kedar Yatra"
+              description="Kedarnath, Tungnath, Rudranath, Madhyamaheshwar and Kalpeshwar — the five sacred Kedar shrines, each reached on foot through Garhwal's high country."
             />
-            <BandLink href="/treks?section=kailash" label="Explore the Circuit" />
+            <BandLink href="/treks?section=panch-kedar" label="Walk the Five Kedars" />
           </div>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {kailash.map((trek, i) => (
+            {panchKedar.map((trek, i) => (
               <TrekCard key={trek.id} trek={trek} index={i} />
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Panch Kedar band */}
-      <section className="mx-auto flex max-w-7xl flex-col gap-10 px-4 py-20 md:px-6 md:py-24">
-        <div className="flex flex-wrap items-end justify-between gap-6">
-          <SectionHeading
-            eyebrow="Five Temples of Shiva"
-            title="Panch Kedar Yatra"
-            description="Kedarnath, Tungnath, Rudranath, Madhyamaheshwar and Kalpeshwar — the five sacred Kedar shrines, each reached on foot through Garhwal's high country."
-          />
-          <BandLink href="/treks?section=panch-kedar" label="Walk the Five Kedars" />
-        </div>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {panchKedar.map((trek, i) => (
-            <TrekCard key={trek.id} trek={trek} index={i} />
-          ))}
-        </div>
-      </section>
+        </section>
+      </RoleGuard>
 
       {/* Gear rental teaser */}
-      <section className="border-t border-border bg-card/40">
-        <div className="mx-auto flex max-w-7xl flex-col items-start gap-6 px-4 py-20 md:flex-row md:items-center md:justify-between md:px-6 md:py-24">
-          <div className="flex items-start gap-5">
-            <div className="flex size-14 shrink-0 items-center justify-center rounded-2xl border border-primary/30 bg-primary/10 text-primary">
-              <Tent className="size-7" aria-hidden="true" />
+      <RoleGuard hideFor={["guide"]}>
+        <section className="border-t border-border bg-card/40">
+          <div className="mx-auto flex max-w-7xl flex-col items-start gap-6 px-4 py-20 md:flex-row md:items-center md:justify-between md:px-6 md:py-24">
+            <div className="flex items-start gap-5">
+              <div className="flex size-14 shrink-0 items-center justify-center rounded-2xl border border-primary/30 bg-primary/10 text-primary">
+                <Tent className="size-7" aria-hidden="true" />
+              </div>
+              <div className="flex flex-col gap-2">
+                <h2 className="text-balance text-2xl font-bold tracking-tight md:text-3xl">
+                  Rent gear near your trailhead
+                </h2>
+                <p className="max-w-xl text-pretty leading-relaxed text-muted-foreground">
+                  Tents, sleeping bags, crampons and more from local rental shops
+                  in Sankri, Manali, Leh and beyond — travel light, gear up at
+                  base camp.
+                </p>
+              </div>
             </div>
-            <div className="flex flex-col gap-2">
-              <h2 className="text-balance text-2xl font-bold tracking-tight md:text-3xl">
-                Rent gear near your trailhead
-              </h2>
-              <p className="max-w-xl text-pretty leading-relaxed text-muted-foreground">
-                Tents, sleeping bags, crampons and more from local rental shops
-                in Sankri, Manali, Leh and beyond — travel light, gear up at
-                base camp.
-              </p>
-            </div>
+            <GearTeaserLink />
           </div>
-          <GearTeaserLink />
-        </div>
-      </section>
+        </section>
+      </RoleGuard>
     </main>
   )
 }

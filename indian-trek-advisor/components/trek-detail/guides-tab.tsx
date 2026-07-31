@@ -2,12 +2,17 @@
 
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
-import { MapPin, Star } from "lucide-react"
+import { MapPin, Star, BadgeCheck, AlertCircle, CheckCircle2, CalendarX } from "lucide-react"
 import type { Trek } from "@/lib/data"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { useOverlays } from "@/components/overlays/overlay-provider"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 
 interface Guide {
   id: string
@@ -23,19 +28,24 @@ interface Guide {
     total_ratings: number
     base_location?: string
     known_treks: string[]
+    verified?: boolean
+    profile_photo_url?: string
   }
   guide_trek_associations: {
     base_rate: number
   }
+  unavailable?: boolean
 }
 
 export function GuidesTab({ trek }: { trek: Trek }) {
-  const { openComingSoon } = useOverlays()
   const [guides, setGuides] = useState<Guide[]>([])
   const [selectedDate, setSelectedDate] = useState("")
   const [loading, setLoading] = useState(false)
   const [selectedGuide, setSelectedGuide] = useState<Guide | null>(null)
   const [showBookingModal, setShowBookingModal] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [bookingError, setBookingError] = useState<string | null>(null)
+  const [bookingSuccess, setBookingSuccess] = useState(false)
 
   useEffect(() => {
     fetchGuides()
@@ -58,11 +68,15 @@ export function GuidesTab({ trek }: { trek: Trek }) {
 
   const handleBookGuide = (guide: Guide) => {
     setSelectedGuide(guide)
+    setBookingError(null)
+    setBookingSuccess(false)
     setShowBookingModal(true)
   }
 
   const submitBooking = async (notes: string) => {
     if (!selectedGuide || !selectedDate) return
+    setSubmitting(true)
+    setBookingError(null)
 
     try {
       const response = await fetch("/api/bookings/create", {
@@ -77,20 +91,21 @@ export function GuidesTab({ trek }: { trek: Trek }) {
       })
 
       if (response.ok) {
-        setShowBookingModal(false)
-        openComingSoon({
-          title: "Booking Request Sent",
-          message: "Your booking request has been sent to the guide. They will review and approve it shortly."
-        })
+        setBookingSuccess(true)
+        fetchGuides()
       } else {
         const data = await response.json()
-        alert(data.error || "Error creating booking. Please try again.")
+        setBookingError(data.error || "Error creating booking. Please try again.")
       }
     } catch (error) {
       console.error("Error creating booking:", error)
-      alert("Error creating booking. Please try again.")
+      setBookingError("Network error. Please try again.")
     }
+    setSubmitting(false)
   }
+
+  const availableGuides = guides.filter((g) => !g.unavailable)
+  const unavailableGuides = guides.filter((g) => g.unavailable)
 
   return (
     <div className="max-w-3xl space-y-8">
@@ -107,91 +122,201 @@ export function GuidesTab({ trek }: { trek: Trek }) {
 
       {/* Guides List */}
       {loading ? (
-        <div className="text-center text-muted-foreground">Loading guides...</div>
+        <div className="space-y-4">
+          {[1, 2].map((i) => (
+            <div key={i} className="animate-pulse rounded-xl border border-border bg-card p-6">
+              <div className="h-4 w-1/3 rounded bg-muted/50" />
+              <div className="mt-3 h-3 w-1/4 rounded bg-muted/40" />
+              <div className="mt-2 h-3 w-1/5 rounded bg-muted/40" />
+            </div>
+          ))}
+        </div>
       ) : guides.length > 0 ? (
         <div className="space-y-4">
-          <h3 className="font-semibold">Available Guides</h3>
-          {guides.map((guide) => (
-            <motion.div
-              key={guide.id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="rounded-xl border border-border bg-card p-6"
-            >
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <h4 className="font-semibold">{guide.profiles.name}</h4>
-                    <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                      <Star className="size-4 fill-yellow-400 text-yellow-400" />
-                      <span>{guide.guides.rating.toFixed(1)}</span>
-                      <span>({guide.guides.total_ratings})</span>
-                    </div>
-                  </div>
-                  {guide.guides.experience && (
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      Experience: {guide.guides.experience}
-                    </p>
-                  )}
-                  {guide.guides.base_location && (
-                    <p className="flex items-center gap-1 mt-1 text-sm text-muted-foreground">
-                      <MapPin className="size-3" />
-                      {guide.guides.base_location}
-                    </p>
-                  )}
-                  <p className="mt-2 font-semibold">₹{guide.guide_trek_associations.base_rate}/day</p>
-                </div>
-                <Button onClick={() => handleBookGuide(guide)}>
-                  Book Guide
-                </Button>
-              </div>
-            </motion.div>
+          <h3 className="font-semibold">
+            {selectedDate ? `Available Guides — ${availableGuides.length}` : "Guides for This Trek"}
+          </h3>
+          {availableGuides.map((guide) => (
+            <GuideCard key={guide.id} guide={guide} onBook={() => handleBookGuide(guide)} />
           ))}
+
+          {unavailableGuides.length > 0 && (
+            <div className="space-y-3 pt-2">
+              <p className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                <CalendarX className="size-3" />
+                Unavailable on this date
+              </p>
+              {unavailableGuides.map((guide) => (
+                <GuideCard key={guide.id} guide={guide} unavailable />
+              ))}
+            </div>
+          )}
         </div>
       ) : (
         <div className="rounded-xl border border-border bg-card p-8 text-center">
           <p className="text-muted-foreground">
-            {selectedDate ? "No guides available on this date" : "Select a date to see available guides"}
+            {selectedDate ? "No guides associated with this trek yet" : "Select a date to see available guides"}
           </p>
         </div>
       )}
 
-      {/* Booking Modal */}
-      {showBookingModal && selectedGuide && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="rounded-xl border border-border bg-card p-6 max-w-md w-full mx-4"
-          >
-            <h3 className="text-lg font-semibold mb-4">Confirm Booking</h3>
-            <div className="space-y-3 mb-4">
-              <p><strong>Guide:</strong> {selectedGuide.profiles.name}</p>
-              <p><strong>Date:</strong> {selectedDate}</p>
-              <p><strong>Rate:</strong> ₹{selectedGuide.guide_trek_associations.base_rate}/day</p>
-            </div>
-            <Textarea
-              placeholder="Add any notes for the guide..."
-              className="mb-4"
-              id="booking-notes"
-            />
-            <div className="flex gap-2">
-              <Button variant="outline" onClick={() => setShowBookingModal(false)} className="flex-1">
-                Cancel
-              </Button>
-              <Button
-                onClick={() => {
-                  const notes = (document.getElementById('booking-notes') as HTMLTextAreaElement)?.value || ''
-                  submitBooking(notes)
-                }}
-                className="flex-1"
-              >
-                Confirm Booking
-              </Button>
-            </div>
-          </motion.div>
-        </div>
-      )}
+      {/* Booking Dialog */}
+      <Dialog
+        open={showBookingModal}
+        onOpenChange={(open) => {
+          setShowBookingModal(open)
+          if (!open) setSelectedGuide(null)
+        }}
+      >
+        <DialogContent className="max-w-md border-border bg-card">
+          {selectedGuide && (
+            <>
+              <DialogHeader>
+                <DialogTitle>{bookingSuccess ? "Request Sent" : "Confirm Booking"}</DialogTitle>
+              </DialogHeader>
+
+              {bookingSuccess ? (
+                <div className="flex flex-col items-center gap-3 py-4 text-center">
+                  <div className="flex size-12 items-center justify-center rounded-full bg-primary/10">
+                    <CheckCircle2 className="size-6 text-primary" />
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    Your request has been sent to <strong className="text-foreground">{selectedGuide.profiles.name}</strong>.
+                    They typically respond within 48 hours — you&apos;ll be notified once they accept.
+                  </p>
+                  <Button
+                    className="mt-2 w-full"
+                    onClick={() => {
+                      setShowBookingModal(false)
+                      setSelectedGuide(null)
+                    }}
+                  >
+                    Done
+                  </Button>
+                </div>
+              ) : (
+                <>
+                  <div className="space-y-3 mb-4">
+                    <p><strong>Guide:</strong> {selectedGuide.profiles.name}</p>
+                    <p><strong>Date:</strong> {selectedDate}</p>
+                    <p><strong>Rate:</strong> ₹{selectedGuide.guide_trek_associations.base_rate.toLocaleString("en-IN")}/day</p>
+                  </div>
+                  <Textarea
+                    placeholder="Add any notes for the guide..."
+                    className="mb-3"
+                    id="booking-notes"
+                  />
+                  {bookingError && (
+                    <motion.p
+                      initial={{ opacity: 0, y: -6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="mb-3 flex items-center gap-1.5 text-xs text-destructive"
+                    >
+                      <AlertCircle className="size-3.5 shrink-0" />
+                      {bookingError}
+                    </motion.p>
+                  )}
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      onClick={() => setShowBookingModal(false)}
+                      className="flex-1"
+                      disabled={submitting}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        const notes = (document.getElementById('booking-notes') as HTMLTextAreaElement)?.value || ''
+                        submitBooking(notes)
+                      }}
+                      className="flex-1"
+                      disabled={submitting}
+                    >
+                      {submitting ? "Sending..." : "Confirm Booking"}
+                    </Button>
+                  </div>
+                </>
+              )}
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
+  )
+}
+
+function GuideCard({
+  guide,
+  unavailable = false,
+  onBook,
+}: {
+  guide: Guide
+  unavailable?: boolean
+  onBook?: () => void
+}) {
+  const initial = guide.profiles.name?.charAt(0).toUpperCase() || "?"
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className={`rounded-xl border border-border bg-card p-6 ${unavailable ? "opacity-50" : ""}`}
+    >
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex flex-1 items-start gap-3">
+          {guide.guides.profile_photo_url ? (
+            <img
+              src={guide.guides.profile_photo_url}
+              alt={guide.profiles.name}
+              className="size-11 shrink-0 rounded-full object-cover"
+            />
+          ) : (
+            <div className="flex size-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-amber-600 text-sm font-bold text-white">
+              {initial}
+            </div>
+          )}
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-2">
+              <h4 className="font-semibold">{guide.profiles.name}</h4>
+              {guide.guides.verified && (
+                <span className="flex items-center gap-0.5 rounded-full bg-primary/10 px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-wider text-primary">
+                  <BadgeCheck className="size-3" />
+                  Verified
+                </span>
+              )}
+              <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                <Star className="size-4 fill-yellow-400 text-yellow-400" />
+                <span>{guide.guides.rating.toFixed(1)}</span>
+                <span>({guide.guides.total_ratings})</span>
+              </div>
+            </div>
+            {guide.guides.experience && (
+              <p className="mt-1 text-sm text-muted-foreground">
+                Experience: {guide.guides.experience}
+              </p>
+            )}
+            {guide.guides.base_location && (
+              <p className="flex items-center gap-1 mt-1 text-sm text-muted-foreground">
+                <MapPin className="size-3" />
+                {guide.guides.base_location}
+              </p>
+            )}
+            <p className="mt-2 font-semibold">
+              ₹{guide.guide_trek_associations.base_rate.toLocaleString("en-IN")}/day
+            </p>
+          </div>
+        </div>
+        {unavailable ? (
+          <span className="shrink-0 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+            Unavailable
+          </span>
+        ) : (
+          <Button onClick={onBook} className="shrink-0">
+            Book Guide
+          </Button>
+        )}
+      </div>
+    </motion.div>
   )
 }

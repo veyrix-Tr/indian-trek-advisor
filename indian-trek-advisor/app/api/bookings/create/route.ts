@@ -54,7 +54,7 @@ export async function POST(request: Request) {
       date: booking_date,
       status: 'booked',
       booking_id: booking.id
-    })
+    }, { onConflict: "guide_id,date" })
 
   // Send SMS notification to guide
   const { data: guideData } = await supabase

@@ -19,9 +19,7 @@ import {
   Leaf,
   MessageCircle,
   Mountain,
-  PartyPopper,
   Route,
-  Search,
   Sparkles,
   Sunrise,
   Tent,
@@ -33,7 +31,7 @@ import {
 import type { GuideOverlayKind } from "./overlay-provider"
 import { useOverlays } from "./overlay-provider"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { getFeaturedTreks, getTrekSlug, DIFFICULTY_META } from "@/lib/data"
 
 /* ------------------------------------------------------------------ */
 /* Content (ported verbatim from the client's original platform copy)  */
@@ -823,7 +821,7 @@ export function GroupGuide({ onClose }: { onClose?: () => void }) {
 /* ------------------------------------------------------------------ */
 
 export function FindGuide({ onClose }: { onClose?: () => void }) {
-  const { openComingSoon } = useOverlays()
+  const featuredTreks = getFeaturedTreks()
 
   return (
     <article className="mx-auto max-w-3xl px-4 pb-20 pt-24 md:px-6">
@@ -841,77 +839,65 @@ export function FindGuide({ onClose }: { onClose?: () => void }) {
           Find a Local Guide
         </h1>
         <p className="mx-auto mt-4 max-w-xl text-pretty leading-relaxed text-muted-foreground">
-          Independent local guides — not agency staff. They live in the mountains, work
-          directly with solo trekkers and small private groups, and are available on your
-          schedule. No packages, no minimums.
+          Verified local guides — not agency staff. They live in the mountains, work directly
+          with solo trekkers and small private groups, and are available on your schedule.
+          Pick your trek below to see who&apos;s available.
         </p>
       </motion.header>
 
-      {/* Search filters (UI) */}
+      {/* Trek picker */}
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.15, duration: 0.5 }}
-        className="mt-10 grid gap-3 rounded-xl border border-border bg-card p-5 sm:grid-cols-3"
+        className="mt-10 grid gap-3 sm:grid-cols-2"
       >
-        <div className="relative sm:col-span-3">
-          <Search
-            className="absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
-            aria-hidden="true"
-          />
-          <Input
-            type="search"
-            placeholder="Search by guide name..."
-            aria-label="Search guides by name"
-            className="h-11 rounded-full pl-10"
-          />
-        </div>
-        <Input placeholder="Region (e.g. Uttarakhand)" aria-label="Filter by region" className="h-11 rounded-full" />
-        <Input placeholder="Trek (e.g. Kedarkantha)" aria-label="Filter by trek" className="h-11 rounded-full sm:col-span-2" />
+        {featuredTreks.map((trek) => {
+          const diff = DIFFICULTY_META[trek.difficulty]
+          return (
+            <Link
+              key={trek.id}
+              href={`/treks/${getTrekSlug(trek)}?tab=guides`}
+              onClick={onClose}
+              className="group flex items-center justify-between gap-3 rounded-xl border border-border bg-card p-4 transition-colors hover:border-primary/40 hover:bg-primary/5"
+            >
+              <div className="min-w-0">
+                <p className="truncate font-semibold text-foreground">{trek.name}</p>
+                <p className="mt-0.5 flex items-center gap-2 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                  <span className={diff?.className}>{diff?.label}</span>
+                  <span>·</span>
+                  <span>{trek.days}d</span>
+                  <span>·</span>
+                  <span>{trek.state}</span>
+                </p>
+              </div>
+              <Users className="size-4 shrink-0 text-muted-foreground transition-colors group-hover:text-primary" aria-hidden="true" />
+            </Link>
+          )
+        })}
       </motion.div>
 
-      {/* Onboarding state */}
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, duration: 0.5 }}
-        className="mt-6 rounded-xl border border-border bg-card p-10 text-center"
+        className="mt-6 text-center"
       >
-        <div className="mx-auto flex size-14 items-center justify-center rounded-full bg-primary/10">
-          <PartyPopper className="size-6 text-primary" aria-hidden="true" />
-        </div>
-        <h2 className="mt-4 text-xl font-bold text-foreground">Guides Are Being Onboarded</h2>
-        <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-muted-foreground">
-          We&apos;re verifying independent local guides across Uttarakhand, Himachal, Kashmir,
-          Ladakh, and the Northeast right now. Every guide is ID-checked with confirmed trail
-          experience before they appear here.
+        <Button
+          variant="outline"
+          className="rounded-full bg-transparent"
+          nativeButton={false}
+          render={
+            <Link href="/treks" onClick={onClose}>
+              <Mountain className="size-4" aria-hidden="true" />
+              Browse All 110 Treks
+            </Link>
+          }
+        />
+        <p className="mt-3 text-xs text-muted-foreground">
+          Every trek page has a Local Guides tab with verified profiles, ratings, and
+          date-based availability.
         </p>
-        <div className="mt-6 flex flex-wrap justify-center gap-3">
-          <Button
-            className="rounded-full"
-            onClick={() =>
-              openComingSoon({
-                title: "Guide Directory",
-                message:
-                  "The guide directory launches soon. Leave your email and we'll notify you the moment verified local guides go live in your region.",
-              })
-            }
-          >
-            <BadgeCheck className="size-4" aria-hidden="true" />
-            Notify Me When Live
-          </Button>
-          <Button
-            variant="outline"
-            className="rounded-full bg-transparent"
-            nativeButton={false}
-            render={
-              <Link href="/treks" onClick={onClose}>
-                <Mountain className="size-4" aria-hidden="true" />
-                Browse Trails Meanwhile
-              </Link>
-            }
-          />
-        </div>
       </motion.div>
     </article>
   )

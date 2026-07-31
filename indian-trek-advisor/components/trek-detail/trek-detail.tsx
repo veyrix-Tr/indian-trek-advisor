@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { BackButton } from "@/components/ui/back-button"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import {
   ArrowLeft,
@@ -62,6 +62,13 @@ export function TrekDetail({
   const [tab, setTab] = useState<TabId>("overview")
   const { openComingSoon } = useOverlays()
   const diff = DIFFICULTY_META[trek.difficulty]
+
+  useEffect(() => {
+    const requested = new URLSearchParams(window.location.search).get("tab")
+    if (requested && TABS.some((t) => t.id === requested)) {
+      setTab(requested as TabId)
+    }
+  }, [])
 
   return (
     <main className="pt-16">

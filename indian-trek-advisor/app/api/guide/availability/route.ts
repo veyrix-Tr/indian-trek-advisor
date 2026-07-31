@@ -23,7 +23,7 @@ export async function POST(request: Request) {
 
   const { data, error } = await supabase
     .from("guide_availability")
-    .upsert(updates)
+    .upsert(updates, { onConflict: "guide_id,date" })
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 })

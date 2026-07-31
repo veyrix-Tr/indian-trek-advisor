@@ -24,7 +24,8 @@ export async function GET(
     return NextResponse.json({ error: assocError.message }, { status: 500 })
   }
 
-  // Filter by availability if date provided
+  // Mark (not filter) guides unavailable on the selected date, so the
+  // trekker sees why the list is shorter instead of guides silently vanishing.
   let guides = associations || []
   if (date) {
     const { data: availability } = await supabase
@@ -33,8 +34,8 @@ export async function GET(
       .eq("date", date)
       .in("status", ['booked', 'unavailable'])
 
-    const unavailableGuideIds = availability?.map(a => a.guide_id) || []
-    guides = guides.filter(g => !unavailableGuideIds.includes(g.guides.id))
+    const unavailableGuideIds = new Set(availability?.map(a => a.guide_id) || [])
+    guides = guides.map(g => ({ ...g, unavailable: unavailableGuideIds.has(g.guides.id) }))
   }
 
   return NextResponse.json({ guides })
