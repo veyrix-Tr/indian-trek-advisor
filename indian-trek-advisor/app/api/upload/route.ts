@@ -1,12 +1,18 @@
 import { NextRequest, NextResponse } from "next/server"
 import { cloudinary } from "@/lib/cloudinary"
+import { createClient as createServerSupabaseClient } from "@/utils/supabase/server"
 
 export async function POST(req: NextRequest) {
   try {
+    const authClient = await createServerSupabaseClient()
+    const { data: { user }, error: authError } = await authClient.auth.getUser()
+    if (authError || !user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
     const formData = await req.formData()
     const file = formData.get("file") as File | null
     const folder = formData.get("folder") as string | null
-    const userId = formData.get("userId") as string | null
 
     if (!file) {
       return NextResponse.json(
@@ -35,7 +41,7 @@ export async function POST(req: NextRequest) {
 
     const uploadFolder = folder || "guide-documents"
     const cleanName = file.name.replace(/[^a-zA-Z0-9.-]/g, "_").replace(/\.[^.]+$/, "")
-    const publicId = `${userId || "anon"}/${Date.now()}-${cleanName}`
+    const publicId = `${user.id}/${Date.now()}-${cleanName}`
 
     const result = await new Promise<{ secure_url: string }>((resolve, reject) => {
       const uploadStream = cloudinary.uploader.upload_stream(

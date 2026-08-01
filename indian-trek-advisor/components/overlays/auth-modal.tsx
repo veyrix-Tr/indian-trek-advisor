@@ -251,7 +251,6 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
           const formData = new FormData()
           formData.append("file", idProofFile)
           formData.append("folder", "guide-documents")
-          formData.append("userId", authDataUser.id)
           const res = await fetch("/api/upload", { method: "POST", body: formData })
           if (res.ok) {
             const { url } = await res.json()
@@ -263,7 +262,6 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
           const formData = new FormData()
           formData.append("file", certFile)
           formData.append("folder", "guide-certificates")
-          formData.append("userId", authDataUser.id)
           const res = await fetch("/api/upload", { method: "POST", body: formData })
           if (res.ok) {
             const { url } = await res.json()
