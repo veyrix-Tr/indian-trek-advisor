@@ -4,66 +4,30 @@ Scope: whole project, everything except payment (explicitly excluded). Findings 
 
 ---
 
-## ✅ Resolved since this audit was written
-
-- **CRITICAL — every API route's login check was structurally incapable of ever identifying a real user.** All 19 API routes (bookings, guide dashboard, ratings, notifications, admin, everything authenticated) created a fresh `createClient(url, SERVICE_ROLE_KEY)` from plain `@supabase/supabase-js` inside the request handler, then called `supabase.auth.getUser()` with no argument. That client has no mechanism to read the incoming request's session cookie — it's not the cookie-aware `@supabase/ssr` client. Proved this directly against the live Supabase instance: calling the GoTrue `/user` endpoint the same way this code does returns `403 bad_jwt: missing sub claim` every time, unconditionally. This means **every "Unauthorized" check in the entire app fired for every request, regardless of who was actually logged in** — the entire authenticated API surface has never worked when called by a real signed-in user in the browser (only my own testing this session — direct REST calls using the service-role key, which bypasses this layer entirely — never exercised this code path, which is how it went undetected). Separately, `/api/admin/verify-guide` had **no auth check of any kind** — any request, logged in or not, could flip any guide's verification status.
-
-  **Fix:** every route now uses the pre-existing (but previously unused) `utils/supabase/server.ts` cookie-aware client to identify the caller, then uses the service-role client exactly as before for the actual data operations. `/api/admin/verify-guide` now also checks the caller is a real admin. `/api/upload` now requires auth and uses the caller's own ID instead of a client-supplied one (was finding #2 below).
-
-  **Proved the fix, not just typechecked it:** created a throwaway account, signed in for a real session, constructed an authentic `@supabase/ssr` session cookie by hand, and called a protected route against the running dev server. Before: 401 with no cookie (correct baseline). After: **200 with the real session cookie** — the exact case that was broken. Also confirmed `/api/admin/verify-guide` now correctly 403s a non-admin. Test user and all artifacts deleted afterward.
-
-- **Guide review/rating system** — built end-to-end: a guide with zero real reviews now shows exactly 4.1 (not the old raw-average-of-nothing behavior), real reviews blend in via a weighted average (same technique IMDB uses) so the displayed score is pulled toward the true average as real reviews accumulate rather than snapping straight to a small sample's raw mean, the Reviews tab's fetch was actually broken (never selected `guide_ratings` at all) and is now fixed, and a live schema-drift bug (`guides.rating`/`total_ratings` documented but not present in production) was found and migrated. Individual reviews shown anywhere (name, text) are always real — only the aggregate number is blended.
-- **#3: fake "Book a Guide" dialog** — now switches to the real Local Guides tab instead of opening a "coming soon" popup.
-- **#4: AI chatbot's stale system prompt** — rewritten to reflect that accounts, guide booking, and `/guide/find` are all real and live; "coming soon" now only covers what's actually still unbuilt (photo uploads, gear shop listings).
-
----
-
-## 🔴 Blocking — breaks the product or exposes real risk right now
-
-### 1. Every page except `/` requires login
-`middleware.ts:5` — `publicRoutes = ["/", "/api"]`. Confirmed live: `curl /treks` and `curl /treks/kedarkantha` both 307-redirect to `/?auth=required` for an unauthenticated visitor.
-
-**Impact:**
-- `/treks` and every trek detail page already have SEO `metadata` (title/description, "Browse 110 trekking trails...") written for them — completely wasted, since Googlebot gets redirected instead of the actual page.
-- No visitor can browse a single trek before creating an account. For a discovery-driven content site, this kills organic traffic and top-of-funnel conversion before it can start.
-
-**Fix direction:** expand `publicRoutes` to include `/treks`, `/gear`, `/guide/find`, `/guide/solo`, `/guide/group`, and any other browse/marketing pages. Keep auth required only for `/dashboard`, `/guide/dashboard`, `/admin`, `/profile`, and write actions.
-
----
-
 ## 🟠 Missing — needed before real users show up, not yet built
 
-### 2. No error monitoring
+### 1. No error monitoring
 `@vercel/analytics` is wired up (page views only). There is no Sentry/error-tracking equivalent. If an API route throws in production, the only trace is Vercel's function logs — nobody gets notified. For a site processing real bookings, silent failures are expensive.
 
-### 3. No automated tests, no CI
+### 2. No automated tests, no CI
 `find . -iname "*.test.*"` returns nothing. No `.github/workflows`, no `vercel.json` with build checks. `next.config.mjs` sets `typescript: { ignoreBuildErrors: true }` — meaning type errors don't even block a production build today. Combined with zero tests, there's no safety net catching regressions before they ship.
 
-### 4. No password reset flow
+### 3. No password reset flow
 Grepped for `resetPasswordForEmail` / `forgot-password` — nothing found. A user who forgets their password has no self-service recovery path.
 
-### 5. No `robots.txt` or `sitemap.xml`
-Given trek pages already carry real SEO metadata, there's no sitemap for search engines to discover all 110+ trek pages, and no `robots.txt` to guide crawler behavior. Directly related to finding #1 — fixing the auth-gate without adding a sitemap only gets you half the SEO value.
+### 4. No `robots.txt` or `sitemap.xml`
+Given trek pages already carry real SEO metadata, there's no sitemap for search engines to discover all 110+ trek pages, and no `robots.txt` to guide crawler behavior. Trek pages are publicly crawlable now, so a sitemap is the natural next step to get full SEO value.
 
-### 6. No error boundaries
-No `error.tsx`, `global-error.tsx`, or `not-found.tsx` found under `app/`. An unhandled render error anywhere currently shows Next.js's default error screen rather than something on-brand, and there's no custom 404.
-
-### 7. Two lockfiles committed
-Both `package-lock.json` and `pnpm-lock.yaml` are tracked in git. Depending on which one a deploy environment picks up, dependency versions could silently drift between local dev and production. Pick one package manager and remove the other lockfile.
-
-### 8. `.env.example` is incomplete
-Missing `SUPABASE_SERVICE_ROLE_KEY` and `BREVO_API_KEY` — both required by the code (`.env` has them, `.env.example` doesn't). Anyone setting up the project fresh from the example file would hit silent failures with no clue why.
-
-### 9. Images are unoptimized
+### 5. Images are unoptimized
 `next.config.mjs`: `images: { unoptimized: true }`. Fine for a Cloudinary-fronted image pipeline if Cloudinary is doing the optimization, but worth confirming that's actually true everywhere — several components (`img` tags added this session for guide photos, e.g. `guide-settings-tab.tsx`, `guides-tab.tsx`) use plain `<img>` rather than `next/image`, meaning no lazy-loading/responsive-sizing benefit even where Cloudinary isn't in the loop.
 
-### 10. No OTP / email verification — signup is instant and unverified
+### 6. No OTP / email verification — signup is instant and unverified
 Grepped the whole codebase for `otp`, `verifyOtp`, `signInWithOtp` — zero matches, this flow doesn't exist. `app/api/auth/signup/route.ts` calls `supabase.auth.admin.createUser({ ..., email_confirm: true })`, which creates the account **already confirmed** in one step. Anyone can sign up with an email address they don't own; nothing ever checks it's real.
 
-### 11. SMS phone numbers aren't format-validated, and sends fail silently
+### 7. SMS phone numbers aren't format-validated, and sends fail silently
 `lib/sms/brevo.ts` — no phone number normalization anywhere in the app (signup, settings, profile all accept free-text). Brevo's SMS API generally expects E.164 format (`+91XXXXXXXXXX`); a number typed without the country code (the natural way most Indian users would type it) will likely be rejected. On top of that, every call site (`approve-guide`, `cancel`, `complete`, `confirm-payment`, `create`) fires the SMS and never checks the return value — if Brevo rejects it, the booking action still succeeds and nobody is ever told the notification didn't go out.
 
-### 12. `supabase-schema.sql` doesn't reliably reflect the live database — verify before trusting it
+### 8. `supabase-schema.sql` doesn't reliably reflect the live database — verify before trusting it
 Discovered while building the guide rating system: `guides.rating` and `guides.total_ratings` are both defined in `supabase-schema.sql`, but **did not exist in the live database at all** (`column guides.rating does not exist`). The `ALTER TABLE` for these two columns was apparently never actually run, despite being in the checked-in schema file. This wasn't caught by typecheck or build — those only validate the app's own code, not whether the code's assumptions about the database match reality. Silent, until a live REST query against the real table was run.
 
 **Implication:** this schema file cannot be treated as ground truth for what's actually in production. Any future work that assumes a column/table exists because it's in `supabase-schema.sql` should verify against the live database first (a REST `select=*` call, or the Supabase Table Editor) rather than trusting the file. There may be other undocumented drifts elsewhere that haven't been hit yet.
@@ -81,17 +45,17 @@ Discovered while building the guide rating system: `guides.rating` and `guides.t
 
 ## 🟣 Schema exists, UI doesn't — half-built features
 
-### 13. Trekker wishlist ("save a trek") has no UI at all
+### 9. Trekker wishlist ("save a trek") has no UI at all
 `trekkers.saved_treks` is a real column, initialized to `[]` at signup, and displayed as a count in the admin panel — but grepped the whole app and **nothing ever writes to it**. There's no save/bookmark button anywhere on a trek page for a trekker to actually use this. The column is fully dead from the user's perspective.
 
-### 14. Trekker `review_count` never increments
-Same story — initialized to `0` at signup, read by the admin panel, but `/api/trekker/rate-guide` (which fires when a trekker rates a guide) only updates the guide's rating — it never touches the trekker's own `review_count`. Permanently stuck at 0 for every trekker. **Still open** — separate from the guide-side rating system (below), which is now fully built and live.
+### 10. Trekker `review_count` never increments
+Same story — initialized to `0` at signup, read by the admin panel, but `/api/trekker/rate-guide` (which fires when a trekker rates a guide) only updates the guide's rating — it never touches the trekker's own `review_count`. Permanently stuck at 0 for every trekker.
 
 ---
 
 ## ⚪ Honestly-labeled unbuilt features (not bugs — just not built yet)
 
-These already say "coming soon" correctly and consistently, unlike the two resolved items noted above — listed here just so the full unbuilt-feature picture is in one place:
+These already say "coming soon" correctly and consistently — listed here just so the full unbuilt-feature picture is in one place:
 
 - **Community photo uploads** (`components/trek-detail/photos-tab.tsx`) — trek photos are static files dropped into `/public/treks/`; there's no upload pipeline.
 - **Gear shop listing submissions** (`components/gear/gear-listing-form.tsx`) — the gear directory itself is real (static data), but a shop owner can't actually submit their own listing.
