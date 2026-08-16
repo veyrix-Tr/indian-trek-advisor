@@ -87,5 +87,19 @@ export async function POST(request: Request) {
     })
   }
 
+  // Increment trekker's review_count
+  const { data: trekker } = await supabase
+    .from("trekkers")
+    .select("review_count")
+    .eq("user_id", user.id)
+    .single()
+
+  if (trekker) {
+    await supabase
+      .from("trekkers")
+      .update({ review_count: (trekker.review_count || 0) + 1 })
+      .eq("user_id", user.id)
+  }
+
   return NextResponse.json({ rating: newRating })
 }

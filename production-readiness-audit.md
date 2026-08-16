@@ -15,19 +15,13 @@ Scope: whole project, everything except payment (explicitly excluded). Findings 
 ### 3. No password reset flow
 Grepped for `resetPasswordForEmail` / `forgot-password` — nothing found. A user who forgets their password has no self-service recovery path.
 
-### 4. No `robots.txt` or `sitemap.xml`
-Given trek pages already carry real SEO metadata, there's no sitemap for search engines to discover all 110+ trek pages, and no `robots.txt` to guide crawler behavior. Trek pages are publicly crawlable now, so a sitemap is the natural next step to get full SEO value.
-
-### 5. Images are unoptimized
+### 4. Images are unoptimized
 `next.config.mjs`: `images: { unoptimized: true }`. Fine for a Cloudinary-fronted image pipeline if Cloudinary is doing the optimization, but worth confirming that's actually true everywhere — several components (`img` tags added this session for guide photos, e.g. `guide-settings-tab.tsx`, `guides-tab.tsx`) use plain `<img>` rather than `next/image`, meaning no lazy-loading/responsive-sizing benefit even where Cloudinary isn't in the loop.
 
-### 6. No OTP / email verification — signup is instant and unverified
+### 5. No OTP / email verification — signup is instant and unverified
 Grepped the whole codebase for `otp`, `verifyOtp`, `signInWithOtp` — zero matches, this flow doesn't exist. `app/api/auth/signup/route.ts` calls `supabase.auth.admin.createUser({ ..., email_confirm: true })`, which creates the account **already confirmed** in one step. Anyone can sign up with an email address they don't own; nothing ever checks it's real.
 
-### 7. SMS phone numbers aren't format-validated, and sends fail silently
-`lib/sms/brevo.ts` — no phone number normalization anywhere in the app (signup, settings, profile all accept free-text). Brevo's SMS API generally expects E.164 format (`+91XXXXXXXXXX`); a number typed without the country code (the natural way most Indian users would type it) will likely be rejected. On top of that, every call site (`approve-guide`, `cancel`, `complete`, `confirm-payment`, `create`) fires the SMS and never checks the return value — if Brevo rejects it, the booking action still succeeds and nobody is ever told the notification didn't go out.
-
-### 8. `supabase-schema.sql` doesn't reliably reflect the live database — verify before trusting it
+### 6. `supabase-schema.sql` doesn't reliably reflect the live database — verify before trusting it
 Discovered while building the guide rating system: `guides.rating` and `guides.total_ratings` are both defined in `supabase-schema.sql`, but **did not exist in the live database at all** (`column guides.rating does not exist`). The `ALTER TABLE` for these two columns was apparently never actually run, despite being in the checked-in schema file. This wasn't caught by typecheck or build — those only validate the app's own code, not whether the code's assumptions about the database match reality. Silent, until a live REST query against the real table was run.
 
 **Implication:** this schema file cannot be treated as ground truth for what's actually in production. Any future work that assumes a column/table exists because it's in `supabase-schema.sql` should verify against the live database first (a REST `select=*` call, or the Supabase Table Editor) rather than trusting the file. There may be other undocumented drifts elsewhere that haven't been hit yet.
@@ -38,18 +32,7 @@ Discovered while building the guide rating system: `guides.rating` and `guides.t
 
 ## 🟡 Hygiene — small, unrelated to launch-blocking, but real
 
-- **Stray committed file**: `--full-page` (106KB, odd filename, tracked in git) — looks like an accidental shell redirect artifact, not source code.
 - **`middleware.ts` deprecation warning**: Next.js 16 wants `proxy.ts` instead — currently just a build-time warning, but will eventually become a hard requirement.
-
----
-
-## 🟣 Schema exists, UI doesn't — half-built features
-
-### 9. Trekker wishlist ("save a trek") has no UI at all
-`trekkers.saved_treks` is a real column, initialized to `[]` at signup, and displayed as a count in the admin panel — but grepped the whole app and **nothing ever writes to it**. There's no save/bookmark button anywhere on a trek page for a trekker to actually use this. The column is fully dead from the user's perspective.
-
-### 10. Trekker `review_count` never increments
-Same story — initialized to `0` at signup, read by the admin panel, but `/api/trekker/rate-guide` (which fires when a trekker rates a guide) only updates the guide's rating — it never touches the trekker's own `review_count`. Permanently stuck at 0 for every trekker.
 
 ---
 

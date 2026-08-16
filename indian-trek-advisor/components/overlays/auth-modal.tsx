@@ -4,6 +4,7 @@ import { useState, useMemo, Fragment } from "react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/utils/supabase/client"
 import { Backpack, Compass, Mountain, ArrowLeft, Check, Eye, EyeOff } from "lucide-react"
+import { formatPhoneNumber, isValidPhoneNumber } from "@/lib/utils/phone"
 import {
   Dialog,
   DialogContent,
@@ -176,8 +177,8 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
       setError("Please select your years of experience.")
       return false
     }
-    if (!phone.trim() || phone.trim().length < 10) {
-      setError("Please enter a valid phone number (min 10 digits).")
+    if (!phone.trim() || !isValidPhoneNumber(phone.trim())) {
+      setError("Please enter a valid phone number (e.g., 9651561616 or +919651561616).")
       return false
     }
     if (!address.trim()) {
@@ -272,7 +273,7 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
         // Update guide profile fields
         const guideUpdates: Record<string, unknown> = {}
         if (experience) guideUpdates.experience = experience
-        if (phone) guideUpdates.phone = phone
+        if (phone) guideUpdates.phone = formatPhoneNumber(phone)
         if (address) guideUpdates.base_location = address
         if (certifications.length > 0) guideUpdates.certifications = certifications
         if (knownTreks.length > 0) guideUpdates.known_treks = knownTreks
@@ -283,7 +284,7 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
 
         // Sync phone to profiles table
         if (phone) {
-          await supabase.from("profiles").update({ phone }).eq("id", authDataUser.id)
+          await supabase.from("profiles").update({ phone: formatPhoneNumber(phone) }).eq("id", authDataUser.id)
         }
       }
 

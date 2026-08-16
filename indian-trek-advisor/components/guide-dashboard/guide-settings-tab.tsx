@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Save, MapPin, Award, Mountain, Phone, BadgeCheck, ShieldAlert } from "lucide-react"
+import { formatPhoneNumber, isValidPhoneNumber } from "@/lib/utils/phone"
 import { GuideRatesSection } from "./guide-rates-section"
 import { GuidePayoutSection } from "./guide-payout-section"
 
@@ -47,13 +48,26 @@ export function GuideSettingsTab({ profile }: { profile: GuideProfile | null }) 
   }, [profile])
 
   async function handleSave() {
+    // Validate phone number before saving
+    if (form.phone && !isValidPhoneNumber(form.phone)) {
+      setSaveError("Please enter a valid phone number (e.g., 9651561616 or +919651561616).")
+      setTimeout(() => setSaveError(null), 3000)
+      return
+    }
+
     setSaving(true)
     setSaveError(null)
     try {
+      // Format phone number before sending
+      const formData = {
+        ...form,
+        phone: form.phone ? formatPhoneNumber(form.phone) : "",
+      }
+      
       const res = await fetch("/api/guide/profile", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify(formData),
       })
       if (res.ok) {
         setSaved(true)

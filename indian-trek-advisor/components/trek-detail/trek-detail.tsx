@@ -18,7 +18,10 @@ import {
   Tent,
   TrendingUp,
   Users,
+  Bookmark,
+  BookmarkCheck,
 } from "lucide-react"
+import { createClient } from "@/utils/supabase/client"
 import type { Trek, MapWaypoint } from "@/lib/data"
 import { DIFFICULTY_META } from "@/lib/data"
 import { Button } from "@/components/ui/button"
@@ -59,8 +62,63 @@ export function TrekDetail({
   next: NavRef
 }) {
   const [tab, setTab] = useState<TabId>("overview")
+  const [isSaved, setIsSaved] = useState(false)
+  const [loading, setLoading] = useState(false)
   const diff = DIFFICULTY_META[trek.difficulty]
   const tabsNavRef = useRef<HTMLDivElement>(null)
+  const supabase = createClient()
+
+  useEffect(() => {
+    async function checkIfSaved() {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        const { data: trekker } = await supabase
+          .from("trekkers")
+          .select("saved_treks")
+          .eq("user_id", user.id)
+          .single()
+        if (trekker?.saved_treks?.includes(trek.name)) {
+          setIsSaved(true)
+        }
+      }
+    }
+    checkIfSaved()
+  }, [trek.name, supabase])
+
+  async function toggleSaveTrek() {
+    setLoading(true)
+    try {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) {
+        alert("Please sign in to save treks")
+        setLoading(false)
+        return
+      }
+
+      const { data: trekker } = await supabase
+        .from("trekkers")
+        .select("saved_treks")
+        .eq("user_id", user.id)
+        .single()
+
+      const currentSaved = trekker?.saved_treks || []
+      const newSaved = isSaved
+        ? currentSaved.filter((t: string) => t !== trek.name)
+        : [...currentSaved, trek.name]
+
+      const { error } = await supabase
+        .from("trekkers")
+        .update({ saved_treks: newSaved })
+        .eq("user_id", user.id)
+
+      if (!error) {
+        setIsSaved(!isSaved)
+      }
+    } catch (err) {
+      console.error("Error saving trek:", err)
+    }
+    setLoading(false)
+  }
 
   function goToTab(id: TabId) {
     setTab(id)
@@ -214,6 +272,20 @@ export function TrekDetail({
               >
                 <Route className="size-4" aria-hidden="true" />
                 View Itinerary
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="rounded-full border-white/40 bg-transparent text-white hover:bg-white/10 hover:text-white"
+                onClick={toggleSaveTrek}
+                disabled={loading}
+              >
+                {isSaved ? (
+                  <BookmarkCheck className="size-4" aria-hidden="true" />
+                ) : (
+                  <Bookmark className="size-4" aria-hidden="true" />
+                )}
+                {isSaved ? "Saved" : "Save Trek"}
               </Button>
             </div>
           </motion.div>

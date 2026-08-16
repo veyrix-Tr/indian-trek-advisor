@@ -1,5 +1,6 @@
 const BREVO_API_KEY = process.env.BREVO_API_KEY
 const BREVO_API_URL = 'https://api.brevo.com/v3'
+import { formatPhoneNumber } from '@/lib/utils/phone'
 
 export interface SMSParams {
   to: string
@@ -12,6 +13,9 @@ export async function sendSMS({ to, message }: SMSParams): Promise<boolean> {
     return false
   }
 
+  // Format phone number to E.164 before sending
+  const formattedPhone = formatPhoneNumber(to)
+
   try {
     const response = await fetch(`${BREVO_API_URL}/sms`, {
       method: 'POST',
@@ -21,11 +25,15 @@ export async function sendSMS({ to, message }: SMSParams): Promise<boolean> {
       },
       body: JSON.stringify({
         sender: 'TrekAdvisor',
-        recipient: to,
+        recipient: formattedPhone,
         message: message,
         type: 'transactional'
       })
     })
+
+    if (!response.ok) {
+      console.error('SMS API error:', await response.text())
+    }
 
     return response.ok
   } catch (error) {
