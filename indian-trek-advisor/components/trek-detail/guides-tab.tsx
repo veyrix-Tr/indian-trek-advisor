@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
-import { MapPin, Star, BadgeCheck, AlertCircle, CheckCircle2, CalendarX, Minus, Plus, Users } from "lucide-react"
+import { MapPin, Star, BadgeCheck, AlertCircle, CheckCircle2, Minus, Plus, Users } from "lucide-react"
 import type { Trek } from "@/lib/data"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -74,6 +74,10 @@ export function GuidesTab({ trek }: { trek: Trek }) {
   }
 
   const handleBookGuide = (guide: Guide) => {
+    if (!selectedDate) {
+      setBookingError("Please select a trekking date first.")
+      return
+    }
     setSelectedGuide(guide)
     setNumTrekkers(1)
     setBookingError(null)
@@ -81,10 +85,16 @@ export function GuidesTab({ trek }: { trek: Trek }) {
     setShowBookingModal(true)
   }
 
-  const submitBooking = async (notes: string) => {
-    if (!selectedGuide || !selectedDate) return
+  const submitBooking = async () => {
+    if (!selectedGuide) return
+    if (!selectedDate) {
+      setBookingError("Please select a trekking date before confirming.")
+      return
+    }
     setSubmitting(true)
     setBookingError(null)
+
+    const notes = (document.getElementById('booking-notes') as HTMLTextAreaElement)?.value || ''
 
     try {
       const response = await fetch("/api/bookings/create", {
@@ -113,8 +123,7 @@ export function GuidesTab({ trek }: { trek: Trek }) {
     setSubmitting(false)
   }
 
-  const availableGuides = guides.filter((g) => !g.unavailable)
-  const unavailableGuides = guides.filter((g) => g.unavailable)
+  const guidesToShow = guides.filter((g) => !selectedDate || !g.unavailable)
 
   return (
     <div className="max-w-3xl space-y-8">
@@ -124,9 +133,18 @@ export function GuidesTab({ trek }: { trek: Trek }) {
         <Input
           type="date"
           value={selectedDate}
-          onChange={(e) => setSelectedDate(e.target.value)}
+          onChange={(e) => {
+            setSelectedDate(e.target.value)
+            setBookingError(null)
+          }}
           className="max-w-xs"
         />
+        {bookingError && !selectedGuide && (
+          <p className="mt-2 flex items-center gap-1.5 text-xs text-destructive">
+            <AlertCircle className="size-3.5 shrink-0" />
+            {bookingError}
+          </p>
+        )}
       </div>
 
       {/* Guides List */}
@@ -143,28 +161,26 @@ export function GuidesTab({ trek }: { trek: Trek }) {
       ) : guides.length > 0 ? (
         <div className="space-y-4">
           <h3 className="font-semibold">
-            {selectedDate ? `Available Guides — ${availableGuides.length}` : "Guides for This Trek"}
+            {selectedDate ? `Available Guides — ${guidesToShow.length}` : "Guides for This Trek"}
           </h3>
-          {availableGuides.map((guide) => (
-            <GuideCard key={guide.id} guide={guide} onBook={() => handleBookGuide(guide)} />
-          ))}
 
-          {unavailableGuides.length > 0 && (
-            <div className="space-y-3 pt-2">
-              <p className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                <CalendarX className="size-3" />
-                Unavailable on this date
+          {!selectedDate && (
+            <div className="flex items-start gap-2 rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-700 dark:text-amber-400">
+              <AlertCircle className="mt-0.5 size-4 shrink-0" />
+              <p>
+                Choose a <strong>date</strong> above to see which guides are available and to book. Without a date we can&apos;t check guide availability.
               </p>
-              {unavailableGuides.map((guide) => (
-                <GuideCard key={guide.id} guide={guide} unavailable />
-              ))}
             </div>
           )}
+
+          {guidesToShow.map((guide) => (
+            <GuideCard key={guide.id} guide={guide} onBook={() => handleBookGuide(guide)} />
+          ))}
         </div>
       ) : (
         <div className="rounded-xl border border-border bg-card p-8 text-center">
           <p className="text-muted-foreground">
-            {selectedDate ? "No guides associated with this trek yet" : "Select a date to see available guides"}
+            {selectedDate ? "No guides available for this date" : "Select a date to see available guides"}
           </p>
         </div>
       )}
@@ -281,10 +297,7 @@ export function GuidesTab({ trek }: { trek: Trek }) {
                       Cancel
                     </Button>
                     <Button
-                      onClick={() => {
-                        const notes = (document.getElementById('booking-notes') as HTMLTextAreaElement)?.value || ''
-                        submitBooking(notes)
-                      }}
+                      onClick={() => submitBooking()}
                       className="flex-1"
                       disabled={submitting}
                     >
@@ -370,8 +383,7 @@ function GuideCard({
           <Button onClick={onBook} className="shrink-0">
             Book Guide
           </Button>
-        )}
-      </div>
+        )}      </div>
     </motion.div>
   )
 }

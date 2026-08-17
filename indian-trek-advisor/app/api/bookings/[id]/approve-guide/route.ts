@@ -50,6 +50,50 @@ export async function POST(
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 
+  // Once the guide accepts this request, that date is booked for them: hold
+  // the availability row. This blocks any further requests for the same date.
+  await supabase
+    .from("guide_availability")
+    .upsert({
+      guide_id: booking.guide_id,
+      date: booking.booking_date,
+      status: "booked",
+      booking_id: booking.id,
+    }, { onConflict: "guide_id,date" })
+
+  // Auto-reject every other pending request from the same guide on the same
+  // date — the guide can only take one booking per day.
+  const { data: siblings } = await supabase
+    .from("bookings")
+    .select("id, trekker_id, trek_id, booking_date")
+    .eq("guide_id", booking.guide_id)
+    .eq("booking_date", booking.booking_date)
+    .eq("status", "pending")
+    .neq("id", booking.id)
+
+  for (const sibling of siblings ?? []) {
+    await supabase
+      .from("bookings")
+      .update({ status: "cancelled", rejection_reason: "Guide accepted another request for this date" })
+      .eq("id", sibling.id)
+
+    await recordBookingHistory(supabase, {
+      bookingId: sibling.id,
+      fromStatus: "pending",
+      toStatus: "cancelled",
+      actorId: user.id,
+      actorRole: "guide",
+      note: "Auto-rejected: guide accepted another request for this date",
+    })
+
+    await supabase.from("notifications").insert({
+      user_id: sibling.trekker_id,
+      type: "booking_status_change",
+      booking_id: sibling.id,
+      message: `Your ${sibling.trek_id} trek request on ${sibling.booking_date} was cancelled because the guide accepted another request for that date.`,
+    })
+  }
+
   await recordBookingHistory(supabase, {
     bookingId: booking.id,
     fromStatus: booking.status,

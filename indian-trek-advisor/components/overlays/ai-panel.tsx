@@ -84,7 +84,14 @@ export function AiPanel({ onClose }: { onClose: () => void }) {
         signal: abortRef.current.signal,
       })
 
-      if (!res.ok || !res.body) throw new Error("Request failed")
+      if (!res.ok || !res.body) {
+        let serverMsg = "Sorry, I couldn't reach the trail guide. Please try again."
+        try {
+          const data = await res.json()
+          if (data?.error) serverMsg = data.error
+        } catch { /* non-JSON error body */ }
+        throw new Error(serverMsg)
+      }
 
       const reader = res.body.getReader()
       const decoder = new TextDecoder()
@@ -100,10 +107,11 @@ export function AiPanel({ onClose }: { onClose: () => void }) {
       }
     } catch (err: unknown) {
       if (err instanceof DOMException && err.name === "AbortError") return
+      const message = err instanceof Error ? err.message : ""
       setMessages((m) =>
         m.map((msg) =>
           msg.id === assistantMsg.id
-            ? { ...msg, text: "Sorry, I couldn't reach the trail guide. Please try again." }
+            ? { ...msg, text: message || "Sorry, I couldn't reach the trail guide. Please try again." }
             : msg,
         ),
       )

@@ -25,13 +25,40 @@ export async function POST(request: Request) {
   }
 
   const body = await request.json()
-  const { dates, action } = body // action: 'available' or 'unavailable'
+  // dates = the guide's FULL set of dates they are unavailable on.
+  // Unmarked dates are available by default, so the guide only sends the
+  // days they're blocking. On save we reconcile: unblock dates that were
+  // previously unavailable but are no longer in the set.
+  const { dates } = body
+  const blocking = Array.isArray(dates) ? (dates as string[]) : []
 
-  const updates = dates.map((date: string) => ({
+  const updates = blocking.map((date: string) => ({
     guide_id: guide.id,
     date,
-    status: action === 'available' ? 'available' : 'unavailable'
+    status: 'unavailable'
   }))
+
+  const { data: existing } = await supabase
+    .from("guide_availability")
+    .select("date")
+    .eq("guide_id", guide.id)
+    .eq("status", "unavailable")
+
+  const blockedSet = new Set(blocking)
+  const toUnblock = (existing ?? [])
+    .map((r) => r.date)
+    .filter((d) => !blockedSet.has(d))
+
+  if (toUnblock.length > 0) {
+    // Unmarked dates are available by default; just delete the stale rows so
+    // the date reverts to bookable (getting it out of 'unavailable' status).
+    await supabase
+      .from("guide_availability")
+      .delete()
+      .eq("guide_id", guide.id)
+      .in("status", ["unavailable"])
+      .in("date", toUnblock)
+  }
 
   const { data, error } = await supabase
     .from("guide_availability")

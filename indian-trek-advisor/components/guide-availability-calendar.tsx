@@ -16,7 +16,7 @@ interface Booking {
 
 interface AvailabilityCalendarProps {
   bookings?: Booking[]
-  onSave?: (availableDates: string[], unavailableDates: string[]) => void
+  onSave?: (unavailableDates: string[]) => void
 }
 
 const ACTIVE_STATUSES = ["guide_approved", "admin_approved", "confirmed"]
@@ -27,7 +27,6 @@ function todayStart() {
 
 export function GuideAvailabilityCalendar({ bookings = [], onSave }: AvailabilityCalendarProps) {
   const [currentDate, setCurrentDate] = useState(new Date())
-  const [availableDates, setAvailableDates] = useState<Set<string>>(new Set())
   const [unavailableDates, setUnavailableDates] = useState<Set<string>>(new Set())
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -53,18 +52,15 @@ export function GuideAvailabilityCalendar({ bookings = [], onSave }: Availabilit
       const response = await fetch("/api/guide/availability")
       const data = await response.json()
 
-      const available = new Set<string>()
+      // Unmarked dates are available by default, so only the explicitly
+      // "unavailable" rows matter.
       const unavailable = new Set<string>()
-
       data.availability?.forEach((avail: any) => {
-        if (avail.status === 'available') {
-          available.add(avail.date)
-        } else if (avail.status === 'unavailable') {
+        if (avail.status === 'unavailable') {
           unavailable.add(avail.date)
         }
       })
 
-      setAvailableDates(available)
       setUnavailableDates(unavailable)
     } catch (error) {
       console.error("Error fetching availability:", error)
@@ -83,22 +79,16 @@ export function GuideAvailabilityCalendar({ bookings = [], onSave }: Availabilit
     return { daysInMonth, startDayOfWeek }
   }
 
-  // Single click cycles: not-set -> available -> unavailable -> not-set.
-  // Discoverable on touch devices, unlike the old right-click-only shortcut.
-  const cycleDate = (dateStr: string) => {
-    const newAvailable = new Set(availableDates)
+  // One-click toggle: unmarked dates are available by default, so guides only
+  // block the days they're absent. A single click marks a date unavailable;
+  // clicking it again makes it available again. No multi-state cycling.
+  const toggleDate = (dateStr: string) => {
     const newUnavailable = new Set(unavailableDates)
-
-    if (!availableDates.has(dateStr) && !unavailableDates.has(dateStr)) {
-      newAvailable.add(dateStr)
-    } else if (availableDates.has(dateStr)) {
-      newAvailable.delete(dateStr)
-      newUnavailable.add(dateStr)
-    } else {
+    if (unavailableDates.has(dateStr)) {
       newUnavailable.delete(dateStr)
+    } else {
+      newUnavailable.add(dateStr)
     }
-
-    setAvailableDates(newAvailable)
     setUnavailableDates(newUnavailable)
   }
 
@@ -108,20 +98,17 @@ export function GuideAvailabilityCalendar({ bookings = [], onSave }: Availabilit
     const end = new Date(rangeEnd)
     if (start > end) return
 
-    const newAvailable = new Set(availableDates)
     const newUnavailable = new Set(unavailableDates)
     const cursor = new Date(start)
 
     while (cursor <= end) {
       const dateStr = `${cursor.getFullYear()}-${String(cursor.getMonth() + 1).padStart(2, '0')}-${String(cursor.getDate()).padStart(2, '0')}`
       if (cursor >= todayStart() && !bookedByDate.has(dateStr)) {
-        newAvailable.delete(dateStr)
         newUnavailable.add(dateStr)
       }
       cursor.setDate(cursor.getDate() + 1)
     }
 
-    setAvailableDates(newAvailable)
     setUnavailableDates(newUnavailable)
     setShowBlockRange(false)
     setRangeStart("")
@@ -132,37 +119,20 @@ export function GuideAvailabilityCalendar({ bookings = [], onSave }: Availabilit
     setSaving(true)
     setFeedback(null)
     try {
-      let ok = true
-
-      if (availableDates.size > 0) {
-        const res = await fetch("/api/guide/availability", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            dates: Array.from(availableDates),
-            action: 'available'
-          })
+      const res = await fetch("/api/guide/availability", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          dates: Array.from(unavailableDates),
+          action: 'unavailable'
         })
-        ok = ok && res.ok
-      }
+      })
 
-      if (unavailableDates.size > 0) {
-        const res = await fetch("/api/guide/availability", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            dates: Array.from(unavailableDates),
-            action: 'unavailable'
-          })
-        })
-        ok = ok && res.ok
-      }
-
-      if (!ok) {
+      if (!res.ok) {
         setFeedback({ type: "error", message: "Failed to save. Please try again." })
       } else {
         if (onSave) {
-          onSave(Array.from(availableDates), Array.from(unavailableDates))
+          onSave(Array.from(unavailableDates))
         }
         setFeedback({ type: "success", message: "Availability updated" })
       }
@@ -183,7 +153,6 @@ export function GuideAvailabilityCalendar({ bookings = [], onSave }: Availabilit
 
   for (let day = 1; day <= daysInMonth; day++) {
     const dateStr = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
-    const isAvailable = availableDates.has(dateStr)
     const isUnavailable = unavailableDates.has(dateStr)
     const booking = bookedByDate.get(dateStr)
     const isBooked = Boolean(booking)
@@ -193,21 +162,22 @@ export function GuideAvailabilityCalendar({ bookings = [], onSave }: Availabilit
       <button
         key={day}
         type="button"
-        onClick={() => !isPast && !isBooked && cycleDate(dateStr)}
+        onClick={() => !isPast && !isBooked && toggleDate(dateStr)}
         disabled={isPast || isBooked}
         title={
           isBooked
             ? `Booked — ${booking?.trekker?.name || "Trekker"}${booking?.guides?.trek_name ? `, ${booking.guides.trek_name}` : ""}`
-            : undefined
+            : isUnavailable
+              ? "Unavailable — tap to make available"
+              : "Available — tap to block"
         }
         className={`
           relative p-2 rounded-lg text-sm font-medium border transition-colors duration-150
           ${isPast && !isBooked ? 'text-muted-foreground border-transparent cursor-not-allowed opacity-40' : ''}
           ${!isPast && !isBooked ? 'cursor-pointer hover:bg-muted' : ''}
           ${isBooked ? `bg-status-confirmed/15 text-status-confirmed border-status-confirmed/25 cursor-help ${isPast ? 'opacity-60' : ''}` : ''}
-          ${isAvailable && !isBooked ? 'bg-primary/15 text-primary border-primary/25 hover:bg-primary/25' : ''}
           ${isUnavailable && !isBooked ? 'bg-destructive/15 text-destructive border-destructive/25 hover:bg-destructive/25' : ''}
-          ${!isAvailable && !isUnavailable && !isBooked && !isPast ? 'bg-muted/50 border-transparent' : ''}
+          ${!isUnavailable && !isBooked && !isPast ? 'bg-muted/50 border-transparent' : ''}
         `}
       >
         {day}
@@ -276,12 +246,8 @@ export function GuideAvailabilityCalendar({ bookings = [], onSave }: Availabilit
 
               <div className="flex flex-wrap items-center gap-4 mt-4 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
                 <div className="flex items-center gap-2">
-                  <div className="size-3.5 rounded border border-primary/25 bg-primary/15" />
-                  <span>Available</span>
-                </div>
-                <div className="flex items-center gap-2">
                   <div className="size-3.5 rounded border border-destructive/25 bg-destructive/15" />
-                  <span>Unavailable</span>
+                  <span>Unavailable (tap date)</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="size-3.5 rounded border border-status-confirmed/25 bg-status-confirmed/15" />
@@ -289,7 +255,7 @@ export function GuideAvailabilityCalendar({ bookings = [], onSave }: Availabilit
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="size-3.5 rounded bg-muted/50" />
-                  <span>Not set</span>
+                  <span>Available (tap to block)</span>
                 </div>
               </div>
 

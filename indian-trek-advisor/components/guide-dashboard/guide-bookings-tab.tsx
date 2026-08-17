@@ -263,7 +263,7 @@ export function GuideBookingsTab({ bookings, onRefresh, filterHint }: GuideBooki
                               className="gap-1 bg-green-600 text-white hover:bg-green-700"
                             >
                               <CheckCircle className="size-3.5" />
-                              Approve
+                              Accept
                             </Button>
                             <Button
                               size="sm"
@@ -295,6 +295,12 @@ export function GuideBookingsTab({ bookings, onRefresh, filterHint }: GuideBooki
                         {["guide_approved", "admin_approved"].includes(booking.status) && (
                           <p className="max-w-[220px] text-right text-[10px] text-muted-foreground">
                             {getStatusConfig(booking.status).description}
+                          </p>
+                        )}
+
+                        {booking.status === "pending" && (
+                          <p className="max-w-[220px] text-right text-[10px] text-amber-500/90">
+                            Accepting locks this date; any other requests for the same day are auto-rejected.
                           </p>
                         )}
                       </div>

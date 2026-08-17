@@ -114,13 +114,30 @@ export async function POST(req: Request) {
       history: history.map((m) => ({ role: m.role, parts: [{ text: m.text }] })),
     })
 
-    const result = await chat.sendMessageStream(lastMessage.text)
+    // Gemini's free tier returns transient errors when overloaded or rate-
+    // limited (HTTP 503 unavailable / 429 too many requests). Retry with
+    // backoff so a quick flurry of questions doesn't surface as confusing 502s.
+    const MAX_RETRIES = 3
+    const RETRYABLE = new Set([429, 503])
+    let result: Awaited<ReturnType<typeof chat.sendMessageStream>>
+    for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+      try {
+        result = await chat.sendMessageStream(lastMessage.text)
+        break
+      } catch (err) {
+        const status = (err as { status?: number })?.status
+        if (!RETRYABLE.has(status!) || attempt === MAX_RETRIES) throw err
+        const waitMs = 600 * (attempt + 1) + Math.floor(Math.random() * 300)
+        console.log(`[v0] Trex ${status}, retrying in ${waitMs}ms (attempt ${attempt + 1})`)
+        await new Promise((r) => setTimeout(r, waitMs))
+      }
+    }
 
     const encoder = new TextEncoder()
     const stream = new ReadableStream<Uint8Array>({
       async start(controller) {
         try {
-          for await (const chunk of result.stream) {
+          for await (const chunk of result!.stream) {
             const text = chunk.text()
             if (text) controller.enqueue(encoder.encode(text))
           }
@@ -141,6 +158,17 @@ export async function POST(req: Request) {
     })
   } catch (err) {
     console.log("[v0] Trex request error:", err)
+    const status = (err as { status?: number })?.status
+    console.log("[v0] Trex error status:", status, "json:", JSON.stringify((err as { statusDetails?: unknown })?.statusDetails ?? (err as { response?: unknown })?.response ?? null))
+    if (status === 429) {
+      return Response.json({ error: "The trail guide is busy right now. Please wait a moment and try again." }, { status: 429 })
+    }
+    if (status === 503) {
+      return Response.json({ error: "The trail guide service is temporarily unavailable. Please try again in a moment." }, { status: 503 })
+    }
+    if (status === 403 || status === 401) {
+      return Response.json({ error: "The trail guide's API key appears to be invalid or expired." }, { status: 500 })
+    }
     return Response.json({ error: "Failed to get a response from Trex" }, { status: 502 })
   }
 }

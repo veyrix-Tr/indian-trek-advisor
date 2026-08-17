@@ -53,19 +53,20 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Guide not available on this date" }, { status: 400 })
   }
 
-  // Create booking (idempotence guard: one pending request per trekker+date).
+  // Create booking. Duplicate guard: a trekker can send only one active
+  // request per booking_date (regardless of which guide), so they can't
+  // request two different guides for the same day.
   const { data: existingBooking } = await supabase
     .from("bookings")
     .select("id")
     .eq("trekker_id", user.id)
-    .eq("guide_id", guide_id)
     .eq("booking_date", booking_date)
     .in("status", ["pending", "guide_approved", "admin_approved"])
     .maybeSingle()
 
   if (existingBooking) {
     return NextResponse.json({
-      error: "You already have an active request for this guide on this date",
+      error: "You already have an active booking request for this date",
     }, { status: 409 })
   }
 
@@ -91,15 +92,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: bookingError.message }, { status: 500 })
   }
 
-  // Hold the guide's date for this booking.
-  await supabase
-    .from("guide_availability")
-    .upsert({
-      guide_id,
-      date: booking_date,
-      status: "booked",
-      booking_id: booking.id,
-    }, { onConflict: "guide_id,date" })
+  // Note: availability is NOT held here. The guide can accept one of several
+  // pending requests; the date only becomes "booked" when the guide accepts
+  // (see approve-guide), which is what blocks further requests for that date.
 
   // Audit + notifications.
   await recordBookingHistory(supabase, {
