@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import { Loader2, ArrowLeft, Star, MessagesSquare, Compass } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { createClient } from "@/utils/supabase/client"
 
 interface Review {
   id: string
@@ -32,6 +33,7 @@ function formatDate(dateStr: string) {
 
 export default function ReviewsPage() {
   const router = useRouter()
+  const supabase = createClient()
   const [reviews, setReviews] = useState<Review[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -39,6 +41,20 @@ export default function ReviewsPage() {
     let active = true
     ;(async () => {
       try {
+        const { data: { user } } = await supabase.auth.getUser()
+        if (!user) {
+          router.replace("/")
+          return
+        }
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("account_type")
+          .eq("id", user.id)
+          .single()
+        if (profile?.account_type === "guide") {
+          router.replace("/guide/dashboard")
+          return
+        }
         const res = await fetch("/api/trekker/reviews")
         if (res.status === 401) {
           router.replace("/")

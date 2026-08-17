@@ -1,22 +1,19 @@
 import { NextResponse } from "next/server"
-import { createClient } from "@supabase/supabase-js"
-import { createClient as createServerSupabaseClient } from "@/utils/supabase/server"
+import { getAdminClient, getAuthUser } from "@/lib/supabase-admin"
+import { recordBookingHistory } from "@/lib/booking-history"
+import { canTransition } from "@/lib/booking-flow"
 
 export async function POST(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params
-  const authClient = await createServerSupabaseClient()
-  const { data: { user }, error: authError } = await authClient.auth.getUser()
-  if (authError || !user) {
+  const user = await getAuthUser()
+  if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  )
+  const supabase = getAdminClient()
 
   // Verify user is admin
   const { data: profile } = await supabase
@@ -40,8 +37,8 @@ export async function POST(
     return NextResponse.json({ error: "Booking not found" }, { status: 404 })
   }
 
-  // Verify booking is in correct state
-  if (booking.status !== 'guide_approved') {
+  // State-machine guard
+  if (booking.status !== 'guide_approved' || !canTransition(booking.status, "admin_approved")) {
     return NextResponse.json({ error: "Booking must be guide-approved before admin approval" }, { status: 400 })
   }
 
@@ -56,6 +53,15 @@ export async function POST(
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
+
+  await recordBookingHistory(supabase, {
+    bookingId: booking.id,
+    fromStatus: booking.status,
+    toStatus: "admin_approved",
+    actorId: user.id,
+    actorRole: "admin",
+    note: "Admin approved",
+  })
 
   // Notify the trekker their booking is confirmed and ready to pay
   await supabase.from("notifications").insert({
@@ -80,15 +86,7 @@ export async function POST(
     .eq("id", updated.trekker_id)
     .single()
 
-  // Get base rate from guide_trek_associations
-  const { data: association } = await supabase
-    .from("guide_trek_associations")
-    .select("base_rate")
-    .eq("guide_id", updated.guide_id)
-    .eq("trek_id", updated.trek_id)
-    .single()
-
-  const amount = association?.base_rate || 0
+  const amount = updated.total_amount || 0
 
   if (trekkerProfile?.phone) {
     const { sendAdminApprovalSMS } = await import("@/lib/sms/brevo")

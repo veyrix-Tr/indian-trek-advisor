@@ -1,25 +1,19 @@
 import { NextResponse } from "next/server"
-import { createClient } from "@supabase/supabase-js"
-import { createClient as createServerSupabaseClient } from "@/utils/supabase/server"
+import { getAdminClient, getAuthUser } from "@/lib/supabase-admin"
+import { recordBookingHistory } from "@/lib/booking-history"
+import { canTransition } from "@/lib/booking-flow"
 
 export async function POST(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params
-  const authClient = await createServerSupabaseClient()
-  const { data: { user }, error: authError } = await authClient.auth.getUser()
-  if (authError || !user) {
+  const user = await getAuthUser()
+  if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  )
-
-  const body = await request.json()
-  const { amount } = body
+  const supabase = getAdminClient()
 
   // Verify user is the trekker
   const { data: booking } = await supabase
@@ -32,10 +26,13 @@ export async function POST(
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 })
   }
 
-  // Verify booking is in correct state
-  if (booking.status !== 'admin_approved') {
+  // State-machine guard
+  if (booking.status !== 'admin_approved' || !canTransition(booking.status, "confirmed")) {
     return NextResponse.json({ error: "Booking must be admin-approved before payment" }, { status: 400 })
   }
+
+  // Amount is server-computed at booking time; never trust a client-supplied value.
+  const amount = booking.total_amount || 0
 
   // Update booking
   const { data: updated, error } = await supabase
@@ -43,7 +40,7 @@ export async function POST(
     .update({
       status: 'confirmed',
       payment_status: 'paid',
-      payment_amount: amount
+      payment_amount: amount,
     })
     .eq("id", id)
     .select()
@@ -52,6 +49,15 @@ export async function POST(
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
+
+  await recordBookingHistory(supabase, {
+    bookingId: booking.id,
+    fromStatus: booking.status,
+    toStatus: "confirmed",
+    actorId: user.id,
+    actorRole: "trekker",
+    note: "Payment confirmed — booking locked in",
+  })
 
   // Get guide and trekker profiles for SMS
   const { data: guideRow } = await supabase

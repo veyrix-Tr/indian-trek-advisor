@@ -2,11 +2,12 @@
 
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
-import { MapPin, Star, BadgeCheck, AlertCircle, CheckCircle2, CalendarX } from "lucide-react"
+import { MapPin, Star, BadgeCheck, AlertCircle, CheckCircle2, CalendarX, Minus, Plus, Users } from "lucide-react"
 import type { Trek } from "@/lib/data"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+import { parseTrekDays, computeBookingAmount, inr } from "@/lib/pricing"
 import {
   Dialog,
   DialogContent,
@@ -48,6 +49,7 @@ export function GuidesTab({ trek }: { trek: Trek }) {
   const [loading, setLoading] = useState(false)
   const [selectedGuide, setSelectedGuide] = useState<Guide | null>(null)
   const [showBookingModal, setShowBookingModal] = useState(false)
+  const [numTrekkers, setNumTrekkers] = useState(1)
   const [submitting, setSubmitting] = useState(false)
   const [bookingError, setBookingError] = useState<string | null>(null)
   const [bookingSuccess, setBookingSuccess] = useState(false)
@@ -73,6 +75,7 @@ export function GuidesTab({ trek }: { trek: Trek }) {
 
   const handleBookGuide = (guide: Guide) => {
     setSelectedGuide(guide)
+    setNumTrekkers(1)
     setBookingError(null)
     setBookingSuccess(false)
     setShowBookingModal(true)
@@ -91,7 +94,8 @@ export function GuidesTab({ trek }: { trek: Trek }) {
           trek_id: trek.id,
           guide_id: selectedGuide.guide_id,
           booking_date: selectedDate,
-          notes
+          notes,
+          num_trekkers: numTrekkers,
         })
       })
 
@@ -204,8 +208,54 @@ export function GuidesTab({ trek }: { trek: Trek }) {
                   <div className="space-y-3 mb-4">
                     <p><strong>Guide:</strong> {selectedGuide.guides.profiles.name}</p>
                     <p><strong>Date:</strong> {selectedDate}</p>
-                    <p><strong>Rate:</strong> ₹{selectedGuide.base_rate.toLocaleString("en-IN")}/day</p>
+                    <p><strong>Rate:</strong> {inr(selectedGuide.base_rate)}/day</p>
+                    <p className="text-xs text-muted-foreground">{selectedGuide.guides.known_treks?.length ? `${selectedGuide.guides.known_treks.length} treks` : ""} · {parseTrekDays(String(trek.days))} days</p>
                   </div>
+
+                  <div className="mb-4 flex items-center justify-between rounded-xl border border-border bg-background/40 p-3">
+                    <div className="flex items-center gap-2">
+                      <Users className="size-4 text-primary" />
+                      <span className="text-sm font-medium">Trekkers</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon-sm"
+                        onClick={() => setNumTrekkers((n) => Math.max(1, n - 1))}
+                        disabled={numTrekkers <= 1}
+                        aria-label="Decrease trekkers"
+                      >
+                        <Minus className="size-3.5" />
+                      </Button>
+                      <span className="w-8 text-center text-sm font-semibold">{numTrekkers}</span>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon-sm"
+                        onClick={() => setNumTrekkers((n) => Math.min(20, n + 1))}
+                        disabled={numTrekkers >= 20}
+                        aria-label="Increase trekkers"
+                      >
+                        <Plus className="size-3.5" />
+                      </Button>
+                    </div>
+                  </div>
+
+                  <div className="mb-4 space-y-1 rounded-xl border border-primary/20 bg-primary/5 p-3">
+                    <div className="flex justify-between text-xs text-muted-foreground">
+                      <span>{inr(selectedGuide.base_rate)}/day × {numTrekkers} × {parseTrekDays(String(trek.days))} days</span>
+                      <span className="font-mono">{inr(computeBookingAmount(selectedGuide.base_rate, numTrekkers, parseTrekDays(String(trek.days))))}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium">Estimated total</span>
+                      <span className="text-lg font-bold text-primary">
+                        {inr(computeBookingAmount(selectedGuide.base_rate, numTrekkers, parseTrekDays(String(trek.days))))}
+                      </span>
+                    </div>
+                    <p className="text-[10px] text-muted-foreground">Final amount confirmed by the guide &amp; admin.</p>
+                  </div>
+
                   <Textarea
                     placeholder="Add any notes for the guide..."
                     className="mb-3"

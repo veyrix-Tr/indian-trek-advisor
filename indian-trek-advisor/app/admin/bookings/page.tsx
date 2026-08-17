@@ -6,21 +6,28 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Textarea } from "@/components/ui/textarea"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import { Calendar, User, CheckCircle, XCircle, MapPin, AlertCircle, CheckCircle2 } from "lucide-react"
+import { Calendar, User, CheckCircle, XCircle, MapPin, AlertCircle, CheckCircle2, Users, IndianRupee } from "lucide-react"
 import { getStatusConfig } from "@/lib/booking-status"
+import { StatusTimeline } from "@/components/booking/status-timeline"
+import { inr } from "@/lib/pricing"
 
 interface Booking {
   id: string
   trek_id: string
   status: string
   booking_date: string
+  num_trekkers?: number
+  total_amount?: number
+  base_rate?: number
+  notes?: string
+  rejection_reason?: string
+  cancelled_by_role?: string
   profiles: {
     name: string
     email: string
@@ -34,9 +41,19 @@ interface Booking {
   }
 }
 
+const FILTERS = [
+  { value: "all", label: "All" },
+  { value: "guide_approved", label: "Awaiting Admin" },
+  { value: "admin_approved", label: "Awaiting Payment" },
+  { value: "confirmed", label: "Confirmed" },
+  { value: "completed", label: "Completed" },
+  { value: "cancelled", label: "Cancelled" },
+]
+
 export default function AdminBookingsPage() {
   const [bookings, setBookings] = useState<Booking[]>([])
   const [loading, setLoading] = useState(true)
+  const [filter, setFilter] = useState("all")
   const [actingId, setActingId] = useState<string | null>(null)
   const [rejectDialogBooking, setRejectDialogBooking] = useState<Booking | null>(null)
   const [rejectReason, setRejectReason] = useState("")
@@ -45,11 +62,11 @@ export default function AdminBookingsPage() {
 
   useEffect(() => {
     fetchBookings()
-  }, [])
+  }, [filter])
 
   const fetchBookings = async () => {
     try {
-      const response = await fetch("/api/admin/bookings/pending")
+      const response = await fetch(`/api/admin/bookings/pending?status=${filter}`)
       const data = await response.json()
       setBookings(data.bookings || [])
     } catch (error) {
@@ -69,10 +86,12 @@ export default function AdminBookingsPage() {
       const response = await fetch(`/api/bookings/${bookingId}/approve-admin`, {
         method: "POST"
       })
-
       if (response.ok) {
         fetchBookings()
         showToast("Booking approved and sent to trekker for payment")
+      } else {
+        const data = await response.json()
+        showToast(data.error || "Error approving booking")
       }
     } catch (error) {
       console.error("Error approving booking:", error)
@@ -80,8 +99,27 @@ export default function AdminBookingsPage() {
     setActingId(null)
   }
 
+  const handleComplete = async (bookingId: string) => {
+    setActingId(bookingId)
+    try {
+      const response = await fetch(`/api/bookings/${bookingId}/complete`, {
+        method: "POST"
+      })
+      if (response.ok) {
+        fetchBookings()
+        showToast("Booking marked complete")
+      } else {
+        const data = await response.json()
+        showToast(data.error || "Error completing booking")
+      }
+    } catch (error) {
+      console.error("Error completing booking:", error)
+    }
+    setActingId(null)
+  }
+
   const handleReject = async () => {
-    if (!rejectDialogBooking || !rejectReason.trim()) return
+    if (!rejectDialogBooking) return
     setActingId(rejectDialogBooking.id)
     setActionError(null)
     try {
@@ -118,83 +156,109 @@ export default function AdminBookingsPage() {
     )
   }
 
-  const guideApproved = bookings.filter(b => b.status === 'guide_approved')
-  const adminApproved = bookings.filter(b => b.status === 'admin_approved')
-
   return (
     <div className="min-h-screen pt-24 pb-12">
       <div className="mx-auto max-w-6xl px-4 md:px-6">
-        <p className="font-mono text-[10px] uppercase tracking-widest text-primary">Booking Review</p>
-        <h1 className="mt-1 mb-8 text-3xl font-bold tracking-tight">Admin Booking Review</h1>
+        <p className="font-mono text-[10px] uppercase tracking-widest text-primary">Booking Management</p>
+        <h1 className="mt-1 mb-8 text-3xl font-bold tracking-tight">All Bookings</h1>
 
-        <Tabs defaultValue="guide-approved">
-          <TabsList className="inline-flex h-auto w-auto gap-1 bg-transparent p-0">
-            <TabsTrigger
-              value="guide-approved"
-              className="gap-1.5 rounded-xl border border-border/40 bg-background/40 px-4 py-2.5 font-mono text-[10px] uppercase tracking-widest text-muted-foreground transition-all data-[state=active]:border-primary/40 data-[state=active]:bg-primary/10 data-[state=active]:text-primary"
+        {/* Filters */}
+        <div className="mb-6 flex flex-wrap gap-2">
+          {FILTERS.map((f) => (
+            <button
+              key={f.value}
+              onClick={() => setFilter(f.value)}
+              className={`rounded-full border px-3 py-1.5 font-mono text-[10px] uppercase tracking-widest transition-all ${
+                filter === f.value
+                  ? "border-primary/40 bg-primary/10 text-primary"
+                  : "border-border/40 bg-background/40 text-muted-foreground hover:bg-accent hover:text-foreground"
+              }`}
             >
-              Guide Approved ({guideApproved.length})
-            </TabsTrigger>
-            <TabsTrigger
-              value="admin-approved"
-              className="gap-1.5 rounded-xl border border-border/40 bg-background/40 px-4 py-2.5 font-mono text-[10px] uppercase tracking-widest text-muted-foreground transition-all data-[state=active]:border-primary/40 data-[state=active]:bg-primary/10 data-[state=active]:text-primary"
-            >
-              Admin Approved ({adminApproved.length})
-            </TabsTrigger>
-          </TabsList>
+              {f.label}
+            </button>
+          ))}
+        </div>
 
-          <TabsContent value="guide-approved" className="space-y-4 mt-6">
-            {guideApproved.length === 0 ? (
-              <Card className="border-border/60 bg-card/60 backdrop-blur-xl">
-                <CardContent className="p-10 text-center text-muted-foreground">
-                  No pending guide approvals
-                </CardContent>
-              </Card>
-            ) : (
-              guideApproved.map((booking, i) => {
-                const status = getStatusConfig(booking.status)
-                return (
-                  <motion.div
-                    key={booking.id}
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.05, duration: 0.3 }}
-                  >
-                    <Card className="border-border/60 bg-card/60 backdrop-blur-xl">
-                      <CardHeader>
-                        <div className="flex items-center justify-between">
-                          <CardTitle className="text-lg">Booking #{booking.id.slice(0, 8)}</CardTitle>
-                          <Badge className={`border text-[10px] font-mono uppercase tracking-wider ${status.colorClass}`}>
-                            {status.label}
-                          </Badge>
+        {bookings.length === 0 ? (
+          <Card className="border-border/60 bg-card/60 backdrop-blur-xl">
+            <CardContent className="flex flex-col items-center justify-center p-12 text-center text-muted-foreground">
+              <CheckCircle2 className="mb-3 size-8 text-muted-foreground/40" />
+              No bookings in this view
+            </CardContent>
+          </Card>
+        ) : (
+          <div className="space-y-4">
+            {bookings.map((booking, i) => {
+              const status = getStatusConfig(booking.status)
+              const canApprove = booking.status === 'guide_approved'
+              const canComplete = booking.status === 'confirmed'
+              const canReject = booking.status === 'guide_approved' || booking.status === 'admin_approved'
+              return (
+                <motion.div
+                  key={booking.id}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.04, duration: 0.3 }}
+                >
+                  <Card className="border-border/60 bg-card/60 backdrop-blur-xl">
+                    <CardHeader>
+                      <div className="flex items-center justify-between">
+                        <CardTitle className="text-lg">Booking #{booking.id.slice(0, 8)}</CardTitle>
+                        <Badge className={`border text-[10px] font-mono uppercase tracking-wider ${status.colorClass}`}>
+                          {status.label}
+                        </Badge>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-2 text-sm text-muted-foreground">
+                        <div className="flex items-center gap-2">
+                          <User className="size-4 text-primary" />
+                          <span><strong className="text-foreground">Trekker:</strong> {booking.profiles.name}</span>
                         </div>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="space-y-2 text-sm text-muted-foreground">
-                          <div className="flex items-center gap-2">
-                            <User className="size-4 text-primary" />
-                            <span><strong className="text-foreground">Trekker:</strong> {booking.profiles.name}</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <User className="size-4 text-primary" />
-                            <span><strong className="text-foreground">Guide:</strong> {booking.guides?.profiles?.name}</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <MapPin className="size-4 text-primary" />
-                            <span><strong className="text-foreground">Trek:</strong> {booking.trek_id}</span>
-                          </div>
-                          <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2">
+                          <User className="size-4 text-primary" />
+                          <span><strong className="text-foreground">Guide:</strong> {booking.guides?.profiles?.name}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <MapPin className="size-4 text-primary" />
+                          <span><strong className="text-foreground">Trek:</strong> {booking.trek_id}</span>
+                        </div>
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="flex items-center gap-2">
                             <Calendar className="size-4 text-primary" />
                             <span><strong className="text-foreground">Date:</strong> {booking.booking_date}</span>
-                          </div>
-                          {booking.profiles.phone && (
-                            <p><strong className="text-foreground">Trekker Phone:</strong> {booking.profiles.phone}</p>
-                          )}
-                          {booking.guides?.profiles?.phone && (
-                            <p><strong className="text-foreground">Guide Phone:</strong> {booking.guides.profiles.phone}</p>
-                          )}
+                          </span>
+                          {booking.num_trekkers ? (
+                            <span className="flex items-center gap-1.5">
+                              <Users className="size-4 text-primary" />
+                              {booking.num_trekkers} trekker{booking.num_trekkers > 1 ? "s" : ""}
+                            </span>
+                          ) : null}
+                          {booking.total_amount ? (
+                            <span className="flex items-center gap-1.5 font-semibold text-foreground">
+                              <IndianRupee className="size-4 text-primary" />
+                              {inr(booking.total_amount)}
+                            </span>
+                          ) : null}
                         </div>
-                        <div className="flex gap-2 mt-4">
+                        {booking.profiles.phone && (
+                          <p><strong className="text-foreground">Trekker Phone:</strong> {booking.profiles.phone}</p>
+                        )}
+                        {booking.guides?.profiles?.phone && (
+                          <p><strong className="text-foreground">Guide Phone:</strong> {booking.guides.profiles.phone}</p>
+                        )}
+                        {booking.status === 'cancelled' && booking.rejection_reason && (
+                          <p className="flex items-start gap-2 rounded-lg border border-destructive/20 bg-destructive/5 px-3 py-2 text-xs text-destructive">
+                            <XCircle className="mt-0.5 size-3.5 shrink-0" />
+                            <span>Cancelled by {booking.cancelled_by_role || "a party"}: {booking.rejection_reason}</span>
+                          </p>
+                        )}
+                        {booking.notes && (
+                          <p className="text-xs italic">&ldquo;{booking.notes}&rdquo;</p>
+                        )}
+                      </div>
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        {canApprove && (
                           <Button
                             onClick={() => handleApprove(booking.id)}
                             disabled={actingId === booking.id}
@@ -203,6 +267,19 @@ export default function AdminBookingsPage() {
                             <CheckCircle className="size-4" />
                             Approve
                           </Button>
+                        )}
+                        {canComplete && (
+                          <Button
+                            onClick={() => handleComplete(booking.id)}
+                            disabled={actingId === booking.id}
+                            variant="outline"
+                            className="gap-1.5 border-primary/30 text-primary hover:bg-primary/10"
+                          >
+                            <CheckCircle className="size-4" />
+                            Mark Complete
+                          </Button>
+                        )}
+                        {canReject && (
                           <Button
                             variant="destructive"
                             disabled={actingId === booking.id}
@@ -212,51 +289,18 @@ export default function AdminBookingsPage() {
                             <XCircle className="size-4" />
                             Reject
                           </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                )
-              })
-            )}
-          </TabsContent>
-
-          <TabsContent value="admin-approved" className="space-y-4 mt-6">
-            {adminApproved.length === 0 ? (
-              <Card className="border-border/60 bg-card/60 backdrop-blur-xl">
-                <CardContent className="p-10 text-center text-muted-foreground">
-                  No pending admin approvals
-                </CardContent>
-              </Card>
-            ) : (
-              adminApproved.map((booking, i) => {
-                const status = getStatusConfig(booking.status)
-                return (
-                  <motion.div
-                    key={booking.id}
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.05, duration: 0.3 }}
-                  >
-                    <Card className="border-border/60 bg-card/60 backdrop-blur-xl">
-                      <CardContent className="p-6">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="font-semibold">{booking.profiles.name} — {booking.trek_id}</p>
-                            <p className="text-sm text-muted-foreground">{booking.booking_date}</p>
-                          </div>
-                          <Badge className={`border text-[10px] font-mono uppercase tracking-wider ${status.colorClass}`}>
-                            {status.label}
-                          </Badge>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                )
-              })
-            )}
-          </TabsContent>
-        </Tabs>
+                        )}
+                      </div>
+                      <div className="mt-3 border-t border-border/50 pt-3">
+                        <StatusTimeline bookingId={booking.id} bookingDate={booking.booking_date} />
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              )
+            })}
+          </div>
+        )}
       </div>
 
       {/* Reject Dialog */}
@@ -300,7 +344,7 @@ export default function AdminBookingsPage() {
                 variant="destructive"
                 className="flex-1"
                 onClick={handleReject}
-                disabled={Boolean(actingId) || !rejectReason.trim()}
+                disabled={Boolean(actingId)}
               >
                 {actingId ? "Rejecting..." : "Reject Booking"}
               </Button>

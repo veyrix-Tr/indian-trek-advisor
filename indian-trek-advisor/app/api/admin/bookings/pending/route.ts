@@ -1,18 +1,13 @@
 import { NextResponse } from "next/server"
-import { createClient } from "@supabase/supabase-js"
-import { createClient as createServerSupabaseClient } from "@/utils/supabase/server"
+import { getAdminClient, getAuthUser } from "@/lib/supabase-admin"
 
 export async function GET(request: Request) {
-  const authClient = await createServerSupabaseClient()
-  const { data: { user }, error: authError } = await authClient.auth.getUser()
-  if (authError || !user) {
+  const user = await getAuthUser()
+  if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  )
+  const supabase = getAdminClient()
 
   // Verify admin
   const { data: profile } = await supabase
@@ -25,10 +20,19 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 })
   }
 
-  const { data: bookings, error } = await supabase
+  const { searchParams } = new URL(request.url)
+  const status = searchParams.get('status')
+
+  let query = supabase
     .from("bookings")
-    .select("*, profiles(*), guides(*, profiles(*))")
-    .in("status", ['guide_approved', 'admin_approved'])
+    .select("*, profiles!bookings_trekker_id_fkey(*), guides(*, profiles!guides_user_id_fkey(*))")
+    .order("created_at", { ascending: false })
+
+  if (status && status !== 'all') {
+    query = query.eq("status", status)
+  }
+
+  const { data: bookings, error } = await query
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 })

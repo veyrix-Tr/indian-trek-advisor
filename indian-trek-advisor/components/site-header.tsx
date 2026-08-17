@@ -205,30 +205,36 @@ export function SiteHeader() {
                         <User className="size-4" />
                         Profile
                       </Link>
-<Link
-                          href="/saved"
-                          onClick={() => setProfileOpen(false)}
-                          className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-foreground/70 transition-colors hover:bg-accent hover:text-foreground"
-                        >
-                          <Bookmark className="size-4" />
-                          Saved Treks
-                        </Link>
-                        <Link
-                          href="/dashboard/bookings"
-                          onClick={() => setProfileOpen(false)}
-                          className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-foreground/70 transition-colors hover:bg-accent hover:text-foreground"
-                        >
-                          <CalendarDays className="size-4" />
-                          My Bookings
-                        </Link>
-                        <Link
-                          href="/reviews"
-                          onClick={() => setProfileOpen(false)}
-                          className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-foreground/70 transition-colors hover:bg-accent hover:text-foreground"
-                        >
-                          <Star className="size-4" />
-                          My Reviews
-                        </Link>
+                        {accountType !== "guide" && (
+                          <Link
+                            href="/saved"
+                            onClick={() => setProfileOpen(false)}
+                            className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-foreground/70 transition-colors hover:bg-accent hover:text-foreground"
+                          >
+                            <Bookmark className="size-4" />
+                            Saved Treks
+                          </Link>
+                        )}
+                        {accountType !== "guide" && (
+                          <>
+                            <Link
+                              href="/dashboard/bookings"
+                              onClick={() => setProfileOpen(false)}
+                              className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-foreground/70 transition-colors hover:bg-accent hover:text-foreground"
+                            >
+                              <CalendarDays className="size-4" />
+                              My Bookings
+                            </Link>
+                            <Link
+                              href="/reviews"
+                              onClick={() => setProfileOpen(false)}
+                              className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-foreground/70 transition-colors hover:bg-accent hover:text-foreground"
+                            >
+                              <Star className="size-4" />
+                              My Reviews
+                            </Link>
+                          </>
+                        )}
                       {accountType === "admin" && (
                         <Link
                           href="/admin"

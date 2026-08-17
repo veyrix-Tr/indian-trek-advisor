@@ -1,22 +1,19 @@
 import { NextResponse } from "next/server"
-import { createClient } from "@supabase/supabase-js"
-import { createClient as createServerSupabaseClient } from "@/utils/supabase/server"
+import { getAdminClient, getAuthUser } from "@/lib/supabase-admin"
+import { recordBookingHistory } from "@/lib/booking-history"
+import { canTransition } from "@/lib/booking-flow"
 
 export async function POST(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params
-  const authClient = await createServerSupabaseClient()
-  const { data: { user }, error: authError } = await authClient.auth.getUser()
-  if (authError || !user) {
+  const user = await getAuthUser()
+  if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  )
+  const supabase = getAdminClient()
 
   const body = await request.json()
   const { reason } = body
@@ -46,13 +43,16 @@ export async function POST(
 
   const isGuideActor = Boolean(guide) && booking.guide_id === guide?.id
   const isTrekkerActor = booking.trekker_id === user.id
-  const canCancel = isGuideActor || isTrekkerActor || profile?.account_type === 'admin'
+  const isAdminActor = profile?.account_type === 'admin'
+  const canCancel = isGuideActor || isTrekkerActor || isAdminActor
   if (!canCancel) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 })
   }
 
-  if (booking.status === 'completed' || booking.status === 'cancelled') {
-    return NextResponse.json({ error: `Booking is already ${booking.status}` }, { status: 400 })
+  const actorRole = isAdminActor ? "admin" : isGuideActor ? "guide" : "trekker"
+
+  if (booking.status === 'completed' || booking.status === 'cancelled' || !canTransition(booking.status, "cancelled")) {
+    return NextResponse.json({ error: `Booking cannot be cancelled in its current state` }, { status: 400 })
   }
 
   // Update booking status
@@ -61,6 +61,8 @@ export async function POST(
     .update({
       status: 'cancelled',
       rejection_reason: reason || null,
+      cancelled_by: user.id,
+      cancelled_by_role: actorRole,
       ...(isGuideActor ? { guide_responded_at: new Date().toISOString() } : {}),
     })
     .eq("id", id)
@@ -70,6 +72,15 @@ export async function POST(
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
+
+  await recordBookingHistory(supabase, {
+    bookingId: booking.id,
+    fromStatus: booking.status,
+    toStatus: "cancelled",
+    actorId: user.id,
+    actorRole,
+    note: reason || "Booking cancelled",
+  })
 
   // Notify the counterpart about the cancellation
   const cancelMessage = `Your ${booking.trek_id} trek on ${booking.booking_date} was cancelled.${reason ? ` Reason: ${reason}` : ""}`

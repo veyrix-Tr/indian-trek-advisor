@@ -28,6 +28,15 @@ export default function SavedTreksPage() {
         router.replace("/")
         return
       }
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("account_type")
+        .eq("id", user.id)
+        .single()
+      if (profile?.account_type === "guide") {
+        router.replace("/guide/dashboard")
+        return
+      }
       const { data: trekker } = await supabase
         .from("trekkers")
         .select("saved_treks")

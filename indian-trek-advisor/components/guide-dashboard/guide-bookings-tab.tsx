@@ -5,8 +5,17 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { CheckCircle, XCircle, Clock, User, Calendar, FileText, AlertCircle } from "lucide-react"
+import { Textarea } from "@/components/ui/textarea"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import { CheckCircle, XCircle, Clock, User, Calendar, FileText, AlertCircle, Users, IndianRupee } from "lucide-react"
 import { STATUS_CONFIG, getStatusConfig } from "@/lib/booking-status"
+import { StatusTimeline } from "@/components/booking/status-timeline"
+import { inr } from "@/lib/pricing"
 
 interface Booking {
   id: string
@@ -14,8 +23,12 @@ interface Booking {
   status: string
   booking_date: string
   notes?: string
+  num_trekkers?: number
+  base_rate?: number
+  total_amount?: number
+  rejection_reason?: string
+  cancelled_by_role?: string
   trekker?: { name: string; email: string }
-  guides?: { trek_name: string; id: string }
 }
 
 interface GuideBookingsTabProps {
@@ -38,6 +51,9 @@ export function GuideBookingsTab({ bookings, onRefresh, filterHint }: GuideBooki
   const [filter, setFilter] = useState(filterHint?.filter || "all")
   const [loadingId, setLoadingId] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [rejectBooking, setRejectBooking] = useState<Booking | null>(null)
+  const [rejectReason, setRejectReason] = useState("")
+  const [rejecting, setRejecting] = useState(false)
 
   useEffect(() => {
     if (filterHint) setFilter(filterHint.filter)
@@ -58,7 +74,7 @@ export function GuideBookingsTab({ bookings, onRefresh, filterHint }: GuideBooki
     cancelled: bookings.filter((b) => b.status === "cancelled").length,
   }
 
-  async function handleAction(bookingId: string, action: "approve" | "reject" | "complete") {
+  async function handleAction(bookingId: string, action: "approve" | "complete") {
     setLoadingId(bookingId)
     setError(null)
     try {
@@ -67,9 +83,6 @@ export function GuideBookingsTab({ bookings, onRefresh, filterHint }: GuideBooki
 
       if (action === "approve") {
         url = `/api/bookings/${bookingId}/approve-guide`
-      } else if (action === "reject") {
-        url = `/api/bookings/${bookingId}/cancel`
-        body = { reason: "Guide unavailable" }
       } else if (action === "complete") {
         url = `/api/bookings/${bookingId}/complete`
       }
@@ -90,6 +103,30 @@ export function GuideBookingsTab({ bookings, onRefresh, filterHint }: GuideBooki
       setError("Network error. Please try again.")
     }
     setLoadingId(null)
+  }
+
+  async function confirmReject() {
+    if (!rejectBooking) return
+    setRejecting(true)
+    setError(null)
+    try {
+      const res = await fetch(`/api/bookings/${rejectBooking.id}/cancel`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reason: rejectReason || "Guide unavailable" }),
+      })
+      if (res.ok) {
+        setRejectBooking(null)
+        setRejectReason("")
+        onRefresh?.()
+      } else {
+        const data = await res.json()
+        setError(data.error || "Action failed")
+      }
+    } catch (err) {
+      setError("Network error. Please try again.")
+    }
+    setRejecting(false)
   }
 
   return (
@@ -178,17 +215,35 @@ export function GuideBookingsTab({ bookings, onRefresh, filterHint }: GuideBooki
                             <Calendar className="size-3" />
                             {booking.booking_date}
                           </span>
-                          {booking.guides?.trek_name && (
+                          {booking.trek_id && (
                             <span className="flex items-center gap-1">
                               <FileText className="size-3" />
-                              {booking.guides.trek_name}
+                              Trek #{booking.trek_id}
                             </span>
                           )}
+                          {booking.num_trekkers ? (
+                            <span className="flex items-center gap-1">
+                              <Users className="size-3" />
+                              {booking.num_trekkers} trekker{booking.num_trekkers > 1 ? "s" : ""}
+                            </span>
+                          ) : null}
+                          {booking.total_amount ? (
+                            <span className="flex items-center gap-1 font-semibold text-foreground">
+                              <IndianRupee className="size-3" />
+                              {inr(booking.total_amount)}
+                            </span>
+                          ) : null}
                         </div>
 
                         {booking.notes && (
                           <p className="mt-1 rounded-lg bg-background/40 px-3 py-2 text-xs text-muted-foreground italic">
                             &ldquo;{booking.notes}&rdquo;
+                          </p>
+                        )}
+                        {booking.status === "cancelled" && booking.rejection_reason && (
+                          <p className="flex items-start gap-2 rounded-lg border border-destructive/20 bg-destructive/5 px-3 py-2 text-xs text-destructive">
+                            <XCircle className="mt-0.5 size-3.5 shrink-0" />
+                            <span>Cancelled by {booking.cancelled_by_role || "a party"}: {booking.rejection_reason}</span>
                           </p>
                         )}
                       </div>
@@ -214,7 +269,7 @@ export function GuideBookingsTab({ bookings, onRefresh, filterHint }: GuideBooki
                               size="sm"
                               variant="destructive"
                               disabled={loadingId === booking.id}
-                              onClick={() => handleAction(booking.id, "reject")}
+                              onClick={() => setRejectBooking(booking)}
                               className="gap-1"
                             >
                               <XCircle className="size-3.5" />
@@ -244,6 +299,10 @@ export function GuideBookingsTab({ bookings, onRefresh, filterHint }: GuideBooki
                         )}
                       </div>
                     </div>
+
+                    <div className="mt-2 border-t border-border/50 pt-3">
+                      <StatusTimeline bookingId={booking.id} bookingDate={booking.booking_date} />
+                    </div>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -251,6 +310,60 @@ export function GuideBookingsTab({ bookings, onRefresh, filterHint }: GuideBooki
           )}
         </motion.div>
       </AnimatePresence>
+
+      {rejectBooking && (
+        <Dialog
+          open={Boolean(rejectBooking)}
+          onOpenChange={(open) => {
+            if (!open) {
+              setRejectBooking(null)
+              setRejectReason("")
+            }
+          }}
+        >
+          <DialogContent className="max-w-sm border-border bg-card">
+            <DialogHeader>
+              <DialogTitle>Reject Booking</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-3">
+              <p className="text-xs text-muted-foreground">
+                Rejecting <strong className="text-foreground">{rejectBooking.trekker?.name || "this trekker"}</strong>&apos;s
+                request for {rejectBooking.booking_date}.
+              </p>
+              <Textarea
+                value={rejectReason}
+                onChange={(e) => setRejectReason(e.target.value)}
+                placeholder="Reason for rejecting (optional)..."
+                rows={3}
+              />
+              {error && (
+                <p className="flex items-center gap-1.5 text-xs text-destructive">
+                  <AlertCircle className="size-3.5 shrink-0" />
+                  {error}
+                </p>
+              )}
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  className="flex-1"
+                  onClick={() => { setRejectBooking(null); setRejectReason("") }}
+                  disabled={rejecting}
+                >
+                  Keep Booking
+                </Button>
+                <Button
+                  variant="destructive"
+                  className="flex-1"
+                  onClick={confirmReject}
+                  disabled={rejecting}
+                >
+                  {rejecting ? "Rejecting..." : "Reject Booking"}
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   )
 }

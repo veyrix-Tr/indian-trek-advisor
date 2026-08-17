@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import {
   Dialog,
@@ -13,9 +12,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import { Calendar, Star, Phone, IndianRupee, AlertCircle, CheckCircle2 } from "lucide-react"
+import { Calendar, Star, Phone, IndianRupee, AlertCircle, CheckCircle2, Users, Clock, XCircle } from "lucide-react"
 import { RatingModal } from "@/components/rating-modal"
 import { getStatusConfig } from "@/lib/booking-status"
+import { createClient } from "@/utils/supabase/client"
+import { StatusTimeline } from "@/components/booking/status-timeline"
+import { inr } from "@/lib/pricing"
 
 interface Booking {
   id: string
@@ -23,6 +25,13 @@ interface Booking {
   status: string
   payment_status: string
   booking_date: string
+  num_trekkers?: number
+  trek_days?: number
+  base_rate?: number
+  total_amount?: number
+  notes?: string
+  rejection_reason?: string
+  cancelled_by_role?: string
   guides: {
     rating: number
     profiles: {
@@ -39,7 +48,6 @@ export default function BookingsPage() {
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null)
 
   const [paymentDialogBooking, setPaymentDialogBooking] = useState<Booking | null>(null)
-  const [paymentAmount, setPaymentAmount] = useState("")
   const [cancelDialogBooking, setCancelDialogBooking] = useState<Booking | null>(null)
   const [cancelReason, setCancelReason] = useState("")
   const [submitting, setSubmitting] = useState(false)
@@ -48,6 +56,23 @@ export default function BookingsPage() {
 
   useEffect(() => {
     fetchBookings()
+  }, [])
+
+  useEffect(() => {
+    ;(async () => {
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("account_type")
+          .eq("id", user.id)
+          .single()
+        if (profile?.account_type === "guide") {
+          window.location.replace("/guide/dashboard")
+        }
+      }
+    })()
   }, [])
 
   const fetchBookings = async () => {
@@ -67,20 +92,18 @@ export default function BookingsPage() {
   }
 
   const handleConfirmPayment = async () => {
-    if (!paymentDialogBooking || !paymentAmount) return
+    if (!paymentDialogBooking) return
     setSubmitting(true)
     setActionError(null)
     try {
       const response = await fetch(`/api/bookings/${paymentDialogBooking.id}/confirm-payment`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount: parseFloat(paymentAmount) })
+        headers: { "Content-Type": "application/json" }
       })
 
       if (response.ok) {
         fetchBookings()
         setPaymentDialogBooking(null)
-        setPaymentAmount("")
         showToast("Payment confirmed! Guide contact information is now visible.")
       } else {
         const data = await response.json()
@@ -121,7 +144,7 @@ export default function BookingsPage() {
   }
 
   const handleCancelBooking = async () => {
-    if (!cancelDialogBooking || !cancelReason.trim()) return
+    if (!cancelDialogBooking) return
     setSubmitting(true)
     setActionError(null)
     try {
@@ -196,10 +219,44 @@ export default function BookingsPage() {
                           <Calendar className="size-4 text-primary" />
                           <span>{booking.booking_date}</span>
                         </p>
-                        <p className="flex items-center gap-2 text-muted-foreground">
-                          <Star className="size-4 fill-yellow-400 text-yellow-400" />
-                          <span>{booking.guides?.profiles?.name} · {booking.guides?.rating?.toFixed(1)}</span>
-                        </p>
+                        <div className="flex flex-wrap items-center gap-4 text-muted-foreground">
+                          <p className="flex items-center gap-2">
+                            <Star className="size-4 fill-yellow-400 text-yellow-400" />
+                            <span>{booking.guides?.profiles?.name} · {booking.guides?.rating?.toFixed(1)}</span>
+                          </p>
+                          {booking.num_trekkers ? (
+                            <p className="flex items-center gap-2">
+                              <Users className="size-4 text-muted-foreground/70" />
+                              <span>{booking.num_trekkers} trekker{booking.num_trekkers > 1 ? "s" : ""}</span>
+                            </p>
+                          ) : null}
+                        </div>
+                        {(booking.num_trekkers || booking.base_rate || booking.total_amount) && (
+                          <p className="flex items-center gap-2 font-medium text-foreground">
+                            <IndianRupee className="size-4 text-primary" />
+                            <span>
+                              {booking.base_rate ? `${inr(booking.base_rate)}/day` : ""}
+                              {booking.num_trekkers && booking.num_trekkers > 1 && booking.base_rate ? ` × ${booking.num_trekkers}` : ""}
+                              {booking.trek_days ? ` × ${booking.trek_days} day${booking.trek_days > 1 ? "s" : ""}` : ""}
+                              {booking.total_amount ? ` = ${inr(booking.total_amount)}` : ""}
+                            </span>
+                          </p>
+                        )}
+                        {booking.status === 'admin_approved' && booking.total_amount ? (
+                          <p className="flex items-center gap-2 text-sm font-semibold text-primary">
+                            <IndianRupee className="size-4" />
+                            Amount due: {inr(booking.total_amount)}
+                          </p>
+                        ) : null}
+                        {booking.notes && (
+                          <p className="text-xs italic text-muted-foreground">&ldquo;{booking.notes}&rdquo;</p>
+                        )}
+                        {booking.status === 'cancelled' && booking.rejection_reason && (
+                          <p className="flex items-start gap-2 rounded-lg border border-destructive/20 bg-destructive/5 px-3 py-2 text-xs text-destructive">
+                            <XCircle className="mt-0.5 size-3.5 shrink-0" />
+                            <span>Cancelled by {booking.cancelled_by_role}: {booking.rejection_reason}</span>
+                          </p>
+                        )}
                         {status.description && (
                           <p className="text-xs text-muted-foreground">{status.description}</p>
                         )}
@@ -245,6 +302,8 @@ export default function BookingsPage() {
                           Cancel Booking
                         </Button>
                       )}
+
+                      <StatusTimeline bookingId={booking.id} bookingDate={booking.booking_date} />
                     </CardContent>
                   </Card>
                 </motion.div>
@@ -269,7 +328,6 @@ export default function BookingsPage() {
         onOpenChange={(open) => {
           if (!open) {
             setPaymentDialogBooking(null)
-            setPaymentAmount("")
             setActionError(null)
           }
         }}
@@ -279,17 +337,23 @@ export default function BookingsPage() {
             <DialogTitle>Confirm Payment</DialogTitle>
           </DialogHeader>
           <div className="space-y-3">
-            <div className="relative">
-              <IndianRupee className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-              <Input
-                type="number"
-                min={1}
-                value={paymentAmount}
-                onChange={(e) => setPaymentAmount(e.target.value)}
-                placeholder="Enter payment amount"
-                className="pl-9"
-              />
-            </div>
+            {paymentDialogBooking?.total_amount ? (
+              <div className="rounded-xl border border-primary/20 bg-primary/5 p-4 text-center">
+                <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                  Total Due
+                </p>
+                <p className="mt-1 text-2xl font-bold text-primary">
+                  {inr(paymentDialogBooking.total_amount)}
+                </p>
+                {paymentDialogBooking.base_rate ? (
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    {inr(paymentDialogBooking.base_rate)}/day × {(paymentDialogBooking.trek_days ?? 1)} day
+                    {(paymentDialogBooking.trek_days ?? 1) > 1 ? "s" : ""} × {(paymentDialogBooking.num_trekkers ?? 1)} trekker
+                    {(paymentDialogBooking.num_trekkers ?? 1) > 1 ? "s" : ""}
+                  </p>
+                ) : null}
+              </div>
+            ) : null}
             {actionError && (
               <p className="flex items-center gap-1.5 text-xs text-destructive">
                 <AlertCircle className="size-3.5 shrink-0" />
@@ -298,7 +362,7 @@ export default function BookingsPage() {
             )}
             <Button
               onClick={handleConfirmPayment}
-              disabled={submitting || !paymentAmount}
+              disabled={submitting}
               className="w-full"
             >
               {submitting ? "Confirming..." : "Confirm Payment"}
@@ -326,7 +390,7 @@ export default function BookingsPage() {
             <Textarea
               value={cancelReason}
               onChange={(e) => setCancelReason(e.target.value)}
-              placeholder="Reason for cancellation..."
+              placeholder="Reason for cancellation (optional)..."
               rows={3}
             />
             {actionError && (
@@ -348,7 +412,7 @@ export default function BookingsPage() {
                 variant="destructive"
                 className="flex-1"
                 onClick={handleCancelBooking}
-                disabled={submitting || !cancelReason.trim()}
+                disabled={submitting}
               >
                 {submitting ? "Cancelling..." : "Cancel Booking"}
               </Button>

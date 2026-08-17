@@ -19,7 +19,7 @@ export async function GET(request: Request) {
 
   let query = supabase
     .from("bookings")
-    .select("*, profiles(*), guides(*, profiles(*))")
+    .select("*, guides!bookings_guide_id_fkey(*, profiles!guides_user_id_fkey(*))")
     .eq("trekker_id", user.id)
 
   if (status) {

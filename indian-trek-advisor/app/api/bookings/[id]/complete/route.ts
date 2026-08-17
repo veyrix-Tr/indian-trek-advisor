@@ -1,22 +1,19 @@
 import { NextResponse } from "next/server"
-import { createClient } from "@supabase/supabase-js"
-import { createClient as createServerSupabaseClient } from "@/utils/supabase/server"
+import { getAdminClient, getAuthUser } from "@/lib/supabase-admin"
+import { recordBookingHistory } from "@/lib/booking-history"
+import { canTransition } from "@/lib/booking-flow"
 
 export async function POST(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params
-  const authClient = await createServerSupabaseClient()
-  const { data: { user }, error: authError } = await authClient.auth.getUser()
-  if (authError || !user) {
+  const user = await getAuthUser()
+  if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  )
+  const supabase = getAdminClient()
 
   // Verify user is guide or admin
   const { data: booking } = await supabase
@@ -46,9 +43,11 @@ export async function POST(
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 })
   }
 
-  if (booking.status !== 'confirmed') {
+  if (booking.status !== 'confirmed' || !canTransition(booking.status, "completed")) {
     return NextResponse.json({ error: "Booking must be confirmed to complete" }, { status: 400 })
   }
+
+  const actorRole = profile?.account_type === 'admin' ? "admin" : "guide"
 
   // Update booking status
   const { data: updated, error } = await supabase
@@ -64,6 +63,15 @@ export async function POST(
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
+
+  await recordBookingHistory(supabase, {
+    bookingId: booking.id,
+    fromStatus: booking.status,
+    toStatus: "completed",
+    actorId: user.id,
+    actorRole,
+    note: "Trek marked complete",
+  })
 
   // Notify the trekker their trek is complete and they can rate the guide
   await supabase.from("notifications").insert({
