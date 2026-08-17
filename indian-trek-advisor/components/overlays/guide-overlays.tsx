@@ -316,6 +316,56 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
   )
 }
 
+function GuideHero({
+  eyebrow,
+  icon,
+  title,
+  description,
+}: {
+  eyebrow: string
+  icon: React.ReactNode
+  title: React.ReactNode
+  description: React.ReactNode
+}) {
+  return (
+    <div className="relative overflow-hidden">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-96 bg-gradient-to-b from-primary/10 via-primary/[0.03] to-transparent" />
+      <motion.header
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        className="relative mx-auto max-w-3xl px-4 pb-10 pt-24 text-center md:px-6 md:pt-28"
+      >
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.1 }}
+          className="flex items-center justify-center gap-2 font-mono text-xs uppercase tracking-[0.25em] text-primary"
+        >
+          {icon}
+          {eyebrow}
+        </motion.p>
+        <motion.h1
+          initial={{ opacity: 0, y: 22 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.18, duration: 0.7 }}
+          className="mt-5 text-balance font-sans text-4xl font-bold leading-[1.05] tracking-tight text-foreground sm:text-5xl md:text-6xl"
+        >
+          {title}
+        </motion.h1>
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.32, duration: 0.7 }}
+          className="mx-auto mt-6 max-w-2xl text-pretty leading-relaxed text-muted-foreground md:text-lg"
+        >
+          {description}
+        </motion.p>
+      </motion.header>
+    </div>
+  )
+}
+
 function Reveal({
   children,
   delay = 0,
@@ -398,34 +448,21 @@ export function SoloGuide({ onClose }: { onClose?: () => void }) {
   return (
     <article className="pb-20">
       {/* Hero */}
-      <header className="flex min-h-[70vh] flex-col items-center justify-center px-4 text-center">
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.1 }}
-          className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.25em] text-primary"
-        >
-          <Mountain className="size-3.5" aria-hidden="true" />
-          The Independent Trekker&apos;s Manifesto
-        </motion.p>
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.7 }}
-          className="mt-5 text-balance font-sans text-5xl font-bold tracking-tight text-foreground md:text-7xl"
-        >
-          Why Trek <em className="italic text-primary">Solo?</em>
-        </motion.h1>
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.35, duration: 0.7 }}
-          className="mt-6 max-w-xl text-pretty leading-relaxed text-muted-foreground"
-        >
-          No itinerary decided by committee. No waiting for stragglers. No compromises. Just
-          you, the trail, and the mountains exactly as they are.
-        </motion.p>
-      </header>
+      <GuideHero
+        eyebrow="The Independent Trekker&apos;s Manifesto"
+        icon={<Mountain className="size-3.5" aria-hidden="true" />}
+        title={
+          <>
+            Why Trek <em className="italic text-primary">Solo?</em>
+          </>
+        }
+        description={
+          <>
+            No itinerary decided by committee. No waiting for stragglers. No compromises. Just
+            you, the trail, and the mountains exactly as they are.
+          </>
+        }
+      />
 
       {/* Quote */}
       <Reveal>
@@ -622,35 +659,22 @@ export function GroupGuide({ onClose }: { onClose?: () => void }) {
   return (
     <article className="pb-20">
       {/* Hero */}
-      <header className="flex min-h-[70vh] flex-col items-center justify-center px-4 text-center">
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.1 }}
-          className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.25em] text-primary"
-        >
-          <Users className="size-3.5" aria-hidden="true" />
-          Private Groups · Your People · Your Pace
-        </motion.p>
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.7 }}
-          className="mt-5 text-balance font-sans text-5xl font-bold tracking-tight text-foreground md:text-7xl"
-        >
-          Trek With <em className="italic text-primary">Your Crew</em>
-        </motion.h1>
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.35, duration: 0.7 }}
-          className="mt-6 max-w-xl text-pretty leading-relaxed text-muted-foreground"
-        >
-          Friends who know your pace. Family who share your sense of adventure. Colleagues
-          ready to swap the conference room for a high pass. The mountains are better with
-          people you already love.
-        </motion.p>
-      </header>
+      <GuideHero
+        eyebrow="Private Groups · Your People · Your Pace"
+        icon={<Users className="size-3.5" aria-hidden="true" />}
+        title={
+          <>
+            Trek With <em className="italic text-primary">Your Crew</em>
+          </>
+        }
+        description={
+          <>
+            Friends who know your pace. Family who share your sense of adventure. Colleagues
+            ready to swap the conference room for a high pass. The mountains are better with
+            people you already love.
+          </>
+        }
+      />
 
       {/* Quote */}
       <Reveal>
@@ -824,33 +848,31 @@ export function FindGuide({ onClose }: { onClose?: () => void }) {
   const featuredTreks = getFeaturedTreks()
 
   return (
-    <article className="mx-auto max-w-3xl px-4 pb-20 pt-24 md:px-6">
-      <motion.header
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="text-center"
-      >
-        <p className="flex items-center justify-center gap-2 font-mono text-xs uppercase tracking-[0.25em] text-primary">
-          <Handshake className="size-3.5" aria-hidden="true" />
-          Direct. Independent. Local.
-        </p>
-        <h1 className="mt-4 text-balance font-sans text-4xl font-bold tracking-tight text-foreground md:text-5xl">
-          Find a Local Guide
-        </h1>
-        <p className="mx-auto mt-4 max-w-xl text-pretty leading-relaxed text-muted-foreground">
-          Verified local guides — not agency staff. They live in the mountains, work directly
-          with solo trekkers and small private groups, and are available on your schedule.
-          Pick your trek below to see who&apos;s available.
-        </p>
-      </motion.header>
+    <article className="pb-20">
+      <GuideHero
+        eyebrow="Direct. Independent. Local."
+        icon={<Handshake className="size-3.5" aria-hidden="true" />}
+        title={
+          <>
+            Find a Local{" "}
+            <em className="italic text-primary">Guide</em>
+          </>
+        }
+        description={
+          <>
+            Verified local guides — not agency staff. They live in the mountains, work directly
+            with solo trekkers and small private groups, and are available on your schedule.
+            Pick your trek below to see who&apos;s available.
+          </>
+        }
+      />
 
       {/* Trek picker */}
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.15, duration: 0.5 }}
-        className="mt-10 grid gap-3 sm:grid-cols-2"
+        className="mx-auto mt-4 grid max-w-3xl gap-3 px-4 sm:grid-cols-2 md:px-6"
       >
         {featuredTreks.map((trek) => {
           const diff = DIFFICULTY_META[trek.difficulty]
@@ -881,7 +903,7 @@ export function FindGuide({ onClose }: { onClose?: () => void }) {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, duration: 0.5 }}
-        className="mt-6 text-center"
+        className="mx-auto mt-6 max-w-3xl px-4 text-center md:px-6"
       >
         <Button
           variant="outline"
