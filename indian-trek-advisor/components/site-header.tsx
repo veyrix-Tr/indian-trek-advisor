@@ -3,9 +3,10 @@
 import { useState, useRef, useEffect } from "react"
 import Link from "next/link"
 import { usePathname, useSearchParams, useRouter } from "next/navigation"
-import { Mountain, Sparkles, Menu, UserRound, LogOut, ChevronDown, User, Shield, Bookmark, Star, CalendarDays } from "lucide-react"
+import { Mountain, Sparkles, Menu, UserRound, LogOut, ChevronDown, User, Shield, Bookmark, Star, CalendarDays, Sun, Moon } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
+import { useTheme } from "@/components/theme-provider"
 import {
   Sheet,
   SheetContent,
@@ -44,6 +45,7 @@ export function SiteHeader() {
   const { openAi, openAuth } = useOverlays()
   const { user, loading } = useUser()
   const { requireAuth } = useAuthGuard()
+  const { toggleTheme } = useTheme()
   const router = useRouter()
   const [mobileOpen, setMobileOpen] = useState(false)
   const [profileOpen, setProfileOpen] = useState(false)
@@ -88,7 +90,7 @@ export function SiteHeader() {
   }
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-border/60 bg-background/25 backdrop-blur-xl before:absolute before:inset-0 before:bg-gradient-to-r before:from-blue-500/5 before:via-cyan-500/5 before:to-blue-500/5 before:animate-pulse before:pointer-events-none">
+    <header className="fixed inset-x-0 top-0 z-50 bg-background/25 backdrop-blur-xl before:absolute before:inset-0 before:bg-gradient-to-r before:from-blue-500/5 before:via-cyan-500/5 before:to-blue-500/5 before:animate-pulse before:pointer-events-none light:border-b light:border-emerald-200/60 light:bg-gradient-to-r light:from-emerald-200/90 light:via-cyan-200/90 light:to-sky-200/90">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-4 px-4 md:px-6">
         <Link
           href="/"
@@ -115,7 +117,7 @@ export function SiteHeader() {
                 "rounded-full px-5 py-2.5 text-base font-medium leading-relaxed transition-all hover:scale-115",
                 isActive(link)
                   ? "bg-primary/25 text-primary"
-                  : "text-foreground/80 hover:bg-white/10 hover:text-foreground",
+                  : "text-foreground/80 hover:bg-accent hover:text-foreground",
               )}
             >
               {link.label}
@@ -125,6 +127,20 @@ export function SiteHeader() {
 
         <div className="hidden items-center gap-2 lg:flex">
           <TrekSearch />
+          <Button
+            variant="outline"
+            size="icon"
+            aria-label="Toggle light / dark mode"
+            onClick={toggleTheme}
+            className="border-border/70 bg-white/5 text-foreground/80 hover:bg-white/10 hover:text-foreground dark:bg-white/5 dark:hover:bg-white/10"
+          >
+            <span className="light-hidden">
+              <Sun className="size-4" aria-hidden="true" />
+            </span>
+            <span className="light-only">
+              <Moon className="size-4" aria-hidden="true" />
+            </span>
+          </Button>
           <Button
             variant="outline"
             size="sm"
@@ -146,8 +162,7 @@ export function SiteHeader() {
                 <button
                   onClick={() => setProfileOpen(!profileOpen)}
                   className="group flex items-center gap-1.5 rounded-full bg-white/5 p-1 pr-2.5 transition-colors hover:bg-white/15"
-                >
-                  <span className="flex size-8 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-amber-600 text-sm font-bold text-white shadow-sm ring-1 ring-white/20">
+                >                  <span className="flex size-8 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-amber-600 text-sm font-bold text-white shadow-sm ring-1 ring-white/20">
                     {(user.user_metadata?.name || user.email).charAt(0).toUpperCase()}
                   </span>
                   {accountType === "admin" && (
@@ -164,28 +179,28 @@ export function SiteHeader() {
                 {profileOpen && (
                   <>
                     <div className="fixed inset-0 z-40" onClick={() => setProfileOpen(false)} />
-                    <div className="absolute right-0 top-full z-50 mt-2 w-64 origin-top-right overflow-hidden rounded-2xl border border-white/15 bg-neutral-900 shadow-2xl shadow-black/50 backdrop-blur-2xl">
-                      <div className="bg-gradient-to-br from-amber-500/10 to-transparent px-4 pb-3 pt-4">
+                    <div className="absolute right-0 top-full z-50 mt-2 w-64 origin-top-right overflow-hidden rounded-2xl border border-border bg-popover shadow-2xl shadow-black/20 backdrop-blur-2xl">
+                      <div className="bg-gradient-to-br from-primary/10 to-transparent px-4 pb-3 pt-4">
                         <div className="flex items-center gap-3">
                           <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-amber-600 text-sm font-bold text-white shadow-sm ring-1 ring-white/20">
                             {(user.user_metadata?.name || user.email).charAt(0).toUpperCase()}
                           </span>
                           <div className="min-w-0">
-                            <p className="truncate text-sm font-semibold text-white">
+                            <p className="truncate text-sm font-semibold text-foreground">
                               {user.user_metadata?.name || "User"}
                             </p>
-                            <p className="truncate text-xs text-white/50">
+                            <p className="truncate text-xs text-muted-foreground">
                               {user.email}
                             </p>
                           </div>
                         </div>
                       </div>
-                    <div className="border-t border-white/10" />
+                    <div className="border-t border-border" />
                     <div className="p-1.5">
                       <Link
                         href="/profile"
                         onClick={() => setProfileOpen(false)}
-                        className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-white/60 transition-colors hover:bg-white/10 hover:text-white"
+                        className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-foreground/70 transition-colors hover:bg-accent hover:text-foreground"
                       >
                         <User className="size-4" />
                         Profile
@@ -193,7 +208,7 @@ export function SiteHeader() {
 <Link
                           href="/saved"
                           onClick={() => setProfileOpen(false)}
-                          className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-white/60 transition-colors hover:bg-white/10 hover:text-white"
+                          className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-foreground/70 transition-colors hover:bg-accent hover:text-foreground"
                         >
                           <Bookmark className="size-4" />
                           Saved Treks
@@ -201,7 +216,7 @@ export function SiteHeader() {
                         <Link
                           href="/dashboard/bookings"
                           onClick={() => setProfileOpen(false)}
-                          className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-white/60 transition-colors hover:bg-white/10 hover:text-white"
+                          className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-foreground/70 transition-colors hover:bg-accent hover:text-foreground"
                         >
                           <CalendarDays className="size-4" />
                           My Bookings
@@ -209,7 +224,7 @@ export function SiteHeader() {
                         <Link
                           href="/reviews"
                           onClick={() => setProfileOpen(false)}
-                          className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-white/60 transition-colors hover:bg-white/10 hover:text-white"
+                          className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-foreground/70 transition-colors hover:bg-accent hover:text-foreground"
                         >
                           <Star className="size-4" />
                           My Reviews
@@ -218,7 +233,7 @@ export function SiteHeader() {
                         <Link
                           href="/admin"
                           onClick={() => setProfileOpen(false)}
-                          className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-amber-400/80 transition-colors hover:bg-amber-500/15 hover:text-amber-400"
+                          className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-amber-600 transition-colors hover:bg-amber-500/15 hover:text-amber-600 dark:text-amber-400 dark:hover:text-amber-400"
                         >
                           <Shield className="size-4" />
                           Admin View
@@ -228,7 +243,7 @@ export function SiteHeader() {
                         <Link
                           href="/guide/dashboard"
                           onClick={() => setProfileOpen(false)}
-                          className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-primary/80 transition-colors hover:bg-primary/15 hover:text-primary"
+                          className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-primary transition-colors hover:bg-primary/15 hover:text-primary"
                         >
                           <Mountain className="size-4" />
                           Guide Dashboard
@@ -236,7 +251,7 @@ export function SiteHeader() {
                       )}
                       <button
                         onClick={handleSignOut}
-                        className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-white/60 transition-colors hover:bg-red-500/15 hover:text-red-400"
+                        className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-foreground/70 transition-colors hover:bg-red-500/15 hover:text-red-500 dark:hover:text-red-400"
                       >
                         <LogOut className="size-4" />
                         Sign Out
@@ -293,7 +308,7 @@ export function SiteHeader() {
                     "rounded-lg px-4 py-3 text-base font-medium leading-relaxed transition-all hover:scale-115",
                     isActive(link)
                       ? "bg-primary/25 text-primary"
-                      : "text-foreground/80 hover:bg-white/10 hover:text-foreground",
+                      : "text-foreground/80 hover:bg-accent hover:text-foreground",
                   )}
                 >
                   {link.label}
@@ -301,6 +316,20 @@ export function SiteHeader() {
               ))}
             </nav>
             <div className="mt-auto flex flex-col gap-2 px-4 pb-6">
+              <Button
+                variant="outline"
+                onClick={toggleTheme}
+                className="justify-start gap-2 border-border/70 bg-white/5 text-foreground/80 hover:bg-white/10 hover:text-foreground"
+              >
+                <span className="light-hidden">
+                  <Sun className="size-4" aria-hidden="true" />
+                </span>
+                <span className="light-only">
+                  <Moon className="size-4" aria-hidden="true" />
+                </span>
+                <span className="light-hidden">Light mode</span>
+                <span className="light-only">Dark mode</span>
+              </Button>
               <Button
                 variant="outline"
                 onClick={() => {

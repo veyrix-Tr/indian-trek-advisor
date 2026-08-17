@@ -3,6 +3,7 @@
 @import 'shadcn/tailwind.css';
 
 @custom-variant dark (&:is(.dark *));
+@custom-variant light (&:is(.light *));
 
 @theme inline {
   --font-sans: var(--font-space-grotesk), 'Space Grotesk Fallback', system-ui, sans-serif;
@@ -107,6 +108,55 @@
   --status-cancelled: oklch(0.62 0.19 25);
 }
 
+/* Light mode — added alongside the always-dark expedition theme. Toggled by
+   adding the `.light` class on <html> (see ThemeProvider). */
+.light {
+  color-scheme: light;
+  --background: oklch(0.915 0.014 95);
+  --foreground: oklch(0.26 0.02 165);
+  --card: oklch(0.955 0.016 90);
+  --card-foreground: oklch(0.26 0.02 165);
+  --popover: oklch(0.965 0.015 92);
+  --popover-foreground: oklch(0.26 0.02 165);
+  --primary: oklch(0.5 0.11 165);
+  --primary-foreground: oklch(0.985 0.006 165);
+  --secondary: oklch(0.9 0.02 90);
+  --secondary-foreground: oklch(0.3 0.02 165);
+  --muted: oklch(0.905 0.02 90);
+  --muted-foreground: oklch(0.47 0.03 165);
+  --accent: oklch(0.89 0.03 90);
+  --accent-foreground: oklch(0.28 0.02 165);
+  --destructive: oklch(0.55 0.2 25);
+  --border: oklch(0.2 0.01 165 / 0.16);
+  --input: oklch(0.2 0.01 165 / 0.2);
+  --ring: oklch(0.5 0.11 165 / 0.5);
+  --chart-1: oklch(0.5 0.11 165);
+  --chart-2: oklch(0.62 0.13 80);
+  --chart-3: oklch(0.6 0.13 45);
+  --chart-4: oklch(0.55 0.2 25);
+  --chart-5: oklch(0.6 0.1 150);
+  --sidebar: oklch(0.9 0.015 95);
+  --sidebar-foreground: oklch(0.27 0.02 165);
+  --sidebar-primary: oklch(0.5 0.11 165);
+  --sidebar-primary-foreground: oklch(0.985 0.006 165);
+  --sidebar-accent: oklch(0.89 0.025 95);
+  --sidebar-accent-foreground: oklch(0.28 0.02 165);
+  --sidebar-border: oklch(0.2 0.01 165 / 0.16);
+  --sidebar-ring: oklch(0.5 0.11 165 / 0.5);
+
+  --difficulty-easy: oklch(0.6 0.12 155);
+  --difficulty-moderate: oklch(0.62 0.12 85);
+  --difficulty-hard: oklch(0.58 0.14 55);
+  --difficulty-expert: oklch(0.5 0.18 27);
+
+  --status-pending: oklch(0.66 0.14 80);
+  --status-guide-approved: oklch(0.55 0.13 240);
+  --status-admin-approved: oklch(0.55 0.14 300);
+  --status-confirmed: oklch(0.55 0.12 165);
+  --status-completed: oklch(0.55 0.1 150);
+  --status-cancelled: oklch(0.55 0.2 25);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -126,6 +176,12 @@
 }
 
 @layer utilities {
+  /* Theme display helpers — markup stays identical for hydration safety;
+     the .light class (on <html>) decides which icon/label is shown. */
+  .light-only { display: none; }
+  .light .light-only { display: inline-flex; }
+  .light .light-hidden { display: none; }
+
   /* Subtle film grain overlay used on gradient art and hero */
   .grain::after {
     content: '';

@@ -6,6 +6,7 @@ import { Toaster } from 'sonner'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 import { OverlayProvider } from '@/components/overlays/overlay-provider'
+import { ThemeProvider } from '@/components/theme-provider'
 import './globals.css'
 
 const spaceGrotesk = Space_Grotesk({
@@ -58,27 +59,29 @@ export default function RootLayout({
       className={`bg-background ${spaceGrotesk.variable} ${jetbrainsMono.variable}`}
     >
       <body className="font-sans antialiased">
-        <OverlayProvider>
-          <Suspense>
-            <SiteHeader />
-          </Suspense>
-          {children}
-          <SiteFooter />
-        </OverlayProvider>
-        <Toaster
-          position="top-right"
-          toastOptions={{
-            style: {
-              background: "linear-gradient(135deg, #f59e0b 0%, #d97706 60%, #ea580c 100%)",
-              border: "1px solid rgba(251, 191, 36, 0.3)",
-              color: "#1c1917",
-              fontWeight: 500,
-              fontSize: "15px",
-              padding: "14px 18px",
-            },
-          }}
-        />
-        {process.env.NODE_ENV === 'production' && <Analytics />}
+        <ThemeProvider>
+          <OverlayProvider>
+            <Suspense>
+              <SiteHeader />
+            </Suspense>
+            {children}
+            <SiteFooter />
+          </OverlayProvider>
+          <Toaster
+            position="top-right"
+            toastOptions={{
+              style: {
+                background: "linear-gradient(135deg, #f59e0b 0%, #d97706 60%, #ea580c 100%)",
+                border: "1px solid rgba(251, 191, 36, 0.3)",
+                color: "#1c1917",
+                fontWeight: 500,
+                fontSize: "15px",
+                padding: "14px 18px",
+              },
+            }}
+          />
+          {process.env.NODE_ENV === 'production' && <Analytics />}
+        </ThemeProvider>
       </body>
     </html>
   )

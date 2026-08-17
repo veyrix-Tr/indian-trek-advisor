@@ -26,7 +26,7 @@ const FOOTER_LINKS = [
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-border bg-card/50">
+    <footer className="border-t border-border bg-card/50 light:bg-secondary">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 md:grid-cols-[2fr_1fr_1fr] md:px-6">
         <div className="flex flex-col gap-4">
           <AuthGatedLink

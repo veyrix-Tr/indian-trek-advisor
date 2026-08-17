@@ -42,19 +42,20 @@ export function HeroSection() {
       <div className="absolute inset-0">
         {mounted && <Hero3D reduced={Boolean(prefersReduced)} />}
       </div>
-      {/* Bottom fade into page background */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-background" />
+      {/* Bottom fade into page background — the 3D scene is always dark, so this
+          stays a fixed dark tone in both dark and light mode. */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-[#0e1a16]" />
 
       <div className="relative z-10 flex w-full max-w-4xl flex-col items-center gap-8 px-4 pb-24 pt-32 text-center md:px-6">
         <motion.p
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.15, duration: 0.6 }}
-          className="inline-block rounded-full bg-[#121212]/40 px-4 py-4.5 font-mono text-[15px] uppercase tracking-[0.25em] text-yellow-200 md:text-xs"        >
+          className="inline-block rounded-full bg-black/40 px-4 py-4.5 font-mono text-[15px] uppercase tracking-[0.25em] text-yellow-100 md:text-xs"        >
           {"\u25B2"} India &middot; Solo Trekkers &middot; Small Groups &middot; Local Guides
         </motion.p>
 
-        <h1 className="text-balance text-5xl font-bold leading-[1.05] tracking-tight md:text-7xl">
+        <h1 className="text-balance text-5xl font-bold leading-[1.05] tracking-tight text-white md:text-7xl">
           <span className="block">
             {HEADLINE_LINE_1.map((word, i) => (
               <motion.span
@@ -69,7 +70,7 @@ export function HeroSection() {
               </motion.span>
             ))}
           </span>
-          <span className="block text-primary">
+          <span className="block text-emerald-300">
             {HEADLINE_LINE_2.map((word, i) => (
               <motion.span
                 key={word}
@@ -89,7 +90,7 @@ export function HeroSection() {
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.05, duration: 0.7 }}
-          className="max-w-2xl text-pretty leading-relaxed text-foreground/90 md:text-lg"
+          className="max-w-2xl text-pretty leading-relaxed text-white/85 md:text-lg"
         >
           100 trails across India &mdash; with real permit info, solo safety
           notes, and independent local guides. No large groups. No packaged
@@ -106,13 +107,13 @@ export function HeroSection() {
             trigger={
               <button
                 type="button"
-                className="flex w-full cursor-text items-center gap-2 rounded-full border border-border bg-card/80 p-1.5 pl-5 backdrop-blur-md"
+                className="flex w-full cursor-text items-center gap-2 rounded-full border border-white/15 bg-black/30 p-1.5 pl-5 backdrop-blur-md"
               >
-                <Search className="size-4 shrink-0 text-foreground/70" aria-hidden="true" />
-                <span className="min-w-0 flex-1 text-left text-sm text-foreground/70">
+                <Search className="size-4 shrink-0 text-white/70" aria-hidden="true" />
+                <span className="min-w-0 flex-1 text-left text-sm text-white/70">
                   Search 100 trails: Kedarkantha, Ladakh, Kashmir...
                 </span>
-                <span className="shrink-0 rounded-full bg-primary px-5 py-1.5 text-sm font-medium text-primary-foreground">
+                <span className="shrink-0 rounded-full bg-emerald-500 px-5 py-1.5 text-sm font-medium text-white">
                   Explore
                 </span>
               </button>
@@ -182,7 +183,7 @@ function PillButton({
     <button
       type="button"
       onClick={onClick}
-      className="flex items-center gap-2 rounded-full border border-border bg-card/60 px-4 py-2 font-mono text-xs uppercase tracking-wider text-muted-foreground backdrop-blur-md transition-all hover:border-primary/40 hover:bg-primary/10 hover:text-primary"
+      className="flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 font-mono text-xs uppercase tracking-wider text-white/80 backdrop-blur-md transition-all hover:border-emerald-300/60 hover:bg-emerald-500/20 hover:text-white"
     >
       {icon}
       {label}
