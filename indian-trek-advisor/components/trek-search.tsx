@@ -69,7 +69,7 @@ function TrekSearchRow({
       </div>
       <div className="flex min-w-0 flex-1 flex-col gap-0.5">
         <span className="truncate font-medium leading-tight">{trek.name}</span>
-        <span className="truncate font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
+        <span className="truncate font-mono text-[12px] uppercase tracking-wider text-foreground/70">
           {location}
         </span>
       </div>
@@ -165,7 +165,7 @@ export function TrekSearch({
     <button
       type="button"
       aria-label="Search treks"
-      className="flex size-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+      className="flex size-9 items-center justify-center rounded-lg text-foreground/70 transition-colors hover:bg-accent hover:text-foreground"
     >
       <Search className="size-4" aria-hidden="true" />
     </button>

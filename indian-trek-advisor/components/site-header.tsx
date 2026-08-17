@@ -88,13 +88,13 @@ export function SiteHeader() {
   }
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-border/60 bg-background/70 backdrop-blur-xl">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 md:px-6">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-border/60 bg-background/25 backdrop-blur-xl before:absolute before:inset-0 before:bg-gradient-to-r before:from-blue-500/5 before:via-cyan-500/5 before:to-blue-500/5 before:animate-pulse before:pointer-events-none">
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-4 px-4 md:px-6">
         <Link
           href="/"
-          className="flex items-center gap-2 text-lg font-bold tracking-tight"
+          className="flex items-center gap-2 text-xl font-semibold tracking-tight text-foreground"
         >
-          <Mountain className="size-5 text-primary" aria-hidden="true" />
+          <Mountain className="size-6 text-primary" aria-hidden="true" />
           <span>
             Indian Trek <span className="text-primary">Advisor</span>
           </span>
@@ -102,7 +102,7 @@ export function SiteHeader() {
 
         <nav
           aria-label="Main navigation"
-          className="hidden items-center gap-1 lg:flex"
+          className="hidden items-center gap-3 lg:flex"
         >
           {[
             ...BASE_LINKS,
@@ -112,10 +112,10 @@ export function SiteHeader() {
               key={link.label}
               href={link.href}
               className={cn(
-                "rounded-full px-3.5 py-2 font-mono text-xs uppercase tracking-widest transition-colors",
+                "rounded-full px-5 py-2.5 text-base font-medium leading-relaxed transition-all hover:scale-115",
                 isActive(link)
-                  ? "bg-primary/10 text-primary"
-                  : "text-muted-foreground hover:bg-accent hover:text-foreground",
+                  ? "bg-primary/25 text-primary"
+                  : "text-foreground/80 hover:bg-white/10 hover:text-foreground",
               )}
             >
               {link.label}
@@ -133,7 +133,7 @@ export function SiteHeader() {
                 openAi()
               }
             }}
-            className="gap-1.5 border-primary/30 bg-primary/5 font-mono text-xs uppercase tracking-wider text-primary hover:bg-primary/15 hover:text-primary"
+            className="gap-1.5 border-primary/60 bg-primary/20 font-mono text-xs uppercase tracking-wider text-primary hover:bg-primary/30 hover:text-primary hover:scale-105 transition-all"
           >
             <Sparkles className="size-3.5" aria-hidden="true" />
             Trail Guide AI
@@ -290,10 +290,10 @@ export function SiteHeader() {
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
                   className={cn(
-                    "rounded-lg px-3 py-2.5 font-mono text-sm uppercase tracking-widest transition-colors",
+                    "rounded-lg px-4 py-3 text-base font-medium leading-relaxed transition-all hover:scale-115",
                     isActive(link)
-                      ? "bg-primary/10 text-primary"
-                      : "text-muted-foreground hover:bg-accent hover:text-foreground",
+                      ? "bg-primary/25 text-primary"
+                      : "text-foreground/80 hover:bg-white/10 hover:text-foreground",
                   )}
                 >
                   {link.label}

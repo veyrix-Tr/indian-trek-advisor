@@ -3,10 +3,9 @@
 import { useMemo, useState, useCallback, useEffect } from "react"
 import { useSearchParams, useRouter, usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
-import { Search, SlidersHorizontal, X, Mountain } from "lucide-react"
+import { Search, SlidersHorizontal, X, Mountain, MapPin } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Slider } from "@/components/ui/slider"
 import {
   Sheet,
   SheetContent,
@@ -34,6 +33,21 @@ const DIFFICULTIES: Difficulty[] = ["easy", "moderate", "hard", "expert"]
 
 const MAX_DAYS = 16
 
+const DAY_PRESETS = [
+  { label: "Up to 2", min: 1, max: 2 },
+  { label: "3–4", min: 3, max: 4 },
+  { label: "5–7", min: 5, max: 7 },
+  { label: "8–10", min: 8, max: 10 },
+  { label: "11+", min: 11, max: MAX_DAYS },
+]
+
+const ALL_STATES = [
+  "Uttarakhand",
+  "Himachal Pradesh",
+  "Jammu & Kashmir",
+  "Ladakh",
+]
+
 function matchesQuery(trek: Trek, q: string) {
   const hay = `${trek.name} ${trek.state} ${trek.region ?? ""} ${trek.district ?? ""} ${trek.baseCamp ?? ""}`.toLowerCase()
   return q
@@ -43,9 +57,18 @@ function matchesQuery(trek: Trek, q: string) {
     .every((term) => hay.includes(term))
 }
 
+function trekDays(trek: Trek): number {
+  if (trek.durationType === "hours") return 1
+  const parsed = String(trek.days).match(/\d+/g)
+  if (!parsed) return 1
+  return Math.max(...parsed.map(Number))
+}
+
 function FilterPanel({
   activeDifficulties,
   toggleDifficulty,
+  activeStates,
+  toggleState,
   daysRange,
   setDaysRange,
   reset,
@@ -53,6 +76,8 @@ function FilterPanel({
 }: {
   activeDifficulties: Difficulty[]
   toggleDifficulty: (d: Difficulty) => void
+  activeStates: string[]
+  toggleState: (s: string) => void
   daysRange: [number, number]
   setDaysRange: (r: [number, number]) => void
   reset: () => void
@@ -61,7 +86,7 @@ function FilterPanel({
   return (
     <div className="flex flex-col gap-7">
       <fieldset>
-        <legend className="mb-3 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
+        <legend className="mb-3 font-mono text-[12px] uppercase tracking-widest text-foreground/70">
           Difficulty
         </legend>
         <div className="flex flex-wrap gap-2">
@@ -91,27 +116,61 @@ function FilterPanel({
         </div>
       </fieldset>
 
-      <div>
-        <div className="mb-3 flex items-baseline justify-between">
-          <span
-            id="days-range-label"
-            className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground"
-          >
-            Duration
-          </span>
-          <span className="font-mono text-xs text-primary">
-            {daysRange[0]}–{daysRange[1] === MAX_DAYS ? `${MAX_DAYS}+` : daysRange[1]} days
-          </span>
+      <fieldset>
+        <legend className="mb-3 flex items-center gap-1.5 font-mono text-[12px] uppercase tracking-widest text-foreground/70">
+          <MapPin className="size-3.5" aria-hidden="true" />
+          State
+        </legend>
+        <div className="flex max-h-48 flex-wrap gap-2 overflow-y-auto pr-1">
+          {ALL_STATES.map((s) => {
+            const active = activeStates.includes(s)
+            return (
+              <button
+                key={s}
+                type="button"
+                aria-pressed={active}
+                onClick={() => toggleState(s)}
+                className={`rounded-full border px-3 py-1.5 text-[13px] font-medium transition-colors ${
+                  active
+                    ? "border-primary bg-primary/10 text-primary"
+                    : "border-border text-foreground/70 hover:border-primary/40 hover:text-foreground"
+                }`}
+              >
+                {s}
+              </button>
+            )
+          })}
         </div>
-        <Slider
-          aria-labelledby="days-range-label"
-          min={1}
-          max={MAX_DAYS}
-          step={1}
-          value={daysRange}
-          onValueChange={(v) => setDaysRange(v as [number, number])}
-        />
-      </div>
+      </fieldset>
+
+      <fieldset>
+        <legend className="mb-3 font-mono text-[12px] uppercase tracking-widest text-foreground/70">
+          Duration
+        </legend>
+        <div className="grid grid-cols-3 gap-2 sm:grid-cols-5 lg:grid-cols-3">
+          {DAY_PRESETS.map((p) => {
+            const active = daysRange[0] === p.min && daysRange[1] === p.max
+            return (
+              <button
+                key={p.label}
+                type="button"
+                aria-pressed={active}
+                onClick={() => setDaysRange([p.min, Math.min(p.max, MAX_DAYS)])}
+                className={`rounded-xl border px-2 py-2 text-center transition-colors ${
+                  active
+                    ? "border-primary bg-primary/10 text-primary"
+                    : "border-border text-foreground/70 hover:border-primary/40 hover:text-foreground"
+                }`}
+              >
+                <span className="block font-mono text-[11px] font-medium">{p.label}</span>
+                <span className="block text-[10px] text-foreground/50">
+                  {p.min === p.max ? `${p.min}` : `${p.min}–${p.max === 16 ? "16+" : p.max}`} days
+                </span>
+              </button>
+            )
+          })}
+        </div>
+      </fieldset>
 
       {hasActiveFilters && (
         <Button
@@ -141,6 +200,9 @@ export function TreksBrowser() {
   const activeDifficulties: Difficulty[] = (searchParams.get("difficulty") ?? "")
     .split(",")
     .filter((d): d is Difficulty => DIFFICULTIES.includes(d as Difficulty))
+  const activeStates: string[] = (searchParams.get("state") ?? "")
+    .split(",")
+    .filter((s) => ALL_STATES.includes(s))
   const minDays = Number(searchParams.get("minDays")) || 1
   const maxDays = Number(searchParams.get("maxDays")) || MAX_DAYS
   const daysRange: [number, number] = [Math.max(1, minDays), Math.min(MAX_DAYS, maxDays)]
@@ -165,9 +227,7 @@ export function TreksBrowser() {
 
   const toggleDifficulty = useCallback(
     (d: Difficulty) => {
-      const next = activeDifficulties.includes(d)
-        ? activeDifficulties.filter((x) => x !== d)
-        : [...activeDifficulties, d]
+      const next = activeDifficulties.includes(d) ? [] : [d]
       setParam("difficulty", next.length > 0 ? next.join(",") : null)
     },
     [activeDifficulties, setParam],
@@ -185,14 +245,26 @@ export function TreksBrowser() {
     [searchParams, router, pathname],
   )
 
+  const toggleState = useCallback(
+    (s: string) => {
+      const next = activeStates.includes(s) ? [] : [s]
+      setParam("state", next.length > 0 ? next.join(",") : null)
+    },
+    [activeStates, setParam],
+  )
+
   const hasActiveFilters =
-    activeDifficulties.length > 0 || daysRange[0] !== 1 || daysRange[1] !== MAX_DAYS
+    activeDifficulties.length > 0 ||
+    activeStates.length > 0 ||
+    daysRange[0] !== 1 ||
+    daysRange[1] !== MAX_DAYS
 
   const reset = useCallback(() => {
     const params = new URLSearchParams(searchParams.toString())
     params.delete("difficulty")
     params.delete("minDays")
     params.delete("maxDays")
+    params.delete("state")
     router.replace(`${pathname}?${params.toString()}`, { scroll: false })
   }, [searchParams, router, pathname])
 
@@ -210,12 +282,13 @@ export function TreksBrowser() {
         !activeDifficulties.includes(t.difficulty)
       )
         return false
-      const days = t.durationType === "hours" ? 1 : t.days
+      if (activeStates.length > 0 && !activeStates.includes(t.state)) return false
+      const days = trekDays(t)
       if (days < daysRange[0]) return false
       if (daysRange[1] !== MAX_DAYS && days > daysRange[1]) return false
       return true
     })
-  }, [sectionTreks, query, activeDifficulties, daysRange])
+  }, [sectionTreks, query, activeDifficulties, activeStates, daysRange])
 
   return (
     <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 pb-24 pt-28 md:px-6">
@@ -244,10 +317,10 @@ export function TreksBrowser() {
               type="button"
               aria-pressed={section === s.key}
               onClick={() => setParam("section", s.key)}
-              className={`rounded-full border px-4 py-2 font-mono text-xs uppercase tracking-widest transition-colors ${
+              className={`rounded-full border px-4 py-2 font-mono text-sm uppercase tracking-widest transition-colors ${
                 section === s.key
                   ? "border-primary/50 bg-primary/10 text-primary"
-                  : "border-border text-muted-foreground hover:border-primary/30 hover:text-foreground"
+                  : "border-border text-foreground/70 hover:border-primary/30 hover:text-foreground"
               }`}
             >
               {s.label}
@@ -302,6 +375,8 @@ export function TreksBrowser() {
                 <FilterPanel
                   activeDifficulties={activeDifficulties}
                   toggleDifficulty={toggleDifficulty}
+                  activeStates={activeStates}
+                  toggleState={toggleState}
                   daysRange={daysRange}
                   setDaysRange={setDaysRange}
                   reset={reset}
@@ -326,6 +401,8 @@ export function TreksBrowser() {
           <FilterPanel
             activeDifficulties={activeDifficulties}
             toggleDifficulty={toggleDifficulty}
+            activeStates={activeStates}
+            toggleState={toggleState}
             daysRange={daysRange}
             setDaysRange={setDaysRange}
             reset={reset}
@@ -336,15 +413,15 @@ export function TreksBrowser() {
         <div className="flex-1">
           <p
             aria-live="polite"
-            className="mb-5 font-mono text-xs uppercase tracking-widest text-muted-foreground"
+            className="mb-5 font-mono text-sm uppercase tracking-widest text-foreground/70"
           >
             {filtered.length} {filtered.length === 1 ? "trail" : "trails"} found
           </p>
 
           {filtered.length === 0 ? (
             <div className="flex flex-col items-center gap-4 rounded-2xl border border-dashed border-border py-24 text-center">
-              <Mountain className="size-10 text-muted-foreground/50" aria-hidden="true" />
-              <p className="text-muted-foreground">
+              <Mountain className="size-10 text-foreground/50" aria-hidden="true" />
+              <p className="text-foreground/70">
                 No treks match your filters. Try widening the search.
               </p>
               <Button variant="outline" size="sm" onClick={reset}>

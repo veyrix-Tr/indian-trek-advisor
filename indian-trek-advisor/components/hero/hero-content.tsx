@@ -11,7 +11,7 @@ import { useAuthGuard } from "@/hooks/use-auth-guard"
 const Hero3D = dynamic(() => import("./hero-3d"), {
   ssr: false,
   loading: () => (
-    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,#16211b_0%,#0c110e_65%)]" />
+    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,#1e3a5f_0%,#0a9e9a_65%)]" />
   ),
 })
 
@@ -50,8 +50,7 @@ export function HeroSection() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.15, duration: 0.6 }}
-          className="font-mono text-[11px] uppercase tracking-[0.35em] text-primary md:text-xs"
-        >
+          className="inline-block rounded-full bg-[#121212]/40 px-4 py-4.5 font-mono text-[15px] uppercase tracking-[0.25em] text-yellow-200 md:text-xs"        >
           {"\u25B2"} India &middot; Solo Trekkers &middot; Small Groups &middot; Local Guides
         </motion.p>
 
@@ -90,7 +89,7 @@ export function HeroSection() {
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.05, duration: 0.7 }}
-          className="max-w-2xl text-pretty leading-relaxed text-muted-foreground md:text-lg"
+          className="max-w-2xl text-pretty leading-relaxed text-foreground/90 md:text-lg"
         >
           100 trails across India &mdash; with real permit info, solo safety
           notes, and independent local guides. No large groups. No packaged
@@ -109,8 +108,8 @@ export function HeroSection() {
                 type="button"
                 className="flex w-full cursor-text items-center gap-2 rounded-full border border-border bg-card/80 p-1.5 pl-5 backdrop-blur-md"
               >
-                <Search className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
-                <span className="min-w-0 flex-1 text-left text-sm text-muted-foreground/70">
+                <Search className="size-4 shrink-0 text-foreground/70" aria-hidden="true" />
+                <span className="min-w-0 flex-1 text-left text-sm text-foreground/70">
                   Search 100 trails: Kedarkantha, Ladakh, Kashmir...
                 </span>
                 <span className="shrink-0 rounded-full bg-primary px-5 py-1.5 text-sm font-medium text-primary-foreground">

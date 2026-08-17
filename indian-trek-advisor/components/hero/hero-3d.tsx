@@ -88,6 +88,21 @@ function Snow({ count = 780 }: { count?: number }) {
     return arr
   }, [count])
 
+  const circleTexture = useMemo(() => {
+    const canvas = document.createElement('canvas')
+    canvas.width = 64
+    canvas.height = 64
+    const ctx = canvas.getContext('2d')
+    if (ctx) {
+      ctx.beginPath()
+      ctx.arc(32, 32, 28, 0, Math.PI * 2)
+      ctx.fillStyle = 'white'
+      ctx.fill()
+    }
+    const texture = new THREE.CanvasTexture(canvas)
+    return texture
+  }, [])
+
   useFrame((_, delta) => {
     const dt = Math.min(delta, 0.05)
     const pts = ref.current
@@ -112,12 +127,14 @@ function Snow({ count = 780 }: { count?: number }) {
         <bufferAttribute attach="attributes-position" args={[positions, 3]} />
       </bufferGeometry>
       <pointsMaterial
+        map={circleTexture}
         color="#ffffff"
-        size={0.14}
+        size={0.35}
         transparent
-        opacity={0.7}
+        opacity={0.8}
         sizeAttenuation
         depthWrite={false}
+        alphaTest={0.1}
       />
     </points>
   )
@@ -466,8 +483,8 @@ export default function Hero3D({ reduced = false }: { reduced?: boolean }) {
       aria-hidden="true"
       frameloop={reduced ? "demand" : "always"}
     >
-      <color attach="background" args={["#0c110e"]} />
-      <fog attach="fog" args={["#0c110e", 14, 52]} />
+      <color attach="background" args={["#2f4f77"]} />
+      <fog attach="fog" args={["#1e3a5f", 14, 52]} />
 
       <hemisphereLight args={["#8aa8a0", "#1a201c", 1.3]} />
       <directionalLight position={[-14, 18, -8]} intensity={2.2} color="#d4e8e0" />
