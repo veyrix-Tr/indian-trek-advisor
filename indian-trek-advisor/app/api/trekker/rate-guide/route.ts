@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
 import { createClient as createServerSupabaseClient } from "@/utils/supabase/server"
 import { computeDisplayRating } from "@/lib/guide-rating"
+import { moderateText } from "@/lib/content-moderation"
 
 export async function POST(request: Request) {
   const authClient = await createServerSupabaseClient()
@@ -32,6 +33,15 @@ export async function POST(request: Request) {
 
   if (booking.status !== 'completed') {
     return NextResponse.json({ error: "Booking must be completed to rate" }, { status: 400 })
+  }
+
+  // Content moderation: block reviews containing profanity.
+  const moderation = moderateText(review)
+  if (!moderation.clean) {
+    return NextResponse.json(
+      { error: "Your review contains inappropriate language and could not be submitted." },
+      { status: 400 },
+    )
   }
 
   // Create rating

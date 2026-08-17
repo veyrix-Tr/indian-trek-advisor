@@ -16,7 +16,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useOverlays } from "./overlay-provider"
+
 
 
 type AccountType = "trekker" | "guide"
@@ -79,7 +79,6 @@ export function AuthModal({
   onClose: () => void
   notice?: string | null
 }) {
-  const { openComingSoon } = useOverlays()
   const router = useRouter()
   const [tab, setTab] = useState<AuthTab>(notice ? "signin" : "join")
   const [step, setStep] = useState<AuthStep>(1)
