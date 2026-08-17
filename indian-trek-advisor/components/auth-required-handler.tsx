@@ -11,10 +11,16 @@ export function AuthRequiredHandler() {
   const handled = useRef(false)
 
   useEffect(() => {
-    if (searchParams.get("auth") === "required" && !handled.current) {
+    if (handled.current) return
+    if (searchParams.get("auth") === "required") {
       handled.current = true
       openAuth()
       router.replace("/")
+    } else if (searchParams.get("auth") === "verified") {
+      handled.current = true
+      const next = searchParams.get("next") || "/"
+      openAuth("Your account has been successfully verified. Please sign in to continue.")
+      router.replace(next)
     }
   }, [searchParams, openAuth, router])
 

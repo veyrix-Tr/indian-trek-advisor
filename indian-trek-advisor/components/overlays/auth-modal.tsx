@@ -3,7 +3,7 @@
 import { useState, useMemo, Fragment } from "react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/utils/supabase/client"
-import { Backpack, Compass, Mountain, ArrowLeft, Check, Eye, EyeOff } from "lucide-react"
+import { Backpack, Compass, Mountain, ArrowLeft, Check, Eye, EyeOff, MailCheck } from "lucide-react"
 import { formatPhoneNumber, isValidPhoneNumber } from "@/lib/utils/phone"
 import {
   Dialog,
@@ -72,10 +72,16 @@ const KNOWN_TREKS = [
   "Yunam Peak Trek", "Rudranath Yatra",
 ]
 
-export function AuthModal({ onClose }: { onClose: () => void }) {
+export function AuthModal({
+  onClose,
+  notice,
+}: {
+  onClose: () => void
+  notice?: string | null
+}) {
   const { openComingSoon } = useOverlays()
   const router = useRouter()
-  const [tab, setTab] = useState<AuthTab>("join")
+  const [tab, setTab] = useState<AuthTab>(notice ? "signin" : "join")
   const [step, setStep] = useState<AuthStep>(1)
   const [accountType, setAccountType] = useState<AccountType>("trekker")
   const [roleChosen, setRoleChosen] = useState(false)
@@ -112,6 +118,11 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
 
   // Error state
   const [error, setError] = useState("")
+
+  // Email verification state
+  const [verificationSent, setVerificationSent] = useState(false)
+  const [resending, setResending] = useState(false)
+  const [resendMsg, setResendMsg] = useState("")
 
   // Legal dialog state
   const [showTerms, setShowTerms] = useState(false)
@@ -212,13 +223,32 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
     setLoading(true)
 
     try {
-      const supabase = createClient()
+      // Sign up via server API (creates an unconfirmed account and sends a
+      // Brevo verification email). All signup data + guide documents are
+      // handled server-side since there is no session before verification.
+      const formData = new FormData()
+      formData.append("email", email)
+      formData.append("password", password)
+      formData.append("name", name)
+      formData.append("account_type", type)
 
-      // Sign up via server API (auto-confirms email)
+      if (type === "guide") {
+        formData.append("experience", experience)
+        formData.append("address", address)
+        if (phone) formData.append("phone", formatPhoneNumber(phone))
+        if (certifications.length > 0) {
+          formData.append("certifications", JSON.stringify(certifications))
+        }
+        if (knownTreks.length > 0) {
+          formData.append("knownTreks", JSON.stringify(knownTreks))
+        }
+        if (idProofFile) formData.append("idProof", idProofFile)
+        if (certFile) formData.append("cert", certFile)
+      }
+
       const res = await fetch("/api/auth/signup", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password, name, account_type: type }),
+        body: formData,
       })
 
       const json = await res.json()
@@ -229,73 +259,35 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
         return
       }
 
-      const authDataUser = json.user
-
-      // Sign in automatically so they don't need to re-enter credentials
-      const { error: signInError } = await supabase.auth.signInWithPassword({ email, password })
-      if (signInError) {
-        setError("Account created but sign-in failed. Please sign in manually.")
-        setLoading(false)
-        return
-      }
-
-      // Upload documents to Cloudinary if guide
-      if (type === "guide") {
-        // Wait for guides row to exist (avoids trigger race condition)
-        for (let i = 0; i < 10; i++) {
-          const { data: guideRow } = await supabase.from("guides").select("id").eq("user_id", authDataUser.id).maybeSingle()
-          if (guideRow) break
-          await new Promise((r) => setTimeout(r, 300))
-        }
-
-        if (idProofFile) {
-          const formData = new FormData()
-          formData.append("file", idProofFile)
-          formData.append("folder", "guide-documents")
-          const res = await fetch("/api/upload", { method: "POST", body: formData })
-          if (res.ok) {
-            const { url } = await res.json()
-            await supabase.from("guides").update({ id_proof_url: url }).eq("user_id", authDataUser.id)
-          }
-        }
-
-        if (certFile) {
-          const formData = new FormData()
-          formData.append("file", certFile)
-          formData.append("folder", "guide-certificates")
-          const res = await fetch("/api/upload", { method: "POST", body: formData })
-          if (res.ok) {
-            const { url } = await res.json()
-            await supabase.from("guides").update({ cert_doc_url: url }).eq("user_id", authDataUser.id)
-          }
-        }
-
-        // Update guide profile fields
-        const guideUpdates: Record<string, unknown> = {}
-        if (experience) guideUpdates.experience = experience
-        if (phone) guideUpdates.phone = formatPhoneNumber(phone)
-        if (address) guideUpdates.base_location = address
-        if (certifications.length > 0) guideUpdates.certifications = certifications
-        if (knownTreks.length > 0) guideUpdates.known_treks = knownTreks
-
-        if (Object.keys(guideUpdates).length > 0) {
-          await supabase.from("guides").update(guideUpdates).eq("user_id", authDataUser.id)
-        }
-
-        // Sync phone to profiles table
-        if (phone) {
-          await supabase.from("profiles").update({ phone: formatPhoneNumber(phone) }).eq("id", authDataUser.id)
-        }
-      }
-
+      // Account created but email must be verified before sign-in.
+      setVerificationSent(true)
       setLoading(false)
-      router.refresh()
-      onClose()
     } catch (err) {
       console.error("Sign-up error:", err)
       setError("Something went wrong. Please try again.")
       setLoading(false)
     }
+  }
+
+  async function handleResend() {
+    setResending(true)
+    setResendMsg("")
+    try {
+      const res = await fetch("/api/auth/resend-verification", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, name, password }),
+      })
+      const json = await res.json()
+      if (res.ok) {
+        setResendMsg("Verification email sent. Check your inbox.")
+      } else {
+        setResendMsg(json.error || "Could not resend.")
+      }
+    } catch {
+      setResendMsg("Could not resend. Please try again.")
+    }
+    setResending(false)
   }
 
   async function handleSignIn(e: React.FormEvent) {
@@ -311,7 +303,11 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
       })
 
       if (error) {
-        setError("Invalid email or password.")
+        if (/confirm|verify/i.test(error.message || "")) {
+          setError("Please verify your email first. Check your inbox for the confirmation link.")
+        } else {
+          setError("Invalid email or password.")
+        }
         setLoading(false)
         return
       }
@@ -359,6 +355,11 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
 
             {/* ── SIGN IN TAB ── */}
             <TabsContent value="signin" className="px-8 pb-8 pt-4">
+              {notice && (
+                <div className="mx-auto mb-4 max-w-md rounded-xl border border-primary/30 bg-primary/10 px-4 py-3 text-center">
+                  <p className="text-sm font-medium text-primary">{notice}</p>
+                </div>
+              )}
               <form
                 className="mx-auto max-w-md space-y-5"
                 onSubmit={handleSignIn}
@@ -416,8 +417,46 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
 
             {/* ── JOIN FREE TAB ── */}
             <TabsContent value="join" className="pb-8 pt-4">
+              {/* ── PHASE 0: VERIFY EMAIL (after signup) ── */}
+              {verificationSent && (
+                <div className="px-8 py-6">
+                  <div className="mx-auto flex max-w-md flex-col items-center text-center">
+                    <span className="flex size-14 items-center justify-center rounded-full bg-primary/10">
+                      <MailCheck className="size-7 text-primary" aria-hidden="true" />
+                    </span>
+                    <h2 className="mt-4 text-lg font-bold text-foreground">Successfully registered!</h2>
+                    <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+                      We sent a verification link to <strong className="text-foreground">{email}</strong>.
+                      Click it to confirm your email, then log in with your credentials.
+                      Can&apos;t find it? Check spam or resend below.
+                    </p>
+                    <div className="mt-5 flex flex-col items-center gap-2">
+                      <Button
+                        type="button"
+                        className="w-full rounded-full"
+                        onClick={() => setTab("signin")}
+                      >
+                        Go to sign in
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="w-full rounded-full bg-transparent"
+                        onClick={handleResend}
+                        disabled={resending}
+                      >
+                        {resending ? "Sending..." : "Resend verification email"}
+                      </Button>
+                    </div>
+                    {resendMsg && (
+                      <p className="mt-3 text-sm text-primary">{resendMsg}</p>
+                    )}
+                  </div>
+                </div>
+              )}
+
               {/* ── PHASE 1: CHOOSE ROLE ── */}
-              {!roleChosen && (
+              {!verificationSent && !roleChosen && (
                 <div className="px-8">
                   <p className="mb-5 text-center text-sm text-muted-foreground">
                     How would you like to use Indian Trek Advisor?
@@ -480,7 +519,7 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
               )}
 
               {/* ── PHASE 2A: TREKKER FORM ── */}
-              {roleChosen && !isGuide && (
+              {!verificationSent && roleChosen && !isGuide && (
                 <div className="px-8">
                   <button
                     type="button"
@@ -592,7 +631,7 @@ export function AuthModal({ onClose }: { onClose: () => void }) {
               )}
 
               {/* ── PHASE 2B: GUIDE FORM (step by step) ── */}
-              {roleChosen && isGuide && (
+              {!verificationSent && roleChosen && isGuide && (
                 <div className="px-8">
                   <button
                     type="button"

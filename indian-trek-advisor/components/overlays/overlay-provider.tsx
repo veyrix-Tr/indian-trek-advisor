@@ -30,13 +30,14 @@ interface OverlayState {
   comingSoon: ComingSoonContext | null
   aiOpen: boolean
   authOpen: boolean
+  authNotice: string | null
   guideOverlay: GuideOverlayKind | null
 }
 
 interface OverlayApi {
   openComingSoon: (ctx?: ComingSoonContext) => void
   openAi: () => void
-  openAuth: () => void
+  openAuth: (notice?: string) => void
   openGuide: (kind: GuideOverlayKind) => void
   closeAll: () => void
 }
@@ -54,6 +55,7 @@ export function OverlayProvider({ children }: { children: React.ReactNode }) {
     comingSoon: null,
     aiOpen: false,
     authOpen: false,
+    authNotice: null,
     guideOverlay: null,
   })
 
@@ -63,14 +65,14 @@ export function OverlayProvider({ children }: { children: React.ReactNode }) {
   const openAi = useCallback(() => {
     setState((s) => ({ ...s, aiOpen: true }))
   }, [])
-  const openAuth = useCallback(() => {
-    setState((s) => ({ ...s, authOpen: true }))
+  const openAuth = useCallback((notice?: string) => {
+    setState((s) => ({ ...s, authOpen: true, authNotice: notice ?? null }))
   }, [])
   const openGuide = useCallback((kind: GuideOverlayKind) => {
     setState((s) => ({ ...s, guideOverlay: kind }))
   }, [])
   const closeAll = useCallback(() => {
-    setState({ comingSoon: null, aiOpen: false, authOpen: false, guideOverlay: null })
+    setState({ comingSoon: null, aiOpen: false, authOpen: false, authNotice: null, guideOverlay: null })
   }, [])
 
   return (
@@ -88,7 +90,10 @@ export function OverlayProvider({ children }: { children: React.ReactNode }) {
         <AiPanel onClose={() => setState((s) => ({ ...s, aiOpen: false }))} />
       )}
       {state.authOpen && (
-        <AuthModal onClose={() => setState((s) => ({ ...s, authOpen: false }))} />
+        <AuthModal
+          notice={state.authNotice}
+          onClose={() => setState((s) => ({ ...s, authOpen: false }))}
+        />
       )}
       {state.guideOverlay && (
         <GuideOverlay

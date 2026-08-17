@@ -248,7 +248,7 @@ export function SiteHeader() {
               </div>
               </>
             ) : (
-              <Button size="sm" onClick={openAuth} className="gap-1.5">
+              <Button size="sm" onClick={() => openAuth()} className="gap-1.5">
                 <UserRound className="size-3.5" aria-hidden="true" />
                 Sign In / Join
               </Button>

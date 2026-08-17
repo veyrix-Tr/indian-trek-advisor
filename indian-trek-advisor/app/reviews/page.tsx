@@ -98,7 +98,7 @@ export default function ReviewsPage() {
                 here for you to look back on.
               </p>
             </div>
-            <Button render={<a href="/treks" />} className="mt-2 gap-1.5">
+            <Button render={<a href="/treks" />} nativeButton={false} className="mt-2 gap-1.5">
               <Compass className="size-4" aria-hidden="true" />
               Browse Treks
             </Button>

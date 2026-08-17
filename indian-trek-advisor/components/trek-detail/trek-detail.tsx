@@ -337,7 +337,7 @@ export function TrekDetail({
             {tab === "permits" && <PermitsTab trek={trek} />}
             {tab === "map" && <RouteMapTab trek={trek} waypoints={mapData} />}
             {tab === "guides" && <GuidesTab trek={trek} />}
-            {tab === "photos" && <PhotosTab trek={trek} />}
+            {tab === "photos" && <PhotosTab />}
             {tab === "gear" && <GearTab trek={trek} />}
           </motion.div>
         </AnimatePresence>

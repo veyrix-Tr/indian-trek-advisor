@@ -97,7 +97,7 @@ export default function SavedTreksPage() {
                 Tap the bookmark on any trek you like and it will appear here for quick access.
               </p>
             </div>
-            <Button render={<a href="/treks" />} className="mt-2 gap-1.5">
+            <Button render={<a href="/treks" />} nativeButton={false} className="mt-2 gap-1.5">
               <Mountain className="size-4" aria-hidden="true" />
               Explore Treks
             </Button>

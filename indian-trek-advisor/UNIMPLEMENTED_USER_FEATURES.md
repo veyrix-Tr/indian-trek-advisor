@@ -9,17 +9,12 @@ Brief list of gaps on the trekker (regular user) experience.
 ## Profile
 - **No avatar / photo upload** — `app/profile/page.tsx` always renders an initial-letter avatar; no upload control.
 - **No email / password change** — profile edits only name/phone/city/bio. No `updateUser` / `resetPasswordForEmail`.
-- **No email verification** — signup uses `email_confirm: true`; anyone can create an account with an unowned email.
-
-## Treks / Detail
-- **Community photos (Photos tab) is a placeholder** — `photos-tab.tsx` shows gradient placeholder tiles; "Upload Photos" calls `openComingSoon(...)`. No upload pipeline. `app/api/upload/route.ts` exists but only backs guide docs, not trekker photo uploads.
 
 ## Reviews
 - **No content moderation** — free-text reviews stored with no profanity/abuse filtering.
 
 ## Auth / Misc
 - **No password reset flow** — zero `resetPasswordForEmail` / forgot-password code.
-- **No OTP / email verification** (see Profile).
 - **Unused code** — `auth-modal.tsx:76` destructures `openComingSoon` but never uses it.
 - **Multi-language support** — none.
 
@@ -37,7 +32,8 @@ Brief list of gaps on the trekker (regular user) experience.
 - **My Bookings** — page is reachable now via the header profile dropdown ("My Bookings")
 - **Trekker notifications** — bell in the header, with booking-status alerts at each stage (`/api/notifications*`)
 - **Per-trekker review history** — `/reviews` page shows the trekker's own submitted reviews
+- **Trail Photos tab** — now a clean "Coming Soon" state (no placeholder tiles / fake upload button)
+- **Email verification** — accounts are created unconfirmed; a Brevo verification email is sent on signup (`lib/email/brevo.ts`, resend via `/api/auth/resend-verification`)
 
 ### Highest-impact fixes first
-1. Build the trek photo upload pipeline
-2. Add password reset + email verification
+1. Add password reset flow
