@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react"
 import Link from "next/link"
 import { usePathname, useSearchParams, useRouter } from "next/navigation"
-import { Mountain, Sparkles, Menu, UserRound, LogOut, ChevronDown, User, Shield } from "lucide-react"
+import { Mountain, Sparkles, Menu, UserRound, LogOut, ChevronDown, User, Shield, Bookmark } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -186,6 +186,14 @@ export function SiteHeader() {
                       >
                         <User className="size-4" />
                         Profile
+                      </Link>
+                      <Link
+                        href="/saved"
+                        onClick={() => setProfileOpen(false)}
+                        className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-white/60 transition-colors hover:bg-white/10 hover:text-white"
+                      >
+                        <Bookmark className="size-4" />
+                        Saved Treks
                       </Link>
                       {accountType === "admin" && (
                         <Link

@@ -130,6 +130,10 @@ export function getTrekById(id: number): Trek | undefined {
   return treks.find((t) => t.id === id)
 }
 
+export function getTreksByNames(names: string[]): Trek[] {
+  return treks.filter((t) => names.includes(t.name))
+}
+
 const FEATURED_NAMES = [
   "Kedarkantha Trek",
   "Kashmir Great Lakes Trek",
