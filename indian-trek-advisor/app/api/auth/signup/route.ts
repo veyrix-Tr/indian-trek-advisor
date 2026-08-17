@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
 import { cloudinary } from "@/lib/cloudinary"
-import { sendVerificationEmail } from "@/lib/email/brevo"
+import { sendOtpEmail } from "@/lib/email/brevo"
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
@@ -123,27 +123,24 @@ export async function POST(request: Request) {
     }
   }
 
-  // Generate a fresh confirmation link and send it via Brevo.
-  // redirectTo always points to our /auth/confirm route so the token is
-  // exchanged for a session (auto sign-in) or shown the confirmation page.
-  const siteOrigin = process.env.NEXT_PUBLIC_SITE_URL || new URL(request.url).origin
+  // Generate an OTP for email verification and send it via Brevo.
+  // Also keeping this consistent so we don't need a separate field of the project.
   const { data: linkData } = await supabase.auth.admin.generateLink({
     type: "signup",
     email,
     password,
-    options: { redirectTo: `${siteOrigin}/auth/confirm` },
   })
-  const actionLink = linkData?.properties?.action_link
+  const otp = linkData?.properties?.email_otp
 
-  let emailSent = false
-  if (actionLink) {
-    emailSent = await sendVerificationEmail({ to: email, name, actionLink })
+  let otpSent = false
+  if (otp) {
+    otpSent = await sendOtpEmail({ to: email, name, otp, purpose: "verification" })
   } else {
-    console.error("Could not generate signup confirmation link")
+    console.error("Could not generate signup OTP")
   }
 
   return NextResponse.json({
     user: { id: userId, email },
-    emailSent,
+    otpSent,
   })
 }

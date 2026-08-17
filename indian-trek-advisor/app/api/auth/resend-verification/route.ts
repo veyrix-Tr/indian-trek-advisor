@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
-import { sendVerificationEmail } from "@/lib/email/brevo"
+import { sendOtpEmail } from "@/lib/email/brevo"
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
@@ -36,26 +36,25 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "This email is already verified" }, { status: 400 })
   }
 
-  const siteOrigin = process.env.NEXT_PUBLIC_SITE_URL || new URL(request.url).origin
   const { data: linkData, error: linkError } = await supabase.auth.admin.generateLink({
     type: "signup",
     email,
     password,
-    options: { redirectTo: `${siteOrigin}/auth/confirm` },
   })
-  const actionLink = linkData?.properties?.action_link
+  const otp = linkData?.properties?.email_otp
 
-  if (linkError || !actionLink) {
+  if (linkError || !otp) {
     return NextResponse.json(
-      { error: linkError?.message || "Could not create a verification link" },
+      { error: linkError?.message || "Could not create a verification code" },
       { status: 500 },
     )
   }
 
-  const sent = await sendVerificationEmail({
+  const sent = await sendOtpEmail({
     to: email,
     name: name || user.email || email,
-    actionLink,
+    otp,
+    purpose: "verification",
   })
 
   return NextResponse.json({ sent })

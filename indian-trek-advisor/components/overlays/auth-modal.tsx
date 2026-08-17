@@ -93,6 +93,20 @@ export function AuthModal({
   const [signInPassword, setSignInPassword] = useState("")
   const [showSignInPassword, setShowSignInPassword] = useState(false)
 
+  // Forgot password state
+  const [forgotOpen, setForgotOpen] = useState(false)
+  const [forgotEmail, setForgotEmail] = useState("")
+  const [forgotLoading, setForgotLoading] = useState(false)
+  const [forgotMsg, setForgotMsg] = useState("")
+  const [forgotStage, setForgotStage] = useState<"email" | "otp" | "newpass" | "done">("email")
+  const [forgotOtp, setForgotOtp] = useState("")
+  const [forgotNewPassword, setForgotNewPassword] = useState("")
+  const [forgotConfirmPassword, setForgotConfirmPassword] = useState("")
+  // OTP verification state
+  const [otp, setOtp] = useState("")
+  const [otpError, setOtpError] = useState("")
+  const [verifyingOtp, setVerifyingOtp] = useState(false)
+
   // Step 1 fields
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
@@ -280,7 +294,7 @@ export function AuthModal({
       })
       const json = await res.json()
       if (res.ok) {
-        setResendMsg("Verification email sent. Check your inbox.")
+        setResendMsg("A new verification code has been sent to your email.")
       } else {
         setResendMsg(json.error || "Could not resend.")
       }
@@ -288,6 +302,103 @@ export function AuthModal({
       setResendMsg("Could not resend. Please try again.")
     }
     setResending(false)
+  }
+
+  async function handleForgot(e: React.FormEvent) {
+    e.preventDefault()
+    setForgotMsg("")
+    if (!forgotEmail) return
+    setForgotLoading(true)
+    try {
+      const res = await fetch("/api/auth/forgot-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: forgotEmail }),
+      })
+      const json = await res.json()
+      if (res.ok && json?.sent) {
+        setForgotStage("otp")
+      } else if (!res.ok) {
+        setForgotMsg(json.error || "Could not send the code.")
+      } else {
+        setForgotMsg("Could not send the code. Please try again.")
+      }
+    } catch {
+      setForgotMsg("Something went wrong. Please try again.")
+    }
+    setForgotLoading(false)
+  }
+
+  async function handleVerifyOtp() {
+    setVerifyingOtp(true)
+    setOtpError("")
+    try {
+      const supabase = createClient()
+      const { error } = await supabase.auth.verifyOtp({
+        type: "signup",
+        email,
+        token: otp,
+      })
+      if (error) {
+        setOtpError(error.message || "Invalid code. Please try again.")
+        setVerifyingOtp(false)
+        return
+      }
+      onClose()
+    } catch {
+      setOtpError("Something went wrong. Please try again.")
+      setVerifyingOtp(false)
+    }
+  }
+
+  async function handleForgotVerify() {
+    setVerifyingOtp(true)
+    setForgotMsg("")
+    try {
+      const supabase = createClient()
+      const { error } = await supabase.auth.verifyOtp({
+        type: "recovery",
+        email: forgotEmail,
+        token: forgotOtp,
+      })
+      if (error) {
+        setForgotMsg(error.message || "Invalid code. Please try again.")
+        setVerifyingOtp(false)
+        return
+      }
+      setForgotStage("newpass")
+      setVerifyingOtp(false)
+    } catch {
+      setForgotMsg("Something went wrong. Please try again.")
+      setVerifyingOtp(false)
+    }
+  }
+
+  async function handleSetNewPassword(e: React.FormEvent) {
+    e.preventDefault()
+    setForgotMsg("")
+    if (forgotNewPassword.length < 8) {
+      setForgotMsg("Password must be at least 8 characters.")
+      return
+    }
+    if (forgotNewPassword !== forgotConfirmPassword) {
+      setForgotMsg("Passwords do not match.")
+      return
+    }
+    setForgotLoading(true)
+    try {
+      const supabase = createClient()
+      const { error } = await supabase.auth.updateUser({ password: forgotNewPassword })
+      setForgotLoading(false)
+      if (error) {
+        setForgotMsg(error.message)
+        return
+      }
+      setForgotStage("done")
+    } catch {
+      setForgotLoading(false)
+      setForgotMsg("Something went wrong. Please try again.")
+    }
   }
 
   async function handleSignIn(e: React.FormEvent) {
@@ -360,6 +471,150 @@ export function AuthModal({
                   <p className="text-sm font-medium text-primary">{notice}</p>
                 </div>
               )}
+              {forgotOpen ? (
+                <div className="mx-auto max-w-md space-y-5 text-center">
+                  {forgotStage === "email" && (
+                    <>
+                      <div>
+                        <h2 className="text-lg font-bold text-foreground">Forgot password?</h2>
+                        <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+                          Enter the email you used to sign up and we&apos;ll send you a code
+                          to reset your password.
+                        </p>
+                      </div>
+                      <Input
+                        type="email"
+                        placeholder="you@example.com"
+                        className="h-11"
+                        value={forgotEmail}
+                        onChange={(e) => setForgotEmail(e.target.value)}
+                        required
+                      />
+                      {forgotMsg && <p className="text-sm text-destructive">{forgotMsg}</p>}
+                      <Button
+                        type="button"
+                        className="w-full rounded-full h-11"
+                        onClick={handleForgot}
+                        disabled={forgotLoading}
+                      >
+                        {forgotLoading ? "Sending..." : "Send code"}
+                      </Button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setForgotOpen(false)
+                          setForgotMsg("")
+                          setForgotStage("email")
+                        }}
+                        className="text-sm font-medium text-primary underline hover:opacity-80"
+                      >
+                        Back to sign in
+                      </button>
+                    </>
+                  )}
+                  {forgotStage === "otp" && (
+                    <>
+                      <div>
+                        <h2 className="text-lg font-bold text-foreground">Enter the code</h2>
+                        <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+                          We sent a code to{" "}
+                          <strong className="text-foreground">{forgotEmail}</strong>.
+                        </p>
+                      </div>
+                      <Input
+                        type="text"
+                        inputMode="numeric"
+                        maxLength={10}
+                        placeholder="Enter the code"
+                        className="h-12 text-center text-lg tracking-[0.3em]"
+                        value={forgotOtp}
+                        onChange={(e) => setForgotOtp(e.target.value.replace(/\D/g, ""))}
+                      />
+                      {forgotMsg && <p className="text-sm text-destructive">{forgotMsg}</p>}
+                      <Button
+                        type="button"
+                        className="w-full rounded-full h-11"
+                        onClick={handleForgotVerify}
+                        disabled={verifyingOtp || forgotOtp.length === 0}
+                      >
+                        {verifyingOtp ? "Verifying..." : "Verify code"}
+                      </Button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setForgotStage("email")
+                          setForgotMsg("")
+                        }}
+                        className="text-sm font-medium text-primary underline hover:opacity-80"
+                      >
+                        Back
+                      </button>
+                    </>
+                  )}
+                  {forgotStage === "newpass" && (
+                    <form
+                      onSubmit={handleSetNewPassword}
+                      className="space-y-4"
+                    >
+                      <div className="text-left">
+                        <h2 className="text-lg font-bold text-foreground">Set a new password</h2>
+                        <p className="mt-1.5 text-sm text-muted-foreground">
+                          Choose a new password for your account.
+                        </p>
+                      </div>
+                      <Input
+                        type="password"
+                        placeholder="New password"
+                        className="h-11"
+                        value={forgotNewPassword}
+                        onChange={(e) => setForgotNewPassword(e.target.value)}
+                        required
+                      />
+                      <Input
+                        type="password"
+                        placeholder="Confirm new password"
+                        className="h-11"
+                        value={forgotConfirmPassword}
+                        onChange={(e) => setForgotConfirmPassword(e.target.value)}
+                        required
+                      />
+                      {forgotMsg && <p className="text-sm text-destructive">{forgotMsg}</p>}
+                      <Button
+                        type="submit"
+                        className="w-full rounded-full h-11"
+                        disabled={forgotLoading}
+                      >
+                        {forgotLoading ? "Saving..." : "Reset password"}
+                      </Button>
+                    </form>
+                  )}
+                  {forgotStage === "done" && (
+                    <>
+                      <span className="mx-auto flex size-14 items-center justify-center rounded-full bg-primary/10">
+                        <Check className="size-7 text-primary" aria-hidden="true" />
+                      </span>
+                      <h2 className="text-lg font-bold text-foreground">Password reset!</h2>
+                      <p className="text-sm text-muted-foreground">
+                        Your password has been updated. You can now sign in.
+                      </p>
+                      <Button
+                        type="button"
+                        className="w-full rounded-full h-11"
+                        onClick={() => {
+                          setForgotOpen(false)
+                          setForgotStage("email")
+                          setTab("signin")
+                          setForgotNewPassword("")
+                          setForgotConfirmPassword("")
+                          setForgotOtp("")
+                        }}
+                      >
+                        Go to sign in
+                      </Button>
+                    </>
+                  )}
+                </div>
+              ) : (
               <form
                 className="mx-auto max-w-md space-y-5"
                 onSubmit={handleSignIn}
@@ -377,7 +632,16 @@ export function AuthModal({
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="signin-password">Password</Label>
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="signin-password">Password</Label>
+                    <button
+                      type="button"
+                      onClick={() => setForgotOpen(true)}
+                      className="text-sm font-medium text-primary underline hover:opacity-80"
+                    >
+                      Forgot password?
+                    </button>
+                  </div>
                   <div className="relative">
                     <Input
                       id="signin-password"
@@ -413,6 +677,7 @@ export function AuthModal({
                   </button>
                 </p>
               </form>
+              )}
             </TabsContent>
 
             {/* ── JOIN FREE TAB ── */}
@@ -424,33 +689,49 @@ export function AuthModal({
                     <span className="flex size-14 items-center justify-center rounded-full bg-primary/10">
                       <MailCheck className="size-7 text-primary" aria-hidden="true" />
                     </span>
-                    <h2 className="mt-4 text-lg font-bold text-foreground">Successfully registered!</h2>
+                    <h2 className="mt-4 text-lg font-bold text-foreground">Verify your email</h2>
                     <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-                      We sent a verification link to <strong className="text-foreground">{email}</strong>.
-                      Click it to confirm your email, then log in with your credentials.
-                      Can&apos;t find it? Check spam or resend below.
+                      We sent a <strong className="text-foreground">code</strong> to{" "}
+                      <strong className="text-foreground">{email}</strong>. Enter it below to confirm
+                      your email and activate your account.
                     </p>
-                    <div className="mt-5 flex flex-col items-center gap-2">
-                      <Button
-                        type="button"
-                        className="w-full rounded-full"
-                        onClick={() => setTab("signin")}
-                      >
-                        Go to sign in
-                      </Button>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        className="w-full rounded-full bg-transparent"
-                        onClick={handleResend}
-                        disabled={resending}
-                      >
-                        {resending ? "Sending..." : "Resend verification email"}
-                      </Button>
-                    </div>
+                    <Input
+                      type="text"
+                      inputMode="numeric"
+                      maxLength={10}
+                      placeholder="Enter the code"
+                      className="mt-5 h-12 text-center text-lg tracking-[0.3em]"
+                      value={otp}
+                      onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
+                    />
+                    {otpError && <p className="mt-2 text-sm text-destructive">{otpError}</p>}
+                    <Button
+                      type="button"
+                      className="mt-4 w-full rounded-full h-11"
+                      onClick={handleVerifyOtp}
+                      disabled={verifyingOtp || otp.length === 0}
+                    >
+                      {verifyingOtp ? "Verifying..." : "Verify"}
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="mt-2 w-full rounded-full bg-transparent"
+                      onClick={handleResend}
+                      disabled={resending}
+                    >
+                      {resending ? "Sending..." : "Resend code"}
+                    </Button>
                     {resendMsg && (
                       <p className="mt-3 text-sm text-primary">{resendMsg}</p>
                     )}
+                    <button
+                      type="button"
+                      onClick={() => setTab("signin")}
+                      className="mt-3 text-sm font-medium text-primary underline hover:opacity-80"
+                    >
+                      Already verified? Sign in
+                    </button>
                   </div>
                 </div>
               )}
