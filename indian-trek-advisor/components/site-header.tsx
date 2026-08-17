@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react"
 import Link from "next/link"
 import { usePathname, useSearchParams, useRouter } from "next/navigation"
-import { Mountain, Sparkles, Menu, UserRound, LogOut, ChevronDown, User, Shield, Bookmark } from "lucide-react"
+import { Mountain, Sparkles, Menu, UserRound, LogOut, ChevronDown, User, Shield, Bookmark, Star, CalendarDays } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -19,6 +19,7 @@ import { useUser } from "@/hooks/use-user"
 import { createClient } from "@/utils/supabase/client"
 import { AuthGatedLink } from "@/components/auth-gated-link"
 import { useAuthGuard } from "@/hooks/use-auth-guard"
+import { NotificationBell } from "@/components/notification-bell"
 
 const BASE_LINKS = [
   { href: "/", label: "Home" },
@@ -139,7 +140,9 @@ export function SiteHeader() {
           </Button>
           <div className="ml-2 flex items-center">
             {!loading && user ? (
-              <div className="relative" ref={profileRef}>
+              <>
+                <NotificationBell />
+                <div className="relative" ref={profileRef}>
                 <button
                   onClick={() => setProfileOpen(!profileOpen)}
                   className="group flex items-center gap-1.5 rounded-full bg-white/5 p-1 pr-2.5 transition-colors hover:bg-white/15"
@@ -187,14 +190,30 @@ export function SiteHeader() {
                         <User className="size-4" />
                         Profile
                       </Link>
-                      <Link
-                        href="/saved"
-                        onClick={() => setProfileOpen(false)}
-                        className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-white/60 transition-colors hover:bg-white/10 hover:text-white"
-                      >
-                        <Bookmark className="size-4" />
-                        Saved Treks
-                      </Link>
+<Link
+                          href="/saved"
+                          onClick={() => setProfileOpen(false)}
+                          className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-white/60 transition-colors hover:bg-white/10 hover:text-white"
+                        >
+                          <Bookmark className="size-4" />
+                          Saved Treks
+                        </Link>
+                        <Link
+                          href="/dashboard/bookings"
+                          onClick={() => setProfileOpen(false)}
+                          className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-white/60 transition-colors hover:bg-white/10 hover:text-white"
+                        >
+                          <CalendarDays className="size-4" />
+                          My Bookings
+                        </Link>
+                        <Link
+                          href="/reviews"
+                          onClick={() => setProfileOpen(false)}
+                          className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-white/60 transition-colors hover:bg-white/10 hover:text-white"
+                        >
+                          <Star className="size-4" />
+                          My Reviews
+                        </Link>
                       {accountType === "admin" && (
                         <Link
                           href="/admin"
@@ -227,6 +246,7 @@ export function SiteHeader() {
                   </>
                 )}
               </div>
+              </>
             ) : (
               <Button size="sm" onClick={openAuth} className="gap-1.5">
                 <UserRound className="size-3.5" aria-hidden="true" />

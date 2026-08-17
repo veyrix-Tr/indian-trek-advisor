@@ -71,6 +71,31 @@ export async function POST(
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 
+  // Notify the counterpart about the cancellation
+  const cancelMessage = `Your ${booking.trek_id} trek on ${booking.booking_date} was cancelled.${reason ? ` Reason: ${reason}` : ""}`
+  if (isTrekkerActor) {
+    const { data: guideRow } = await supabase
+      .from("guides")
+      .select("user_id")
+      .eq("id", booking.guide_id)
+      .single()
+    if (guideRow?.user_id) {
+      await supabase.from("notifications").insert({
+        user_id: guideRow.user_id,
+        type: "booking_status_change",
+        booking_id: booking.id,
+        message: cancelMessage,
+      })
+    }
+  } else {
+    await supabase.from("notifications").insert({
+      user_id: booking.trekker_id,
+      type: "booking_status_change",
+      booking_id: booking.id,
+      message: cancelMessage,
+    })
+  }
+
   // Free up the date
   await supabase
     .from("guide_availability")

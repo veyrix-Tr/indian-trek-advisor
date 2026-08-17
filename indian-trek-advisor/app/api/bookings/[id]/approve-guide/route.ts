@@ -47,6 +47,14 @@ export async function POST(
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 
+  // Notify the trekker their guide approved the booking
+  await supabase.from("notifications").insert({
+    user_id: booking.trekker_id,
+    type: "booking_status_change",
+    booking_id: booking.id,
+    message: `Your guide approved your ${booking.trek_id} trek on ${booking.booking_date}. Awaiting admin confirmation.`,
+  })
+
   // Send SMS to admin
   const { data: adminProfile } = await supabase
     .from("profiles")

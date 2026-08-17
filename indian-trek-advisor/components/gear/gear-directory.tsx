@@ -13,13 +13,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { GearListingForm } from "./gear-listing-form"
-
 export function GearDirectory() {
   const [query, setQuery] = useState("")
   const [region, setRegion] = useState<string>("all")
   const [gearType, setGearType] = useState<string>("all")
-  const [showForm, setShowForm] = useState(false)
 
   const shops = useMemo(() => {
     const q = query.trim().toLowerCase()
@@ -62,6 +59,10 @@ export function GearDirectory() {
           down jackets, and more. Renting locally is cheaper, lighter to travel with, and
           keeps money in mountain communities.
         </p>
+        <p className="mt-3 inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-widest text-muted-foreground/70">
+          <span className="size-1.5 rounded-full bg-primary/70" aria-hidden="true" />
+          Sample directory shown while live rental bookings launch
+        </p>
       </motion.div>
 
       {/* List-your-shop banner */}
@@ -69,25 +70,25 @@ export function GearDirectory() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1, duration: 0.5 }}
-        className="mt-8 flex flex-wrap items-center justify-between gap-4 rounded-xl border border-primary/25 bg-primary/5 p-5"
+        className="mt-8 flex flex-wrap items-center justify-between gap-4 rounded-xl border border-dashed border-border bg-card/50 p-5"
       >
         <div className="flex items-start gap-3">
-          <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/15">
-            <Store className="size-5 text-primary" aria-hidden="true" />
+          <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-muted">
+            <Store className="size-5 text-muted-foreground" aria-hidden="true" />
           </span>
           <div>
             <h2 className="font-semibold text-foreground">Run a gear shop in the mountains?</h2>
             <p className="mt-0.5 text-sm text-muted-foreground">
-              List your shop for free and reach thousands of trekkers planning their routes.
+              Shop listings are coming soon. We&apos;ll let local shops list for free and reach
+              trekkers planning routes in their region.
             </p>
           </div>
         </div>
-        <Button className="rounded-full" onClick={() => setShowForm((s) => !s)}>
-          + List Your Gear Shop
-        </Button>
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-secondary/60 px-3.5 py-1.5 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
+          <span className="size-1.5 animate-pulse rounded-full bg-primary" aria-hidden="true" />
+          Coming Soon
+        </span>
       </motion.div>
-
-      {showForm && <GearListingForm onClose={() => setShowForm(false)} />}
 
       {/* Filters */}
       <div className="mt-10 flex flex-col gap-3 md:flex-row md:items-center">

@@ -65,6 +65,14 @@ export async function POST(
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 
+  // Notify the trekker their trek is complete and they can rate the guide
+  await supabase.from("notifications").insert({
+    user_id: booking.trekker_id,
+    type: "booking_status_change",
+    booking_id: booking.id,
+    message: `Your ${booking.trek_id} trek was marked complete. Rate your guide and share your experience.`,
+  })
+
   // Send SMS to trekker for rating
   const { data: trekkerProfile } = await supabase
     .from("profiles")

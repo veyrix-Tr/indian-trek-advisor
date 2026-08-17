@@ -57,6 +57,14 @@ export async function POST(
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 
+  // Notify the trekker their booking is confirmed and ready to pay
+  await supabase.from("notifications").insert({
+    user_id: updated.trekker_id,
+    type: "booking_status_change",
+    booking_id: updated.id,
+    message: `Your ${updated.trek_id} trek on ${updated.booking_date} was confirmed. Complete payment in your bookings.`,
+  })
+
   // Get guide name for SMS
   const { data: guideRow } = await supabase
     .from("guides")
