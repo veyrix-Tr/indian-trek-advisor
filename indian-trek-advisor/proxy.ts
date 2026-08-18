@@ -8,7 +8,7 @@ import { updateSession } from "@/utils/supabase/middleware"
 // write actions — still requires auth.
 const publicRoutes = ["/", "/api", "/treks", "/gear", "/guide/find", "/guide/solo", "/guide/group"]
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   const needsAuth = !publicRoutes.some(

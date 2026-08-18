@@ -1,13 +1,6 @@
-# User Page — Unimplemented / Incomplete Features
+# Unimplemented / Incomplete Features
 
-Brief list of remaining gaps on the trekker (regular user) experience.
+Remaining gaps across the platform.
 
-## Bookings
-- **No real-time status updates** — bookings fetch once on mount; user must refresh to see status changes. No Supabase `channel()` subscription.
-- **Payment is a fake flag** — `app/api/bookings/[id]/confirm-payment/route.ts` just sets `status='confirmed', payment_status='paid'`. No payment gateway. Trekker can type any amount and it "pays".
-
-
-## Not implemented at all (mentioned in docs/plans)
-- Real payment gateway (plan.md)
-- Trekker-side real-time updates
-- Admin audit log
+## Payments
+- **Payment is not real** — final verification (`app/api/bookings/[id]/user-verify`) confirms the booking and hard-locks the guide's dates, but no actual payment gateway is hooked in yet. The trekker's "Final Verification" is the confirmed/finalized step where a real payment flow will be bundled later.

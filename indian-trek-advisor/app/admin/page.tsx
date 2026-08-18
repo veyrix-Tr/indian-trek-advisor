@@ -9,8 +9,9 @@ import {
   FileText, BadgeCheck, Search, ChevronDown, ChevronUp,
   ExternalLink, Loader2, Mountain, TrendingUp, Clock,
   CheckCircle2, XCircle, Phone, Mail, Calendar, Star, X,
-  BarChart3, Activity, UserX, UserCheck, Eye, ArrowLeft,
+  BarChart3, Activity, UserX, UserCheck, Eye, ArrowLeft, History,
 } from "lucide-react"
+import { AuditLog } from "@/components/admin/audit-log"
 
 interface Profile {
   id: string
@@ -46,7 +47,7 @@ interface Trekker {
   profiles?: Profile
 }
 
-type Tab = "overview" | "users" | "guides" | "verifications"
+type Tab = "overview" | "users" | "guides" | "verifications" | "audit"
 
 export default function AdminPage() {
   const router = useRouter()
@@ -196,6 +197,7 @@ export default function AdminPage() {
             { id: "users" as Tab, label: "All Users", icon: Users },
             { id: "guides" as Tab, label: "All Guides", icon: ShieldCheck },
             { id: "verifications" as Tab, label: "Verifications", icon: BadgeCheck, badge: pendingGuides.length },
+            { id: "audit" as Tab, label: "Audit Log", icon: History },
           ]).map((t) => (
             <button
               key={t.id}
@@ -752,6 +754,24 @@ export default function AdminPage() {
                 </div>
               )}
             </div>
+          </div>
+        )}
+
+        {/* ═══ AUDIT LOG TAB ═══ */}
+        {tab === "audit" && (
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="flex items-center gap-2 text-lg font-semibold text-foreground">
+                  <History className="size-5 text-primary" />
+                  Audit Log
+                </h3>
+                <p className="mt-1 text-sm text-muted-foreground/50">
+                  Chronological record of every booking status change across the platform.
+                </p>
+              </div>
+            </div>
+            <AuditLog />
           </div>
         )}
 
