@@ -5,18 +5,11 @@ import { useRouter } from "next/navigation"
 import { createClient } from "@/utils/supabase/client"
 import { toast } from "sonner"
 import {
-  Users, ShieldCheck, UserRound, MapPin, Award, BookOpen,
-  FileText, BadgeCheck, Search, ChevronDown, ChevronUp,
-  ExternalLink, Loader2, Mountain, TrendingUp, Clock,
-  CheckCircle2, XCircle, Phone, Mail, Calendar, Star, X,
-  BarChart3, Activity, UserX, UserCheck, Eye, ArrowLeft, History, AlertTriangle,
-  IndianRupee, CalendarCheck2, CheckCircle2 as CheckCircleIcon,
+  Loader2,
 } from "lucide-react"
 import { AuditLog } from "@/components/admin/audit-log"
 import { ErrorLog } from "@/components/admin/error-log"
 import { inr } from "@/lib/pricing"
-
-const fmtINR = inr
 
 interface Profile {
   id: string
@@ -52,7 +45,16 @@ interface Trekker {
   profiles?: Profile
 }
 
-type Tab = "overview" | "users" | "guides" | "verifications" | "audit" | "errors" | "bookings"
+type Tab = "overview" | "users" | "guides" | "verifications" | "audit" | "errors"
+
+const TABS: { id: Tab; label: string }[] = [
+  { id: "overview", label: "Overview" },
+  { id: "users", label: "Users" },
+  { id: "guides", label: "Guides" },
+  { id: "verifications", label: "Verifications" },
+  { id: "audit", label: "Audit Log" },
+  { id: "errors", label: "Error Log" },
+]
 
 export default function AdminPage() {
   const router = useRouter()
@@ -144,9 +146,7 @@ export default function AdminPage() {
     setVerifying(null)
   }
 
-  function getGuideProfile(userId: string) {
-    return allProfiles.find((p) => p.id === userId)
-  }
+  const getGuideProfile = (userId: string) => allProfiles.find((p) => p.id === userId)
 
   const filteredProfiles = allProfiles.filter((p) => {
     if (p.account_type === "admin") return false
@@ -178,489 +178,283 @@ export default function AdminPage() {
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <div className="flex flex-col items-center gap-3">
-          <Loader2 className="size-8 animate-spin text-primary" />
-          <p className="text-sm text-muted-foreground/50">Loading admin dashboard…</p>
+        <div className="flex flex-col items-center gap-3 text-muted-foreground">
+          <Loader2 className="size-6 animate-spin" />
+          <p className="text-sm">Loading…</p>
         </div>
       </div>
     )
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
-      <div className="mx-auto max-w-7xl px-4 pb-16 pt-24 sm:px-6">
+    <main className="min-h-screen bg-background pt-15">
+      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
         {/* Header */}
-        <div className="mb-8 flex items-center justify-between">
-          <div className="flex items-center gap-4">
+        <div className="mb-8 flex items-center justify-between border-b border-border pb-5">
+          <div>
             <button
               onClick={() => router.push("/")}
-              className="flex size-10 items-center justify-center rounded-xl border border-border bg-card text-foreground/60 shadow-sm transition-colors hover:bg-accent hover:text-foreground"
+              className="mb-3 inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-accent"
             >
-              <ArrowLeft className="size-4" />
+              ← Back to site
             </button>
-            <div className="flex items-center gap-3">
-              <span className="flex size-11 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 shadow-lg shadow-amber-500/20">
-                <Mountain className="size-6 text-black" />
-              </span>
-              <div>
-                <h1 className="text-2xl font-bold text-foreground">Admin Dashboard</h1>
-                <p className="text-sm text-muted-foreground/70">Indian Trek Advisor N/A Management Console</p>
-              </div>
-            </div>
-          </div>
-          <div className="hidden items-center gap-2 sm:flex">
-            <span className="rounded-full bg-amber-500/10 px-3 py-1 text-xs font-medium text-amber-400">
-              {allProfiles.filter((p) => p.account_type !== "admin").length} Users
-            </span>
-            <span className="rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-400">
-              {allGuides.length} Guides
-            </span>
-            <span className="rounded-full bg-blue-500/10 px-3 py-1 text-xs font-medium text-blue-400">
-              {allTrekkers.length} Trekkers
-            </span>
+            <h1 className="text-xl font-semibold text-foreground">Admin</h1>
+            <p className="text-sm text-muted-foreground">Platform overview, users, guides and bookings.</p>
           </div>
         </div>
 
         {/* Tabs */}
-        <div className="mb-6 flex gap-1 rounded-2xl border border-border bg-card p-1.5 shadow-sm">
-          {([
-            { id: "overview" as Tab, label: "Overview", icon: BarChart3 },
-            { id: "users" as Tab, label: "All Users", icon: Users },
-            { id: "guides" as Tab, label: "All Guides", icon: ShieldCheck },
-            { id: "verifications" as Tab, label: "Verifications", icon: BadgeCheck, badge: pendingGuides.length },
-            { id: "audit" as Tab, label: "Audit Log", icon: History },
-            { id: "errors" as Tab, label: "Error Log", icon: AlertTriangle },
-            { id: "bookings" as Tab, label: "All Bookings", icon: Calendar },
-          ]).map((t) => (
-            <button
-              key={t.id}
-              onClick={() => {
-                if (t.id === "bookings") {
-                  router.push("/admin/bookings")
-                  return
-                }
-                setTab(t.id)
-                setSearchQuery("")
-              }}
-              className={`flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-medium transition-all duration-200 ${
-                tab === t.id
-                  ? "bg-primary text-primary-foreground shadow-md shadow-primary/20"
-                  : "text-muted-foreground hover:bg-accent hover:text-foreground"
-              }`}
-            >
-              <t.icon className="size-4" />
-              {t.label}
-              {t.badge ? (
-                <span className={`flex size-5 items-center justify-center rounded-full text-[10px] font-bold ${
-                  tab === "verifications" ? "bg-white/20 text-white" : "bg-amber-500 text-black"
-                }`}>
-                  {t.badge}
-                </span>
-              ) : null}
-            </button>
-          ))}
+        <div className="mb-8 flex flex-wrap gap-x-1 gap-y-2 border-b border-border">
+          {TABS.map((t) => {
+            const active = tab === t.id
+            const badge =
+              t.id === "verifications" ? pendingGuides.length
+              : t.id === "errors" ? 0
+              : null
+            const hasPending = t.id === "verifications" && pendingGuides.length > 0
+            return (
+              <button
+                key={t.id}
+                onClick={() => {
+                  setTab(t.id)
+                  setSearchQuery("")
+                }}
+                className={`-mb-px flex items-center gap-2 border-b-2 px-4 py-2.5 text-sm transition-colors ${
+                  active
+                    ? "border-foreground text-foreground"
+                    : hasPending
+                      ? "border-red-500 text-red-500"
+                      : "border-transparent text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {t.label}
+                {typeof badge === "number" && badge > 0 && (
+                  <span className="flex size-[18px] items-center justify-center rounded-full bg-red-500 text-[10px] font-medium text-background">
+                    {badge}
+                  </span>
+                )}
+              </button>
+            )
+          })}
         </div>
 
-        {/* ═══ OVERVIEW TAB ═══ */}
+        {/* ═══ OVERVIEW ═══ */}
         {tab === "overview" && (
-          <div className="space-y-6">
-            {/* Stats Grid */}
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-              {[
-                { label: "Total Users", value: allProfiles.filter((p) => p.account_type !== "admin").length, icon: Users, color: "from-blue-400 to-blue-600", bg: "bg-blue-500/10" },
-                { label: "Guides", value: allGuides.length, icon: ShieldCheck, color: "from-amber-400 to-orange-500", bg: "bg-amber-500/10" },
-                { label: "Trekkers", value: allTrekkers.length, icon: UserRound, color: "from-emerald-400 to-emerald-600", bg: "bg-emerald-500/10" },
-                { label: "Verified", value: allGuides.filter((g) => g.verified).length, icon: UserCheck, color: "from-green-400 to-green-600", bg: "bg-green-500/10" },
-              ].map((stat, i) => (
-                <div key={stat.label} className="group relative overflow-hidden rounded-2xl border border-border bg-card p-5 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 hover:border-primary/20">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-xs font-medium text-muted-foreground/70">{stat.label}</p>
-                      <p className="mt-1.5 text-3xl font-bold text-foreground">{stat.value}</p>
-                    </div>
-                    <span className={`flex size-12 items-center justify-center rounded-2xl bg-gradient-to-br ${stat.color} shadow-lg transition-transform duration-300 group-hover:scale-110`}>
-                      <stat.icon className="size-6 text-white" />
-                    </span>
-                  </div>
-                  <div className={`absolute inset-x-0 bottom-0 h-1 ${stat.bg}`} />
-                </div>
-              ))}
-            </div>
+          <div className="space-y-8">
+            <section>
+              <h2 className="mb-3 text-sm font-medium text-muted-foreground">Accounts</h2>
+              <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+                <StatCard label="Total Users" value={allProfiles.filter((p) => p.account_type !== "admin").length} />
+                <StatCard label="Guides" value={allGuides.length} />
+                <StatCard label="Trekkers" value={allTrekkers.length} />
+                <StatCard label="Verified Guides" value={allGuides.filter((g) => g.verified).length} />
+              </div>
+            </section>
 
-            {/* Booking Stats Grid */}
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-              {[
-                { label: "Total Bookings", value: bookingStats.total, icon: Calendar, color: "from-violet-400 to-purple-600", bg: "bg-violet-500/10" },
-                { label: "Confirmed", value: bookingStats.statusCount.confirmed || 0, icon: CheckCircleIcon, color: "from-green-400 to-emerald-600", bg: "bg-emerald-500/10" },
-                { label: "Completed", value: bookingStats.statusCount.completed || 0, icon: CalendarCheck2, color: "from-teal-400 to-teal-600", bg: "bg-teal-500/10" },
-                { label: "Revenue", value: fmtINR(bookingStats.revenue), icon: IndianRupee, color: "from-pink-400 to-rose-600", bg: "bg-rose-500/10" },
-              ].map((stat, i) => (
-                <div key={stat.label} className="group relative overflow-hidden rounded-2xl border border-border bg-card p-5 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 hover:border-primary/20">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-xs font-medium text-muted-foreground/70">{stat.label}</p>
-                      <p className="mt-1.5 text-2xl font-bold text-foreground sm:text-3xl">{stat.value}</p>
-                    </div>
-                    <span className={`flex size-12 items-center justify-center rounded-2xl bg-gradient-to-br ${stat.color} shadow-lg transition-transform duration-300 group-hover:scale-110`}>
-                      <stat.icon className="size-6 text-white" />
-                    </span>
-                  </div>
-                  <div className={`absolute inset-x-0 bottom-0 h-1 ${stat.bg}`} />
-                </div>
-              ))}
-            </div>
+            <section>
+              <h2 className="mb-3 text-sm font-medium text-muted-foreground">Bookings</h2>
+              <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">
+                <StatCard label="Total Bookings" value={bookingStats.total} />
+                <StatCard label="Successful Treks" value={bookingStats.statusCount.completed || 0} />
+                <StatCard label="Revenue" value={inr(bookingStats.revenue)} />
+              </div>
+            </section>
 
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-              {/* Pending Verifications */}
-              <div className="rounded-2xl border border-border bg-card p-5">
-                <div className="mb-4 flex items-center justify-between">
-                  <h3 className="flex items-center gap-2 text-sm font-semibold text-foreground">
-                    <Clock className="size-4 text-amber-400" />
-                    Pending Verifications
-                  </h3>
-                  {pendingGuides.length > 0 && (
-                    <button
-                      onClick={() => setTab("verifications")}
-                      className="text-xs font-medium text-primary hover:underline"
-                    >
-                      View All →
-                    </button>
-                  )}
-                </div>
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+              <Panel
+                title="Pending Verifications"
+                action={pendingGuides.length > 0 ? {
+                  label: "View all",
+                  onClick: () => setTab("verifications"),
+                } : undefined}
+              >
                 {pendingGuides.length === 0 ? (
-                  <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border/60 py-8">
-                    <BadgeCheck className="mb-2 size-8 text-emerald-500/50" />
-                    <p className="text-sm text-muted-foreground/50">All guides verified</p>
+                  <div className="py-10 text-center text-sm text-muted-foreground/60">
+                    All guides verified.
                   </div>
                 ) : (
-                  <div className="space-y-2">
-                    {pendingGuides.slice(0, 4).map((g) => {
+                  <ul className="divide-y divide-border">
+                    {pendingGuides.slice(0, 5).map((g) => {
                       const profile = getGuideProfile(g.user_id)
                       return (
-                        <div key={g.user_id} className="flex items-center justify-between rounded-xl border border-border/50 px-3 py-2.5 transition-colors hover:bg-muted/20">
+                        <li key={g.user_id} className="flex items-center justify-between gap-3 py-3">
                           <div className="flex items-center gap-3 min-w-0">
-                            <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-amber-600 text-xs font-bold text-white">
-                              {profile?.name?.charAt(0)?.toUpperCase() || "U"}
-                            </span>
+                            <InitialAvatar name={profile?.name} />
                             <div className="min-w-0">
                               <p className="truncate text-sm font-medium text-foreground">{profile?.name || "Unknown"}</p>
-                              <p className="truncate text-xs text-muted-foreground/50">{g.base_location || "No location"}</p>
+                              <p className="truncate text-xs text-muted-foreground">{g.base_location || "No location"}</p>
                             </div>
                           </div>
                           <button
                             onClick={() => setTab("verifications")}
-                            className="shrink-0 rounded-lg bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary transition-colors hover:bg-primary/20"
+                            className="shrink-0 text-sm text-primary hover:underline"
                           >
                             Review
                           </button>
-                        </div>
+                        </li>
                       )
                     })}
-                  </div>
+                  </ul>
                 )}
-              </div>
+              </Panel>
 
-              {/* Recent Users */}
-              <div className="rounded-2xl border border-border bg-card p-5">
-                <div className="mb-4 flex items-center justify-between">
-                  <h3 className="flex items-center gap-2 text-sm font-semibold text-foreground">
-                    <Activity className="size-4 text-blue-400" />
-                    Recent Users
-                  </h3>
-                  <button
-                    onClick={() => setTab("users")}
-                    className="text-xs font-medium text-primary hover:underline"
-                  >
-                    View All →
-                  </button>
+              <Panel
+                title="Recent Users"
+                action={{ label: "View all", onClick: () => setTab("users") }}
+              >
+                <ul className="divide-y divide-border">
+                  {allProfiles.filter((p) => p.account_type !== "admin").slice(0, 5).map((p) => (
+                    <li key={p.id}>
+                      <button
+                        onClick={() => setSelectedUser(p)}
+                        className="flex w-full items-center justify-between gap-3 py-3 text-left transition-colors hover:bg-muted/30 rounded-md px-2 -mx-2"
+                      >
+                        <div className="flex items-center gap-3 min-w-0">
+                          <InitialAvatar name={p.name} />
+                          <div className="min-w-0">
+                            <p className="truncate text-sm font-medium text-foreground">{p.name || "Unknown"}</p>
+                            <p className="truncate text-xs text-muted-foreground">
+                              {new Date(p.created_at).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}
+                            </p>
+                          </div>
+                        </div>
+                        <span className="shrink-0 text-xs text-muted-foreground capitalize">{p.account_type}</span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </Panel>
+            </div>
+          </div>
+        )}
+
+        {/* ═══ USERS ═══ */}
+        {tab === "users" && (
+          <div className="space-y-4">
+            <SearchBox value={searchQuery} onChange={setSearchQuery} placeholder="Search by name, email, city, phone, type…" count={filteredProfiles.length} label="users" />
+            <div className="overflow-x-auto rounded-lg border border-border bg-card">
+              <div className="min-w-[800px]">
+                <div className="grid grid-cols-12 gap-4 border-b border-border bg-muted/40 px-4 py-2.5 text-xs font-medium text-muted-foreground">
+                  <div className="col-span-4">User</div>
+                  <div className="col-span-2">Type</div>
+                  <div className="col-span-2">City</div>
+                  <div className="col-span-2">Phone</div>
+                  <div className="col-span-2">Joined</div>
                 </div>
-                <div className="space-y-2">
-                  {allProfiles.filter((p) => p.account_type !== "admin").slice(0, 4).map((p) => (
+                <div className="divide-y divide-border">
+                  {filteredProfiles.map((p) => (
                     <button
                       key={p.id}
                       onClick={() => setSelectedUser(p)}
-                      className="flex w-full items-center justify-between rounded-xl border border-border/50 px-3 py-2.5 text-left transition-colors hover:bg-muted/20"
+                      className="grid w-full grid-cols-12 items-center gap-4 px-4 py-3 text-left transition-colors hover:bg-muted/30"
                     >
-                      <div className="flex items-center gap-3 min-w-0">
-                        <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-amber-600 text-xs font-bold text-white">
-                          {p.name?.charAt(0)?.toUpperCase() || "U"}
-                        </span>
+                      <div className="col-span-4 flex items-center gap-3 min-w-0">
+                        <InitialAvatar name={p.name} />
                         <div className="min-w-0">
                           <p className="truncate text-sm font-medium text-foreground">{p.name || "Unknown"}</p>
-                          <p className="truncate text-xs text-muted-foreground/50">
-                            {new Date(p.created_at).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}
-                          </p>
+                          <p className="truncate text-xs text-muted-foreground">{p.email}</p>
                         </div>
                       </div>
-                      <span className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-medium ${
-                        p.account_type === "guide"
-                          ? "bg-amber-500/10 text-amber-400"
-                          : "bg-blue-500/10 text-blue-400"
-                      }`}>
-                        {p.account_type}
-                      </span>
+                      <div className="col-span-2 text-sm capitalize text-foreground">{p.account_type}</div>
+                      <div className="col-span-2 text-sm text-muted-foreground">{p.city || "—"}</div>
+                      <div className="col-span-2 text-sm text-muted-foreground">{p.phone || "—"}</div>
+                      <div className="col-span-2 text-xs text-muted-foreground">
+                        {new Date(p.created_at).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
+                      </div>
                     </button>
                   ))}
+                  {filteredProfiles.length === 0 && (
+                    <div className="px-4 py-12 text-center text-sm text-muted-foreground/60">No users found.</div>
+                  )}
                 </div>
               </div>
             </div>
           </div>
         )}
 
-        {/* ═══ USERS TAB ═══ */}
-        {tab === "users" && (
-          <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="relative flex-1">
-                <Search className="absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground/50" />
-                <input
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search by name, email, city, phone, type…"
-                  className="h-11 w-full rounded-xl border border-border bg-card pl-11 pr-4 text-sm text-foreground outline-none placeholder:text-muted-foreground/30 focus:border-primary/50 focus:ring-2 focus:ring-primary/20"
-                />
-              </div>
-              <span className="shrink-0 rounded-full bg-muted/50 px-3 py-1.5 text-xs font-medium text-muted-foreground">
-                {filteredProfiles.length} users
-              </span>
-            </div>
-
-            <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
-              <div className="grid grid-cols-12 gap-4 border-b border-border bg-muted/30 px-5 py-3 text-xs font-medium text-muted-foreground/70">
-                <div className="col-span-4">User</div>
-                <div className="col-span-2">Type</div>
-                <div className="col-span-2">City</div>
-                <div className="col-span-2">Phone</div>
-                <div className="col-span-2">Joined</div>
-              </div>
-              <div className="divide-y divide-border">
-                {filteredProfiles.map((p) => (
-                  <button
-                    key={p.id}
-                    onClick={() => setSelectedUser(p)}
-                    className="grid w-full grid-cols-12 items-center gap-4 px-5 py-3.5 text-left transition-colors hover:bg-muted/20"
-                  >
-                    <div className="col-span-4 flex items-center gap-3 min-w-0">
-                      <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-amber-600 text-xs font-bold text-white">
-                        {p.name?.charAt(0)?.toUpperCase() || "U"}
-                      </span>
-                      <div className="min-w-0">
-                        <p className="truncate text-sm font-medium text-foreground">{p.name || "Unknown"}</p>
-                        <p className="truncate text-xs text-muted-foreground/50">{p.email}</p>
-                      </div>
-                    </div>
-                    <div className="col-span-2">
-                      <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                        p.account_type === "guide"
-                          ? "bg-amber-500/10 text-amber-400"
-                          : "bg-blue-500/10 text-blue-400"
-                      }`}>
-                        {p.account_type}
-                      </span>
-                    </div>
-                    <div className="col-span-2 text-sm text-muted-foreground/70">{p.city || "N/A"}</div>
-                    <div className="col-span-2 text-sm text-muted-foreground/70">{p.phone || "N/A"}</div>
-                    <div className="col-span-2 text-xs text-muted-foreground/50">
-                      {new Date(p.created_at).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
-                    </div>
-                  </button>
-                ))}
-                {filteredProfiles.length === 0 && (
-                  <div className="px-5 py-12 text-center">
-                    <UserX className="mx-auto mb-2 size-8 text-muted-foreground/30" />
-                    <p className="text-sm text-muted-foreground/50">No users found</p>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* ═══ GUIDES TAB ═══ */}
+        {/* ═══ GUIDES ═══ */}
         {tab === "guides" && (
           <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="relative flex-1">
-                <Search className="absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground/50" />
-                <input
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search guides by name, location, experience, certification…"
-                  className="h-11 w-full rounded-xl border border-border bg-card pl-11 pr-4 text-sm text-foreground outline-none placeholder:text-muted-foreground/30 focus:border-primary/50 focus:ring-2 focus:ring-primary/20"
-                />
-              </div>
-              <span className="shrink-0 rounded-full bg-muted/50 px-3 py-1.5 text-xs font-medium text-muted-foreground">
-                {filteredGuides.length} guides
-              </span>
-            </div>
-
+            <SearchBox value={searchQuery} onChange={setSearchQuery} placeholder="Search by name, location, experience, certification…" count={filteredGuides.length} label="guides" />
             <div className="space-y-3">
               {filteredGuides.map((g) => {
                 const profile = getGuideProfile(g.user_id)
                 const isExpanded = expandedGuide === g.user_id
-
                 return (
-                  <div key={g.user_id} className={`overflow-hidden rounded-2xl border bg-card transition-all duration-200 ${
-                    isExpanded ? "border-primary/30 shadow-lg shadow-primary/5" : "border-border hover:border-border/80 hover:shadow-md"
+                  <div key={g.user_id} className={`overflow-hidden rounded-lg border bg-card transition-colors ${
+                    isExpanded ? "border-foreground/30" : "border-border"
                   }`}>
-                    {/* Guide Row */}
-                    <div
-                      role="button"
-                      tabIndex={0}
+                    <button
                       onClick={() => setExpandedGuide(isExpanded ? null : g.user_id)}
-                      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setExpandedGuide(isExpanded ? null : g.user_id) } }}
-                      className="flex w-full cursor-pointer items-center gap-4 px-5 py-4 text-left"
+                      className="flex w-full items-center gap-4 px-4 py-3.5 text-left"
                     >
-                      <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-amber-600 text-sm font-bold text-white shadow-md shadow-amber-500/20">
-                        {profile?.name?.charAt(0)?.toUpperCase() || "G"}
-                      </span>
+                      <InitialAvatar name={profile?.name} />
                       <div className="min-w-0 flex-1">
-                        <div className="flex items-center gap-2">
-                          <p className="truncate text-sm font-semibold text-foreground">{profile?.name || "Unknown"}</p>
-                          {g.verified ? (
-                            <span className="inline-flex items-center gap-0.5 rounded-full bg-emerald-500/10 px-1.5 py-0.5 text-[10px] font-medium text-emerald-400">
-                              <BadgeCheck className="size-3" /> Verified
-                            </span>
-                          ) : (
-                            <span className="inline-flex items-center gap-0.5 rounded-full bg-amber-500/10 px-1.5 py-0.5 text-[10px] font-medium text-amber-400">
-                              <Clock className="size-3" /> Pending
-                            </span>
-                          )}
+                        <div className="flex items-center gap-2.5">
+                          <p className="truncate text-sm font-medium text-foreground">{profile?.name || "Unknown"}</p>
+                          <span className={`shrink-0 text-xs ${g.verified ? "text-emerald-600" : "text-amber-600"}`}>
+                            ● {g.verified ? "Verified" : "Pending"}
+                          </span>
                         </div>
-                        <div className="mt-1 flex flex-wrap items-center gap-3 text-xs text-muted-foreground/50">
-                          <span className="flex items-center gap-1"><Mail className="size-3" />{profile?.email}</span>
-                          {g.base_location && <span className="flex items-center gap-1"><MapPin className="size-3" />{g.base_location}</span>}
-                          {g.experience && <span className="flex items-center gap-1"><Award className="size-3" />{g.experience}</span>}
+                        <div className="mt-0.5 truncate text-xs text-muted-foreground">
+                          {profile?.email}{g.base_location ? ` · ${g.base_location}` : ""}
                         </div>
                       </div>
-                      <div className="flex items-center gap-2">
-                        {!g.verified && (
-                          <button
-                            onClick={(e) => { e.stopPropagation(); handleVerifyGuide(g.user_id, true) }}
-                            disabled={verifying === g.user_id}
-                            className="flex items-center gap-1.5 rounded-lg bg-emerald-500/10 px-3.5 py-2 text-xs font-medium text-emerald-400 transition-colors hover:bg-emerald-500/20 disabled:opacity-50"
-                          >
-                            {verifying === g.user_id ? <Loader2 className="size-3.5 animate-spin" /> : <CheckCircle2 className="size-3.5" />}
-                            Verify
-                          </button>
-                        )}
-                        {g.verified && (
+                      <div className="flex shrink-0 items-center gap-2">
+                        {g.verified ? (
                           <button
                             onClick={(e) => { e.stopPropagation(); handleVerifyGuide(g.user_id, false) }}
                             disabled={verifying === g.user_id}
-                            className="flex items-center gap-1.5 rounded-lg bg-red-500/10 px-3.5 py-2 text-xs font-medium text-red-400 transition-colors hover:bg-red-500/20 disabled:opacity-50"
+                            className="rounded-md border border-border px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-foreground disabled:opacity-50"
                           >
-                            {verifying === g.user_id ? <Loader2 className="size-3.5 animate-spin" /> : <XCircle className="size-3.5" />}
-                            Revoke
+                            {verifying === g.user_id ? <Loader2 className="size-3.5 animate-spin" /> : "Revoke"}
+                          </button>
+                        ) : (
+                          <button
+                            onClick={(e) => { e.stopPropagation(); handleVerifyGuide(g.user_id, true) }}
+                            disabled={verifying === g.user_id}
+                            className="rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
+                          >
+                            {verifying === g.user_id ? <Loader2 className="size-3.5 animate-spin" /> : "Verify"}
                           </button>
                         )}
-                        <ChevronDown className={`size-4 text-muted-foreground/50 transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`} />
+                        <span className="text-muted-foreground/60 text-xs">{isExpanded ? "▼" : "▶"}</span>
                       </div>
-                    </div>
+                    </button>
 
-                    {/* Expanded Details */}
                     {isExpanded && (
-                      <div className="border-t border-border bg-gradient-to-b from-muted/20 to-transparent px-5 py-5">
-                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                          {/* Contact Card */}
-                          <div className="rounded-xl border border-border/50 bg-card/50 p-4">
-                            <h4 className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70">
-                              <Phone className="size-3.5" />
-                              Contact
-                            </h4>
-                            <div className="space-y-2">
-                              <p className="flex items-center gap-2.5 text-sm text-foreground">
-                                <Mail className="size-3.5 text-muted-foreground/50" />
-                                {profile?.email || "N/A"}
-                              </p>
-                              <p className="flex items-center gap-2.5 text-sm text-foreground">
-                                <Phone className="size-3.5 text-muted-foreground/50" />
-                                {g.phone || profile?.phone || "N/A"}
-                              </p>
-                              <p className="flex items-center gap-2.5 text-sm text-foreground">
-                                <MapPin className="size-3.5 text-muted-foreground/50" />
-                                {profile?.city || "N/A"}
-                              </p>
-                            </div>
+                      <div className="border-t border-border px-4 py-4 overflow-x-auto">
+                        <div className="min-w-[600px] grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
+                          <div>
+                            <h4 className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">Contact</h4>
+                            <dl className="space-y-1 text-sm text-foreground">
+                              <Row k="Email" v={profile?.email || "—"} />
+                              <Row k="Phone" v={g.phone || profile?.phone || "—"} />
+                              <Row k="City" v={profile?.city || "—"} />
+                            </dl>
                           </div>
-
-                          {/* Guide Info Card */}
-                          <div className="rounded-xl border border-border/50 bg-card/50 p-4">
-                            <h4 className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70">
-                              <Award className="size-3.5" />
-                              Guide Info
-                            </h4>
-                            <div className="space-y-2">
-                              <p className="flex items-center gap-2.5 text-sm text-foreground">
-                                <Award className="size-3.5 text-muted-foreground/50" />
-                                {g.experience || "N/A"}
-                              </p>
-                              <p className="flex items-center gap-2.5 text-sm text-foreground">
-                                <MapPin className="size-3.5 text-muted-foreground/50" />
-                                {g.base_location || "N/A"}
-                              </p>
-                              <div className="flex flex-wrap gap-1 pt-1">
-                                {g.certifications?.map((c) => (
-                                  <span key={c} className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">{c}</span>
-                                ))}
-                                {(!g.certifications || g.certifications.length === 0) && (
-                                  <span className="text-xs text-muted-foreground/50">N/A</span>
-                                )}
-                              </div>
-                            </div>
+                          <div>
+                            <h4 className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">Details</h4>
+                            <dl className="space-y-1 text-sm text-foreground">
+                              <Row k="Experience" v={g.experience || "—"} />
+                              <Row k="Location" v={g.base_location || "—"} />
+                              <TagRow label="Certifications" items={g.certifications} />
+                            </dl>
                           </div>
-
-                          {/* Known Treks Card */}
-                          <div className="rounded-xl border border-border/50 bg-card/50 p-4">
-                            <h4 className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70">
-                              <Mountain className="size-3.5" />
-                              Known Treks
-                            </h4>
-                            <div className="flex flex-wrap gap-1">
-                              {g.known_treks?.map((t) => (
-                                <span key={t} className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] font-medium text-emerald-400">{t}</span>
-                              ))}
-                              {(!g.known_treks || g.known_treks.length === 0) && (
-                                <span className="text-xs text-muted-foreground/50">N/A</span>
-                              )}
-                            </div>
+                          <div>
+                            <h4 className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">Known Treks</h4>
+                            <TagRow label="Treks" items={g.known_treks} />
                           </div>
+                        </div>
 
-                          {/* Documents Card */}
-                          <div className="rounded-xl border border-border/50 bg-card/50 p-4 sm:col-span-2 lg:col-span-3">
-                            <h4 className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70">
-                              <FileText className="size-3.5" />
-                              Documents
-                            </h4>
-                            <div className="flex gap-4">
-                              {g.id_proof_url && (
-                                <a
-                                  href={g.id_proof_url.replace("/image/upload/", "/image/upload/f_auto/").replace("/raw/upload/", "/raw/upload/f_auto/")}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="flex items-center gap-2 rounded-lg border border-primary/20 bg-primary/5 px-4 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary/10"
-                                >
-                                  <FileText className="size-4" />
-                                  ID Proof
-                                  <ExternalLink className="size-3" />
-                                </a>
-                              )}
-                              {g.cert_doc_url && (
-                                <a
-                                  href={g.cert_doc_url.replace("/image/upload/", "/image/upload/f_auto/").replace("/raw/upload/", "/raw/upload/f_auto/")}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="flex items-center gap-2 rounded-lg border border-primary/20 bg-primary/5 px-4 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary/10"
-                                >
-                                  <FileText className="size-4" />
-                                  Certificate
-                                  <ExternalLink className="size-3" />
-                                </a>
-                              )}
-                              {!g.id_proof_url && !g.cert_doc_url && (
-                                <p className="text-sm text-muted-foreground/50">No documents uploaded</p>
-                              )}
-                            </div>
+                        <div className="mt-4 border-t border-border pt-4">
+                          <h4 className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">Documents</h4>
+                          <div className="flex flex-wrap gap-2">
+                            <DocLink href={g.id_proof_url} label="ID Proof" />
+                            <DocLink href={g.cert_doc_url} label="Certificate" />
+                            {!g.id_proof_url && !g.cert_doc_url && (
+                              <span className="text-sm text-muted-foreground">No documents uploaded.</span>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -669,186 +463,99 @@ export default function AdminPage() {
                 )
               })}
               {filteredGuides.length === 0 && (
-                <div className="rounded-2xl border border-border bg-card px-5 py-12 text-center">
-                  <ShieldCheck className="mx-auto mb-2 size-8 text-muted-foreground/30" />
-                  <p className="text-sm text-muted-foreground/50">No guides found</p>
-                </div>
+                <div className="rounded-lg border border-border bg-card px-4 py-12 text-center text-sm text-muted-foreground/60">No guides found.</div>
               )}
             </div>
           </div>
         )}
 
-        {/* ═══ VERIFICATIONS TAB ═══ */}
+        {/* ═══ VERIFICATIONS ═══ */}
         {tab === "verifications" && (
-          <div className="space-y-4">
-            <div className="rounded-2xl border border-border bg-card p-6">
-              <div className="mb-5">
-                <h3 className="text-lg font-semibold text-foreground">Pending Verifications</h3>
-                <p className="mt-1 text-sm text-muted-foreground/50">Review guide documents and approve their accounts.</p>
-              </div>
-
-              {pendingGuides.length === 0 ? (
-                <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border/60 py-16">
-                  <span className="mb-3 flex size-14 items-center justify-center rounded-full bg-emerald-500/10">
-                    <BadgeCheck className="size-8 text-emerald-500/60" />
-                  </span>
-                  <p className="text-base font-medium text-foreground">All caught up!</p>
-                  <p className="mt-1 text-sm text-muted-foreground/50">All guides are verified.</p>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  {pendingGuides.map((g) => {
-                    const profile = getGuideProfile(g.user_id)
-                    return (
-                      <div key={g.user_id} className="rounded-2xl border border-border/60 p-5 transition-all hover:border-primary/20 hover:shadow-md hover:shadow-primary/5">
-                        <div className="flex items-start gap-4">
-                          <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-amber-600 text-base font-bold text-white shadow-lg shadow-amber-500/20">
-                            {profile?.name?.charAt(0)?.toUpperCase() || "G"}
-                          </span>
-                          <div className="min-w-0 flex-1">
-                            <div className="flex items-center gap-2">
-                              <p className="text-base font-semibold text-foreground">{profile?.name || "Unknown"}</p>
-                              <span className="rounded-full bg-amber-500/10 px-2 py-0.5 text-[10px] font-medium text-amber-400">Pending Review</span>
-                            </div>
-                            <p className="mt-0.5 text-sm text-muted-foreground/50">{profile?.email}</p>
-
-                            <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                              {/* Guide Details */}
-                              <div className="rounded-xl bg-muted/30 p-4">
-                                <h4 className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70">
-                                  <UserRound className="size-3.5" />
-                                  Guide Details
-                                </h4>
-                                <div className="space-y-2">
-                                  <p className="text-sm text-foreground">
-                                    <span className="text-muted-foreground/50">Experience: </span>
-                                    {g.experience || "N/A"}
-                                  </p>
-                                  <p className="text-sm text-foreground">
-                                    <span className="text-muted-foreground/50">Location: </span>
-                                    {g.base_location || "N/A"}
-                                  </p>
-                                  <p className="text-sm text-foreground">
-                                    <span className="text-muted-foreground/50">Phone: </span>
-                                    {g.phone || profile?.phone || "N/A"}
-                                  </p>
-                                  {g.certifications?.length > 0 && (
-                                    <div className="flex flex-wrap gap-1 pt-1">
-                                      {g.certifications.map((c) => (
-                                        <span key={c} className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">{c}</span>
-                                      ))}
-                                    </div>
-                                  )}
-                                  {g.known_treks?.length > 0 && (
-                                    <div className="flex flex-wrap gap-1 pt-1">
-                                      {g.known_treks.map((t) => (
-                                        <span key={t} className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] font-medium text-emerald-400">{t}</span>
-                                      ))}
-                                    </div>
-                                  )}
-                                </div>
-                              </div>
-
-                              {/* Documents */}
-                              <div className="rounded-xl bg-muted/30 p-4">
-                                <h4 className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70">
-                                  <FileText className="size-3.5" />
-                                  Uploaded Documents
-                                </h4>
-                                <div className="space-y-2">
-                                  {g.id_proof_url && (
-                                    <a
-                                      href={g.id_proof_url.replace("/image/upload/", "/image/upload/f_auto/").replace("/raw/upload/", "/raw/upload/f_auto/")}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      className="flex items-center gap-2 rounded-lg border border-primary/20 bg-primary/5 px-3 py-2 text-sm font-medium text-primary transition-colors hover:bg-primary/10"
-                                    >
-                                      <Eye className="size-4" />
-                                      View ID Proof
-                                      <ExternalLink className="size-3 ml-auto" />
-                                    </a>
-                                  )}
-                                  {g.cert_doc_url && (
-                                    <a
-                                      href={g.cert_doc_url.replace("/image/upload/", "/image/upload/f_auto/").replace("/raw/upload/", "/raw/upload/f_auto/")}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      className="flex items-center gap-2 rounded-lg border border-primary/20 bg-primary/5 px-3 py-2 text-sm font-medium text-primary transition-colors hover:bg-primary/10"
-                                    >
-                                      <Eye className="size-4" />
-                                      View Certificate
-                                      <ExternalLink className="size-3 ml-auto" />
-                                    </a>
-                                  )}
-                                  {!g.id_proof_url && !g.cert_doc_url && (
-                                    <div className="flex flex-col items-center rounded-lg border border-dashed border-border/60 py-4">
-                                      <FileText className="mb-1 size-6 text-muted-foreground/30" />
-                                      <p className="text-xs text-muted-foreground/50">No documents uploaded</p>
-                                    </div>
-                                  )}
-                                </div>
-                              </div>
-                            </div>
+          <div className="rounded-lg border border-border bg-card">
+            <div className="border-b border-border px-5 py-4">
+              <h3 className="text-base font-medium text-foreground">Pending Verifications</h3>
+              <p className="mt-0.5 text-sm text-muted-foreground">Review guide documents and approve their accounts.</p>
+            </div>
+            {pendingGuides.length === 0 ? (
+              <div className="px-5 py-16 text-center text-sm text-muted-foreground/60">All guides are verified.</div>
+            ) : (
+              <ul className="divide-y divide-border">
+                {pendingGuides.map((g) => {
+                  const profile = getGuideProfile(g.user_id)
+                  return (
+                    <li key={g.user_id} className="px-5 py-5">
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex items-center gap-3">
+                          <InitialAvatar name={profile?.name} />
+                          <div>
+                            <p className="text-sm font-medium text-foreground">{profile?.name || "Unknown"}</p>
+                            <p className="text-xs text-muted-foreground">{profile?.email}</p>
                           </div>
+                        </div>
+                        <div className="flex shrink-0 gap-2">
+                          <button
+                            onClick={() => handleVerifyGuide(g.user_id, false)}
+                            disabled={verifying === g.user_id}
+                            className="rounded-md border border-border px-4 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground disabled:opacity-50"
+                          >
+                            Reject
+                          </button>
+                          <button
+                            onClick={() => handleVerifyGuide(g.user_id, true)}
+                            disabled={verifying === g.user_id}
+                            className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
+                          >
+                            {verifying === g.user_id ? <Loader2 className="size-4 animate-spin" /> : "Approve"}
+                          </button>
+                        </div>
+                      </div>
 
-                          {/* Action Buttons */}
-                          <div className="flex shrink-0 flex-col gap-2">
-                            <button
-                              onClick={() => handleVerifyGuide(g.user_id, true)}
-                              disabled={verifying === g.user_id}
-                              className="flex items-center gap-1.5 rounded-xl bg-emerald-500 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-emerald-500/20 transition-all hover:bg-emerald-600 hover:shadow-emerald-500/30 disabled:opacity-50"
-                            >
-                              {verifying === g.user_id ? <Loader2 className="size-4 animate-spin" /> : <CheckCircle2 className="size-4" />}
-                              Approve
-                            </button>
-                            <button
-                              onClick={() => handleVerifyGuide(g.user_id, false)}
-                              disabled={verifying === g.user_id}
-                              className="flex items-center gap-1.5 rounded-xl border border-red-500/30 bg-red-500/10 px-5 py-2.5 text-sm font-semibold text-red-400 transition-all hover:bg-red-500/20 disabled:opacity-50"
-                            >
-                              <XCircle className="size-4" />
-                              Reject
-                            </button>
+                      <div className="mt-4 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2 overflow-x-auto">
+                        <div className="min-w-[300px]">
+                          <dl className="space-y-1 text-sm text-foreground">
+                            <Row k="Experience" v={g.experience || "—"} />
+                            <Row k="Location" v={g.base_location || "—"} />
+                            <Row k="Phone" v={g.phone || profile?.phone || "—"} />
+                            <TagRow label="Certifications" items={g.certifications} />
+                            <TagRow label="Known Treks" items={g.known_treks} />
+                          </dl>
+                        </div>
+                        <div className="min-w-[300px]">
+                          <h4 className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">Documents</h4>
+                          <div className="flex flex-wrap gap-2">
+                            <DocLink href={g.id_proof_url} label="ID Proof" />
+                            <DocLink href={g.cert_doc_url} label="Certificate" />
+                            {!g.id_proof_url && !g.cert_doc_url && (
+                              <span className="text-sm text-muted-foreground">None uploaded.</span>
+                            )}
                           </div>
                         </div>
                       </div>
-                    )
-                  })}
-                </div>
-              )}
-            </div>
+                    </li>
+                  )
+                })}
+              </ul>
+            )}
           </div>
         )}
 
-        {/* ═══ AUDIT LOG TAB ═══ */}
+        {/* ═══ AUDIT ═══ */}
         {tab === "audit" && (
           <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="flex items-center gap-2 text-lg font-semibold text-foreground">
-                  <History className="size-5 text-primary" />
-                  Audit Log
-                </h3>
-                <p className="mt-1 text-sm text-muted-foreground/50">
-                  Chronological record of every booking status change across the platform.
-                </p>
-              </div>
+            <div>
+              <h3 className="text-base font-medium text-foreground">Audit Log</h3>
+              <p className="mt-0.5 text-sm text-muted-foreground">Chronological record of booking status changes.</p>
             </div>
             <AuditLog />
           </div>
         )}
 
-        {/* ═══ ERROR LOG TAB ═══ */}
+        {/* ═══ ERRORS ═══ */}
         {tab === "errors" && (
           <div className="space-y-4">
             <div>
-              <h3 className="flex items-center gap-2 text-lg font-semibold text-foreground">
-                <AlertTriangle className="size-5 text-red-400" />
-                Error Log
-              </h3>
-              <p className="mt-1 text-sm text-muted-foreground/50">
-                Server-side failures from API routes, so silent errors don't go unnoticed.
-              </p>
+              <h3 className="text-base font-medium text-foreground">Error Log</h3>
+              <p className="mt-0.5 text-sm text-muted-foreground">Server-side failures from API routes.</p>
             </div>
             <ErrorLog />
           </div>
@@ -862,196 +569,82 @@ export default function AdminPage() {
 
           return (
             <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-              <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setSelectedUser(null)} />
-              <div className="relative w-full max-w-3xl overflow-hidden rounded-2xl border border-border bg-card shadow-2xl">
+              <div className="fixed inset-0 bg-black/50" onClick={() => setSelectedUser(null)} />
+              <div className="relative w-full max-w-2xl overflow-hidden rounded-lg border border-border bg-card shadow-xl">
                 <button
                   onClick={() => setSelectedUser(null)}
-                  className="absolute right-3 top-3 z-10 flex size-11 items-center justify-center rounded-full border-2 border-white/20 bg-red-500 text-white shadow-xl shadow-red-500/30 transition-all duration-200 hover:bg-red-600 hover:shadow-red-500/40 hover:rotate-90 active:scale-90"
+                  className="absolute right-4 top-4 z-10 text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  <X className="size-5" strokeWidth={3} />
+                  ✕
                 </button>
-                {/* Header */}
-                <div className="relative bg-gradient-to-br from-primary/20 via-primary/10 to-transparent px-6 py-6">
-                  <svg className="absolute inset-0 h-full w-full opacity-[0.1]" viewBox="0 0 400 100" preserveAspectRatio="none">
-                    <path d="M0 80 L60 40 L110 65 L170 20 L230 55 L290 15 L340 45 L400 25" fill="none" stroke="currentColor" strokeWidth="2" className="text-primary" />
-                  </svg>
-                  <div className="relative flex items-center gap-4">
-                    <span className="flex size-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 text-2xl font-bold text-white shadow-lg shadow-amber-500/20">
-                      {selectedUser.name?.charAt(0)?.toUpperCase() || "U"}
-                    </span>
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center gap-2">
-                        <h2 className="truncate text-xl font-bold text-foreground">{selectedUser.name || "Unknown"}</h2>
-                        {isGuideUser && selectedGuide?.verified && (
-                          <span className="inline-flex items-center gap-0.5 rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] font-medium text-emerald-400">
-                            <BadgeCheck className="size-3" /> Verified
-                          </span>
-                        )}
-                        {isGuideUser && selectedGuide && !selectedGuide.verified && (
-                          <span className="inline-flex items-center gap-0.5 rounded-full bg-amber-500/10 px-2 py-0.5 text-[10px] font-medium text-amber-400">
-                            <Clock className="size-3" /> Pending
-                          </span>
-                        )}
-                      </div>
-                      <p className="mt-0.5 text-sm text-muted-foreground/70">{selectedUser.email}</p>
-                      <div className="mt-1.5 flex items-center gap-2">
-                        <span className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-medium ${
-                          isGuideUser
-                            ? "border-amber-500/25 bg-amber-500/10 text-amber-400"
-                            : "border-blue-500/25 bg-blue-500/10 text-blue-400"
-                        }`}>
-                          {isGuideUser ? <ShieldCheck className="size-3" /> : <UserRound className="size-3" />}
-                          {selectedUser.account_type}
+
+                <div className="flex items-center gap-4 border-b border-border px-6 py-5">
+                  <InitialAvatar name={selectedUser.name} large />
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2">
+                      <h2 className="truncate text-lg font-semibold text-foreground">{selectedUser.name || "Unknown"}</h2>
+                      {isGuideUser && (
+                        <span className={`text-xs ${selectedGuide?.verified ? "text-emerald-600" : "text-amber-600"}`}>
+                          ● {selectedGuide?.verified ? "Verified" : "Pending"}
                         </span>
-                      </div>
+                      )}
                     </div>
+                    <p className="truncate text-sm text-muted-foreground">{selectedUser.email}</p>
+                    <p className="mt-1 text-xs capitalize text-muted-foreground">{selectedUser.account_type}</p>
                   </div>
                 </div>
 
-                {/* Body */}
-                <div className="max-h-[75vh] overflow-y-auto px-6 py-5">
-                  {/* Contact Info */}
-                  <div className="mb-5">
-                    <h3 className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70">
-                      <Phone className="size-3.5" />
-                      Contact Information
-                    </h3>
-                    <div className="grid grid-cols-2 gap-2">
-                      <div className="rounded-xl border border-border/50 bg-muted/20 px-3.5 py-2.5">
-                        <p className="text-[10px] text-muted-foreground/50">Phone</p>
-                        <p className="mt-0.5 text-sm font-medium text-foreground">{selectedUser.phone || selectedGuide?.phone || "N/A"}</p>
-                      </div>
-                      <div className="rounded-xl border border-border/50 bg-muted/20 px-3.5 py-2.5">
-                        <p className="text-[10px] text-muted-foreground/50">City</p>
-                        <p className="mt-0.5 text-sm font-medium text-foreground">{selectedUser.city || "N/A"}</p>
-                      </div>
-                      <div className="col-span-2 rounded-xl border border-border/50 bg-muted/20 px-3.5 py-2.5">
-                        <p className="text-[10px] text-muted-foreground/50">Bio</p>
-                        <p className="mt-0.5 text-sm font-medium text-foreground">{selectedUser.bio || "N/A"}</p>
-                      </div>
-                      <div className="col-span-2 rounded-xl border border-border/50 bg-muted/20 px-3.5 py-2.5">
-                        <p className="text-[10px] text-muted-foreground/50">Joined</p>
-                        <p className="mt-0.5 text-sm font-medium text-foreground">
-                          {new Date(selectedUser.created_at).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })}
-                        </p>
-                      </div>
-                    </div>
+                <div className="max-h-[70vh] overflow-y-auto px-6 py-5">
+                  <h3 className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">Contact</h3>
+                  <div className="mb-6 grid grid-cols-2 gap-3">
+                    <Field label="Phone" value={selectedUser.phone || selectedGuide?.phone || "—"} />
+                    <Field label="City" value={selectedUser.city || "—"} />
+                    <Field label="Bio" value={selectedUser.bio || "—"} span />
+                    <Field label="Joined" value={new Date(selectedUser.created_at).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })} span />
                   </div>
 
-                  {/* Guide-specific info */}
                   {isGuideUser && selectedGuide && (
                     <>
-                      <div className="mb-5">
-                        <h3 className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70">
-                          <ShieldCheck className="size-3.5" />
-                          Guide Details
-                        </h3>
-                        <div className="grid grid-cols-2 gap-2">
-                          <div className="rounded-xl border border-border/50 bg-muted/20 px-3.5 py-2.5">
-                            <p className="text-[10px] text-muted-foreground/50">Experience</p>
-                            <p className="mt-0.5 text-sm font-medium text-foreground">{selectedGuide.experience || "N/A"}</p>
-                          </div>
-                          <div className="rounded-xl border border-border/50 bg-muted/20 px-3.5 py-2.5">
-                            <p className="text-[10px] text-muted-foreground/50">Base Location</p>
-                            <p className="mt-0.5 text-sm font-medium text-foreground">{selectedGuide.base_location || "N/A"}</p>
-                          </div>
-                        </div>
+                      <h3 className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">Guide Details</h3>
+                      <div className="grid grid-cols-2 gap-3">
+                        <Field label="Experience" value={selectedGuide.experience || "—"} />
+                        <Field label="Base Location" value={selectedGuide.base_location || "—"} />
                       </div>
-
-                      {(selectedGuide.certifications?.length > 0 || selectedGuide.known_treks?.length > 0) && (
-                        <div className="mb-5 flex gap-4">
-                          {selectedGuide.certifications?.length > 0 && (
-                            <div className="flex-1">
-                              <h3 className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70">
-                                <Award className="size-3.5" />
-                                Certifications
-                              </h3>
-                              <div className="flex flex-wrap gap-1.5">
-                                {selectedGuide.certifications.map((c) => (
-                                  <span key={c} className="rounded-full border border-primary/20 bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary">{c}</span>
-                                ))}
-                              </div>
-                            </div>
-                          )}
-                          {selectedGuide.known_treks?.length > 0 && (
-                            <div className="flex-1">
-                              <h3 className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70">
-                                <Mountain className="size-3.5" />
-                                Known Treks
-                              </h3>
-                              <div className="flex flex-wrap gap-1.5">
-                                {selectedGuide.known_treks.map((t) => (
-                                  <span key={t} className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-1 text-xs font-medium text-emerald-400">{t}</span>
-                                ))}
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      )}
-
+                      <div className="mt-4 flex flex-wrap gap-4">
+                        {selectedGuide.certifications?.length > 0 && (
+                          <div>
+                            <h4 className="mb-1.5 text-xs font-medium uppercase tracking-wider text-muted-foreground">Certifications</h4>
+                            <div className="flex flex-wrap gap-1.5"><Tags items={selectedGuide.certifications} /></div>
+                          </div>
+                        )}
+                        {selectedGuide.known_treks?.length > 0 && (
+                          <div>
+                            <h4 className="mb-1.5 text-xs font-medium uppercase tracking-wider text-muted-foreground">Known Treks</h4>
+                            <div className="flex flex-wrap gap-1.5"><Tags items={selectedGuide.known_treks} /></div>
+                          </div>
+                        )}
+                      </div>
                       {(selectedGuide.id_proof_url || selectedGuide.cert_doc_url) && (
-                        <div className="mb-5">
-                          <h3 className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70">
-                            <FileText className="size-3.5" />
-                            Documents
-                          </h3>
+                        <div className="mt-4">
+                          <h4 className="mb-1.5 text-xs font-medium uppercase tracking-wider text-muted-foreground">Documents</h4>
                           <div className="flex gap-2">
-                            {selectedGuide.id_proof_url && (
-                              <a
-                                href={selectedGuide.id_proof_url.replace("/image/upload/", "/image/upload/f_auto/").replace("/raw/upload/", "/raw/upload/f_auto/")}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex items-center gap-1.5 rounded-lg border border-primary/20 bg-primary/5 px-3 py-2 text-xs font-medium text-primary transition-colors hover:bg-primary/10"
-                              >
-                                <Eye className="size-3.5" />
-                                ID Proof
-                                <ExternalLink className="size-3" />
-                              </a>
-                            )}
-                            {selectedGuide.cert_doc_url && (
-                              <a
-                                href={selectedGuide.cert_doc_url.replace("/image/upload/", "/image/upload/f_auto/").replace("/raw/upload/", "/raw/upload/f_auto/")}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex items-center gap-1.5 rounded-lg border border-primary/20 bg-primary/5 px-3 py-2 text-xs font-medium text-primary transition-colors hover:bg-primary/10"
-                              >
-                                <Eye className="size-3.5" />
-                                Certificate
-                                <ExternalLink className="size-3" />
-                              </a>
-                            )}
+                            <DocLink small href={selectedGuide.id_proof_url} label="ID Proof" />
+                            <DocLink small href={selectedGuide.cert_doc_url} label="Certificate" />
                           </div>
                         </div>
                       )}
                     </>
                   )}
 
-                  {/* Trekker-specific info */}
                   {!isGuideUser && selectedTrekker && (
-                    <div className="mb-5">
-                      <h3 className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70">
-                        <UserRound className="size-3.5" />
-                        Trekker Activity
-                      </h3>
-                      <div className="grid grid-cols-2 gap-2">
-                        <div className="rounded-xl border border-border/50 bg-muted/20 px-3.5 py-2.5">
-                          <p className="text-[10px] text-muted-foreground/50">Saved Treks</p>
-                          <p className="mt-0.5 text-sm font-medium text-foreground">{selectedTrekker.saved_treks?.length || 0}</p>
-                        </div>
-                        <div className="rounded-xl border border-border/50 bg-muted/20 px-3.5 py-2.5">
-                          <p className="text-[10px] text-muted-foreground/50">Reviews</p>
-                          <p className="mt-0.5 text-sm font-medium text-foreground">{selectedTrekker.review_count || 0}</p>
-                        </div>
+                    <div>
+                      <h3 className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">Trekker Activity</h3>
+                      <div className="grid grid-cols-2 gap-3">
+                        <Field label="Saved Treks" value={selectedTrekker.saved_treks?.length || 0} />
+                        <Field label="Reviews" value={selectedTrekker.review_count || 0} />
                       </div>
                       {selectedTrekker.saved_treks?.length > 0 && (
-                        <div className="mt-3">
-                          <p className="mb-1.5 text-[10px] text-muted-foreground/50">Saved Treks</p>
-                          <div className="flex flex-wrap gap-1.5">
-                            {selectedTrekker.saved_treks.map((t) => (
-                              <span key={t} className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-1 text-xs font-medium text-emerald-400">{t}</span>
-                            ))}
-                          </div>
-                        </div>
+                        <div className="mt-3 flex flex-wrap gap-1.5"><Tags items={selectedTrekker.saved_treks} /></div>
                       )}
                     </div>
                   )}
@@ -1062,5 +655,127 @@ export default function AdminPage() {
         })()}
       </div>
     </main>
+  )
+}
+
+/* ─── small presentational helpers ─── */
+
+function StatCard({ label, value }: { label: string; value: number | string }) {
+  return (
+    <div className="rounded-lg border border-border bg-card p-5">
+      <p className="text-xs text-muted-foreground">{label}</p>
+      <p className="mt-1 text-2xl font-semibold text-foreground">{value}</p>
+    </div>
+  )
+}
+
+function Panel({
+  title,
+  action,
+  children,
+}: {
+  title: string
+  action?: { label: string; onClick: () => void }
+  children: React.ReactNode
+}) {
+  return (
+    <div className="rounded-lg border border-border bg-card">
+      <div className="flex items-center justify-between border-b border-border px-4 py-3">
+        <h3 className="text-sm font-medium text-foreground">{title}</h3>
+        {action && (
+          <button onClick={action.onClick} className="text-sm text-primary hover:underline">{action.label}</button>
+        )}
+      </div>
+      <div className="px-4">{children}</div>
+    </div>
+  )
+}
+
+function InitialAvatar({ name, large }: { name?: string; large?: boolean }) {
+  return (
+    <span className={`flex shrink-0 items-center justify-center rounded-full border border-border bg-muted text-foreground ${large ? "size-12 text-base" : "size-9 text-sm"}`}>
+      {name?.charAt(0)?.toUpperCase() || "?"}
+    </span>
+  )
+}
+
+function SearchBox({
+  value,
+  onChange,
+  placeholder,
+  count,
+  label,
+}: {
+  value: string
+  onChange: (v: string) => void
+  placeholder: string
+  count: number
+  label: string
+}) {
+  return (
+    <div className="flex items-center gap-3">
+      <div className="relative flex-1">
+        <input
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder={placeholder}
+          className="h-10 w-full rounded-md border border-border bg-card px-3 text-sm text-foreground outline-none placeholder:text-muted-foreground/50 focus:border-foreground/40"
+        />
+      </div>
+      <span className="shrink-0 text-xs text-muted-foreground">{count} {label}</span>
+    </div>
+  )
+}
+
+function Row({ k, v }: { k: string; v: string }) {
+  return (
+    <div className="flex items-baseline gap-2">
+      <dt className="w-28 shrink-0 text-xs text-muted-foreground">{k}</dt>
+      <dd className="text-sm text-foreground">{v}</dd>
+    </div>
+  )
+}
+
+function TagRow({ label, items }: { label: string; items?: string[] }) {
+  if (!items || items.length === 0) return null
+  return (
+    <div className="flex items-start gap-2">
+      <dt className="w-28 shrink-0 text-xs text-muted-foreground">{label}</dt>
+      <dd className="flex flex-wrap gap-1.5"><Tags items={items} /></dd>
+    </div>
+  )
+}
+
+function Tags({ items }: { items: string[] }) {
+  return (
+    <>
+      {items.map((t) => (
+        <span key={t} className="rounded border border-border px-2 py-0.5 text-xs text-foreground">{t}</span>
+      ))}
+    </>
+  )
+}
+
+function Field({ label, value, span }: { label: string; value: string | number; span?: boolean }) {
+  return (
+    <div className={`rounded-md border border-border bg-muted/20 px-3.5 py-2.5 ${span ? "col-span-2" : ""}`}>
+      <p className="text-[10px] text-muted-foreground">{label}</p>
+      <p className="mt-0.5 text-sm font-medium text-foreground">{value}</p>
+    </div>
+  )
+}
+
+function DocLink({ href, label, small }: { href?: string | null; label: string; small?: boolean }) {
+  if (!href) return null
+  const h = href.replace("/image/upload/", "/image/upload/f_auto/").replace("/raw/upload/", "/raw/upload/f_auto/")
+  return (
+    <a
+      href={h}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`inline-flex items-center rounded-md border border-border px-3 py-2 text-sm text-foreground transition-colors hover:bg-accent ${small ? "text-xs py-1.5" : ""}`}
+    >
+      {label}
+    </a>
   )
 }

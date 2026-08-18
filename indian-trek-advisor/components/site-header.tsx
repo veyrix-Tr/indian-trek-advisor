@@ -39,6 +39,7 @@ const GUIDE_LINKS = [
 
 const ADMIN_LINKS = [
   { href: "/admin", label: "Admin Panel" },
+  { href: "/admin/bookings", label: "Bookings" },
 ]
 
 export function SiteHeader() {

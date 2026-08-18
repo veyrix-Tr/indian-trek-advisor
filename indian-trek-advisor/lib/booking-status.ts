@@ -28,7 +28,7 @@ export const STATUS_CONFIG: Record<BookingStatus, StatusConfig> = {
     colorClass: "border-status-confirmed/25 bg-status-confirmed/15 text-status-confirmed",
   },
   completed: {
-    label: "Completed",
+    label: "Successful Trek",
     description: "Trek finished",
     colorClass: "border-status-completed/25 bg-status-completed/15 text-status-completed",
   },

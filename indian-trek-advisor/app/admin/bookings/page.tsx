@@ -40,7 +40,7 @@ const FILTERS = [
   { value: "all", label: "All" },
   { value: "guide_approved", label: "Guide Accepted" },
   { value: "confirmed", label: "Confirmed" },
-  { value: "completed", label: "Completed" },
+  { value: "completed", label: "Successful Trek" },
   { value: "cancelled", label: "Cancelled" },
 ]
 
