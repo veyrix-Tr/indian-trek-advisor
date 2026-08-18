@@ -9,9 +9,10 @@ import {
   FileText, BadgeCheck, Search, ChevronDown, ChevronUp,
   ExternalLink, Loader2, Mountain, TrendingUp, Clock,
   CheckCircle2, XCircle, Phone, Mail, Calendar, Star, X,
-  BarChart3, Activity, UserX, UserCheck, Eye, ArrowLeft, History,
+  BarChart3, Activity, UserX, UserCheck, Eye, ArrowLeft, History, AlertTriangle,
 } from "lucide-react"
 import { AuditLog } from "@/components/admin/audit-log"
+import { ErrorLog } from "@/components/admin/error-log"
 
 interface Profile {
   id: string
@@ -47,7 +48,7 @@ interface Trekker {
   profiles?: Profile
 }
 
-type Tab = "overview" | "users" | "guides" | "verifications" | "audit"
+type Tab = "overview" | "users" | "guides" | "verifications" | "audit" | "errors"
 
 export default function AdminPage() {
   const router = useRouter()
@@ -198,6 +199,7 @@ export default function AdminPage() {
             { id: "guides" as Tab, label: "All Guides", icon: ShieldCheck },
             { id: "verifications" as Tab, label: "Verifications", icon: BadgeCheck, badge: pendingGuides.length },
             { id: "audit" as Tab, label: "Audit Log", icon: History },
+            { id: "errors" as Tab, label: "Error Log", icon: AlertTriangle },
           ]).map((t) => (
             <button
               key={t.id}
@@ -772,6 +774,22 @@ export default function AdminPage() {
               </div>
             </div>
             <AuditLog />
+          </div>
+        )}
+
+        {/* ═══ ERROR LOG TAB ═══ */}
+        {tab === "errors" && (
+          <div className="space-y-4">
+            <div>
+              <h3 className="flex items-center gap-2 text-lg font-semibold text-foreground">
+                <AlertTriangle className="size-5 text-red-400" />
+                Error Log
+              </h3>
+              <p className="mt-1 text-sm text-muted-foreground/50">
+                Server-side failures from API routes, so silent errors don't go unnoticed.
+              </p>
+            </div>
+            <ErrorLog />
           </div>
         )}
 

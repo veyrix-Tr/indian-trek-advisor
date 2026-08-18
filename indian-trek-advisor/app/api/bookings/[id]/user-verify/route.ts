@@ -3,6 +3,7 @@ import { getAdminClient, getAuthUser } from "@/lib/supabase-admin"
 import { recordBookingHistory } from "@/lib/booking-history"
 import { canTransition } from "@/lib/booking-flow"
 import { bookingDateSpan } from "@/lib/booking-span"
+import { withErrorHandling } from "@/lib/api"
 
 // The trekker's final verification: moves a guide_approved booking to
 // confirmed. This is the step that hard-locks the guide's date (booked) and
@@ -10,7 +11,7 @@ import { bookingDateSpan } from "@/lib/booking-span"
 //
 // Payment will be bundled into this step later; for now confirming here simply
 // locks the booking in and, since it becomes non-cancellable, finalizes it.
-export async function POST(
+export const POST = withErrorHandling(async function POST(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
@@ -130,4 +131,4 @@ export async function POST(
   }
 
   return NextResponse.json({ booking: updated })
-}
+}, { source: "bookings.userVerify", route: "/api/bookings/[id]/user-verify" })

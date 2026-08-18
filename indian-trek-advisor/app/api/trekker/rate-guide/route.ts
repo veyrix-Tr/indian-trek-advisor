@@ -3,8 +3,9 @@ import { createClient } from "@supabase/supabase-js"
 import { createClient as createServerSupabaseClient } from "@/utils/supabase/server"
 import { computeDisplayRating } from "@/lib/guide-rating"
 import { moderateText } from "@/lib/content-moderation"
+import { withErrorHandling } from "@/lib/api"
 
-export async function POST(request: Request) {
+export const POST = withErrorHandling(async function POST(request: Request) {
   const authClient = await createServerSupabaseClient()
   const { data: { user }, error: authError } = await authClient.auth.getUser()
   if (authError || !user) {
@@ -112,4 +113,4 @@ export async function POST(request: Request) {
   }
 
   return NextResponse.json({ rating: newRating })
-}
+}, { source: "trekker.rateGuide", route: "/api/trekker/rate-guide" })

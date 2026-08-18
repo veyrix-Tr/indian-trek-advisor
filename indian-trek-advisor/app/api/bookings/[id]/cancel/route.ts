@@ -2,8 +2,9 @@ import { NextResponse } from "next/server"
 import { getAdminClient, getAuthUser } from "@/lib/supabase-admin"
 import { recordBookingHistory } from "@/lib/booking-history"
 import { canTransition } from "@/lib/booking-flow"
+import { withErrorHandling } from "@/lib/api"
 
-export async function POST(
+export const POST = withErrorHandling(async function POST(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
@@ -137,4 +138,4 @@ export async function POST(
   }
 
   return NextResponse.json({ booking: updated })
-}
+}, { source: "bookings.cancel", route: "/api/bookings/[id]/cancel" })

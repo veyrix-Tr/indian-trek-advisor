@@ -2,8 +2,9 @@ import { NextResponse } from "next/server"
 import { getAdminClient, getAuthUser } from "@/lib/supabase-admin"
 import { parseTrekDays, computeBookingAmount } from "@/lib/pricing"
 import { recordBookingHistory, resolveActorRole } from "@/lib/booking-history"
+import { withErrorHandling } from "@/lib/api"
 
-export async function POST(request: Request) {
+export const POST = withErrorHandling(async function POST(request: Request) {
   const user = await getAuthUser()
   if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
@@ -165,4 +166,4 @@ export async function POST(request: Request) {
   }
 
   return NextResponse.json({ booking })
-}
+}, { source: "bookings.create", route: "/api/bookings/create" })
