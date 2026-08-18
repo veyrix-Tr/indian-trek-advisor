@@ -5,11 +5,13 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ChevronLeft, ChevronRight, MapPin, CalendarRange, CheckCircle2, AlertCircle } from "lucide-react"
+import { bookingDateSpan } from "@/lib/booking-span"
 
 interface Booking {
   id: string
   status: string
   booking_date: string
+  trek_days?: number
   trekker?: { name: string; email: string }
   guides?: { trek_name: string; id: string }
 }
@@ -43,7 +45,12 @@ export function GuideAvailabilityCalendar({ bookings = [], onSave }: Availabilit
     const map = new Map<string, Booking>()
     bookings
       .filter((b) => ACTIVE_STATUSES.includes(b.status))
-      .forEach((b) => map.set(b.booking_date, b))
+      .forEach((b) => {
+        const span = bookingDateSpan(b.booking_date, (b as any).trek_days)
+        span.forEach((d) => {
+          if (!map.has(d)) map.set(d, b)
+        })
+      })
     return map
   }, [bookings])
 

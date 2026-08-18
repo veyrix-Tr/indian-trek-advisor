@@ -25,8 +25,8 @@ export async function GET(
   }
 
   // When a date is chosen, return ONLY guides available on that date. A guide
-  // is unavailable if they've booked the date (an accepted booking) or marked
-  // it unavailable themselves.
+  // is unavailable if they've marked it unavailable themselves, or if the date
+  // falls within a confirmed (final-verified) booking's multi-day span.
   let guides = associations || []
   if (date) {
     const { data: availability } = await supabase
@@ -36,6 +36,20 @@ export async function GET(
       .in("status", ['booked', 'unavailable'])
 
     const unavailableGuideIds = new Set(availability?.map(a => a.guide_id) || [])
+
+    // Include spans of confirmed bookings (a 6-day trek occupies 6 dates).
+    const { data: confirmedBookings } = await supabase
+      .from("bookings")
+      .select("guide_id, booking_date, trek_days")
+      .eq("status", "confirmed")
+
+    const { bookingDateSpan } = await import("@/lib/booking-span")
+    for (const b of confirmedBookings ?? []) {
+      if (bookingDateSpan(b.booking_date, b.trek_days).includes(date)) {
+        unavailableGuideIds.add(b.guide_id)
+      }
+    }
+
     guides = guides.filter(g => !unavailableGuideIds.has(g.guides.id))
   }
 

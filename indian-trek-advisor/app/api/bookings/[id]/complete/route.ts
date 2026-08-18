@@ -73,6 +73,15 @@ export async function POST(
     note: "Trek marked complete",
   })
 
+  // Free the guide's booked availability rows for this booking's span.
+  const { bookingDateSpan } = await import("@/lib/booking-span")
+  const span = bookingDateSpan(booking.booking_date, booking.trek_days)
+  await supabase
+    .from("guide_availability")
+    .update({ status: "available", booking_id: null })
+    .eq("booking_id", booking.id)
+    .in("date", span)
+
   // Notify the trekker their trek is complete and they can rate the guide
   await supabase.from("notifications").insert({
     user_id: booking.trekker_id,

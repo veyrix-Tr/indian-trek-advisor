@@ -40,7 +40,8 @@ export async function POST(request: Request) {
   const baseRate = Number(association.base_rate) || 0
   const totalAmount = computeBookingAmount(baseRate, trekkerCount, trekDays)
 
-  // Detect an active (non-available) hold on this date for the guide.
+  // Detect an active (non-available) hold on this date for the guide, plus any
+  // confirmed booking whose multi-day span covers the date.
   const { data: existingAvail } = await supabase
     .from("guide_availability")
     .select("*")
@@ -51,6 +52,21 @@ export async function POST(request: Request) {
 
   if (existingAvail) {
     return NextResponse.json({ error: "Guide not available on this date" }, { status: 400 })
+  }
+
+  const { bookingDateSpan } = await import("@/lib/booking-span")
+  const { data: confirmedBookings } = await supabase
+    .from("bookings")
+    .select("booking_date, trek_days")
+    .eq("guide_id", guide_id)
+    .eq("status", "confirmed")
+    .limit(50)
+
+  const dateIsInConfirmedSpan = (confirmedBookings ?? []).some((b) =>
+    bookingDateSpan(b.booking_date, b.trek_days).includes(booking_date)
+  )
+  if (dateIsInConfirmedSpan) {
+    return NextResponse.json({ error: "Guide is booked on this date" }, { status: 400 })
   }
 
   // Create booking. Duplicate guard / anti-spam: a trekker can have only one

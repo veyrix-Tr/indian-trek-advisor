@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { getAdminClient, getAuthUser } from "@/lib/supabase-admin"
 import { recordBookingHistory } from "@/lib/booking-history"
 import { canTransition } from "@/lib/booking-flow"
+import { bookingDateSpan } from "@/lib/booking-span"
 
 // The trekker's final verification: moves a guide_approved booking to
 // confirmed. This is the step that hard-locks the guide's date (booked) and
@@ -53,27 +54,34 @@ export async function POST(
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 
-  // Hard-lock the date for the guide: this blocks any further requests now.
+  // Hard-lock every date in the booking's span for the guide: a multi-day trek
+  // blocks the guide for the whole duration, not just the start date.
+  const span = bookingDateSpan(booking.booking_date, booking.trek_days)
+  const bookedRows = span.map((date) => ({
+    guide_id: booking.guide_id,
+    date,
+    status: "booked",
+    booking_id: booking.id,
+  }))
   await supabase
     .from("guide_availability")
-    .upsert({
-      guide_id: booking.guide_id,
-      date: booking.booking_date,
-      status: "booked",
-      booking_id: booking.id,
-    }, { onConflict: "guide_id,date" })
+    .upsert(bookedRows, { onConflict: "guide_id,date" })
 
-  // Auto-reject every other pending request for the same guide + date — the
-  // guide can only take one booking per day, and this trekker's is confirmed.
+  // Auto-reject every other pending request that overlaps this booking's span —
+  // the guide can only take one booking per day, and this trekker's is confirmed.
+  const spanSet = new Set(span)
   const { data: siblings } = await supabase
     .from("bookings")
-    .select("id, trekker_id, trek_id, booking_date")
+    .select("id, trekker_id, trek_id, booking_date, trek_days")
     .eq("guide_id", booking.guide_id)
-    .eq("booking_date", booking.booking_date)
     .eq("status", "pending")
     .neq("id", booking.id)
+    .limit(100)
 
   for (const sibling of siblings ?? []) {
+    const siblingSpan = bookingDateSpan(sibling.booking_date, sibling.trek_days)
+    if (!siblingSpan.some((d) => spanSet.has(d))) continue
+
     await supabase
       .from("bookings")
       .update({ status: "cancelled", rejection_reason: "Guide accepted another request for this date" })
