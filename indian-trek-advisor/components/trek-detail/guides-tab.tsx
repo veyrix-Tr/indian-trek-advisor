@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
-import { MapPin, Star, BadgeCheck, AlertCircle, CheckCircle2, Minus, Plus, Users } from "lucide-react"
+import { MapPin, Star, BadgeCheck, AlertCircle, CheckCircle2, Minus, Plus, Users, Clock } from "lucide-react"
 import type { Trek } from "@/lib/data"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -53,10 +53,36 @@ export function GuidesTab({ trek }: { trek: Trek }) {
   const [submitting, setSubmitting] = useState(false)
   const [bookingError, setBookingError] = useState<string | null>(null)
   const [bookingSuccess, setBookingSuccess] = useState(false)
+  const [myRequest, setMyRequest] = useState<{ guide_id: string; status: string } | null>(null)
+  const [myRequestLoading, setMyRequestLoading] = useState(false)
 
   useEffect(() => {
     fetchGuides()
   }, [selectedDate])
+
+  useEffect(() => {
+    fetchMyRequest()
+  }, [selectedDate])
+
+  const fetchMyRequest = async () => {
+    if (!selectedDate) {
+      setMyRequest(null)
+      return
+    }
+    setMyRequestLoading(true)
+    try {
+      const response = await fetch(`/api/bookings/trek/${trek.id}/guides/my-request?date=${selectedDate}`)
+      if (response.ok) {
+        const data = await response.json()
+        setMyRequest(data.booking || null)
+      } else {
+        setMyRequest(null)
+      }
+    } catch {
+      setMyRequest(null)
+    }
+    setMyRequestLoading(false)
+  }
 
   const fetchGuides = async () => {
     setLoading(true)
@@ -173,9 +199,17 @@ export function GuidesTab({ trek }: { trek: Trek }) {
             </div>
           )}
 
-          {guidesToShow.map((guide) => (
-            <GuideCard key={guide.id} guide={guide} onBook={() => handleBookGuide(guide)} />
-          ))}
+          {guidesToShow.map((guide) => {
+            const myStatus = myRequest?.guide_id === guide.guide_id ? myRequest.status : null
+            return (
+              <GuideCard
+                key={guide.id}
+                guide={guide}
+                onBook={() => handleBookGuide(guide)}
+                myStatus={myStatus}
+              />
+            )
+          })}
         </div>
       ) : (
         <div className="rounded-xl border border-border bg-card p-8 text-center">
@@ -318,10 +352,12 @@ function GuideCard({
   guide,
   unavailable = false,
   onBook,
+  myStatus,
 }: {
   guide: Guide
   unavailable?: boolean
   onBook?: () => void
+  myStatus?: string | null
 }) {
   const initial = guide.guides.profiles.name?.charAt(0).toUpperCase() || "?"
 
@@ -378,6 +414,21 @@ function GuideCard({
         {unavailable ? (
           <span className="shrink-0 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
             Unavailable
+          </span>
+        ) : myStatus === "pending" ? (
+          <span className="flex shrink-0 items-center gap-1.5 rounded-lg border border-status-pending/25 bg-status-pending/15 px-3 py-2 font-mono text-[10px] uppercase tracking-widest text-status-pending">
+            <Clock className="size-3" />
+            Request Pending
+          </span>
+        ) : myStatus === "guide_approved" ? (
+          <span className="flex shrink-0 items-center gap-1.5 rounded-lg border border-primary/30 bg-primary/10 px-3 py-2 font-mono text-[10px] uppercase tracking-widest text-primary">
+            <CheckCircle2 className="size-3" />
+            Guide Accepted — Verify
+          </span>
+        ) : myStatus === "confirmed" ? (
+          <span className="flex shrink-0 items-center gap-1.5 rounded-lg border border-primary/25 bg-primary/5 px-3 py-2 font-mono text-[10px] uppercase tracking-widest text-primary">
+            <CheckCircle2 className="size-3" />
+            Confirmed
           </span>
         ) : (
           <Button onClick={onBook} className="shrink-0">

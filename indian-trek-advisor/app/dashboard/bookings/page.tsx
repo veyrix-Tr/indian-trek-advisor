@@ -58,6 +58,48 @@ export default function BookingsPage() {
     fetchBookings()
   }, [])
 
+  // Live updates: subscribe to changes on this trekkers' bookings and refresh.
+  // Realtime needs `bookings` in the supabase_realtime publication; a poll runs
+  // as a fallback so status changes still show up automatically.
+  useEffect(() => {
+    let unsubChannel: (() => void) | null = null
+    let pollTimer: ReturnType<typeof setInterval> | null = null
+    let cancelled = false
+
+    ;(async () => {
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      if (cancelled || !user) return
+
+      try {
+        const channel = supabase
+          .channel(`my-bookings-${Date.now()}`)
+          .on(
+            "postgres_changes",
+            { event: "*", schema: "public", table: "bookings", filter: `trekker_id=eq.${user.id}` },
+            () => fetchBookings(),
+          )
+          .subscribe((status) => {
+            if (status === "SUBSCRIBED") {
+              if (!pollTimer) pollTimer = setInterval(fetchBookings, 15000)
+            }
+          })
+
+        unsubChannel = () => {
+          supabase.removeChannel(channel)
+        }
+      } catch {
+        if (!pollTimer) pollTimer = setInterval(fetchBookings, 15000)
+      }
+    })()
+
+    return () => {
+      cancelled = true
+      unsubChannel?.()
+      if (pollTimer) clearInterval(pollTimer)
+    }
+  }, [])
+
   useEffect(() => {
     ;(async () => {
       const supabase = createClient()
@@ -91,12 +133,12 @@ export default function BookingsPage() {
     setTimeout(() => setToast(null), 3000)
   }
 
-  const handleConfirmPayment = async () => {
+  const handleConfirmBooking = async () => {
     if (!paymentDialogBooking) return
     setSubmitting(true)
     setActionError(null)
     try {
-      const response = await fetch(`/api/bookings/${paymentDialogBooking.id}/confirm-payment`, {
+      const response = await fetch(`/api/bookings/${paymentDialogBooking.id}/user-verify`, {
         method: "POST",
         headers: { "Content-Type": "application/json" }
       })
@@ -104,10 +146,10 @@ export default function BookingsPage() {
       if (response.ok) {
         fetchBookings()
         setPaymentDialogBooking(null)
-        showToast("Payment confirmed! Guide contact information is now visible.")
+        showToast("Booking confirmed! Your dates are locked in.")
       } else {
         const data = await response.json()
-        setActionError(data.error || "Error confirming payment")
+        setActionError(data.error || "Error confirming booking")
       }
     } catch (error) {
       setActionError("Network error. Please try again.")
@@ -242,10 +284,10 @@ export default function BookingsPage() {
                             </span>
                           </p>
                         )}
-                        {booking.status === 'admin_approved' && booking.total_amount ? (
+                        {booking.status === 'guide_approved' && booking.total_amount ? (
                           <p className="flex items-center gap-2 text-sm font-semibold text-primary">
                             <IndianRupee className="size-4" />
-                            Amount due: {inr(booking.total_amount)}
+                            Total: {inr(booking.total_amount)} — confirm to lock your booking
                           </p>
                         ) : null}
                         {booking.notes && (
@@ -262,12 +304,12 @@ export default function BookingsPage() {
                         )}
                       </div>
 
-                      {booking.status === 'admin_approved' && (
+                      {booking.status === 'guide_approved' && (
                         <Button
                           onClick={() => setPaymentDialogBooking(booking)}
                           className="mt-4"
                         >
-                          Confirm Payment
+                          Final Verification
                         </Button>
                       )}
 
@@ -292,7 +334,7 @@ export default function BookingsPage() {
                         </Button>
                       )}
 
-                      {booking.status !== 'completed' && booking.status !== 'cancelled' && (
+                      {['pending', 'guide_approved'].includes(booking.status) && (
                         <Button
                           variant="destructive"
                           size="sm"
@@ -334,26 +376,27 @@ export default function BookingsPage() {
       >
         <DialogContent className="max-w-sm border-border bg-card">
           <DialogHeader>
-            <DialogTitle>Confirm Payment</DialogTitle>
+            <DialogTitle>Final Verification</DialogTitle>
           </DialogHeader>
           <div className="space-y-3">
-            {paymentDialogBooking?.total_amount ? (
-              <div className="rounded-xl border border-primary/20 bg-primary/5 p-4 text-center">
-                <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                  Total Due
+            <div className="rounded-xl border border-primary/20 bg-primary/5 p-4 text-center">
+              <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                Total
+              </p>
+              <p className="mt-1 text-2xl font-bold text-primary">
+                {inr(paymentDialogBooking?.total_amount ?? 0)}
+              </p>
+              {paymentDialogBooking?.base_rate ? (
+                <p className="mt-1 text-xs text-muted-foreground">
+                  {inr(paymentDialogBooking.base_rate)}/day × {(paymentDialogBooking.trek_days ?? 1)} day
+                  {(paymentDialogBooking.trek_days ?? 1) > 1 ? "s" : ""} × {(paymentDialogBooking.num_trekkers ?? 1)} trekker
+                  {(paymentDialogBooking.num_trekkers ?? 1) > 1 ? "s" : ""}
                 </p>
-                <p className="mt-1 text-2xl font-bold text-primary">
-                  {inr(paymentDialogBooking.total_amount)}
-                </p>
-                {paymentDialogBooking.base_rate ? (
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    {inr(paymentDialogBooking.base_rate)}/day × {(paymentDialogBooking.trek_days ?? 1)} day
-                    {(paymentDialogBooking.trek_days ?? 1) > 1 ? "s" : ""} × {(paymentDialogBooking.num_trekkers ?? 1)} trekker
-                    {(paymentDialogBooking.num_trekkers ?? 1) > 1 ? "s" : ""}
-                  </p>
-                ) : null}
-              </div>
-            ) : null}
+              ) : null}
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Confirm this booking to lock the dates in. Payment will be added here later. After confirming, the booking can no longer be cancelled.
+            </p>
             {actionError && (
               <p className="flex items-center gap-1.5 text-xs text-destructive">
                 <AlertCircle className="size-3.5 shrink-0" />
@@ -361,11 +404,11 @@ export default function BookingsPage() {
               </p>
             )}
             <Button
-              onClick={handleConfirmPayment}
+              onClick={handleConfirmBooking}
               disabled={submitting}
               className="w-full"
             >
-              {submitting ? "Confirming..." : "Confirm Payment"}
+              {submitting ? "Confirming..." : "Confirm Booking"}
             </Button>
           </div>
         </DialogContent>

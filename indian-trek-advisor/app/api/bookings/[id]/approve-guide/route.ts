@@ -39,6 +39,25 @@ export async function POST(
     return NextResponse.json({ error: "Invalid status transition" }, { status: 400 })
   }
 
+  // Soft-hold: the guide accepts one request per guide+date. If another request
+  // for the same date is already guide_approved (awaiting the trekker's final
+  // verification), the guide can't accept this one too. The date is only hard-
+  // locked (booked) when the trekker does their final verification.
+  const { data: held } = await supabase
+    .from("bookings")
+    .select("id")
+    .eq("guide_id", booking.guide_id)
+    .eq("booking_date", booking.booking_date)
+    .in("status", ["guide_approved", "confirmed"])
+    .neq("id", booking.id)
+    .limit(1)
+
+  if (held && held.length > 0) {
+    return NextResponse.json({
+      error: "You've already accepted another request for this date. The date becomes locked once that trekker finalizes.",
+    }, { status: 400 })
+  }
+
   const { data: updated, error } = await supabase
     .from("bookings")
     .update({ status: "guide_approved", guide_responded_at: new Date().toISOString() })
@@ -50,50 +69,6 @@ export async function POST(
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 
-  // Once the guide accepts this request, that date is booked for them: hold
-  // the availability row. This blocks any further requests for the same date.
-  await supabase
-    .from("guide_availability")
-    .upsert({
-      guide_id: booking.guide_id,
-      date: booking.booking_date,
-      status: "booked",
-      booking_id: booking.id,
-    }, { onConflict: "guide_id,date" })
-
-  // Auto-reject every other pending request from the same guide on the same
-  // date — the guide can only take one booking per day.
-  const { data: siblings } = await supabase
-    .from("bookings")
-    .select("id, trekker_id, trek_id, booking_date")
-    .eq("guide_id", booking.guide_id)
-    .eq("booking_date", booking.booking_date)
-    .eq("status", "pending")
-    .neq("id", booking.id)
-
-  for (const sibling of siblings ?? []) {
-    await supabase
-      .from("bookings")
-      .update({ status: "cancelled", rejection_reason: "Guide accepted another request for this date" })
-      .eq("id", sibling.id)
-
-    await recordBookingHistory(supabase, {
-      bookingId: sibling.id,
-      fromStatus: "pending",
-      toStatus: "cancelled",
-      actorId: user.id,
-      actorRole: "guide",
-      note: "Auto-rejected: guide accepted another request for this date",
-    })
-
-    await supabase.from("notifications").insert({
-      user_id: sibling.trekker_id,
-      type: "booking_status_change",
-      booking_id: sibling.id,
-      message: `Your ${sibling.trek_id} trek request on ${sibling.booking_date} was cancelled because the guide accepted another request for that date.`,
-    })
-  }
-
   await recordBookingHistory(supabase, {
     bookingId: booking.id,
     fromStatus: booking.status,
@@ -103,37 +78,14 @@ export async function POST(
     note: "Guide accepted the request",
   })
 
-  // Notify the trekker their guide approved the booking.
+  // Notify the trekker their guide approved the booking and they need to do the
+  // final verification.
   await supabase.from("notifications").insert({
     user_id: booking.trekker_id,
     type: "booking_status_change",
     booking_id: booking.id,
-    message: `Your guide approved your ${booking.trek_id} trek on ${booking.booking_date}. Awaiting admin confirmation.`,
+    message: `${user.user_metadata?.name || "Your guide"} accepted your ${booking.trek_id} trek on ${booking.booking_date}. Complete the final verification in your bookings.`,
   })
-
-  // Send SMS to admin.
-  const { data: adminProfile } = await supabase
-    .from("profiles")
-    .select("phone")
-    .eq("account_type", "admin")
-    .limit(1)
-    .single()
-
-  if (adminProfile?.phone) {
-    const { data: trekkerProfile } = await supabase
-      .from("profiles")
-      .select("name")
-      .eq("id", booking.trekker_id)
-      .single()
-
-    const { sendGuideApprovalSMS } = await import("@/lib/sms/brevo")
-    await sendGuideApprovalSMS(
-      adminProfile.phone,
-      user.user_metadata?.name || "Guide",
-      trekkerProfile?.name || "Trekker",
-      booking.trek_id
-    )
-  }
 
   return NextResponse.json({ booking: updated })
 }

@@ -19,7 +19,7 @@ interface AvailabilityCalendarProps {
   onSave?: (unavailableDates: string[]) => void
 }
 
-const ACTIVE_STATUSES = ["guide_approved", "admin_approved", "confirmed"]
+const ACTIVE_STATUSES = ["confirmed"]
 
 function todayStart() {
   return new Date(new Date().setHours(0, 0, 0, 0))

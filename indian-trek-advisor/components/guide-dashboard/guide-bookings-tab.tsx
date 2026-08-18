@@ -41,7 +41,6 @@ const FILTERS = [
   { value: "all", label: "All" },
   { value: "pending", label: STATUS_CONFIG.pending.label },
   { value: "guide_approved", label: STATUS_CONFIG.guide_approved.label },
-  { value: "admin_approved", label: STATUS_CONFIG.admin_approved.label },
   { value: "confirmed", label: STATUS_CONFIG.confirmed.label },
   { value: "completed", label: STATUS_CONFIG.completed.label },
   { value: "cancelled", label: STATUS_CONFIG.cancelled.label },
@@ -68,7 +67,6 @@ export function GuideBookingsTab({ bookings, onRefresh, filterHint }: GuideBooki
     all: bookings.length,
     pending: bookings.filter((b) => b.status === "pending").length,
     guide_approved: bookings.filter((b) => b.status === "guide_approved").length,
-    admin_approved: bookings.filter((b) => b.status === "admin_approved").length,
     confirmed: bookings.filter((b) => b.status === "confirmed").length,
     completed: bookings.filter((b) => b.status === "completed").length,
     cancelled: bookings.filter((b) => b.status === "cancelled").length,
@@ -292,7 +290,7 @@ export function GuideBookingsTab({ bookings, onRefresh, filterHint }: GuideBooki
                         )}
                         </div>
 
-                        {["guide_approved", "admin_approved"].includes(booking.status) && (
+                        {["guide_approved"].includes(booking.status) && (
                           <p className="max-w-[220px] text-right text-[10px] text-muted-foreground">
                             {getStatusConfig(booking.status).description}
                           </p>
@@ -300,7 +298,7 @@ export function GuideBookingsTab({ bookings, onRefresh, filterHint }: GuideBooki
 
                         {booking.status === "pending" && (
                           <p className="max-w-[220px] text-right text-[10px] text-amber-500/90">
-                            Accepting locks this date; any other requests for the same day are auto-rejected.
+                            Accepting soft-holds this request. The date locks only once the trekker does their final verification.
                           </p>
                         )}
                       </div>

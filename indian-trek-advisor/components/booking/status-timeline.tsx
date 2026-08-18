@@ -18,7 +18,6 @@ const STEP_LABEL: Record<string, string> = {
   none: "Requested",
   pending: "Requested",
   guide_approved: "Guide confirmed",
-  admin_approved: "Admin approved",
   confirmed: "Confirmed",
   completed: "Completed",
   cancelled: "Cancelled",

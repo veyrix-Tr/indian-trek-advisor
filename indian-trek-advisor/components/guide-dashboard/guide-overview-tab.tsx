@@ -179,7 +179,7 @@ export function GuideOverviewTab({
   const pending = bookings.filter((b) => b.status === "pending")
 
   const upcoming = bookings
-    .filter((b) => ["guide_approved", "admin_approved", "confirmed"].includes(b.status))
+    .filter((b) => ["guide_approved", "confirmed"].includes(b.status))
     .slice(0, 5)
 
   const recentCompleted = bookings

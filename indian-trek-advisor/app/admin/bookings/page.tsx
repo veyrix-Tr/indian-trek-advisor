@@ -43,8 +43,7 @@ interface Booking {
 
 const FILTERS = [
   { value: "all", label: "All" },
-  { value: "guide_approved", label: "Awaiting Admin" },
-  { value: "admin_approved", label: "Awaiting Payment" },
+  { value: "guide_approved", label: "Guide Accepted" },
   { value: "confirmed", label: "Confirmed" },
   { value: "completed", label: "Completed" },
   { value: "cancelled", label: "Cancelled" },
@@ -78,25 +77,6 @@ export default function AdminBookingsPage() {
   function showToast(message: string) {
     setToast(message)
     setTimeout(() => setToast(null), 3000)
-  }
-
-  const handleApprove = async (bookingId: string) => {
-    setActingId(bookingId)
-    try {
-      const response = await fetch(`/api/bookings/${bookingId}/approve-admin`, {
-        method: "POST"
-      })
-      if (response.ok) {
-        fetchBookings()
-        showToast("Booking approved and sent to trekker for payment")
-      } else {
-        const data = await response.json()
-        showToast(data.error || "Error approving booking")
-      }
-    } catch (error) {
-      console.error("Error approving booking:", error)
-    }
-    setActingId(null)
   }
 
   const handleComplete = async (bookingId: string) => {
@@ -190,9 +170,8 @@ export default function AdminBookingsPage() {
           <div className="space-y-4">
             {bookings.map((booking, i) => {
               const status = getStatusConfig(booking.status)
-              const canApprove = booking.status === 'guide_approved'
               const canComplete = booking.status === 'confirmed'
-              const canReject = booking.status === 'guide_approved' || booking.status === 'admin_approved'
+              const canReject = booking.status === 'guide_approved' || booking.status === 'pending'
               return (
                 <motion.div
                   key={booking.id}
@@ -258,16 +237,6 @@ export default function AdminBookingsPage() {
                         )}
                       </div>
                       <div className="mt-4 flex flex-wrap gap-2">
-                        {canApprove && (
-                          <Button
-                            onClick={() => handleApprove(booking.id)}
-                            disabled={actingId === booking.id}
-                            className="gap-1.5"
-                          >
-                            <CheckCircle className="size-4" />
-                            Approve
-                          </Button>
-                        )}
                         {canComplete && (
                           <Button
                             onClick={() => handleComplete(booking.id)}

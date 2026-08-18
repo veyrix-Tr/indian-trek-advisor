@@ -72,6 +72,16 @@ export default function GuideDashboardPage() {
     Promise.all([fetchBookings(), fetchReviews(), fetchProfile()]).then(() => setLoading(false))
   }, [])
 
+  // Auto-refresh so new/rejected requests and status changes show up without a
+  // manual refresh.
+  useEffect(() => {
+    const timer = setInterval(() => {
+      fetchBookings()
+      fetchReviews()
+    }, 15000)
+    return () => clearInterval(timer)
+  }, [])
+
   async function fetchBookings() {
     try {
       const res = await fetch("/api/guide/bookings")

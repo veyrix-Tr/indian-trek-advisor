@@ -53,21 +53,38 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Guide not available on this date" }, { status: 400 })
   }
 
-  // Create booking. Duplicate guard: a trekker can send only one active
-  // request per booking_date (regardless of which guide), so they can't
-  // request two different guides for the same day.
+  // Create booking. Duplicate guard / anti-spam: a trekker can have only one
+  // active request per booking_date (regardless of which guide), so they can't
+  // spam multiple guides for the same day. Exception: if their only request is
+  // still unaccepted (pending) and older than 8 hours, they may send a request
+  // to a different guide. Once a guide has accepted (guide_approved) or it's
+  // confirmed, no further request is allowed for that date.
+  const EIGHT_HOURS_MS = 8 * 60 * 60 * 1000
   const { data: existingBooking } = await supabase
     .from("bookings")
-    .select("id")
+    .select("id, status, created_at")
     .eq("trekker_id", user.id)
     .eq("booking_date", booking_date)
-    .in("status", ["pending", "guide_approved", "admin_approved"])
-    .maybeSingle()
+    .in("status", ["pending", "guide_approved", "confirmed"])
+    .order("created_at", { ascending: true })
 
-  if (existingBooking) {
-    return NextResponse.json({
-      error: "You already have an active booking request for this date",
-    }, { status: 409 })
+  if (existingBooking && existingBooking.length > 0) {
+    const oldest = existingBooking[0]
+
+    // A guide has already accepted (or it's confirmed) — never allow another.
+    if (oldest.status !== "pending") {
+      return NextResponse.json({
+        error: "You already have an accepted request for this date. Complete the final verification instead.",
+      }, { status: 409 })
+    }
+
+    // Still pending: allow a fresh request to another guide only after 8h.
+    const age = Date.now() - new Date(oldest.created_at).getTime()
+    if (age < EIGHT_HOURS_MS) {
+      return NextResponse.json({
+        error: "You already have a request pending for this date. You can request another guide after 8 hours, or cancel it.",
+      }, { status: 409 })
+    }
   }
 
   const { data: booking, error: bookingError } = await supabase
@@ -92,9 +109,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: bookingError.message }, { status: 500 })
   }
 
-  // Note: availability is NOT held here. The guide can accept one of several
-  // pending requests; the date only becomes "booked" when the guide accepts
-  // (see approve-guide), which is what blocks further requests for that date.
+  // Note: availability is NOT held here. The guide accepts one of several
+  // pending requests; the date only becomes "booked" when the trekker does
+  // their final verification (see user-verify).
 
   // Audit + notifications.
   await recordBookingHistory(supabase, {

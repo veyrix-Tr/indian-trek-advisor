@@ -1,4 +1,10 @@
-export type BookingStatus = 'pending' | 'guide_approved' | 'admin_approved' | 'confirmed' | 'completed' | 'cancelled'
+export type BookingStatus =
+  | "pending"
+  | "guide_approved"
+  | "confirmed"
+  | "completed"
+  | "cancelled"
+
 export type PaymentStatus = 'pending' | 'paid'
 export type AvailabilityStatus = 'available' | 'booked' | 'unavailable'
 

@@ -3,6 +3,8 @@
 import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Bell, Calendar, CreditCard, Star, ShieldCheck, Check } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { createClient } from "@/utils/supabase/client"
 
 export interface AppNotification {
   id: string
@@ -31,12 +33,77 @@ export function NotificationBell() {
   const [notifications, setNotifications] = useState<AppNotification[]>([])
   const [open, setOpen] = useState(false)
   const [loaded, setLoaded] = useState(false)
+  const [accountType, setAccountType] = useState<string | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
+  const router = useRouter()
 
   const unreadCount = notifications.filter((n) => !n.read).length
 
   useEffect(() => {
     fetchNotifications()
+    ;(async () => {
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) return
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("account_type")
+        .eq("id", user.id)
+        .single()
+      setAccountType(profile?.account_type ?? null)
+    })()
+  }, [])
+
+  // Live updates: subscribe to new notifications for this user. Realtime only
+  // delivers once the `notifications` table is in the supabase_realtime
+  // publication (see supabase-migration-enable-notifications-realtime.sql), so
+  // a lightweight poll runs as a fallback to keep the bell fresh regardless.
+  useEffect(() => {
+    let unsubChannel: (() => void) | null = null
+    let pollTimer: ReturnType<typeof setInterval> | null = null
+    let cancelled = false
+
+    const startPolling = () => {
+      if (pollTimer) return
+      pollTimer = setInterval(fetchNotifications, 20000)
+    }
+
+    ;(async () => {
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      // Build the channel only after we know the user; guard against the
+      // effect being cleaned up (StrictMode double-invoke) mid-flight.
+      if (cancelled || !user) return
+
+      try {
+        const channel = supabase
+          .channel(`notifications-live-${Date.now()}`)
+          .on(
+            "postgres_changes",
+            { event: "INSERT", schema: "public", table: "notifications", filter: `user_id=eq.${user.id}` },
+            () => fetchNotifications(),
+          )
+          .subscribe((status) => {
+            if (status === "SUBSCRIBED") {
+              // Realtime is live; keep the poll as a cheap safety net.
+              startPolling()
+            }
+          })
+
+        unsubChannel = () => {
+          supabase.removeChannel(channel)
+        }
+      } catch {
+        // Real msgs come via poll if realtime isn't available.
+        startPolling()
+      }
+    })()
+
+    return () => {
+      cancelled = true
+      unsubChannel?.()
+      if (pollTimer) clearInterval(pollTimer)
+    }
   }, [])
 
   useEffect(() => {
@@ -75,6 +142,22 @@ export function NotificationBell() {
       await fetch("/api/notifications/read-all", { method: "POST" })
     } catch {
       // same fallback reasoning as markRead
+    }
+  }
+
+  // Navigate to the page relevant to a notification based on its type and the
+  // current user's account type.
+  function handleNavigate(type: AppNotification["type"]) {
+    setOpen(false)
+    markAllRead()
+    const isGuide = accountType === "guide"
+    const isAdmin = accountType === "admin"
+    if (type === "booking_request" || type === "booking_status_change") {
+      router.push(isGuide ? "/guide/dashboard" : isAdmin ? "/admin" : "/dashboard/bookings")
+    } else if (type === "review_received") {
+      router.push(isGuide ? "/guide/dashboard" : "/reviews")
+    } else {
+      router.push("/profile")
     }
   }
 
@@ -131,7 +214,7 @@ export function NotificationBell() {
                   return (
                     <button
                       key={n.id}
-                      onClick={() => markRead(n.id)}
+                      onClick={() => handleNavigate(n.type)}
                       className={`flex w-full items-start gap-3 border-b border-border/20 px-4 py-3 text-left transition-colors last:border-b-0 hover:bg-accent/50 ${
                         n.read ? "" : "bg-primary/5"
                       }`}
