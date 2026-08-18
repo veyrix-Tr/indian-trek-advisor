@@ -10,9 +10,13 @@ import {
   ExternalLink, Loader2, Mountain, TrendingUp, Clock,
   CheckCircle2, XCircle, Phone, Mail, Calendar, Star, X,
   BarChart3, Activity, UserX, UserCheck, Eye, ArrowLeft, History, AlertTriangle,
+  IndianRupee, CalendarCheck2, CheckCircle2 as CheckCircleIcon,
 } from "lucide-react"
 import { AuditLog } from "@/components/admin/audit-log"
 import { ErrorLog } from "@/components/admin/error-log"
+import { inr } from "@/lib/pricing"
+
+const fmtINR = inr
 
 interface Profile {
   id: string
@@ -48,7 +52,7 @@ interface Trekker {
   profiles?: Profile
 }
 
-type Tab = "overview" | "users" | "guides" | "verifications" | "audit" | "errors"
+type Tab = "overview" | "users" | "guides" | "verifications" | "audit" | "errors" | "bookings"
 
 export default function AdminPage() {
   const router = useRouter()
@@ -59,6 +63,13 @@ export default function AdminPage() {
   const [allProfiles, setAllProfiles] = useState<Profile[]>([])
   const [allGuides, setAllGuides] = useState<Guide[]>([])
   const [allTrekkers, setAllTrekkers] = useState<Trekker[]>([])
+
+  const [bookingStats, setBookingStats] = useState({
+    total: 0,
+    statusCount: {} as Record<string, number>,
+    revenue: 0,
+    paidRevenue: 0,
+  })
 
   const [searchQuery, setSearchQuery] = useState("")
   const [expandedGuide, setExpandedGuide] = useState<string | null>(null)
@@ -83,6 +94,8 @@ export default function AdminPage() {
       setAllGuides(guidesRes.data || [])
       setAllTrekkers(trekkersRes.data || [])
       setLoading(false)
+
+      fetchBookingStats()
     }
     load()
 
@@ -99,6 +112,23 @@ export default function AdminPage() {
 
     return () => clearInterval(interval)
   }, [supabase, router])
+
+  async function fetchBookingStats() {
+    try {
+      const res = await fetch("/api/admin/bookings/stats")
+      const data = await res.json()
+      if (res.ok) {
+        setBookingStats({
+          total: data.total || 0,
+          statusCount: data.statusCount || {},
+          revenue: data.revenue || 0,
+          paidRevenue: data.paidRevenue || 0,
+        })
+      }
+    } catch {
+      // leave as is
+    }
+  }
 
   async function handleVerifyGuide(userId: string, verified: boolean) {
     setVerifying(userId)
@@ -200,10 +230,18 @@ export default function AdminPage() {
             { id: "verifications" as Tab, label: "Verifications", icon: BadgeCheck, badge: pendingGuides.length },
             { id: "audit" as Tab, label: "Audit Log", icon: History },
             { id: "errors" as Tab, label: "Error Log", icon: AlertTriangle },
+            { id: "bookings" as Tab, label: "All Bookings", icon: Calendar },
           ]).map((t) => (
             <button
               key={t.id}
-              onClick={() => { setTab(t.id); setSearchQuery("") }}
+              onClick={() => {
+                if (t.id === "bookings") {
+                  router.push("/admin/bookings")
+                  return
+                }
+                setTab(t.id)
+                setSearchQuery("")
+              }}
               className={`flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-medium transition-all duration-200 ${
                 tab === t.id
                   ? "bg-primary text-primary-foreground shadow-md shadow-primary/20"
@@ -239,6 +277,29 @@ export default function AdminPage() {
                     <div>
                       <p className="text-xs font-medium text-muted-foreground/70">{stat.label}</p>
                       <p className="mt-1.5 text-3xl font-bold text-foreground">{stat.value}</p>
+                    </div>
+                    <span className={`flex size-12 items-center justify-center rounded-2xl bg-gradient-to-br ${stat.color} shadow-lg transition-transform duration-300 group-hover:scale-110`}>
+                      <stat.icon className="size-6 text-white" />
+                    </span>
+                  </div>
+                  <div className={`absolute inset-x-0 bottom-0 h-1 ${stat.bg}`} />
+                </div>
+              ))}
+            </div>
+
+            {/* Booking Stats Grid */}
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+              {[
+                { label: "Total Bookings", value: bookingStats.total, icon: Calendar, color: "from-violet-400 to-purple-600", bg: "bg-violet-500/10" },
+                { label: "Confirmed", value: bookingStats.statusCount.confirmed || 0, icon: CheckCircleIcon, color: "from-green-400 to-emerald-600", bg: "bg-emerald-500/10" },
+                { label: "Completed", value: bookingStats.statusCount.completed || 0, icon: CalendarCheck2, color: "from-teal-400 to-teal-600", bg: "bg-teal-500/10" },
+                { label: "Revenue", value: fmtINR(bookingStats.revenue), icon: IndianRupee, color: "from-pink-400 to-rose-600", bg: "bg-rose-500/10" },
+              ].map((stat, i) => (
+                <div key={stat.label} className="group relative overflow-hidden rounded-2xl border border-border bg-card p-5 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 hover:border-primary/20">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-xs font-medium text-muted-foreground/70">{stat.label}</p>
+                      <p className="mt-1.5 text-2xl font-bold text-foreground sm:text-3xl">{stat.value}</p>
                     </div>
                     <span className={`flex size-12 items-center justify-center rounded-2xl bg-gradient-to-br ${stat.color} shadow-lg transition-transform duration-300 group-hover:scale-110`}>
                       <stat.icon className="size-6 text-white" />
