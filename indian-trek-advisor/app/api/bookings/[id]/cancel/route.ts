@@ -108,6 +108,23 @@ export const POST = withErrorHandling(async function POST(
     })
   }
 
+  // Notify all admins about the cancellation
+  const { data: adminProfiles } = await supabase
+    .from("profiles")
+    .select("id")
+    .eq("account_type", "admin")
+
+  if (adminProfiles && adminProfiles.length > 0) {
+    await supabase.from("notifications").insert(
+      adminProfiles.map((admin) => ({
+        user_id: admin.id,
+        type: "booking_status_change",
+        booking_id: booking.id,
+        message: `Booking cancelled: ${actorRole} cancelled booking #${id} for ${booking.booking_date}.${reason ? ` Reason: ${reason}` : ""}`,
+      }))
+    )
+  }
+
   // Free up the date
   await supabase
     .from("guide_availability")

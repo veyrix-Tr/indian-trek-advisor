@@ -130,5 +130,22 @@ export const POST = withErrorHandling(async function POST(
     })
   }
 
+  // Notify all admins about the final confirmation
+  const { data: adminProfiles } = await supabase
+    .from("profiles")
+    .select("id")
+    .eq("account_type", "admin")
+
+  if (adminProfiles && adminProfiles.length > 0) {
+    await supabase.from("notifications").insert(
+      adminProfiles.map((admin) => ({
+        user_id: admin.id,
+        type: "booking_status_change",
+        booking_id: booking.id,
+        message: `Booking confirmed: ${user.user_metadata?.name || "A trekker"} completed final verification for booking #${id} on ${booking.booking_date}.`,
+      }))
+    )
+  }
+
   return NextResponse.json({ booking: updated })
 }, { source: "bookings.userVerify", route: "/api/bookings/[id]/user-verify" })

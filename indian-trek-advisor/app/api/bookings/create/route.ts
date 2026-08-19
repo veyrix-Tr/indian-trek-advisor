@@ -155,6 +155,23 @@ export const POST = withErrorHandling(async function POST(request: Request) {
     })
   }
 
+  // Notify all admins about the new booking request
+  const { data: adminProfiles } = await supabase
+    .from("profiles")
+    .select("id")
+    .eq("account_type", "admin")
+
+  if (adminProfiles && adminProfiles.length > 0) {
+    await supabase.from("notifications").insert(
+      adminProfiles.map((admin) => ({
+        user_id: admin.id,
+        type: "booking_request",
+        booking_id: booking.id,
+        message: `New booking request: ${user.user_metadata?.name || "Trekker"} requested ${getTrekById(Number(trek_id))?.name || "a trek"} for ${booking_date}.`,
+      }))
+    )
+  }
+
   if (guideData?.profiles?.phone) {
     const { sendBookingRequestSMS } = await import("@/lib/sms/brevo")
     await sendBookingRequestSMS(

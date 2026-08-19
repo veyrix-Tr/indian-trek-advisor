@@ -88,5 +88,22 @@ export const POST = withErrorHandling(async function POST(
     message: `${user.user_metadata?.name || "Your guide"} accepted your ${booking.trek_id} trek on ${booking.booking_date}. Complete the final verification in your bookings.`,
   })
 
+  // Notify all admins about the guide approval
+  const { data: adminProfiles } = await supabase
+    .from("profiles")
+    .select("id")
+    .eq("account_type", "admin")
+
+  if (adminProfiles && adminProfiles.length > 0) {
+    await supabase.from("notifications").insert(
+      adminProfiles.map((admin) => ({
+        user_id: admin.id,
+        type: "booking_status_change",
+        booking_id: booking.id,
+        message: `Guide approved booking: ${user.user_metadata?.name || "A guide"} accepted booking #${id} for ${booking.booking_date}.`,
+      }))
+    )
+  }
+
   return NextResponse.json({ booking: updated })
 }, { source: "bookings.approveGuide", route: "/api/bookings/[id]/approve-guide" })

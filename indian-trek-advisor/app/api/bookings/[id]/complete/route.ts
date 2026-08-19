@@ -91,6 +91,23 @@ export const POST = withErrorHandling(async function POST(
     message: `Your ${booking.trek_id} trek was marked complete. Rate your guide and share your experience.`,
   })
 
+  // Notify all admins about the trek completion
+  const { data: adminProfiles } = await supabase
+    .from("profiles")
+    .select("id")
+    .eq("account_type", "admin")
+
+  if (adminProfiles && adminProfiles.length > 0) {
+    await supabase.from("notifications").insert(
+      adminProfiles.map((admin) => ({
+        user_id: admin.id,
+        type: "booking_status_change",
+        booking_id: booking.id,
+        message: `Trek completed: ${actorRole} marked booking #${id} as completed on ${booking.booking_date}.`,
+      }))
+    )
+  }
+
   // Send SMS to trekker for rating
   const { data: trekkerProfile } = await supabase
     .from("profiles")
