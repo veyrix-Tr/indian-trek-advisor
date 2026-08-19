@@ -169,8 +169,35 @@ export function getStandardTreks(): Trek[] {
   return treks.filter((t) => !t.category)
 }
 
+// Mirrors the HTML prototype's itinerary->waypoint derivation so every trek
+// (even those without explicit map data) can render an elevation profile.
+function parseElv(str?: string | null): number | null {
+  if (!str) return null
+  const m = String(str).replace(/,/g, "").match(/(\d{3,5})/)
+  return m ? parseInt(m[1], 10) : null
+}
+
+function deriveMapData(trek: Trek): MapWaypoint[] {
+  const itin = trek.itinerary || []
+  if (itin.length === 0) return []
+  return itin.map((d) => ({
+    label:
+      (d.title || "").split(/\s+to\s+|[–→]/).pop()?.trim().slice(0, 14) ?? "Camp",
+    elv: parseElv(d.elevation) ?? trek.elevation ?? 2500,
+    dist: parseFloat((String(d.distance ?? "0").match(/[\d.]+/) ?? ["0"])[0]) || 0,
+    camp: true,
+    ret: Boolean(d.returnJourney),
+  }))
+}
+
 export function getMapData(trekId: number): MapWaypoint[] | undefined {
-  return mapData[String(trekId)]
+  const explicit = mapData[String(trekId)]
+  if (explicit) return explicit
+  // Fallback: derive waypoints from the day-by-day itinerary (like the HTML).
+  const trek = treks.find((t) => t.id === trekId)
+  if (!trek) return undefined
+  const derived = deriveMapData(trek)
+  return derived.length > 0 ? derived : undefined
 }
 
 export function getGearShops(): GearShop[] {
