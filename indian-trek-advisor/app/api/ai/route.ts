@@ -4,7 +4,7 @@ import { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } from "@google/ge
 export const runtime = "nodejs"
 export const maxDuration = 30
 
-const MODEL = "gemini-flash-latest"
+const MODEL = "gemini-3.6-flash"
 
 // Only keep the most recent turns so the payload stays small and the model stays
 // focused. History is stored client-side (localStorage) and sent with each request.
