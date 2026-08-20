@@ -7,7 +7,9 @@ import { withErrorHandling } from "@/lib/api"
 
 // The trekker's final verification: moves a guide_approved booking to
 // confirmed. This is the step that hard-locks the guide's date (booked) and
-// auto-rejects any other pending requests for the same guide + date.
+// auto-rejects any other pending requests for the same date — both the
+// trekker's own remaining requests (to any guide) and other trekkers' pending
+// requests to this guide that overlap the booking's day + trek-days span.
 //
 // Payment will be bundled into this step later; for now confirming here simply
 // locks the booking in and, since it becomes non-cancellable, finalizes it.
@@ -73,14 +75,49 @@ export const POST = withErrorHandling(async function POST(
     .from("guide_availability")
     .upsert(bookedRows, { onConflict: "guide_id,date" })
 
-  // Auto-reject every other pending request that overlaps this booking's span —
-  // the guide can only take one booking per day, and this trekker's is confirmed.
+  // Auto-reject every other request for this TREKKER on the same date (to any
+  // guide) — they can only lock in one of their requests per day. Covers both
+  // still-pending and stale guide_approved requests.
+  const { data: trekkerSiblings } = await supabase
+    .from("bookings")
+    .select("id, status, guide_id, trek_id, booking_date")
+    .eq("trekker_id", booking.trekker_id)
+    .eq("booking_date", booking.booking_date)
+    .in("status", ["pending", "guide_approved"])
+    .neq("id", booking.id)
+
+  for (const sibling of trekkerSiblings ?? []) {
+    await supabase
+      .from("bookings")
+      .update({ status: "cancelled", rejection_reason: "You confirmed another booking for this date" })
+      .eq("id", sibling.id)
+
+    await recordBookingHistory(supabase, {
+      bookingId: sibling.id,
+      fromStatus: sibling.status,
+      toStatus: "cancelled",
+      actorId: user.id,
+      actorRole: "trekker",
+      note: "Auto-rejected: user confirmed a different request for this date",
+    })
+
+    await supabase.from("notifications").insert({
+      user_id: booking.trekker_id,
+      type: "booking_status_change",
+      booking_id: sibling.id,
+      message: `Your request to guide ${sibling.guide_id} for the ${sibling.trek_id} trek on ${sibling.booking_date} was cancelled because you confirmed another booking for this date.`,
+    })
+  }
+
+  // Auto-reject every other request that overlaps this booking's span for the
+  // GUIDE — the guide can only take one booking per day, and this trekker's is
+  // confirmed. Covers both still-pending and stale guide_approved requests.
   const spanSet = new Set(span)
   const { data: siblings } = await supabase
     .from("bookings")
-    .select("id, trekker_id, trek_id, booking_date, trek_days")
+    .select("id, status, trekker_id, trek_id, booking_date, trek_days")
     .eq("guide_id", booking.guide_id)
-    .eq("status", "pending")
+    .in("status", ["pending", "guide_approved"])
     .neq("id", booking.id)
     .limit(100)
 
@@ -95,7 +132,7 @@ export const POST = withErrorHandling(async function POST(
 
     await recordBookingHistory(supabase, {
       bookingId: sibling.id,
-      fromStatus: "pending",
+      fromStatus: sibling.status,
       toStatus: "cancelled",
       actorId: user.id,
       actorRole: "trekker",

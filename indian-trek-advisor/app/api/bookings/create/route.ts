@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { getAdminClient, getAuthUser } from "@/lib/supabase-admin"
 import { parseTrekDays, computeBookingAmount } from "@/lib/pricing"
 import { recordBookingHistory, resolveActorRole } from "@/lib/booking-history"
+import { STALE_REQUEST_MS } from "@/lib/booking-flow"
 import { withErrorHandling } from "@/lib/api"
 
 export const POST = withErrorHandling(async function POST(request: Request) {
@@ -73,10 +74,11 @@ export const POST = withErrorHandling(async function POST(request: Request) {
   // Create booking. Duplicate guard / anti-spam: a trekker can have only one
   // active request per booking_date (regardless of which guide), so they can't
   // spam multiple guides for the same day. Exception: if their only request is
-  // still unaccepted (pending) and older than 8 hours, they may send a request
+  // still unaccepted (pending) and older than 6 hours, they may send a request
   // to a different guide. Once a guide has accepted (guide_approved) or it's
-  // confirmed, no further request is allowed for that date.
-  const EIGHT_HOURS_MS = 8 * 60 * 60 * 1000
+  // confirmed, no further request is allowed for that date. The old request is
+  // never auto-cancelled; the trekker can simply send another after 6 hours.
+  const SIX_HOURS_MS = STALE_REQUEST_MS
   const { data: existingBooking } = await supabase
     .from("bookings")
     .select("id, status, created_at")
@@ -95,11 +97,11 @@ export const POST = withErrorHandling(async function POST(request: Request) {
       }, { status: 409 })
     }
 
-    // Still pending: allow a fresh request to another guide only after 8h.
+    // Still pending: allow a fresh request to another guide only after 6h.
     const age = Date.now() - new Date(oldest.created_at).getTime()
-    if (age < EIGHT_HOURS_MS) {
+    if (age < SIX_HOURS_MS) {
       return NextResponse.json({
-        error: "You already have a request pending for this date. You can request another guide after 8 hours, or cancel it.",
+        error: "You already have a request pending for this date. You can request another guide after 6 hours, or cancel it.",
       }, { status: 409 })
     }
   }

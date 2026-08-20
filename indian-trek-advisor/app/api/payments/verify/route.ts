@@ -15,17 +15,17 @@ export const POST = withErrorHandling(async function POST(request: Request) {
   }
 
   try {
-    // Verify payment with Cashfree
-    const response = await cashfree.orders.getOrderDetails(order_id)
+    // Verify payment with Cashfree (v6 SDK method: cashfree.PGFetchOrder)
+    const response = await cashfree.PGFetchOrder(order_id, undefined, undefined)
+    const order = response.data
 
-    if (response.data.order_status === "PAID") {
+    if (order.order_status === "PAID") {
       // Update payment record
       const { error: paymentError } = await supabase
         .from("payments")
         .update({
           status: "completed",
-          payment_method: response.data.payment_method,
-          payment_time: response.data.order_expiry_time || new Date().toISOString(),
+          payment_time: new Date().toISOString(),
           updated_at: new Date().toISOString(),
         })
         .eq("cashfree_order_id", order_id)
@@ -49,7 +49,7 @@ export const POST = withErrorHandling(async function POST(request: Request) {
           .eq("id", payment.booking_id)
       }
 
-      return NextResponse.json({ success: true, order_status: response.data.order_status })
+      return NextResponse.json({ success: true, order_status: order.order_status })
     } else {
       // Update payment record with failed status
       await supabase
@@ -60,11 +60,15 @@ export const POST = withErrorHandling(async function POST(request: Request) {
         })
         .eq("cashfree_order_id", order_id)
 
-      return NextResponse.json({ success: false, order_status: response.data.order_status })
+      return NextResponse.json({ success: false, order_status: order.order_status })
     }
 
   } catch (error: any) {
-    console.error("Cashfree payment verification error:", error)
-    return NextResponse.json({ error: "Failed to verify payment" }, { status: 500 })
+    const message = error?.response?.data?.message || error?.message
+    console.error("Cashfree payment verification error:", message)
+    return NextResponse.json(
+      { error: message || "Failed to verify payment" },
+      { status: 500 },
+    )
   }
 }, { source: "payments.verify", route: "/api/payments/verify" })

@@ -57,11 +57,16 @@ export const POST = withErrorHandling(async function POST(request: Request) {
   }
 
   try {
-    // Create Cashfree order
+    // Create Cashfree order (v6 SDK method: cashfree.PGCreateOrder)
+    const order_id = `booking_${booking_id}_${Date.now()}`
+    const appUrl =
+      process.env.NEXT_PUBLIC_SITE_URL ||
+      process.env.NEXT_PUBLIC_APP_URL ||
+      "http://localhost:3000"
     const orderRequest = {
       order_amount: amount,
       order_currency: "INR",
-      order_id: `booking_${booking_id}_${Date.now()}`,
+      order_id,
       customer_details: {
         customer_id: user.id,
         customer_name: user.user_metadata?.name || "Trekker",
@@ -69,25 +74,26 @@ export const POST = withErrorHandling(async function POST(request: Request) {
         customer_phone: user.user_metadata?.phone || "",
       },
       order_meta: {
-        return_url: `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/bookings/${booking_id}?payment=success`,
-        payment_methods: "cc,dc,upi,netbanking"
+        return_url: `${appUrl}/dashboard/bookings?payment=success&order_id=${order_id}&booking_id=${booking_id}`,
+        payment_methods: "cc,dc,upi,netbanking",
       },
-      order_note: `Payment for trek booking #${booking_id} - ${booking.trek_id} on ${booking.booking_date}`
+      order_note: `Payment for trek booking #${booking_id} - ${booking.trek_id} on ${booking.booking_date}`,
     }
 
-    const response = await cashfree.orders.createOrder(orderRequest)
+    const response = await cashfree.PGCreateOrder(orderRequest, undefined, undefined)
+    const order = response.data
 
     // Store payment record
     const { error: paymentError } = await supabase
       .from("payments")
       .upsert({
-        id: response.data.order_id,
+        id: order.order_id,
         booking_id: booking_id,
         user_id: user.id,
         amount: amount,
         currency: "INR",
         status: "pending",
-        cashfree_order_id: response.data.order_id,
+        cashfree_order_id: order.order_id,
         created_at: new Date().toISOString(),
       }, { onConflict: "id" })
 
@@ -96,14 +102,19 @@ export const POST = withErrorHandling(async function POST(request: Request) {
     }
 
     return NextResponse.json({
-      order_id: response.data.order_id,
-      order_amount: response.data.order_amount,
-      order_currency: response.data.order_currency,
-      payment_session_id: response.data.payment_session_id,
+      order_id: order.order_id,
+      order_amount: order.order_amount,
+      order_currency: order.order_currency,
+      payment_session_id: order.payment_session_id,
     })
 
   } catch (error: any) {
-    console.error("Cashfree order creation error:", error)
-    return NextResponse.json({ error: "Failed to create payment order" }, { status: 500 })
+    // Surface the gateway's message when available so failures are debuggable.
+    const message = error?.response?.data?.message || error?.message
+    console.error("Cashfree order creation error:", message)
+    return NextResponse.json(
+      { error: message || "Failed to create payment order" },
+      { status: 500 },
+    )
   }
 }, { source: "payments.createOrder", route: "/api/payments/create-order" })

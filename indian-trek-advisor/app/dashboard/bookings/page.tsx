@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -59,6 +60,46 @@ export default function BookingsPage() {
   useEffect(() => {
     fetchBookings()
   }, [])
+
+  // Handle returning from Cashfree: the checkout redirects to /dashboard/bookings
+  // with ?payment=success&order_id=...&booking_id=... Here we verify the order,
+  // finalize the booking, then clear the URL.
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  useEffect(() => {
+    const isSuccess = searchParams.get("payment") === "success"
+    const orderId = searchParams.get("order_id")
+    const bookingId = searchParams.get("booking_id")
+    if (!isSuccess || !orderId) return
+
+    const verifyReturnedPayment = async () => {
+      try {
+        await fetch("/api/payments/verify", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ order_id: orderId }),
+        })
+      } catch (e) {
+        console.error("Payment verify on return failed:", e)
+      }
+
+      if (bookingId) {
+        try {
+          await fetch(`/api/bookings/${bookingId}/user-verify`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+          })
+        } catch (e) {
+          console.error("Booking finalize on return failed:", e)
+        }
+      }
+
+      await router.replace("/dashboard/bookings")
+      fetchBookings()
+    }
+    verifyReturnedPayment()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams, router])
 
   // Live updates: subscribe to changes on this trekkers' bookings and refresh.
   // Realtime needs `bookings` in the supabase_realtime publication; a poll runs

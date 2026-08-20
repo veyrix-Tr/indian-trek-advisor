@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server"
 import { getAdminClient, getAuthUser } from "@/lib/supabase-admin"
 import { recordBookingHistory } from "@/lib/booking-history"
-import { canTransition } from "@/lib/booking-flow"
+import { canTransition, isStaleRequest } from "@/lib/booking-flow"
+import { bookingDateSpan } from "@/lib/booking-span"
 import { withErrorHandling } from "@/lib/api"
 
 export const POST = withErrorHandling(async function POST(
@@ -40,23 +41,42 @@ export const POST = withErrorHandling(async function POST(
     return NextResponse.json({ error: "Invalid status transition" }, { status: 400 })
   }
 
-  // Soft-hold: the guide accepts one request per guide+date. If another request
-  // for the same date is already guide_approved (awaiting the trekker's final
-  // verification), the guide can't accept this one too. The date is only hard-
-  // locked (booked) when the trekker does their final verification.
-  const { data: held } = await supabase
+  // Soft-hold: the guide accepts one request per guide + date span. If another
+  // request whose date span overlaps this one is already guide_approved (awaiting
+  // the trekker's final verification) or confirmed, the guide can't accept this
+  // one too — UNLESS the overlapping approval is stale (the trekker hasn't
+  // finalized within 6 hours), in which case the guide may accept a new request
+  // instead. The date is only hard-locked (booked) once a trekker finalizes.
+  const spanSet = new Set(bookingDateSpan(booking.booking_date, booking.trek_days))
+  const { data: existing } = await supabase
     .from("bookings")
-    .select("id")
+    .select("id, status, created_at, guide_responded_at, booking_date, trek_days")
     .eq("guide_id", booking.guide_id)
-    .eq("booking_date", booking.booking_date)
     .in("status", ["guide_approved", "confirmed"])
     .neq("id", booking.id)
-    .limit(1)
+    .limit(50)
 
-  if (held && held.length > 0) {
-    return NextResponse.json({
-      error: "You've already accepted another request for this date. The date becomes locked once that trekker finalizes.",
-    }, { status: 400 })
+  for (const ex of existing ?? []) {
+    const exSpan = bookingDateSpan(ex.booking_date, ex.trek_days)
+    const overlaps = exSpan.some((d) => spanSet.has(d))
+    if (!overlaps) continue
+
+    // A confirmed (paid + verified) booking for this span is a hard block.
+    if (ex.status === "confirmed") {
+      return NextResponse.json({
+        error: "Guide is already booked for this date range.",
+      }, { status: 400 })
+    }
+
+    // guide_approved: block unless it's stale (>6h since the guide accepted,
+    // i.e. the trekker never finalized). Counting from guide_responded_at (not
+    // created_at) means a request accepted just now isn't instantly stale.
+    const approvedAt = ex.guide_responded_at ?? ex.created_at
+    if (!isStaleRequest(approvedAt)) {
+      return NextResponse.json({
+        error: "You've already accepted another request for this date range. The date becomes locked once that trekker finalizes.",
+      }, { status: 400 })
+    }
   }
 
   const { data: updated, error } = await supabase

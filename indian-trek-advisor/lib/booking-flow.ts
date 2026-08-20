@@ -43,3 +43,12 @@ export function canTransition(from: BookingStatus, to: BookingStatus): boolean {
   if (to === "cancelled") return CANCELLABLE_STATUSES.includes(from)
   return VALID_TRANSITIONS[from]?.includes(to) ?? false
 }
+
+// A request that hasn't been acted on within this window is considered "stale":
+// the trekker may send a request to another guide, and the guide may accept a
+// different request for the same span even though an older one is still open.
+export const STALE_REQUEST_MS = 6 * 60 * 60 * 1000
+
+export function isStaleRequest(createdAt: string | Date): boolean {
+  return Date.now() - new Date(createdAt).getTime() >= STALE_REQUEST_MS
+}
