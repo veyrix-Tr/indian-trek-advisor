@@ -27,8 +27,8 @@ const FOOTER_LINKS = [
 export function SiteFooter() {
   return (
     <footer className="border-t border-border bg-card/50 light:bg-secondary">
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 md:grid-cols-[2fr_1fr_1fr] md:px-6">
-        <div className="flex flex-col gap-4">
+      <div className="mx-auto grid max-w-7xl grid-cols-2 gap-x-6 gap-y-8 px-4 py-10 md:grid-cols-[2fr_1fr_1fr] md:gap-10 md:px-6 md:py-14">
+        <div className="flex flex-col gap-3 col-span-2 md:col-span-1">
           <AuthGatedLink
             href="/"
             className="flex items-center gap-2 text-lg font-bold tracking-tight"
@@ -46,10 +46,10 @@ export function SiteFooter() {
 
         {FOOTER_LINKS.map((group) => (
           <nav key={group.heading} aria-label={group.heading}>
-            <h3 className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-primary">
+            <h3 className="mb-3 font-mono text-xs uppercase tracking-[0.25em] text-primary">
               {group.heading}
             </h3>
-            <ul className="flex flex-col gap-2.5">
+            <ul className="flex flex-col gap-2">
               {group.links.map((link) => (
                 <li key={link.label}>
                   <AuthGatedLink
@@ -66,7 +66,7 @@ export function SiteFooter() {
       </div>
 
       <div className="border-t border-border/60">
-        <div className="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-6 text-xs leading-relaxed text-muted-foreground md:flex-row md:items-center md:justify-between md:px-6">
+        <div className="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-5 text-xs leading-relaxed text-muted-foreground md:flex-row md:items-center md:justify-between md:px-6">
           <p>
             Trail conditions change with weather and season. Always verify
             permits and conditions locally before you trek.

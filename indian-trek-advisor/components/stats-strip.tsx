@@ -41,7 +41,7 @@ function Counter({ value }: { value: number }) {
 export function StatsStrip({ stats }: { stats: Stat[] }) {
   return (
     <section aria-label="Trail statistics" className="border-y border-border bg-card/40">
-      <div className="mx-auto grid max-w-7xl grid-cols-2 md:grid-cols-5">
+      <div className="mx-auto grid max-w-7xl grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
         {stats.map((stat, i) => (
           <motion.div
             key={stat.label}
@@ -49,7 +49,7 @@ export function StatsStrip({ stats }: { stats: Stat[] }) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: i * 0.08 }}
-            className={i === stats.length - 1 ? "col-span-2 md:col-span-1" : ""}
+            className={i === stats.length - 1 ? "col-span-2 sm:col-span-1" : ""}
           >
             <AuthGatedLink
               href={stat.href}

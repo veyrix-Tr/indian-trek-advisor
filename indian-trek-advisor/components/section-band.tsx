@@ -25,11 +25,11 @@ export function SectionHeading({
         <span className="h-px w-8 bg-primary/50" aria-hidden="true" />
         {eyebrow}
       </p>
-      <h2 className="bg-gradient-to-r from-primary via-foreground to-primary bg-clip-text text-balance text-3xl font-bold tracking-tight text-transparent md:text-4xl">
+      <h2 className="bg-gradient-to-r from-primary via-foreground to-primary bg-clip-text text-balance text-2xl font-bold tracking-tight text-transparent md:text-4xl">
         {title}
       </h2>
       {description && (
-        <p className="max-w-2xl text-pretty leading-relaxed text-foreground/80">
+        <p className="max-w-2xl text-sm text-pretty leading-relaxed text-foreground/80 md:text-base">
           {description}
         </p>
       )}

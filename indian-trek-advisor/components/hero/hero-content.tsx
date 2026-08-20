@@ -46,16 +46,17 @@ export function HeroSection() {
           stays a fixed dark tone in both dark and light mode. */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-[#0e1a16]" />
 
-      <div className="relative z-10 flex w-full max-w-4xl flex-col items-center gap-8 px-4 pb-24 pt-32 text-center md:px-6">
+      <div className="relative z-10 flex w-full max-w-4xl flex-col items-center gap-6 px-4 pb-16 pt-24 text-center md:gap-8 md:px-6 md:pb-24 md:pt-32">
         <motion.p
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.15, duration: 0.6 }}
-          className="inline-block rounded-full bg-black/40 px-4 py-4.5 font-mono text-[15px] uppercase tracking-[0.25em] text-yellow-100 md:text-xs"        >
+          className="inline-block rounded-full bg-black/40 px-4 py-4.5 font-mono text-[13px] uppercase tracking-[0.18em] text-yellow-100 sm:text-xs"
+        >
           {"\u25B2"} India &middot; Solo Trekkers &middot; Small Groups &middot; Local Guides
         </motion.p>
 
-        <h1 className="text-balance text-5xl font-bold leading-[1.05] tracking-tight text-white md:text-7xl">
+        <h1 className="text-balance px-1 text-[2.6rem] font-bold leading-[1.05] tracking-tight text-white sm:text-6xl md:text-7xl">
           <span className="block">
             {HEADLINE_LINE_1.map((word, i) => (
               <motion.span
@@ -64,7 +65,7 @@ export function HeroSection() {
                 variants={wordVariants}
                 initial="hidden"
                 animate="visible"
-                className="mr-[0.28em] inline-block last:mr-0"
+                className="mr-[0.24em] inline-block last:mr-0"
               >
                 {word}
               </motion.span>
@@ -78,7 +79,7 @@ export function HeroSection() {
                 variants={wordVariants}
                 initial="hidden"
                 animate="visible"
-                className="mr-[0.28em] inline-block last:mr-0"
+                className="mr-[0.24em] inline-block last:mr-0"
               >
                 {word}
               </motion.span>
@@ -107,13 +108,13 @@ export function HeroSection() {
             trigger={
               <button
                 type="button"
-                className="flex w-full cursor-text items-center gap-2 rounded-full border border-white/15 bg-black/30 p-1.5 pl-5 backdrop-blur-md"
+                className="flex w-full cursor-text items-center gap-2 rounded-full border border-white/15 bg-black/30 p-1.5 pl-4 backdrop-blur-md sm:pl-5"
               >
                 <Search className="size-4 shrink-0 text-white/70" aria-hidden="true" />
-                <span className="min-w-0 flex-1 text-left text-sm text-white/70">
+                <span className="min-w-0 flex-1 truncate text-left text-xs text-white/70 sm:text-sm">
                   Search 100 trails: Kedarkantha, Ladakh, Kashmir...
                 </span>
-                <span className="shrink-0 rounded-full bg-emerald-500 px-5 py-1.5 text-sm font-medium text-white">
+                <span className="shrink-0 rounded-full bg-emerald-500 px-4 py-1.5 text-xs font-medium text-white sm:px-5 sm:text-sm">
                   Explore
                 </span>
               </button>

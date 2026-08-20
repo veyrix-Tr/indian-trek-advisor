@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -44,6 +44,14 @@ interface Booking {
 }
 
 export default function BookingsPage() {
+  return (
+    <Suspense fallback={<div className="min-h-[60vh] animate-pulse" />}>
+      <BookingsPageInner />
+    </Suspense>
+  )
+}
+
+function BookingsPageInner() {
   const [bookings, setBookings] = useState<Booking[]>([])
   const [loading, setLoading] = useState(true)
   const [ratingModalOpen, setRatingModalOpen] = useState(false)

@@ -438,12 +438,12 @@ export function AuthModal({
   return (
     <>
       <Dialog open onOpenChange={(open) => !open && onClose()}>
-        <DialogContent className={`auth-modal-dialog border-border bg-card p-0 max-h-[85vh] overflow-y-auto rounded-2xl shadow-2xl w-[95vw] flex ${showTerms ? "sm:max-w-3xl" : "sm:max-w-xl"} transition-all`}>
-          {/* ── SIGN UP / SIGN IN FORM ── */}
-          <div className={`${showTerms ? "hidden sm:block sm:w-1/2" : "w-full"} w-full transition-all`}>
-            <DialogHeader className="px-8 pt-8 pb-0">
-              <DialogTitle className="flex items-center gap-2.5 text-xl text-foreground">
-                <Mountain className="size-6 text-primary" aria-hidden="true" />
+<DialogContent className={`auth-modal-dialog border-border bg-card p-0 max-h-[88vh] overflow-y-auto rounded-2xl shadow-2xl w-[96vw] sm:w-[95vw] flex ${showTerms ? "sm:max-w-3xl" : "sm:max-w-xl"} transition-all`}>
+            {/* ── SIGN UP / SIGN IN FORM ── */}
+            <div className={`${showTerms ? "hidden sm:block sm:w-1/2" : "w-full"} w-full transition-all`}>
+            <DialogHeader className="px-5 pt-6 sm:px-8 sm:pt-8">
+              <DialogTitle className="flex flex-wrap items-center gap-2.5 text-lg text-foreground sm:text-xl">
+                <Mountain className="size-5 text-primary sm:size-6" aria-hidden="true" />
                 Welcome to Indian Trek Advisor
               </DialogTitle>
               <DialogDescription className="text-sm text-muted-foreground">
@@ -452,7 +452,7 @@ export function AuthModal({
             </DialogHeader>
 
           <Tabs value={tab} onValueChange={(v) => setTab(v as AuthTab)}>
-            <div className="px-8 pt-5">
+            <div className="px-5 pt-4 sm:px-8 sm:pt-5">
               <TabsList className="w-full h-11">
                 <TabsTrigger value="signin" className="flex-1 text-sm">
                   Sign In
@@ -464,7 +464,7 @@ export function AuthModal({
             </div>
 
             {/* ── SIGN IN TAB ── */}
-            <TabsContent value="signin" className="px-8 pb-8 pt-4">
+            <TabsContent value="signin" className="px-5 pb-8 pt-4 sm:px-8">
               {notice && (
                 <div className="mx-auto mb-4 max-w-md rounded-xl border border-primary/30 bg-primary/10 px-4 py-3 text-center">
                   <p className="text-sm font-medium text-primary">{notice}</p>
@@ -683,7 +683,7 @@ export function AuthModal({
             <TabsContent value="join" className="pb-8 pt-4">
               {/* ── PHASE 0: VERIFY EMAIL (after signup) ── */}
               {verificationSent && (
-                <div className="px-8 py-6">
+                <div className="px-5 py-5 sm:px-8 sm:py-6">
                   <div className="mx-auto flex max-w-md flex-col items-center text-center">
                     <span className="flex size-14 items-center justify-center rounded-full bg-primary/10">
                       <MailCheck className="size-7 text-primary" aria-hidden="true" />
@@ -737,11 +737,11 @@ export function AuthModal({
 
               {/* ── PHASE 1: CHOOSE ROLE ── */}
               {!verificationSent && !roleChosen && (
-                <div className="px-8">
+                <div className="px-5 sm:px-8">
                   <p className="mb-5 text-center text-sm text-muted-foreground">
                     How would you like to use Indian Trek Advisor?
                   </p>
-                  <div className="flex gap-4">
+                  <div className="grid gap-3 sm:flex sm:gap-4">
                     {(
                       [
                         {
@@ -768,10 +768,10 @@ export function AuthModal({
                           setError("")
                           setConfirmPassword("")
                         }}
-                        className="group flex-1 rounded-xl border-2 border-border bg-card p-6 text-left transition-all hover:border-primary/40 hover:bg-primary/5 cursor-pointer"
+                        className="group flex-1 rounded-xl border-2 border-border bg-card p-5 text-left transition-all hover:border-primary/40 hover:bg-primary/5 cursor-pointer sm:p-6"
                       >
-                        <div className="mb-4 flex size-12 items-center justify-center rounded-xl bg-muted text-muted-foreground transition-colors group-hover:bg-primary/15 group-hover:text-primary">
-                          <opt.icon className="size-6" />
+                        <div className="mb-4 flex size-10 items-center justify-center rounded-xl bg-muted text-muted-foreground transition-colors group-hover:bg-primary/15 group-hover:text-primary sm:size-12">
+                          <opt.icon className="size-5 sm:size-6" />
                         </div>
                         <div className="text-sm font-semibold text-foreground">
                           {opt.label}
@@ -800,7 +800,7 @@ export function AuthModal({
 
               {/* ── PHASE 2A: TREKKER FORM ── */}
               {!verificationSent && roleChosen && !isGuide && (
-                <div className="px-8">
+                <div className="px-5 sm:px-8">
                   <button
                     type="button"
                     onClick={() => { setRoleChosen(false); setError(""); setLegalAccepted(false); setConfirmPassword("") }}
@@ -912,7 +912,7 @@ export function AuthModal({
 
               {/* ── PHASE 2B: GUIDE FORM (step by step) ── */}
               {!verificationSent && roleChosen && isGuide && (
-                <div className="px-8">
+                <div className="px-5 sm:px-8">
                   <button
                     type="button"
                     onClick={() => { setRoleChosen(false); setError(""); setStep(1); setLegalAccepted(false); setConfirmPassword("") }}

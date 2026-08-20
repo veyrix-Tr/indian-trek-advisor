@@ -5,6 +5,14 @@
 @custom-variant dark (&:is(.dark *));
 @custom-variant light (&:is(.light *));
 
+/* Comfortably smaller type + spacing on phones. rem-based sizing scales
+   down ~6% so long copy and labels breathe without cramping layouts. */
+@media (max-width: 639px) {
+  html {
+    font-size: 15px;
+  }
+}
+
 @theme inline {
   --font-sans: var(--font-space-grotesk), 'Space Grotesk Fallback', system-ui, sans-serif;
   --font-mono: var(--font-jetbrains-mono), 'JetBrains Mono Fallback', monospace;
@@ -289,7 +297,9 @@
 }
 .auth-step-line {
   height: 2px;
-  width: 100px;
+  flex: 1 1 40px;
+  min-width: 24px;
+  max-width: 100px;
   background: var(--border);
   transition: background 0.2s;
 }

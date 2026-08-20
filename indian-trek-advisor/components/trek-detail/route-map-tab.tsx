@@ -106,9 +106,18 @@ function buildOutbound(waypoints: MapWaypoint[] | null) {
     return { y: y(e), label: fmtK(Math.round(e)) }
   })
 
-  // Cumulative distance tick labels along the bottom.
+  // Cumulative distance tick labels along the bottom. Checkpoints can sit very
+  // close together (short legs, rest stops), so thin the labels out: each one
+  // must clear the previous by a readable gap or it's skipped — the tick line
+  // is drawn from the real points in the render loop, only the text is deduped.
   const distTicks = points
     .filter((p) => p.cum > 0)
+    .filter((p, i, arr) => {
+      for (let j = 0; j < i; j++) {
+        if (Math.abs(p.x - arr[j].x) < 34) return false
+      }
+      return true
+    })
     .map((p) => ({ value: p.cum, x: p.x }))
 
   return {
@@ -180,10 +189,10 @@ export function RouteMapTab({
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="mt-6 overflow-x-auto rounded-xl border border-border bg-card p-4"
+        className="mt-6 overflow-hidden rounded-xl border border-border bg-card p-2 sm:p-4"
       >
         <div
-          className="relative w-full min-w-[640px] cursor-crosshair"
+          className="relative w-full cursor-crosshair"
           onMouseLeave={() => setActive(null)}
         >
           {/* ── MAIN ELEVATION PROFILE PANEL ── */}
@@ -258,8 +267,8 @@ export function RouteMapTab({
             />
 
             {/* cumulative distance ticks */}
-            {chart.distTicks.map((t) => (
-              <g key={t.x}>
+            {chart.distTicks.map((t, ti) => (
+              <g key={`${ti}-${t.x}`}>
                 <line
                   x1={t.x}
                   x2={t.x}

@@ -59,6 +59,15 @@ export const POST = withErrorHandling(async function POST(
     .single()
 
   if (error) {
+    // DB race guard: a concurrent final verification for an overlapping span of
+    // this guide hit the exclusion constraint first (SQLSTATE 23P01) — the
+    // losing request stays guide_approved rather than being double-booked.
+    if (error.code === "23P01") {
+      return NextResponse.json(
+        { error: "Sorry, the guide just got booked for that date by another trekker. Pick a different date or guide." },
+        { status: 409 }
+      )
+    }
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 

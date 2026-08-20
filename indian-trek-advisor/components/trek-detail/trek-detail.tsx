@@ -174,17 +174,17 @@ export function TrekDetail({
         </svg>
         <div className={`absolute inset-0 ${trek.coverImage ? 'bg-gradient-to-t from-black/70 via-black/30 to-black/20' : 'bg-gradient-to-t from-black/50 via-transparent to-black/20'}`} aria-hidden="true" />
 
-        <div className="relative mx-auto max-w-6xl px-4 py-14 md:px-6 md:py-20">
+        <div className="relative mx-auto max-w-6xl px-4 py-8 md:px-6 md:py-20">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
-            <BackButton light className="mb-6" />
+            <BackButton light className="mb-4 md:mb-6" />
 
-            <div className="flex flex-wrap items-center gap-3">
+            <div className="flex flex-wrap items-center gap-2">
               <span
-                className={`inline-flex items-center gap-1.5 rounded-full bg-black/40 px-3 py-1 font-mono text-xs uppercase tracking-wider backdrop-blur-sm ${diff.className}`}
+                className={`inline-flex items-center gap-1.5 rounded-full bg-black/40 px-3 py-1 font-mono text-[11px] uppercase tracking-wider backdrop-blur-sm ${diff.className}`}
               >
                 <span className="size-1.5 rounded-full bg-current" aria-hidden="true" />
                 {diff.label}
@@ -202,11 +202,11 @@ export function TrekDetail({
               )}
             </div>
 
-            <h1 className="mt-4 max-w-3xl text-balance font-sans text-4xl font-bold tracking-tight text-white md:text-6xl">
+            <h1 className="mt-3 max-w-3xl text-balance font-sans text-3xl font-bold tracking-tight text-white md:text-6xl">
               {trek.name}
             </h1>
 
-            <p className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-sm text-white/80">
+            <p className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-xs text-white/80 sm:text-sm">
               <span className="inline-flex items-center gap-1.5">
                 <MapPin className="size-3.5" aria-hidden="true" />
                 {[...new Set([trek.region, trek.state].filter(Boolean))].join(", ")}
@@ -219,7 +219,7 @@ export function TrekDetail({
               )}
             </p>
 
-            <dl className="mt-8 grid max-w-2xl grid-cols-2 gap-4 sm:grid-cols-4">
+            <dl className="mt-4 grid max-w-2xl grid-cols-2 gap-2.5 sm:grid-cols-4 sm:gap-4">
               {[
                 {
                   icon: Clock,
@@ -242,22 +242,21 @@ export function TrekDetail({
               ].map((stat) => (
                 <div
                   key={stat.label}
-                  className="rounded-lg bg-black/30 px-3 py-2.5 backdrop-blur-sm"
+                  className="rounded-lg bg-black/30 px-3 py-2 backdrop-blur-sm"
                 >
                   <dt className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest text-white/60">
                     <stat.icon className="size-3" aria-hidden="true" />
                     {stat.label}
                   </dt>
-                  <dd className="mt-1 truncate font-mono text-sm font-semibold text-white" title={String(stat.value)}>
+                  <dd className="mt-0.5 truncate font-mono text-sm font-semibold text-white" title={String(stat.value)}>
                     {stat.value}
                   </dd>
                 </div>
               ))}
             </dl>
 
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-5 flex flex-wrap gap-2.5 md:mt-8 md:gap-3">
               <Button
-                size="lg"
                 className="rounded-full bg-white text-gray-950 hover:bg-white/90"
                 onClick={() => goToTab("guides")}
               >
@@ -265,7 +264,6 @@ export function TrekDetail({
                 Book a Guide
               </Button>
               <Button
-                size="lg"
                 variant="outline"
                 className="rounded-full border-white/40 bg-transparent text-white hover:bg-white/10 hover:text-white"
                 onClick={() => setTab("itinerary")}
@@ -274,7 +272,6 @@ export function TrekDetail({
                 View Itinerary
               </Button>
               <Button
-                size="lg"
                 variant="outline"
                 className="rounded-full border-white/40 bg-transparent text-white hover:bg-white/10 hover:text-white"
                 onClick={toggleSaveTrek}
@@ -293,7 +290,7 @@ export function TrekDetail({
       </section>
 
       {/* ---- Tabs ---- */}
-      <div ref={tabsNavRef} className="sticky top-16 z-30 border-b border-border bg-background/90 backdrop-blur-md">
+      <div ref={tabsNavRef} className="border-b border-border bg-background/90 backdrop-blur-md md:sticky md:top-16 md:z-30">
         <nav
           className="mx-auto flex max-w-6xl gap-1 overflow-x-auto px-4 md:px-6"
           aria-label="Trek sections"
@@ -304,11 +301,11 @@ export function TrekDetail({
               type="button"
               onClick={() => setTab(t.id)}
               aria-current={tab === t.id ? "page" : undefined}
-              className={`relative flex shrink-0 items-center gap-2 px-4 py-3.5 font-mono text-xs uppercase tracking-wider transition-colors ${
+              className={`relative flex shrink-0 items-center gap-1.5 px-3 py-3 font-mono text-[11px] uppercase tracking-wider transition-colors sm:gap-2 sm:px-4 md:py-3.5 md:text-xs ${
                 tab === t.id ? "text-primary" : "text-muted-foreground hover:text-foreground"
               }`}
             >
-              <t.icon className="size-3.5" aria-hidden="true" />
+              <t.icon className="size-3.5 shrink-0" aria-hidden="true" />
               {t.label}
               {tab === t.id && (
                 <motion.span
@@ -323,7 +320,7 @@ export function TrekDetail({
       </div>
 
       {/* ---- Tab content ---- */}
-      <div className="mx-auto max-w-6xl px-4 py-10 md:px-6 md:py-14">
+      <div className="mx-auto max-w-6xl px-4 py-8 md:px-6 md:py-14">
         <AnimatePresence mode="wait">
           <motion.div
             key={tab}
