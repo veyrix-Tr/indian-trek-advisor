@@ -314,7 +314,7 @@ function BookingsPageInner() {
                   <Card className="border-border/60 bg-card/60 backdrop-blur-xl">
                     <CardHeader>
                       <div className="flex items-center justify-between">
-                        <CardTitle className="text-lg">{booking.trek_id}</CardTitle>
+                        <CardTitle className="text-lg">{getTrekName(booking.trek_id)}</CardTitle>
                         <Badge className={`border text-[10px] font-mono uppercase tracking-wider ${status.colorClass}`}>
                           {status.label}
                         </Badge>

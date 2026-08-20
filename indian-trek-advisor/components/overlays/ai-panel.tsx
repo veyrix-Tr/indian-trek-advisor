@@ -125,7 +125,7 @@ export function AiPanel({ onClose }: { onClose: () => void }) {
       <SheetContent side="right" className="flex w-full flex-col gap-0 border-border bg-card p-0 data-[side=right]:sm:max-w-xl">
         <SheetHeader className="relative border-b border-border px-5 py-4">
           <SheetTitle className="flex items-center gap-2 text-foreground">
-            <span className="flex size-8 items-center justify-center rounded-full bg-primary/15">
+            <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/15">
               <Sparkles className="size-4 text-primary" aria-hidden="true" />
             </span>
             Trail Guide AI
@@ -137,7 +137,7 @@ export function AiPanel({ onClose }: { onClose: () => void }) {
             <button
               type="button"
               onClick={clearChat}
-              className="absolute bottom-4 right-12 flex items-center gap-1.5 rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-1.5 text-xs font-medium text-red-500 shadow-xs transition-all hover:bg-red-500/20 hover:text-red-400 active:scale-95"
+              className="mt-3 flex items-center gap-1.5 self-start rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-1.5 text-xs font-medium text-red-500 shadow-xs transition-all hover:bg-red-500/20 hover:text-red-400 active:scale-95"
             >
               <Trash2 className="size-3.5" aria-hidden="true" />
               Clear

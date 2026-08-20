@@ -135,14 +135,16 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-2 lg:flex">
-          <TrekSearch />
+        <div className="ml-2 flex items-center gap-2 md:ml-4 md:gap-2.5 md:pl-2">
+          <div className="hidden md:block">
+            <TrekSearch />
+          </div>
           <Button
             variant="outline"
             size="icon"
             aria-label="Toggle light / dark mode"
             onClick={toggleTheme}
-            className="border-border/70 bg-white/5 text-foreground/80 hover:bg-white/10 hover:text-foreground dark:bg-white/5 dark:hover:bg-white/10"
+            className="hidden border-border/70 bg-white/5 text-foreground/80 hover:bg-white/10 hover:text-foreground dark:bg-white/5 dark:hover:bg-white/10 lg:inline-flex"
           >
             <span className="light-hidden">
               <Sun className="size-4" aria-hidden="true" />
@@ -153,22 +155,37 @@ export function SiteHeader() {
           </Button>
           <Button
             variant="outline"
+            size="icon"
+            aria-label="Trail Guide AI"
+            onClick={() => {
+              if (requireAuth()) {
+                openAi()
+              }
+            }}
+            className="ml-1 inline-flex gap-1.5 border-primary/60 bg-primary/20 font-mono text-xs uppercase tracking-wider text-primary hover:bg-primary/30 hover:text-primary hover:scale-105 transition-all md:ml-2 lg:hidden"
+          >
+            <Sparkles className="size-4" aria-hidden="true" />
+          </Button>
+          <Button
+            variant="outline"
             size="sm"
             onClick={() => {
               if (requireAuth()) {
                 openAi()
               }
             }}
-            className="gap-1.5 border-primary/60 bg-primary/20 font-mono text-xs uppercase tracking-wider text-primary hover:bg-primary/30 hover:text-primary hover:scale-105 transition-all"
+            className="hidden gap-1.5 border-primary/60 bg-primary/20 font-mono text-xs uppercase tracking-wider text-primary hover:bg-primary/30 hover:text-primary hover:scale-105 transition-all lg:inline-flex"
           >
             <Sparkles className="size-3.5" aria-hidden="true" />
             Trail Guide AI
           </Button>
-          <div className="ml-2 flex items-center">
+          <div className="flex items-center">
             {!loading && user ? (
               <>
-                <NotificationBell />
-                <div className="relative" ref={profileRef}>
+                <div className="ml-1 flex items-center md:ml-2">
+                  <NotificationBell />
+                </div>
+                <div className="relative hidden lg:block" ref={profileRef}>
                 <button
                   onClick={() => setProfileOpen(!profileOpen)}
                   className="group flex items-center gap-1.5 rounded-full bg-white/5 p-1 pr-2.5 transition-colors hover:bg-white/15"
@@ -331,11 +348,79 @@ export function SiteHeader() {
                 </AuthGatedLink>
               ))}
             </nav>
+
+            {/* Phone: profile actions appear here (with a distinct look from the
+                nav links) since the profile button is hidden on small screens. */}
+            {!loading && user && (
+              <div className="mt-3 border-t border-border pt-2 px-4">
+                <p className="mb-1 px-1 font-mono text-[9px] uppercase tracking-widest text-primary">
+                  My Account
+                </p>
+                <div className="flex flex-col gap-1">
+                  <Link
+                    href="/profile"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center gap-2.5 rounded-lg bg-primary/5 px-3 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary/10"
+                  >
+                    <User className="size-4" />
+                    Profile
+                  </Link>
+                  {accountType === "trekker" && (
+                    <>
+                      <Link
+                        href="/saved"
+                        onClick={() => setMobileOpen(false)}
+                        className="flex items-center gap-2.5 rounded-lg bg-primary/5 px-3 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary/10"
+                      >
+                        <Bookmark className="size-4" />
+                        Saved Treks
+                      </Link>
+                      <Link
+                        href="/dashboard/bookings"
+                        onClick={() => setMobileOpen(false)}
+                        className="flex items-center gap-2.5 rounded-lg bg-primary/5 px-3 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary/10"
+                      >
+                        <CalendarDays className="size-4" />
+                        My Bookings
+                      </Link>
+                      <Link
+                        href="/reviews"
+                        onClick={() => setMobileOpen(false)}
+                        className="flex items-center gap-2.5 rounded-lg bg-primary/5 px-3 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary/10"
+                      >
+                        <Star className="size-4" />
+                        My Reviews
+                      </Link>
+                    </>
+                  )}
+                  {accountType === "guide" && (
+                    <Link
+                      href="/guide/dashboard"
+                      onClick={() => setMobileOpen(false)}
+                      className="flex items-center gap-2.5 rounded-lg bg-primary/5 px-3 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary/10"
+                    >
+                      <Mountain className="size-4" />
+                      Guide Dashboard
+                    </Link>
+                  )}
+                  {accountType === "admin" && (
+                    <Link
+                      href="/admin"
+                      onClick={() => setMobileOpen(false)}
+                      className="flex items-center gap-2.5 rounded-lg bg-primary/5 px-3 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-primary/10"
+                    >
+                      <Shield className="size-4" />
+                      Admin Panel
+                    </Link>
+                  )}
+                </div>
+              </div>
+            )}
             <div className="mt-auto flex flex-col gap-2 px-4 pb-6">
               <Button
                 variant="outline"
                 onClick={toggleTheme}
-                className="justify-start gap-2 border-border/70 bg-white/5 text-foreground/80 hover:bg-white/10 hover:text-foreground"
+                className="justify-start gap-2 border-border/70 bg-white/5 text-foreground/80 hover:bg-white/10 hover:text-foreground py-4"
               >
                 <span className="light-hidden">
                   <Sun className="size-4" aria-hidden="true" />
@@ -354,7 +439,7 @@ export function SiteHeader() {
                     openAi()
                   }
                 }}
-                className="gap-1.5 border-primary/30 bg-primary/5 text-primary hover:bg-primary/15 hover:text-primary"
+                className="mb-2 mt-2 gap-1.5 border-primary/30 bg-primary/5 px-5 py-5 text-primary hover:bg-primary/15 hover:text-primary"
               >
                 <Sparkles className="size-4" aria-hidden="true" />
                 Trail Guide AI
