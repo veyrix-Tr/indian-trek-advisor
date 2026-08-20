@@ -45,6 +45,12 @@ export default function RootLayout({
       lang="en"
       className={`bg-background ${spaceGrotesk.variable} ${jetbrainsMono.variable}`}
     >
+      <head>
+        <script
+          src="https://sdk.cashfree.com/js/v3/cashfree.js"
+          async
+        />
+      </head>
       <body className="font-sans antialiased">
         <ThemeProvider>
           <OverlayProvider>

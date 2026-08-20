@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dialog"
 import { Calendar, Star, Phone, IndianRupee, AlertCircle, CheckCircle2, Users, Clock, XCircle } from "lucide-react"
 import { RatingModal } from "@/components/rating-modal"
+import { PaymentModal } from "@/components/payment/payment-modal"
 import { getStatusConfig } from "@/lib/booking-status"
 import { createClient } from "@/utils/supabase/client"
 import { StatusTimeline } from "@/components/booking/status-timeline"
@@ -48,6 +49,7 @@ export default function BookingsPage() {
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null)
 
   const [paymentDialogBooking, setPaymentDialogBooking] = useState<Booking | null>(null)
+  const [paymentModalOpen, setPaymentModalOpen] = useState(false)
   const [cancelDialogBooking, setCancelDialogBooking] = useState<Booking | null>(null)
   const [cancelReason, setCancelReason] = useState("")
   const [submitting, setSubmitting] = useState(false)
@@ -135,6 +137,17 @@ export default function BookingsPage() {
 
   const handleConfirmBooking = async () => {
     if (!paymentDialogBooking) return
+    // Show payment modal instead of direct confirmation
+    setPaymentModalOpen(true)
+  }
+
+  const handlePaymentSuccess = () => {
+    // After successful payment, proceed with final verification
+    handleFinalVerification()
+  }
+
+  const handleFinalVerification = async () => {
+    if (!paymentDialogBooking) return
     setSubmitting(true)
     setActionError(null)
     try {
@@ -146,6 +159,7 @@ export default function BookingsPage() {
       if (response.ok) {
         fetchBookings()
         setPaymentDialogBooking(null)
+        setPaymentModalOpen(false)
         showToast("Booking confirmed! Your dates are locked in.")
       } else {
         const data = await response.json()
@@ -155,6 +169,12 @@ export default function BookingsPage() {
       setActionError("Network error. Please try again.")
     }
     setSubmitting(false)
+  }
+
+  const getTrekName = (trekId: string) => {
+    const { getTrekById } = require("@/lib/data")
+    const trek = getTrekById(Number(trekId))
+    return trek?.name || "Trek"
   }
 
   const handleRateGuide = (booking: Booking) => {
@@ -364,55 +384,22 @@ export default function BookingsPage() {
         />
       )}
 
-      {/* Payment Dialog */}
-      <Dialog
-        open={Boolean(paymentDialogBooking)}
-        onOpenChange={(open) => {
-          if (!open) {
+      {/* Payment Modal */}
+      {paymentDialogBooking && (
+        <PaymentModal
+          bookingId={paymentDialogBooking.id}
+          amount={paymentDialogBooking.total_amount || 0}
+          trekName={getTrekName(paymentDialogBooking.trek_id)}
+          bookingDate={paymentDialogBooking.booking_date}
+          isOpen={paymentModalOpen}
+          onClose={() => {
+            setPaymentModalOpen(false)
             setPaymentDialogBooking(null)
             setActionError(null)
-          }
-        }}
-      >
-        <DialogContent className="max-w-sm border-border bg-card">
-          <DialogHeader>
-            <DialogTitle>Final Verification</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-3">
-            <div className="rounded-xl border border-primary/20 bg-primary/5 p-4 text-center">
-              <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                Total
-              </p>
-              <p className="mt-1 text-2xl font-bold text-primary">
-                {inr(paymentDialogBooking?.total_amount ?? 0)}
-              </p>
-              {paymentDialogBooking?.base_rate ? (
-                <p className="mt-1 text-xs text-muted-foreground">
-                  {inr(paymentDialogBooking.base_rate)}/day × {(paymentDialogBooking.trek_days ?? 1)} day
-                  {(paymentDialogBooking.trek_days ?? 1) > 1 ? "s" : ""} × {(paymentDialogBooking.num_trekkers ?? 1)} trekker
-                  {(paymentDialogBooking.num_trekkers ?? 1) > 1 ? "s" : ""}
-                </p>
-              ) : null}
-            </div>
-            <p className="text-xs text-muted-foreground">
-              Confirm this booking to lock the dates in. Payment will be added here later. After confirming, the booking can no longer be cancelled.
-            </p>
-            {actionError && (
-              <p className="flex items-center gap-1.5 text-xs text-destructive">
-                <AlertCircle className="size-3.5 shrink-0" />
-                {actionError}
-              </p>
-            )}
-            <Button
-              onClick={handleConfirmBooking}
-              disabled={submitting}
-              className="w-full"
-            >
-              {submitting ? "Confirming..." : "Confirm Booking"}
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
+          }}
+          onSuccess={handlePaymentSuccess}
+        />
+      )}
 
       {/* Cancel Dialog */}
       <Dialog

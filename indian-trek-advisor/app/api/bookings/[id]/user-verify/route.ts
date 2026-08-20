@@ -39,9 +39,14 @@ export const POST = withErrorHandling(async function POST(
   }
 
   // State-machine guard: only a guide_approved booking can be finalized by the
-  // trekker.
+  // trekker, and payment must be completed.
   if (booking.status !== "guide_approved" || !canTransition(booking.status, "confirmed")) {
     return NextResponse.json({ error: "Booking must be accepted by the guide before final verification" }, { status: 400 })
+  }
+
+  // Check if payment is completed
+  if (booking.payment_status !== "paid") {
+    return NextResponse.json({ error: "Payment must be completed before final verification" }, { status: 400 })
   }
 
   const { data: updated, error } = await supabase
