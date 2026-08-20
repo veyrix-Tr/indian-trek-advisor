@@ -37,6 +37,10 @@ export default function SavedTreksPage() {
         router.replace("/guide/dashboard")
         return
       }
+      if (profile?.account_type === "admin") {
+        router.replace("/admin")
+        return
+      }
       const { data: trekker, error: trekkerErr } = await supabase
         .from("trekkers")
         .select("saved_treks")

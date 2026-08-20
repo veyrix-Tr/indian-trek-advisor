@@ -206,7 +206,7 @@ export function SiteHeader() {
                         <User className="size-4" />
                         Profile
                       </Link>
-                        {accountType !== "guide" && (
+                        {accountType === "trekker" && (
                           <Link
                             href="/saved"
                             onClick={() => setProfileOpen(false)}
@@ -216,7 +216,7 @@ export function SiteHeader() {
                             Saved Treks
                           </Link>
                         )}
-                        {accountType !== "guide" && (
+                        {accountType === "trekker" && (
                           <>
                             <Link
                               href="/dashboard/bookings"

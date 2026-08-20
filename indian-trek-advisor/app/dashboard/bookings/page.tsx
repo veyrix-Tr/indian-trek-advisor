@@ -163,6 +163,8 @@ function BookingsPageInner() {
           .single()
         if (profile?.account_type === "guide") {
           window.location.replace("/guide/dashboard")
+        } else if (profile?.account_type === "admin") {
+          window.location.replace("/admin")
         }
       }
     })()

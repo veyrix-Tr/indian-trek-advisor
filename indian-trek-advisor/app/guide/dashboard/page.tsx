@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
@@ -60,6 +61,7 @@ const TABS = [
 ]
 
 export default function GuideDashboardPage() {
+  const router = useRouter()
   const [bookings, setBookings] = useState<Booking[]>([])
   const [reviews, setReviews] = useState<Review[]>([])
   const [profile, setProfile] = useState<GuideProfile | null>(null)
@@ -67,6 +69,25 @@ export default function GuideDashboardPage() {
   const [refreshing, setRefreshing] = useState(false)
   const [activeTab, setActiveTab] = useState("overview")
   const [bookingsFilterHint, setBookingsFilterHint] = useState<{ filter: string; nonce: number } | undefined>(undefined)
+
+  useEffect(() => {
+    (async () => {
+      const supabase = (await import("@/utils/supabase/client")).createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) {
+        router.replace("/")
+        return
+      }
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("account_type")
+        .eq("id", user.id)
+        .single()
+      if (profile?.account_type !== "guide") {
+        router.replace(profile?.account_type === "admin" ? "/admin" : "/")
+      }
+    })()
+  }, [router])
 
   useEffect(() => {
     Promise.all([fetchBookings(), fetchReviews(), fetchProfile()]).then(() => setLoading(false))

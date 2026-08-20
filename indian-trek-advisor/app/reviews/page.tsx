@@ -55,6 +55,10 @@ export default function ReviewsPage() {
           router.replace("/guide/dashboard")
           return
         }
+        if (profile?.account_type === "admin") {
+          router.replace("/admin")
+          return
+        }
         const res = await fetch("/api/trekker/reviews")
         if (res.status === 401) {
           router.replace("/")

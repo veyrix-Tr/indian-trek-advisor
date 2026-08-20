@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { parseTrekDays, computeBookingAmount, inr } from "@/lib/pricing"
+import { createClient } from "@/utils/supabase/client"
 import {
   Dialog,
   DialogContent,
@@ -55,6 +56,21 @@ export function GuidesTab({ trek }: { trek: Trek }) {
   const [bookingSuccess, setBookingSuccess] = useState(false)
   const [myRequest, setMyRequest] = useState<{ guide_id: string; status: string } | null>(null)
   const [myRequestLoading, setMyRequestLoading] = useState(false)
+  const [accountType, setAccountType] = useState<string | null>(null)
+  const canBook = accountType === null || accountType === "trekker"
+
+  useEffect(() => {
+    const supabase = createClient()
+    supabase.auth.getUser().then(({ data }) => {
+      if (!data.user) return
+      supabase
+        .from("profiles")
+        .select("account_type")
+        .eq("id", data.user.id)
+        .single()
+        .then(({ data: profile }) => setAccountType(profile?.account_type ?? null))
+    })
+  }, [])
 
   useEffect(() => {
     fetchGuides()
@@ -154,24 +170,26 @@ export function GuidesTab({ trek }: { trek: Trek }) {
   return (
     <div className="max-w-3xl space-y-8">
       {/* Date Selection */}
-      <div className="rounded-xl border border-border bg-card p-6">
-        <h3 className="mb-4 font-semibold">Select Trekking Date</h3>
-        <Input
-          type="date"
-          value={selectedDate}
-          onChange={(e) => {
-            setSelectedDate(e.target.value)
-            setBookingError(null)
-          }}
-          className="max-w-xs"
-        />
-        {bookingError && !selectedGuide && (
-          <p className="mt-2 flex items-center gap-1.5 text-xs text-destructive">
-            <AlertCircle className="size-3.5 shrink-0" />
-            {bookingError}
-          </p>
-        )}
-      </div>
+      {canBook && (
+        <div className="rounded-xl border border-border bg-card p-6">
+          <h3 className="mb-4 font-semibold">Select Trekking Date</h3>
+          <Input
+            type="date"
+            value={selectedDate}
+            onChange={(e) => {
+              setSelectedDate(e.target.value)
+              setBookingError(null)
+            }}
+            className="max-w-xs"
+          />
+          {bookingError && !selectedGuide && (
+            <p className="mt-2 flex items-center gap-1.5 text-xs text-destructive">
+              <AlertCircle className="size-3.5 shrink-0" />
+              {bookingError}
+            </p>
+          )}
+        </div>
+      )}
 
       {/* Guides List */}
       {loading ? (
@@ -190,7 +208,7 @@ export function GuidesTab({ trek }: { trek: Trek }) {
             {selectedDate ? `Available Guides — ${guidesToShow.length}` : "Guides for This Trek"}
           </h3>
 
-          {!selectedDate && (
+          {!selectedDate && canBook && (
             <div className="flex items-start gap-2 rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-700 dark:text-amber-400">
               <AlertCircle className="mt-0.5 size-4 shrink-0" />
               <p>
@@ -205,7 +223,7 @@ export function GuidesTab({ trek }: { trek: Trek }) {
               <GuideCard
                 key={guide.id}
                 guide={guide}
-                onBook={() => handleBookGuide(guide)}
+                onBook={canBook ? () => handleBookGuide(guide) : undefined}
                 myStatus={myStatus}
               />
             )
@@ -430,11 +448,11 @@ function GuideCard({
             <CheckCircle2 className="size-3" />
             Confirmed
           </span>
-        ) : (
+        ) : onBook ? (
           <Button onClick={onBook} className="shrink-0">
             Book Guide
           </Button>
-        )}      </div>
+        ) : null}      </div>
     </motion.div>
   )
 }

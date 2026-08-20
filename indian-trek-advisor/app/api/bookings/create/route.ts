@@ -11,6 +11,16 @@ export const POST = withErrorHandling(async function POST(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
+  // Only trekkers can place a booking request for a guide. Guides and admins
+  // use the admin/guide flows and must not be able to book as a trekker.
+  const { role } = await resolveActorRole(getAdminClient(), user.id)
+  if (role !== "trekker") {
+    return NextResponse.json(
+      { error: "Only trekkers can book a guide. Guides and admins use their own dashboards." },
+      { status: 403 },
+    )
+  }
+
   const supabase = getAdminClient()
   const body = await request.json()
   const { trek_id, guide_id, booking_date, notes, num_trekkers = 1 } = body

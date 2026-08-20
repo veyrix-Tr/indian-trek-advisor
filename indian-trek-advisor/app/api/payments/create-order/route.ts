@@ -75,7 +75,7 @@ export const POST = withErrorHandling(async function POST(request: Request) {
       },
       order_meta: {
         return_url: `${appUrl}/dashboard/bookings?payment=success&order_id=${order_id}&booking_id=${booking_id}`,
-        payment_methods: "cc,dc,upi,netbanking",
+        payment_methods: "cc,dc,upi,nb",
       },
       order_note: `Payment for trek booking #${booking_id} - ${booking.trek_id} on ${booking.booking_date}`,
     }

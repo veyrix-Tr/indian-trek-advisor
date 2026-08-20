@@ -64,9 +64,23 @@ export function TrekDetail({
   const [tab, setTab] = useState<TabId>("overview")
   const [isSaved, setIsSaved] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [accountType, setAccountType] = useState<string | null>(null)
   const diff = DIFFICULTY_META[trek.difficulty]
   const tabsNavRef = useRef<HTMLDivElement>(null)
   const supabase = createClient()
+  const isTrekker = accountType === "trekker"
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      if (!data.user) return
+      supabase
+        .from("profiles")
+        .select("account_type")
+        .eq("id", data.user.id)
+        .single()
+        .then(({ data: profile }) => setAccountType(profile?.account_type ?? null))
+    })
+  }, [supabase])
 
   useEffect(() => {
     async function checkIfSaved() {
@@ -265,13 +279,15 @@ export function TrekDetail({
             </dl>
 
             <div className="mt-5 flex flex-wrap gap-2.5 md:mt-8 md:gap-3">
-              <Button
-                className="rounded-full bg-white text-gray-950 hover:bg-white/90"
-                onClick={() => goToTab("guides")}
-              >
-                <Users className="size-4" aria-hidden="true" />
-                Book a Guide
-              </Button>
+              {accountType !== "guide" && accountType !== "admin" && (
+                <Button
+                  className="rounded-full bg-white text-gray-950 hover:bg-white/90"
+                  onClick={() => goToTab("guides")}
+                >
+                  <Users className="size-4" aria-hidden="true" />
+                  Book a Guide
+                </Button>
+              )}
               <Button
                 variant="outline"
                 className="rounded-full border-white/40 bg-transparent text-white hover:bg-white/10 hover:text-white"
@@ -280,19 +296,21 @@ export function TrekDetail({
                 <Route className="size-4" aria-hidden="true" />
                 View Itinerary
               </Button>
-              <Button
-                variant="outline"
-                className="rounded-full border-white/40 bg-transparent text-white hover:bg-white/10 hover:text-white"
-                onClick={toggleSaveTrek}
-                disabled={loading}
-              >
-                {isSaved ? (
-                  <BookmarkCheck className="size-4" aria-hidden="true" />
-                ) : (
-                  <Bookmark className="size-4" aria-hidden="true" />
-                )}
-                {isSaved ? "Saved" : "Save Trek"}
-              </Button>
+              {accountType !== "guide" && accountType !== "admin" && (
+                <Button
+                  variant="outline"
+                  className="rounded-full border-white/40 bg-transparent text-white hover:bg-white/10 hover:text-white"
+                  onClick={toggleSaveTrek}
+                  disabled={loading}
+                >
+                  {isSaved ? (
+                    <BookmarkCheck className="size-4" aria-hidden="true" />
+                  ) : (
+                    <Bookmark className="size-4" aria-hidden="true" />
+                  )}
+                  {isSaved ? "Saved" : "Save Trek"}
+                </Button>
+              )}
             </div>
           </motion.div>
         </div>

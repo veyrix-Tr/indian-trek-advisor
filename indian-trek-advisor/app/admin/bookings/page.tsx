@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -45,9 +46,29 @@ const FILTERS = [
 ]
 
 export default function AdminBookingsPage() {
+  const router = useRouter()
   const [bookings, setBookings] = useState<Booking[]>([])
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState("all")
+
+  useEffect(() => {
+    (async () => {
+      const supabase = (await import("@/utils/supabase/client")).createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) {
+        router.replace("/")
+        return
+      }
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("account_type")
+        .eq("id", user.id)
+        .single()
+      if (profile?.account_type !== "admin") {
+        router.replace(profile?.account_type === "guide" ? "/guide/dashboard" : "/")
+      }
+    })()
+  }, [router])
 
   useEffect(() => {
     fetchBookings()
