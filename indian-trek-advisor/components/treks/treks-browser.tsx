@@ -19,6 +19,7 @@ import {
   type Difficulty,
   DIFFICULTY_META,
   getAllTreks,
+  getAllStates,
   getKailashTreks,
   getPanchKedarTreks,
 } from "@/lib/data"
@@ -41,12 +42,9 @@ const DAY_PRESETS = [
   { label: "11+", min: 11, max: MAX_DAYS },
 ]
 
-const ALL_STATES = [
-  "Uttarakhand",
-  "Himachal Pradesh",
-  "Jammu & Kashmir",
-  "Ladakh",
-]
+// All states that actually have treks in the catalog (derived from the data,
+// so the filter always matches the current trek list).
+const ALL_STATES = getAllStates()
 
 function matchesQuery(trek: Trek, q: string) {
   const hay = `${trek.name} ${trek.state} ${trek.region ?? ""} ${trek.district ?? ""} ${trek.baseCamp ?? ""}`.toLowerCase()

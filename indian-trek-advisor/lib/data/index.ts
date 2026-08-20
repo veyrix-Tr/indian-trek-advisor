@@ -1,6 +1,5 @@
 import treksJson from "./treks.json"
 import mapDataJson from "./trek-map-data.json"
-import gearShopsJson from "./gear-shops.json"
 
 export interface TrekOverview {
   location?: string
@@ -69,20 +68,8 @@ export interface MapWaypoint {
   ret?: boolean
 }
 
-export interface GearShop {
-  id: string
-  name: string
-  town: string
-  region: string
-  gear: string[]
-  desc: string
-  phone: string
-  rates: string
-}
-
 const treks = treksJson as unknown as Trek[]
 const mapData = mapDataJson as unknown as Record<string, MapWaypoint[]>
-const gearShops = gearShopsJson as unknown as GearShop[]
 
 // ---- Slugs (deduped: duplicate names get district suffix) ----
 
@@ -120,6 +107,16 @@ export function getTrekSlug(trek: Trek): string {
 
 export function getAllTreks(): Trek[] {
   return treks
+}
+
+// All states/regions actually present in the trek catalog (used to build the
+// state filter). Derived from data so the filter always matches the treks.
+export function getAllStates(): string[] {
+  const states = new Set<string>()
+  for (const t of treks) {
+    if (t.state) states.add(t.state)
+  }
+  return Array.from(states).sort()
 }
 
 export function getTrekBySlug(slug: string): Trek | undefined {
@@ -198,10 +195,6 @@ export function getMapData(trekId: number): MapWaypoint[] | undefined {
   if (!trek) return undefined
   const derived = deriveMapData(trek)
   return derived.length > 0 ? derived : undefined
-}
-
-export function getGearShops(): GearShop[] {
-  return gearShops
 }
 
 export const GEAR_REGIONS = [

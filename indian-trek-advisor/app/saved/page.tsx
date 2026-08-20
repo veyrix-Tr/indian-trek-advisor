@@ -37,11 +37,15 @@ export default function SavedTreksPage() {
         router.replace("/guide/dashboard")
         return
       }
-      const { data: trekker } = await supabase
+      const { data: trekker, error: trekkerErr } = await supabase
         .from("trekkers")
         .select("saved_treks")
         .eq("user_id", user.id)
-        .single()
+        .maybeSingle()
+      if (trekkerErr) {
+        console.error("Error loading saved treks:", trekkerErr)
+        return
+      }
       if (active) {
         setSavedNames(trekker?.saved_treks ?? [])
         setLoading(false)

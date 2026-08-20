@@ -72,11 +72,15 @@ export function TrekDetail({
     async function checkIfSaved() {
       const { data: { user } } = await supabase.auth.getUser()
       if (user) {
-        const { data: trekker } = await supabase
+        const { data: trekker, error: trekkerErr } = await supabase
           .from("trekkers")
           .select("saved_treks")
           .eq("user_id", user.id)
-          .single()
+          .maybeSingle()
+        if (trekkerErr) {
+          console.error("Error checking saved trek:", trekkerErr)
+          return
+        }
         if (trekker?.saved_treks?.includes(trek.name)) {
           setIsSaved(true)
         }
@@ -95,12 +99,17 @@ export function TrekDetail({
         return
       }
 
-      const { data: trekker } = await supabase
+      const { data: trekker, error: trekkerErr } = await supabase
         .from("trekkers")
         .select("saved_treks")
         .eq("user_id", user.id)
-        .single()
+        .maybeSingle()
 
+      if (trekkerErr) {
+        console.error("Error loading saved treks:", trekkerErr)
+        setLoading(false)
+        return
+      }
       const currentSaved = trekker?.saved_treks || []
       const newSaved = isSaved
         ? currentSaved.filter((t: string) => t !== trek.name)
