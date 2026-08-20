@@ -30,7 +30,7 @@ const BASE_LINKS = [
 const TREKKER_LINKS = [
   { href: "/treks?section=kailash", label: "Kailash Yatra" },
   { href: "/treks?section=panch-kedar", label: "Panch Kedar" },
-  { href: "/gear", label: "Gear Rental" },
+  { href: "/dashboard/bookings", label: "My Bookings" },
 ]
 
 const GUIDE_LINKS = [
@@ -81,6 +81,15 @@ export function SiteHeader() {
   function isActive(link: { href: string; label: string }): boolean {
     if (link.href === "/") return pathname === "/"
     const [path, qs] = link.href.split("?")
+
+    // When a nav item's plain path is "/treks" (no query), treat any page under
+    // it ("/treks/kedarkantha") as active too. Links with a query (e.g.
+    // "/treks?section=kailash") keep exact section matching so only one tab
+    // highlights on the listing page.
+    if (path === "/treks" && !qs) {
+      return pathname === "/treks" || pathname.startsWith("/treks/")
+    }
+
     if (path !== pathname) return false
     if (!qs) return !searchParams.toString()
     const params = new URLSearchParams(qs)

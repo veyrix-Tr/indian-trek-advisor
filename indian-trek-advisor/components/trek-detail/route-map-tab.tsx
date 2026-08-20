@@ -5,12 +5,12 @@ import { motion } from "framer-motion"
 import type { Trek, MapWaypoint } from "@/lib/data"
 
 const W = 900
-const H = 320
+const H = 360
 const PAD = { top: 54, right: 28, bottom: 40, left: 56 }
 const CH = H - PAD.top - PAD.bottom
 
 // Altitude bar-chart panel (mirrors the HTML's second canvas).
-const BAR_H = 170
+const BAR_H = 210
 const BAR_PAD = { top: 16, right: 24, bottom: 34, left: 58 }
 const BAR_CH = BAR_H - BAR_PAD.top - BAR_PAD.bottom
 
@@ -189,16 +189,16 @@ export function RouteMapTab({
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="mt-6 overflow-hidden rounded-xl border border-border bg-card p-2 sm:p-4"
+        className="mt-6 min-w-0 overflow-hidden rounded-xl border border-border bg-card p-2 sm:p-4"
       >
         <div
-          className="relative w-full cursor-crosshair"
+          className="relative w-full min-w-0 cursor-crosshair"
           onMouseLeave={() => setActive(null)}
         >
           {/* ── MAIN ELEVATION PROFILE PANEL ── */}
           <svg
             viewBox={`0 0 ${W} ${H}`}
-            className="block h-auto w-full"
+            className="block h-auto w-full max-w-full"
             role="img"
             aria-label={`Elevation profile chart for ${trek.name}`}
           >
@@ -368,7 +368,7 @@ export function RouteMapTab({
           {/* ── ALTITUDE BAR CHART PANEL ── */}
           <svg
             viewBox={`0 0 ${W} ${BAR_H}`}
-            className="mt-1 block h-auto w-full"
+            className="mt-6 block h-auto w-full max-w-full"
             role="img"
             aria-label={`Altitude bar chart for ${trek.name}`}
           >
@@ -493,14 +493,14 @@ export function RouteMapTab({
       </motion.div>
 
       {/* stats strip (mirrors HTML) */}
-      <dl className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+      <dl className="mt-4 grid min-w-0 grid-cols-2 gap-3 sm:grid-cols-4">
         {[
           { label: "Max Elev", value: `${chart.maxElv.toLocaleString()}m` },
           { label: "Start Elev", value: `${chart.startElv.toLocaleString()}m` },
           { label: "Total Gain", value: `+${chart.gain.toLocaleString()}m` },
           { label: "Distance", value: `${chart.totalDist} km` },
         ].map((s) => (
-          <div key={s.label} className="rounded-lg border border-border bg-card px-3.5 py-2.5">
+          <div key={s.label} className="min-w-0 rounded-lg border border-border bg-card px-3.5 py-2.5">
             <dt className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
               {s.label}
             </dt>
@@ -510,7 +510,7 @@ export function RouteMapTab({
       </dl>
 
       {/* checkpoint list */}
-      <ol className="mt-6 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+      <ol className="mt-6 grid min-w-0 gap-2 sm:grid-cols-2 lg:grid-cols-3">
         {chart.points.map((p, i) => (
           <li
             key={`${p.label}-legend-${i}`}

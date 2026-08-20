@@ -160,7 +160,7 @@ export function TrekDetail({
   }, [])
 
   return (
-    <main className="pt-16">
+    <main className="overflow-x-clip pt-16">
       {/* ---- Banner ---- */}
       <section
         className="relative overflow-hidden"
@@ -347,7 +347,7 @@ export function TrekDetail({
       </div>
 
       {/* ---- Tab content ---- */}
-      <div className="mx-auto max-w-6xl px-4 py-8 md:px-6 md:py-14">
+      <div className="mx-auto min-w-0 max-w-6xl overflow-x-clip px-4 py-8 md:px-6 md:py-14">
         <AnimatePresence mode="wait">
           <motion.div
             key={tab}

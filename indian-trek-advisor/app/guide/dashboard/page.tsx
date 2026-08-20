@@ -14,7 +14,6 @@ import { GuideEarningsTab } from "@/components/guide-dashboard/guide-earnings-ta
 import { GuideReviewsTab } from "@/components/guide-dashboard/guide-reviews-tab"
 import { GuideSettingsTab } from "@/components/guide-dashboard/guide-settings-tab"
 import { GuideAvailabilityCalendar } from "@/components/guide-availability-calendar"
-import { NotificationBell } from "@/components/guide-dashboard/notification-bell"
 
 interface Booking {
   id: string
@@ -190,7 +189,6 @@ export default function GuideDashboardPage() {
             </h1>
           </div>
           <div className="flex items-center gap-2">
-            <NotificationBell />
             <Button
               variant="outline"
               size="sm"
