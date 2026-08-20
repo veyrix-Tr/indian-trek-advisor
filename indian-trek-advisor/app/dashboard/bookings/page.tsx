@@ -186,12 +186,6 @@ function BookingsPageInner() {
     setTimeout(() => setToast(null), 3000)
   }
 
-  const handleConfirmBooking = async () => {
-    if (!paymentDialogBooking) return
-    // Show payment modal instead of direct confirmation
-    setPaymentModalOpen(true)
-  }
-
   const handlePaymentSuccess = () => {
     // After successful payment, proceed with final verification
     handleFinalVerification()
@@ -377,7 +371,10 @@ function BookingsPageInner() {
 
                       {booking.status === 'guide_approved' && (
                         <Button
-                          onClick={() => setPaymentDialogBooking(booking)}
+                          onClick={() => {
+                            setPaymentDialogBooking(booking)
+                            setPaymentModalOpen(true)
+                          }}
                           className="mt-4"
                         >
                           Final Verification

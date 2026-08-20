@@ -57,6 +57,20 @@ export const POST = withErrorHandling(async function POST(request: Request) {
   }
 
   try {
+    // Fetch user's phone number from profiles table
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("phone")
+      .eq("id", user.id)
+      .single()
+
+    const phoneNumber = profile?.phone || user.user_metadata?.phone || ""
+
+    // Cashfree requires a valid 10-digit customer_phone; fall back to a
+    // placeholder when the trekker hasn't saved one yet.
+    const sanitizedPhone = String(phoneNumber).replace(/[^\d]/g, "")
+    const customerPhone = /^[6-9]\d{9}$/.test(sanitizedPhone) ? sanitizedPhone : "9999999999"
+
     // Create Cashfree order (v6 SDK method: cashfree.PGCreateOrder)
     const order_id = `booking_${booking_id}_${Date.now()}`
     const appUrl =
@@ -71,7 +85,7 @@ export const POST = withErrorHandling(async function POST(request: Request) {
         customer_id: user.id,
         customer_name: user.user_metadata?.name || "Trekker",
         customer_email: user.email,
-        customer_phone: user.user_metadata?.phone || "",
+        customer_phone: customerPhone,
       },
       order_meta: {
         return_url: `${appUrl}/dashboard/bookings?payment=success&order_id=${order_id}&booking_id=${booking_id}`,
@@ -106,6 +120,7 @@ export const POST = withErrorHandling(async function POST(request: Request) {
       order_amount: order.order_amount,
       order_currency: order.order_currency,
       payment_session_id: order.payment_session_id,
+      mode: process.env.CASHFREE_ENV === "production" ? "production" : "sandbox",
     })
 
   } catch (error: any) {

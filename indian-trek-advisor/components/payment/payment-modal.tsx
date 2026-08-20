@@ -1,8 +1,9 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
-import { IndianRupee, Loader2, AlertCircle } from "lucide-react"
+import { IndianRupee, Loader2, AlertCircle, Phone } from "lucide-react"
+import { createClient } from "@/utils/supabase/client"
 
 interface PaymentModalProps {
   bookingId: string
@@ -25,6 +26,62 @@ export function PaymentModal({
 }: PaymentModalProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [phoneNumber, setPhoneNumber] = useState("")
+  const [hasPhone, setHasPhone] = useState(false)
+  const [savingPhone, setSavingPhone] = useState(false)
+
+  // Check if user has phone number when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      checkUserPhone()
+    }
+  }, [isOpen])
+
+  const checkUserPhone = async () => {
+    const supabase = createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return
+
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("phone")
+      .eq("id", user.id)
+      .single()
+
+    if (profile?.phone) {
+      setPhoneNumber(profile.phone)
+      setHasPhone(true)
+    }
+  }
+
+  const handleSavePhone = async () => {
+    if (!phoneNumber || phoneNumber.length < 10) {
+      setError("Please enter a valid phone number")
+      return
+    }
+
+    setSavingPhone(true)
+    setError(null)
+
+    try {
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) throw new Error("Not authenticated")
+
+      const { error: updateError } = await supabase
+        .from("profiles")
+        .update({ phone: phoneNumber })
+        .eq("id", user.id)
+
+      if (updateError) throw updateError
+
+      setHasPhone(true)
+    } catch (err: any) {
+      setError(err.message || "Failed to save phone number")
+    } finally {
+      setSavingPhone(false)
+    }
+  }
 
   const handlePayment = async () => {
     setLoading(true)
@@ -43,11 +100,14 @@ export function PaymentModal({
         throw new Error(data.error || "Failed to create payment order")
       }
 
-      // Initialize Cashfree checkout
-      const cashfree = (window as any).Cashfree
-      if (!cashfree) {
+      // Initialize Cashfree checkout (v3 SDK): window.Cashfree is a factory
+      // function invoked as Cashfree({ mode }) — NOT `new`. Mode must be the
+      // lowercase "sandbox" / "production" values the SDK expects.
+      const CashfreeCtor = (window as any).Cashfree
+      if (typeof CashfreeCtor !== "function") {
         throw new Error("Payment gateway not loaded")
       }
+      const cashfree = CashfreeCtor({ mode: data.mode || "sandbox" })
 
       const checkoutOptions = {
         paymentSessionId: data.payment_session_id,
@@ -128,6 +188,34 @@ export function PaymentModal({
           </div>
         </div>
 
+        {!hasPhone && (
+          <div className="mb-6 rounded-lg border border-primary/30 bg-primary/5 p-4">
+            <div className="flex items-start gap-2 mb-3">
+              <Phone className="size-4 shrink-0 text-primary mt-0.5" />
+              <div>
+                <p className="text-sm font-medium text-foreground">Phone Number Required</p>
+                <p className="text-xs text-muted-foreground mt-1">Please provide your phone number for payment processing and booking notifications.</p>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <input
+                type="tel"
+                placeholder="+91 9876543210"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                className="flex-1 rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+              <button
+                onClick={handleSavePhone}
+                disabled={savingPhone || !phoneNumber || phoneNumber.length < 10}
+                className="rounded-md bg-primary px-3 py-2 text-sm font-medium text-background transition-colors hover:bg-primary/90 disabled:opacity-50"
+              >
+                {savingPhone ? "Saving..." : "Save"}
+              </button>
+            </div>
+          </div>
+        )}
+
         {error && (
           <div className="mb-4 flex items-start gap-2 rounded-lg border border-red-500/20 bg-red-500/10 p-3">
             <AlertCircle className="size-4 shrink-0 text-red-500" />
@@ -145,7 +233,7 @@ export function PaymentModal({
           </button>
           <button
             onClick={handlePayment}
-            disabled={loading}
+            disabled={loading || !hasPhone}
             className="flex-1 flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-background transition-colors hover:bg-primary/90 disabled:opacity-50"
           >
             {loading ? (

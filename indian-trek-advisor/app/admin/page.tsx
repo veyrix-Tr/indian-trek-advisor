@@ -9,6 +9,7 @@ import {
 } from "lucide-react"
 import { AuditLog } from "@/components/admin/audit-log"
 import { ErrorLog } from "@/components/admin/error-log"
+import { AdminReviews } from "@/components/admin/admin-reviews"
 import { inr } from "@/lib/pricing"
 
 interface Profile {
@@ -45,12 +46,26 @@ interface Trekker {
   profiles?: Profile
 }
 
-type Tab = "overview" | "users" | "guides" | "verifications" | "audit" | "errors"
+interface AdminReview {
+  id: string
+  rating: number
+  review: string | null
+  created_at: string
+  trekker?: { name: string }
+  booking?: { trek_id: string; booking_date: string }
+  guide?: {
+    user_id: string
+    profiles?: { name: string; id: string }
+  }
+}
+
+type Tab = "overview" | "users" | "guides" | "reviews" | "verifications" | "audit" | "errors"
 
 const TABS: { id: Tab; label: string }[] = [
   { id: "overview", label: "Overview" },
   { id: "users", label: "Users" },
   { id: "guides", label: "Guides" },
+  { id: "reviews", label: "Reviews" },
   { id: "verifications", label: "Verifications" },
   { id: "audit", label: "Audit Log" },
   { id: "errors", label: "Error Log" },
@@ -77,6 +92,7 @@ export default function AdminPage() {
   const [expandedGuide, setExpandedGuide] = useState<string | null>(null)
   const [verifying, setVerifying] = useState<string | null>(null)
   const [selectedUser, setSelectedUser] = useState<Profile | null>(null)
+  const [reviews, setReviews] = useState<AdminReview[]>([])
 
   useEffect(() => {
     async function load() {
@@ -98,6 +114,7 @@ export default function AdminPage() {
       setLoading(false)
 
       fetchBookingStats()
+      fetchReviews()
     }
     load()
 
@@ -129,6 +146,18 @@ export default function AdminPage() {
       }
     } catch {
       // leave as is
+    }
+  }
+
+  async function fetchReviews() {
+    try {
+      const res = await fetch("/api/admin/reviews")
+      if (res.ok) {
+        const data = await res.json()
+        setReviews(data.reviews || [])
+      }
+    } catch {
+      setReviews([])
     }
   }
 
@@ -467,6 +496,14 @@ export default function AdminPage() {
               )}
             </div>
           </div>
+        )}
+
+        {/* ═══ REVIEWS ═══ */}
+        {tab === "reviews" && (
+          <AdminReviews
+            reviews={reviews}
+            getGuideName={(userId) => getGuideProfile(userId)?.name}
+          />
         )}
 
         {/* ═══ VERIFICATIONS ═══ */}
