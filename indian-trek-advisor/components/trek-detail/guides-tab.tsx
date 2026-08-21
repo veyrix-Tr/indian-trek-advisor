@@ -7,7 +7,7 @@ import type { Trek } from "@/lib/data"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { parseTrekDays, computeBookingAmount, inr } from "@/lib/pricing"
+import { parseTrekDays, computeBookingPricing, inr } from "@/lib/pricing"
 import { createClient } from "@/utils/supabase/client"
 import {
   Dialog,
@@ -51,6 +51,8 @@ export function GuidesTab({ trek }: { trek: Trek }) {
   const [selectedGuide, setSelectedGuide] = useState<Guide | null>(null)
   const [showBookingModal, setShowBookingModal] = useState(false)
   const [numTrekkers, setNumTrekkers] = useState(1)
+  const [guideRequired, setGuideRequired] = useState(true)
+  const [trekAssistRequired, setTrekAssistRequired] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [bookingError, setBookingError] = useState<string | null>(null)
   const [bookingSuccess, setBookingSuccess] = useState(false)
@@ -148,6 +150,9 @@ export function GuidesTab({ trek }: { trek: Trek }) {
           booking_date: selectedDate,
           notes,
           num_trekkers: numTrekkers,
+          trek_days: parseTrekDays(String(trek.days)),
+          guide_required: guideRequired,
+          trek_assist_required: trekAssistRequired,
         })
       })
 
@@ -276,7 +281,6 @@ export function GuidesTab({ trek }: { trek: Trek }) {
                   <div className="space-y-3 mb-4">
                     <p><strong>Guide:</strong> {selectedGuide.guides.profiles.name}</p>
                     <p><strong>Date:</strong> {selectedDate}</p>
-                    <p><strong>Rate:</strong> {inr(selectedGuide.base_rate)}/day</p>
                     <p className="text-xs text-muted-foreground">{selectedGuide.guides.known_treks?.length ? `${selectedGuide.guides.known_treks.length} treks` : ""} · {parseTrekDays(String(trek.days))} days</p>
                   </div>
 
@@ -310,18 +314,51 @@ export function GuidesTab({ trek }: { trek: Trek }) {
                     </div>
                   </div>
 
-                  <div className="mb-4 space-y-1 rounded-xl border border-primary/20 bg-primary/5 p-3">
-                    <div className="flex justify-between text-xs text-muted-foreground">
-                      <span>{inr(selectedGuide.base_rate)}/day × {numTrekkers} × {parseTrekDays(String(trek.days))} days</span>
-                      <span className="font-mono">{inr(computeBookingAmount(selectedGuide.base_rate, numTrekkers, parseTrekDays(String(trek.days))))}</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium">Estimated total</span>
-                      <span className="text-lg font-bold text-primary">
-                        {inr(computeBookingAmount(selectedGuide.base_rate, numTrekkers, parseTrekDays(String(trek.days))))}
-                      </span>
-                    </div>
-                    <p className="text-[10px] text-muted-foreground">Final amount confirmed by the guide &amp; admin.</p>
+                  {(() => {
+                    const pricing = computeBookingPricing({
+                      trekDays: parseTrekDays(String(trek.days)),
+                      numPeople: numTrekkers,
+                      guideRequired,
+                      trekAssistRequired,
+                    })
+                    return (
+                      <div className="mb-4 space-y-2 rounded-xl border border-primary/20 bg-primary/5 p-3">
+                        <div className="flex justify-between text-xs">
+                          <span className="text-muted-foreground">Guide ({inr(1500)}/day × {pricing.trekDays}d)</span>
+                          <span className="font-mono">{inr(pricing.guideFee)}</span>
+                        </div>
+                        {trekAssistRequired && (
+                          <div className="flex justify-between text-xs">
+                            <span className="text-muted-foreground">
+                              Trek Assist ({inr(3500 + 1000 * Math.max(0, numTrekkers - 1))}/day × {pricing.trekDays}d)
+                            </span>
+                            <span className="font-mono">{inr(pricing.trekAssistFee)}</span>
+                          </div>
+                        )}
+                        <div className="flex items-center justify-between border-t border-border pt-2">
+                          <span className="text-sm font-medium">Estimated total</span>
+                          <span className="text-lg font-bold text-primary">{inr(pricing.totalAmount)}</span>
+                        </div>
+                        <div className="flex items-center justify-between rounded-lg bg-background/40 px-2 py-1.5">
+                          <span className="text-xs text-muted-foreground">Deposit now ({numTrekkers} × {inr(500)})</span>
+                          <span className="text-sm font-semibold text-primary">{inr(pricing.paymentAmount)}</span>
+                        </div>
+                        <p className="text-[10px] text-muted-foreground">Final amount confirmed by the guide &amp; admin.</p>
+                      </div>
+                    )
+                  })()}
+
+                  <div className="mb-3 flex items-center justify-between rounded-lg border border-border bg-background/40 p-3">
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={trekAssistRequired}
+                        onChange={(e) => setTrekAssistRequired(e.target.checked)}
+                        className="size-4 rounded border-border accent-primary"
+                      />
+                      <span className="text-sm font-medium">Add Trek Assist</span>
+                    </label>
+                    <span className="text-xs text-muted-foreground">{inr(3500)}/day base</span>
                   </div>
 
                   <Textarea

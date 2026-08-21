@@ -31,6 +31,11 @@ interface Booking {
   trek_days?: number
   base_rate?: number
   total_amount?: number
+  guide_required?: boolean
+  trek_assist_required?: boolean
+  guide_fee?: number
+  trek_assist_fee?: number
+  payment_amount?: number
   notes?: string
   rejection_reason?: string
   cancelled_by_role?: string
@@ -339,22 +344,35 @@ function BookingsPageInner() {
                           ) : null}
                         </div>
                         {(booking.num_trekkers || booking.base_rate || booking.total_amount) && (
-                          <p className="flex items-center gap-2 font-medium text-foreground">
-                            <IndianRupee className="size-4 text-primary" />
-                            <span>
-                              {booking.base_rate ? `${inr(booking.base_rate)}/day` : ""}
-                              {booking.num_trekkers && booking.num_trekkers > 1 && booking.base_rate ? ` × ${booking.num_trekkers}` : ""}
-                              {booking.trek_days ? ` × ${booking.trek_days} day${booking.trek_days > 1 ? "s" : ""}` : ""}
-                              {booking.total_amount ? ` = ${inr(booking.total_amount)}` : ""}
-                            </span>
-                          </p>
+                          <div className="space-y-1">
+                            <p className="flex items-center gap-2 font-medium text-foreground">
+                              <IndianRupee className="size-4 text-primary" />
+                              {booking.guide_fee != null ? (
+                                <span className="text-xs">
+                                  Guide {inr(booking.guide_fee)}
+                                  {booking.trek_assist_fee ? ` + Assist ${inr(booking.trek_assist_fee)}` : ""}
+                                </span>
+                              ) : (
+                                <span className="text-xs">
+                                  {booking.base_rate ? `${inr(booking.base_rate)}/day` : ""}
+                                  {booking.num_trekkers && booking.num_trekkers > 1 && booking.base_rate ? ` × ${booking.num_trekkers}` : ""}
+                                  {booking.trek_days ? ` × ${booking.trek_days} day${booking.trek_days > 1 ? "s" : ""}` : ""}
+                                </span>
+                              )}
+                            </p>
+                            {booking.total_amount ? (
+                              <p className="flex items-center gap-2 text-xs text-muted-foreground ml-6">
+                                Total: <span className="font-semibold text-foreground">{inr(booking.total_amount)}</span>
+                              </p>
+                            ) : null}
+                          </div>
                         )}
-                        {booking.status === 'guide_approved' && booking.total_amount ? (
+                        {booking.status === 'guide_approved' && (
                           <p className="flex items-center gap-2 text-sm font-semibold text-primary">
                             <IndianRupee className="size-4" />
-                            Total: {inr(booking.total_amount)} — confirm to lock your booking
+                            Pay {inr(booking.payment_amount || booking.total_amount || 0)} deposit to confirm
                           </p>
-                        ) : null}
+                        )}
                         {booking.notes && (
                           <p className="text-xs italic text-muted-foreground">&ldquo;{booking.notes}&rdquo;</p>
                         )}
@@ -436,9 +454,11 @@ function BookingsPageInner() {
       {paymentDialogBooking && (
         <PaymentModal
           bookingId={paymentDialogBooking.id}
-          amount={paymentDialogBooking.total_amount || 0}
+          amount={paymentDialogBooking.payment_amount || paymentDialogBooking.total_amount || 0}
           trekName={getTrekName(paymentDialogBooking.trek_id)}
           bookingDate={paymentDialogBooking.booking_date}
+          numPeople={paymentDialogBooking.num_trekkers}
+          totalAmount={paymentDialogBooking.total_amount}
           isOpen={paymentModalOpen}
           onClose={() => {
             setPaymentModalOpen(false)

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import { getAdminClient, getAuthUser } from "@/lib/supabase-admin"
-import { parseTrekDays, computeBookingAmount } from "@/lib/pricing"
+import { parseTrekDays, computeBookingPricing } from "@/lib/pricing"
 import { recordBookingHistory, resolveActorRole } from "@/lib/booking-history"
 import { STALE_REQUEST_MS } from "@/lib/booking-flow"
 import { withErrorHandling } from "@/lib/api"
@@ -23,7 +23,16 @@ export const POST = withErrorHandling(async function POST(request: Request) {
 
   const supabase = getAdminClient()
   const body = await request.json()
-  const { trek_id, guide_id, booking_date, notes, num_trekkers = 1 } = body
+  const {
+    trek_id,
+    guide_id,
+    booking_date,
+    notes,
+    num_trekkers = 1,
+    trek_days: trekDaysOverride,
+    guide_required = true,
+    trek_assist_required = false,
+  } = body
 
   if (!trek_id || !guide_id || !booking_date) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
@@ -46,11 +55,20 @@ export const POST = withErrorHandling(async function POST(request: Request) {
   }
 
   // Parse trek duration from the static trek data (days may be "5–6");
-  // fall back to 1 if we can't determine it.
+  // fall back to 1 if we can't determine it. Allow frontend override.
   const { getTrekById } = await import("@/lib/data")
-  const trekDays = parseTrekDays(String(getTrekById(Number(trek_id))?.days ?? ""))
-  const baseRate = Number(association.base_rate) || 0
-  const totalAmount = computeBookingAmount(baseRate, trekkerCount, trekDays)
+  const defaultDays = parseTrekDays(String(getTrekById(Number(trek_id))?.days ?? ""))
+  const trekDays = trekDaysOverride
+    ? Math.max(1, Math.floor(Number(trekDaysOverride) || 1))
+    : defaultDays
+
+  // Compute full pricing breakdown server-side.
+  const pricing = computeBookingPricing({
+    trekDays,
+    numPeople: trekkerCount,
+    guideRequired: guide_required,
+    trekAssistRequired: trek_assist_required,
+  })
 
   // Detect an active (non-available) hold on this date for the guide, plus any
   // confirmed booking whose multi-day span covers the date.
@@ -125,9 +143,14 @@ export const POST = withErrorHandling(async function POST(request: Request) {
       booking_date,
       notes: notes || null,
       num_trekkers: trekkerCount,
-      trek_days: trekDays,
-      base_rate: baseRate,
-      total_amount: totalAmount,
+      trek_days: pricing.trekDays,
+      base_rate: Number(association.base_rate) || 0,
+      total_amount: pricing.totalAmount,
+      guide_required: pricing.guideRequired,
+      trek_assist_required: pricing.trekAssistRequired,
+      guide_fee: pricing.guideFee,
+      trek_assist_fee: pricing.trekAssistFee,
+      payment_amount: pricing.paymentAmount,
       status: "pending",
       payment_status: "pending",
     })

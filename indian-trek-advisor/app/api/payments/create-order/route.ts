@@ -51,7 +51,8 @@ export const POST = withErrorHandling(async function POST(request: Request) {
     return NextResponse.json({ error: "Payment already completed" }, { status: 400 })
   }
 
-  const amount = Number(booking.total_amount)
+  // Use payment_amount (₹500/person deposit) if available; fall back to total_amount for old bookings.
+  const amount = Number(booking.payment_amount || booking.total_amount)
   if (amount <= 0) {
     return NextResponse.json({ error: "Invalid amount" }, { status: 400 })
   }

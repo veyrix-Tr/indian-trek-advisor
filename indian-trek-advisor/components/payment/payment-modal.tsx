@@ -10,6 +10,8 @@ interface PaymentModalProps {
   amount: number
   trekName: string
   bookingDate: string
+  numPeople?: number
+  totalAmount?: number
   isOpen: boolean
   onClose: () => void
   onSuccess: () => void
@@ -20,6 +22,8 @@ export function PaymentModal({
   amount,
   trekName,
   bookingDate,
+  numPeople,
+  totalAmount,
   isOpen,
   onClose,
   onSuccess,
@@ -179,8 +183,20 @@ export function PaymentModal({
             <span className="text-sm text-muted-foreground">Date</span>
             <span className="text-sm font-medium text-foreground">{bookingDate}</span>
           </div>
+          {numPeople && numPeople > 1 && (
+            <div className="flex justify-between">
+              <span className="text-sm text-muted-foreground">People</span>
+              <span className="text-sm font-medium text-foreground">{numPeople}</span>
+            </div>
+          )}
+          {totalAmount && totalAmount !== amount && (
+            <div className="flex justify-between text-xs text-muted-foreground">
+              <span>Approximate total</span>
+              <span className="font-mono">{totalAmount.toLocaleString("en-IN")}</span>
+            </div>
+          )}
           <div className="flex justify-between border-t border-border pt-4">
-            <span className="text-sm font-medium text-foreground">Total Amount</span>
+            <span className="text-sm font-medium text-foreground">Deposit Now</span>
             <div className="flex items-center gap-1">
               <IndianRupee className="size-4 text-primary" />
               <span className="text-lg font-bold text-primary">{amount.toLocaleString("en-IN")}</span>
