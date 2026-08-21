@@ -101,7 +101,7 @@ export function AuditLog() {
           />
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <Filter className="size-4 text-muted-foreground/50" />
           <select
             value={toFilter}

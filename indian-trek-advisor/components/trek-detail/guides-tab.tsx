@@ -176,7 +176,7 @@ export function GuidesTab({ trek }: { trek: Trek }) {
     <div className="max-w-3xl space-y-8">
       {/* Date Selection */}
       {canBook && (
-        <div className="rounded-xl border border-border bg-card p-6">
+        <div className="rounded-xl border border-border bg-card p-4 sm:p-6">
           <h3 className="mb-4 font-semibold">Select Trekking Date</h3>
           <Input
             type="date"
@@ -251,7 +251,7 @@ export function GuidesTab({ trek }: { trek: Trek }) {
           if (!open) setSelectedGuide(null)
         }}
       >
-        <DialogContent className="max-w-md border-border bg-card">
+        <DialogContent className="max-w-md border-border bg-card mx-4 sm:mx-auto">
           {selectedGuide && (
             <>
               <DialogHeader>
@@ -295,7 +295,7 @@ export function GuidesTab({ trek }: { trek: Trek }) {
                   </div>
 
                   {/* Trekkers + Trek Assist row */}
-                  <div className="mb-3 flex gap-2">
+                  <div className="mb-3 flex flex-col gap-2 sm:flex-row">
                     <div className="flex flex-1 items-center justify-between rounded-lg border border-border bg-background/40 px-3 py-2.5">
                       <div className="flex items-center gap-1.5">
                         <Users className="size-4 text-primary" />
@@ -422,18 +422,18 @@ function GuideCard({
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`rounded-xl border border-border bg-card p-6 ${unavailable ? "opacity-50" : ""}`}
+      className={`rounded-xl border border-border bg-card p-4 sm:p-6 ${unavailable ? "opacity-50" : ""}`}
     >
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
         <div className="flex flex-1 items-start gap-3">
           {guide.guides.profile_photo_url ? (
             <img
               src={guide.guides.profile_photo_url}
               alt={guide.guides.profiles.name}
-              className="size-11 shrink-0 rounded-full object-cover"
+              className="size-10 shrink-0 rounded-full object-cover sm:size-11"
             />
           ) : (
-            <div className="flex size-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-amber-600 text-sm font-bold text-white">
+            <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-amber-600 text-sm font-bold text-white sm:size-11">
               {initial}
             </div>
           )}
@@ -473,25 +473,26 @@ function GuideCard({
             Unavailable
           </span>
         ) : myStatus === "pending" ? (
-          <span className="flex shrink-0 items-center gap-1.5 rounded-lg border border-status-pending/25 bg-status-pending/15 px-3 py-2 font-mono text-[10px] uppercase tracking-widest text-status-pending">
+          <span className="flex shrink-0 items-center gap-1.5 self-start rounded-lg border border-status-pending/25 bg-status-pending/15 px-2 py-1.5 font-mono text-[9px] uppercase tracking-widest text-status-pending sm:px-3 sm:py-2 sm:text-[10px]">
             <Clock className="size-3" />
-            Request Pending
+            Pending
           </span>
         ) : myStatus === "guide_approved" ? (
-          <span className="flex shrink-0 items-center gap-1.5 rounded-lg border border-primary/30 bg-primary/10 px-3 py-2 font-mono text-[10px] uppercase tracking-widest text-primary">
+          <span className="flex shrink-0 items-center gap-1.5 self-start rounded-lg border border-primary/30 bg-primary/10 px-2 py-1.5 font-mono text-[9px] uppercase tracking-widest text-primary sm:px-3 sm:py-2 sm:text-[10px]">
             <CheckCircle2 className="size-3" />
-            Guide Accepted — Verify
+            Accepted
           </span>
         ) : myStatus === "confirmed" ? (
-          <span className="flex shrink-0 items-center gap-1.5 rounded-lg border border-primary/25 bg-primary/5 px-3 py-2 font-mono text-[10px] uppercase tracking-widest text-primary">
+          <span className="flex shrink-0 items-center gap-1.5 self-start rounded-lg border border-primary/25 bg-primary/5 px-2 py-1.5 font-mono text-[9px] uppercase tracking-widest text-primary sm:px-3 sm:py-2 sm:text-[10px]">
             <CheckCircle2 className="size-3" />
             Confirmed
           </span>
         ) : onBook ? (
-          <Button onClick={onBook} className="shrink-0">
+          <Button onClick={onBook} className="shrink-0 w-full sm:w-auto">
             Book Guide
           </Button>
-        ) : null}      </div>
+        ) : null}
+      </div>
     </motion.div>
   )
 }

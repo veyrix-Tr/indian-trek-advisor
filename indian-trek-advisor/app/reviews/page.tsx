@@ -107,7 +107,7 @@ export default function ReviewsPage() {
         </div>
 
         {reviews.length === 0 ? (
-          <div className="flex flex-col items-center gap-4 rounded-2xl border border-border/60 bg-card px-6 py-20 text-center">
+          <div className="flex flex-col items-center gap-4 rounded-2xl border border-border/60 bg-card px-4 py-12 text-center sm:px-6 sm:py-20">
             <span className="flex size-16 items-center justify-center rounded-full bg-primary/10 text-primary">
               <MessagesSquare className="size-7" aria-hidden="true" />
             </span>

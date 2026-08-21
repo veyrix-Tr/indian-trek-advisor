@@ -111,7 +111,7 @@ export function StatusTimeline({
               </span>
               <div className="min-w-0 flex-1">
                 <div className="flex items-center justify-between gap-2">
-                  <p className="text-xs font-medium text-foreground">
+                  <p className="min-w-0 flex-1 truncate text-xs font-medium text-foreground">
                     {STEP_LABEL[item.to_status] ?? item.to_status}
                   </p>
                   <span className="shrink-0 text-[10px] text-muted-foreground">

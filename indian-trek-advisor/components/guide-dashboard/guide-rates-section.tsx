@@ -49,24 +49,24 @@ function RateRow({ rate, onSaved }: { rate: Rate; onSaved: (id: string, base_rat
   }
 
   return (
-    <div className="flex items-center justify-between gap-3 rounded-xl border border-border/40 bg-background/40 px-4 py-3">
+    <div className="flex flex-col gap-3 rounded-xl border border-border/40 bg-background/40 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-medium">{trek?.name || `Trek #${rate.trek_id}`}</p>
         {trek && (
-          <p className="mt-0.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+          <p className="mt-0.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground sm:text-xs">
             {trek.days}d · {trek.state}
           </p>
         )}
       </div>
       <div className="flex shrink-0 items-center gap-2">
-        <div className="relative">
+        <div className="relative flex-1 sm:flex-none">
           <IndianRupee className="absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
           <input
             type="number"
             min={1}
             value={value}
             onChange={(e) => setValue(e.target.value)}
-            className="w-28 rounded-lg border border-border/60 bg-background/60 py-1.5 pl-7 pr-2 text-sm text-foreground outline-none focus:border-primary/40"
+            className="w-full rounded-lg border border-border/60 bg-background/60 py-1.5 pl-7 pr-2 text-sm text-foreground outline-none focus:border-primary/40 sm:w-28"
           />
         </div>
         <span className="font-mono text-[10px] uppercase text-muted-foreground">/day</span>

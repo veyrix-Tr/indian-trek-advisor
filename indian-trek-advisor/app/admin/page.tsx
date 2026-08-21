@@ -217,7 +217,7 @@ export default function AdminPage() {
 
   return (
     <main className="min-h-screen bg-background pt-15">
-      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+      <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-10">
         {/* Header */}
         <div className="mb-8 flex items-center justify-between border-b border-border pb-5">
           <div>
@@ -509,7 +509,7 @@ export default function AdminPage() {
         {/* ═══ VERIFICATIONS ═══ */}
         {tab === "verifications" && (
           <div className="rounded-lg border border-border bg-card">
-            <div className="border-b border-border px-5 py-4">
+                <div className="flex flex-col gap-4 border-b border-border px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5 sm:py-4">
               <h3 className="text-base font-medium text-foreground">Pending Verifications</h3>
               <p className="mt-0.5 text-sm text-muted-foreground">Review guide documents and approve their accounts.</p>
             </div>
@@ -520,8 +520,8 @@ export default function AdminPage() {
                 {pendingGuides.map((g) => {
                   const profile = getGuideProfile(g.user_id)
                   return (
-                    <li key={g.user_id} className="px-5 py-5">
-                      <div className="flex items-start justify-between gap-4">
+                    <li key={g.user_id} className="px-4 py-4 sm:px-5 sm:py-5">
+                      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
                         <div className="flex items-center gap-3">
                           <InitialAvatar name={profile?.name} />
                           <div>
@@ -615,7 +615,7 @@ export default function AdminPage() {
                   ✕
                 </button>
 
-                <div className="flex items-center gap-4 border-b border-border px-6 py-5">
+                <div className="flex items-center gap-4 border-b border-border px-4 py-4 sm:px-6 sm:py-5">
                   <InitialAvatar name={selectedUser.name} large />
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
@@ -631,7 +631,7 @@ export default function AdminPage() {
                   </div>
                 </div>
 
-                <div className="max-h-[70vh] overflow-y-auto px-6 py-5">
+                <div className="max-h-[70vh] overflow-y-auto px-4 py-4 sm:px-6 sm:py-5">
                   <h3 className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">Contact</h3>
                   <div className="mb-6 grid grid-cols-2 gap-3">
                     <Field label="Phone" value={selectedUser.phone || selectedGuide?.phone || "—"} />

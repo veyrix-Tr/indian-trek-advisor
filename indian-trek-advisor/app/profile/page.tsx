@@ -191,7 +191,7 @@ export default function ProfilePage() {
               </svg>
             </div>
 
-            <div className="px-6 pb-7 sm:px-8">
+            <div className="px-4 pb-5 sm:px-6 sm:pb-7">
               <div className="-mt-11 flex flex-col items-start gap-5 sm:-mt-12 sm:flex-row sm:items-end">
                 <span className="flex size-[88px] shrink-0 items-center justify-center rounded-2xl border-4 border-card bg-gradient-to-br from-primary to-primary/70 text-3xl font-bold text-primary-foreground shadow-lg">
                   {(profile?.name || user?.email || "U").charAt(0).toUpperCase()}

@@ -121,7 +121,7 @@ export default function AdminBookingsPage() {
           </div>
         ) : bookings.length === 0 ? (
           <Card className="border-border/60 bg-card/60 backdrop-blur-xl">
-            <CardContent className="flex flex-col items-center justify-center p-12 text-center text-muted-foreground">
+            <CardContent className="flex flex-col items-center justify-center p-6 text-center text-muted-foreground sm:p-12">
               <CheckCircle2 className="mb-3 size-8 text-muted-foreground/40" />
               No bookings in this view
             </CardContent>

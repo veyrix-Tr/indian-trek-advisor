@@ -63,7 +63,7 @@ export function GuideReviewsTab({
       {/* Rating Summary */}
       <div className="grid gap-4 sm:grid-cols-2">
         <Card className="border-border/60 bg-card/60 backdrop-blur-xl">
-          <CardContent className="flex items-center gap-6 p-6">
+          <CardContent className="flex flex-col gap-4 p-4 sm:flex-row sm:items-center sm:gap-6 sm:p-6">
             <div className="text-center">
               <p className="font-mono text-4xl font-bold text-yellow-400">
                 {guideRating.toFixed(1)}

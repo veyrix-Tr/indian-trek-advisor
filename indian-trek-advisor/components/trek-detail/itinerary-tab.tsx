@@ -38,7 +38,7 @@ export function ItineraryTab({ trek }: { trek: Trek }) {
               {/* timeline node */}
               <span
                 aria-hidden="true"
-                className={`absolute -left-[41px] top-1 flex size-6 items-center justify-center rounded-full border font-mono text-[10px] font-bold md:-left-[49px] ${
+                className={`absolute -left-[37px] top-1 flex size-6 items-center justify-center rounded-full border font-mono text-[10px] font-bold md:-left-[45px] ${
                   isReturn
                     ? "border-difficulty-moderate/50 bg-difficulty-moderate/10 text-difficulty-moderate"
                     : "border-primary/50 bg-primary/10 text-primary"

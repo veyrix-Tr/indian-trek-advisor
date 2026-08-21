@@ -267,7 +267,7 @@ export function TrekDetail({
                   key={stat.label}
                   className="rounded-lg bg-black/30 px-3 py-2 backdrop-blur-sm"
                 >
-                  <dt className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest text-white/60">
+                  <dt className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest text-white/60 sm:text-xs">
                     <stat.icon className="size-3" aria-hidden="true" />
                     {stat.label}
                   </dt>

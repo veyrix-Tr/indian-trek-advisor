@@ -246,8 +246,8 @@ export function GuideBookingsTab({ bookings, onRefresh, filterHint }: GuideBooki
                         )}
                       </div>
 
-                      <div className="flex flex-col items-end gap-1.5">
-                        <div className="flex items-center gap-3">
+                        <div className="flex flex-col items-end gap-1.5">
+                        <div className="flex flex-wrap items-center gap-3">
                         <Badge className={`border text-[10px] font-mono uppercase tracking-wider transition-colors duration-200 ${getStatusConfig(booking.status).colorClass}`}>
                           {getStatusConfig(booking.status).label}
                         </Badge>

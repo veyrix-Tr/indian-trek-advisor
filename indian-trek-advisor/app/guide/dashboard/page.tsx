@@ -178,7 +178,7 @@ export default function GuideDashboardPage() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-8 flex items-center justify-between"
+          className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
         >
           <div>
             <p className="font-mono text-[10px] uppercase tracking-widest text-primary">

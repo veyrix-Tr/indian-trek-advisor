@@ -166,7 +166,7 @@ export function GuidePayoutSection() {
                 </div>
               )}
 
-              <div className="flex items-center gap-3 pt-1">
+              <div className="flex flex-col gap-2 pt-1 sm:flex-row sm:items-center sm:gap-3">
                 <Button onClick={handleSave} disabled={saving} className="gap-1.5">
                   <Save className="size-4" />
                   {saving ? "Saving..." : "Save Payout Details"}
