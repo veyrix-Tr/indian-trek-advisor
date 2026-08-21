@@ -108,7 +108,7 @@ export function SiteHeader() {
         >
           <Mountain className="size-6 text-primary" aria-hidden="true" />
           <span>
-            Indian Trek <span className="text-primary">Advisor</span>
+            Core <span className="text-primary">Trek-kin</span>
           </span>
         </Link>
 

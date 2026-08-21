@@ -82,8 +82,7 @@ export function LegalTermsDialog({ open, onClose }: LegalTermsDialogProps) {
               3. Limitation of Liability
             </h3>
             <p>
-              To the maximum extent permitted by applicable law, Indian Trek
-              Advisor, its founders, directors, employees, affiliates, partners,
+              To the maximum extent permitted by applicable law, Core Trek-kin, its founders, directors, employees, affiliates, partners,
               and agents shall not be liable for:
             </p>
             <ul className="mt-2.5 list-disc space-y-1.5 pl-5 marker:text-primary/50">
