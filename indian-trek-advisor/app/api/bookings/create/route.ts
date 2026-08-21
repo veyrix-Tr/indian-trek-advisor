@@ -143,7 +143,7 @@ export const POST = withErrorHandling(async function POST(request: Request) {
       booking_date,
       notes: notes || null,
       num_trekkers: trekkerCount,
-      trek_days: pricing.trekDays,
+      trek_days: pricing.totalDays,
       base_rate: Number(association.base_rate) || 0,
       total_amount: pricing.totalAmount,
       guide_required: pricing.guideRequired,

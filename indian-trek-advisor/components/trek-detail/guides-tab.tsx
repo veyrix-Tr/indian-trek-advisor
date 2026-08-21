@@ -281,7 +281,7 @@ export function GuidesTab({ trek }: { trek: Trek }) {
                   <div className="space-y-3 mb-4">
                     <p><strong>Guide:</strong> {selectedGuide.guides.profiles.name}</p>
                     <p><strong>Date:</strong> {selectedDate}</p>
-                    <p className="text-xs text-muted-foreground">{selectedGuide.guides.known_treks?.length ? `${selectedGuide.guides.known_treks.length} treks` : ""} · {parseTrekDays(String(trek.days))} days</p>
+                    <p className="text-xs text-muted-foreground">{selectedGuide.guides.known_treks?.length ? `${selectedGuide.guides.known_treks.length} treks` : ""} · {trek.itinerary?.length || parseTrekDays(String(trek.days))} days</p>
                   </div>
 
                   <div className="mb-4 flex items-center justify-between rounded-xl border border-border bg-background/40 p-3">
@@ -316,7 +316,7 @@ export function GuidesTab({ trek }: { trek: Trek }) {
 
                   {(() => {
                     const pricing = computeBookingPricing({
-                      trekDays: parseTrekDays(String(trek.days)),
+                      trekDays: trek.itinerary?.length || parseTrekDays(String(trek.days)),
                       numPeople: numTrekkers,
                       guideRequired,
                       trekAssistRequired,
@@ -324,13 +324,13 @@ export function GuidesTab({ trek }: { trek: Trek }) {
                     return (
                       <div className="mb-4 space-y-2 rounded-xl border border-primary/20 bg-primary/5 p-3">
                         <div className="flex justify-between text-xs">
-                          <span className="text-muted-foreground">Guide ({inr(1500)}/day × {pricing.trekDays}d)</span>
+                          <span className="text-muted-foreground">Guide ({inr(1500)}/day × {pricing.billableDays}d)</span>
                           <span className="font-mono">{inr(pricing.guideFee)}</span>
                         </div>
                         {trekAssistRequired && (
                           <div className="flex justify-between text-xs">
                             <span className="text-muted-foreground">
-                              Trek Assist ({inr(3500 + 1000 * Math.max(0, numTrekkers - 1))}/day × {pricing.trekDays}d)
+                              Trek Assist ({inr(3500 + 1000 * Math.max(0, numTrekkers - 1))}/day × {pricing.billableDays}d)
                             </span>
                             <span className="font-mono">{inr(pricing.trekAssistFee)}</span>
                           </div>
@@ -343,7 +343,10 @@ export function GuidesTab({ trek }: { trek: Trek }) {
                           <span className="text-xs text-muted-foreground">Deposit now ({numTrekkers} × {inr(500)})</span>
                           <span className="text-sm font-semibold text-primary">{inr(pricing.paymentAmount)}</span>
                         </div>
-                        <p className="text-[10px] text-muted-foreground">Final amount confirmed by the guide &amp; admin.</p>
+                        <p className="text-[10px] text-muted-foreground">
+                          {pricing.totalDays} days total · {pricing.billableDays} trekking days (excl. travel to/from base).
+                          Final amount confirmed by guide &amp; admin.
+                        </p>
                       </div>
                     )
                   })()}
