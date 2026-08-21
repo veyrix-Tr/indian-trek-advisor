@@ -196,7 +196,7 @@ export function PaymentModal({
             </div>
           )}
           <div className="flex justify-between border-t border-border pt-4">
-            <span className="text-sm font-medium text-foreground">Deposit Now</span>
+            <span className="text-sm font-medium text-foreground">Pay Booking Fee</span>
             <div className="flex items-center gap-1">
               <IndianRupee className="size-4 text-primary" />
               <span className="text-lg font-bold text-primary">{amount.toLocaleString("en-IN")}</span>

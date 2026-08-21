@@ -19,7 +19,7 @@ export const STATUS_CONFIG: Record<BookingStatus, StatusConfig> = {
   },
   guide_approved: {
     label: "Guide Accepted",
-    description: "Guide confirmed — awaiting your final verification",
+    description: "Guide accepted — pay booking fee to confirm",
     colorClass: "border-status-guide-approved/25 bg-status-guide-approved/15 text-status-guide-approved",
   },
   confirmed: {

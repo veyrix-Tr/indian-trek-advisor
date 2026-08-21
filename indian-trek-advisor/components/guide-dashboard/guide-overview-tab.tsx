@@ -132,7 +132,7 @@ function ActionRequiredPanel({
                     className="gap-1 bg-green-600 text-white hover:bg-green-700"
                   >
                     <CheckCircle className="size-3.5" />
-                    Approve
+                    Accept
                   </Button>
                   <Button
                     size="sm"

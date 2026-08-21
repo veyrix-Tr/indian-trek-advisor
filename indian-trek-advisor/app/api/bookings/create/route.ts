@@ -38,6 +38,13 @@ export const POST = withErrorHandling(async function POST(request: Request) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
   }
 
+  // Reject past dates
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+  if (new Date(booking_date) < today) {
+    return NextResponse.json({ error: "Cannot book a date in the past" }, { status: 400 })
+  }
+
   const trekkerCount = Math.min(20, Math.max(1, Math.floor(Number(num_trekkers) || 1)))
 
   // Validate the guide actually serves this trek and fetch their base rate.
@@ -121,7 +128,7 @@ export const POST = withErrorHandling(async function POST(request: Request) {
     // A guide has already accepted (or it's confirmed) — never allow another.
     if (oldest.status !== "pending") {
       return NextResponse.json({
-        error: "You already have an accepted request for this date. Complete the final verification instead.",
+        error: "You already have an accepted request for this date. Pay the booking fee to confirm instead.",
       }, { status: 409 })
     }
 

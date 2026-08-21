@@ -298,7 +298,7 @@ export function GuideBookingsTab({ bookings, onRefresh, filterHint }: GuideBooki
 
                         {booking.status === "pending" && (
                           <p className="max-w-[220px] text-right text-[10px] text-amber-500/90">
-                            Accepting soft-holds this request. The date locks only once the trekker does their final verification.
+                            Accepting soft-holds this request. The date locks only once the trekker pays the booking fee.
                           </p>
                         )}
                       </div>

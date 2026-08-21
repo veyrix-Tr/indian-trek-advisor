@@ -181,6 +181,7 @@ export function GuidesTab({ trek }: { trek: Trek }) {
           <Input
             type="date"
             value={selectedDate}
+            min={new Date().toISOString().split("T")[0]}
             onChange={(e) => {
               setSelectedDate(e.target.value)
               setBookingError(null)
@@ -254,7 +255,7 @@ export function GuidesTab({ trek }: { trek: Trek }) {
           {selectedGuide && (
             <>
               <DialogHeader>
-                <DialogTitle>{bookingSuccess ? "Request Sent" : "Confirm Booking"}</DialogTitle>
+                <DialogTitle>{bookingSuccess ? "Request Sent" : "Send Request"}</DialogTitle>
               </DialogHeader>
 
               {bookingSuccess ? (
@@ -278,42 +279,59 @@ export function GuidesTab({ trek }: { trek: Trek }) {
                 </div>
               ) : (
                 <>
-                  <div className="space-y-3 mb-4">
-                    <p><strong>Guide:</strong> {selectedGuide.guides.profiles.name}</p>
-                    <p><strong>Date:</strong> {selectedDate}</p>
-                    <p className="text-xs text-muted-foreground">{selectedGuide.guides.known_treks?.length ? `${selectedGuide.guides.known_treks.length} treks` : ""} · {trek.itinerary?.length || parseTrekDays(String(trek.days))} days</p>
-                  </div>
-
-                  <div className="mb-4 flex items-center justify-between rounded-xl border border-border bg-background/40 p-3">
-                    <div className="flex items-center gap-2">
-                      <Users className="size-4 text-primary" />
-                      <span className="text-sm font-medium">Trekkers</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="icon-sm"
-                        onClick={() => setNumTrekkers((n) => Math.max(1, n - 1))}
-                        disabled={numTrekkers <= 1}
-                        aria-label="Decrease trekkers"
-                      >
-                        <Minus className="size-3.5" />
-                      </Button>
-                      <span className="w-8 text-center text-sm font-semibold">{numTrekkers}</span>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="icon-sm"
-                        onClick={() => setNumTrekkers((n) => Math.min(20, n + 1))}
-                        disabled={numTrekkers >= 20}
-                        aria-label="Increase trekkers"
-                      >
-                        <Plus className="size-3.5" />
-                      </Button>
+                  {/* Guide + Date summary */}
+                  <div className="mb-4 flex items-center gap-3 rounded-lg bg-background/40 p-3">
+                    {selectedGuide.guides.profile_photo_url ? (
+                      <img src={selectedGuide.guides.profile_photo_url} alt="" className="size-10 shrink-0 rounded-full object-cover" />
+                    ) : (
+                      <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-amber-600 text-sm font-bold text-white">
+                        {selectedGuide.guides.profiles.name?.charAt(0)}
+                      </div>
+                    )}
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-sm font-semibold">{selectedGuide.guides.profiles.name}</p>
+                      <p className="text-xs text-muted-foreground">{selectedDate} · {trek.itinerary?.length || parseTrekDays(String(trek.days))} days</p>
                     </div>
                   </div>
 
+                  {/* Trekkers + Trek Assist row */}
+                  <div className="mb-3 flex gap-2">
+                    <div className="flex flex-1 items-center justify-between rounded-lg border border-border bg-background/40 px-3 py-2.5">
+                      <div className="flex items-center gap-1.5">
+                        <Users className="size-4 text-primary" />
+                        <span className="text-sm font-medium">Trekkers</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <button type="button" onClick={() => setNumTrekkers((n) => Math.max(1, n - 1))} disabled={numTrekkers <= 1} className="flex size-7 items-center justify-center rounded-md border border-border text-muted-foreground hover:bg-accent disabled:opacity-30"><Minus className="size-3.5" /></button>
+                        <span className="w-6 text-center text-sm font-semibold">{numTrekkers}</span>
+                        <button type="button" onClick={() => setNumTrekkers((n) => Math.min(20, n + 1))} disabled={numTrekkers >= 20} className="flex size-7 items-center justify-center rounded-md border border-border text-muted-foreground hover:bg-accent disabled:opacity-30"><Plus className="size-3.5" /></button>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setTrekAssistRequired((v) => !v)}
+                      className={`flex flex-1 items-center justify-between rounded-lg border px-3 py-2.5 text-left transition-colors ${trekAssistRequired ? "border-primary/40 bg-primary/10" : "border-border bg-background/40 hover:bg-accent"}`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <div className={`flex size-4 items-center justify-center rounded-sm border ${trekAssistRequired ? "border-primary bg-primary" : "border-muted-foreground/40"}`}>
+                          {trekAssistRequired && <CheckCircle2 className="size-3 text-white" />}
+                        </div>
+                        <span className="text-sm font-medium">Trek Assist</span>
+                      </div>
+                      <span className="text-xs text-muted-foreground">{inr(3500)}/d</span>
+                    </button>
+                  </div>
+
+                  {/* Trek assist details */}
+                  {trekAssistRequired && (
+                    <div className="mb-3 rounded-lg border border-dashed border-primary/20 bg-primary/5 px-3 py-2 text-xs leading-relaxed text-muted-foreground">
+                      <span className="font-medium text-foreground">Includes:</span> Porter, tent, sleeping bag, mattress, cooking gear, food
+                      <br />
+                      <span className="font-medium text-foreground">Excludes:</span> Trekking poles, gaiters, crampons, raincoats
+                    </div>
+                  )}
+
+                  {/* Pricing */}
                   {(() => {
                     const pricing = computeBookingPricing({
                       trekDays: trek.itinerary?.length || parseTrekDays(String(trek.days)),
@@ -322,52 +340,33 @@ export function GuidesTab({ trek }: { trek: Trek }) {
                       trekAssistRequired,
                     })
                     return (
-                      <div className="mb-4 space-y-2 rounded-xl border border-primary/20 bg-primary/5 p-3">
-                        <div className="flex justify-between text-xs">
-                          <span className="text-muted-foreground">Guide ({inr(1500)}/day × {pricing.billableDays}d)</span>
+                      <div className="mb-3 rounded-lg bg-muted/30 p-3 space-y-2">
+                        <div className="flex justify-between text-sm text-muted-foreground">
+                          <span>Guide fee ({pricing.billableDays} trekking days)</span>
                           <span className="font-mono">{inr(pricing.guideFee)}</span>
                         </div>
                         {trekAssistRequired && (
-                          <div className="flex justify-between text-xs">
-                            <span className="text-muted-foreground">
-                              Trek Assist ({inr(3500 + 1000 * Math.max(0, numTrekkers - 1))}/day × {pricing.billableDays}d)
-                            </span>
+                          <div className="flex justify-between text-sm text-muted-foreground">
+                            <span>Trek assist ({pricing.billableDays} trekking days)</span>
                             <span className="font-mono">{inr(pricing.trekAssistFee)}</span>
                           </div>
                         )}
-                        <div className="flex items-center justify-between border-t border-border pt-2">
-                          <span className="text-sm font-medium">Estimated total</span>
-                          <span className="text-lg font-bold text-primary">{inr(pricing.totalAmount)}</span>
+                        <div className="flex justify-between border-t border-border pt-2">
+                          <span className="text-sm font-medium">Total</span>
+                          <span className="font-mono text-sm font-bold text-primary">{inr(pricing.totalAmount)}</span>
                         </div>
-                        <div className="flex items-center justify-between rounded-lg bg-background/40 px-2 py-1.5">
-                          <span className="text-xs text-muted-foreground">Deposit now ({numTrekkers} × {inr(500)})</span>
-                          <span className="text-sm font-semibold text-primary">{inr(pricing.paymentAmount)}</span>
-                        </div>
-                        <p className="text-[10px] text-muted-foreground">
-                          {pricing.totalDays} days total · {pricing.billableDays} trekking days (excl. travel to/from base).
-                          Final amount confirmed by guide &amp; admin.
+                        <p className="text-xs text-muted-foreground">
+                          Booking fee: {inr(pricing.paymentAmount)} ({numTrekkers} × {inr(500)})
                         </p>
                       </div>
                     )
                   })()}
 
-                  <div className="mb-3 flex items-center justify-between rounded-lg border border-border bg-background/40 p-3">
-                    <label className="flex items-center gap-2 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={trekAssistRequired}
-                        onChange={(e) => setTrekAssistRequired(e.target.checked)}
-                        className="size-4 rounded border-border accent-primary"
-                      />
-                      <span className="text-sm font-medium">Add Trek Assist</span>
-                    </label>
-                    <span className="text-xs text-muted-foreground">{inr(3500)}/day base</span>
-                  </div>
-
                   <Textarea
-                    placeholder="Add any notes for the guide..."
-                    className="mb-3"
+                    placeholder="Notes for the guide (optional)"
+                    className="mb-3 text-sm"
                     id="booking-notes"
+                    rows={2}
                   />
                   {bookingError && (
                     <motion.p
@@ -393,7 +392,7 @@ export function GuidesTab({ trek }: { trek: Trek }) {
                       className="flex-1"
                       disabled={submitting}
                     >
-                      {submitting ? "Sending..." : "Confirm Booking"}
+                      {submitting ? "Sending..." : "Send Request"}
                     </Button>
                   </div>
                 </>

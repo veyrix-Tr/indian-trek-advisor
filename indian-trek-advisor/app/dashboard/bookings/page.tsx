@@ -370,7 +370,7 @@ function BookingsPageInner() {
                         {booking.status === 'guide_approved' && (
                           <p className="flex items-center gap-2 text-sm font-semibold text-primary">
                             <IndianRupee className="size-4" />
-                            Pay {inr(booking.payment_amount || booking.total_amount || 0)} deposit to confirm
+                            Pay {inr(booking.payment_amount || booking.total_amount || 0)} booking fee to confirm
                           </p>
                         )}
                         {booking.notes && (
@@ -395,7 +395,7 @@ function BookingsPageInner() {
                           }}
                           className="mt-4"
                         >
-                          Final Verification
+                          Pay & Confirm
                         </Button>
                       )}
 

@@ -105,7 +105,7 @@ export const POST = withErrorHandling(async function POST(
     user_id: booking.trekker_id,
     type: "booking_status_change",
     booking_id: booking.id,
-    message: `${user.user_metadata?.name || "Your guide"} accepted your ${booking.trek_id} trek on ${booking.booking_date}. Complete the final verification in your bookings.`,
+    message: `${user.user_metadata?.name || "Your guide"} accepted your ${booking.trek_id} trek on ${booking.booking_date}. Pay the booking fee to confirm in your bookings.`,
   })
 
   // Notify all admins about the guide approval

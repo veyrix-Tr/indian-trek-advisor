@@ -11,5 +11,5 @@ export const TREK_ASSIST_BASE = 3500
 /** Trek assist additional fee per day per extra person (beyond 1). */
 export const TREK_ASSIST_ADDITIONAL = 1000
 
-/** Payment amount per person (deposit/approximate). */
+/** Platform booking fee per person. */
 export const PAYMENT_PER_PERSON = 500

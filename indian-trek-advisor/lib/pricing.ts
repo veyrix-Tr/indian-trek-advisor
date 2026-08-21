@@ -51,7 +51,7 @@ export interface BookingPricing {
   trekAssistFee: number
   /** Grand total (guideFee + trekAssistFee). */
   totalAmount: number
-  /** Deposit payment: numPeople × ₹500. */
+  /** Platform booking fee: numPeople × ₹500. */
   paymentAmount: number
 }
 

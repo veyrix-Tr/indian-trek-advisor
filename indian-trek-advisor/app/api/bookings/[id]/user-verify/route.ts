@@ -162,7 +162,7 @@ export const POST = withErrorHandling(async function POST(
     toStatus: "confirmed",
     actorId: user.id,
     actorRole: "trekker",
-    note: "Trekker completed final verification — booking locked in",
+    note: "Trekker paid booking fee — booking locked in",
   })
 
   // Notify the guide their date is now locked in.
@@ -193,7 +193,7 @@ export const POST = withErrorHandling(async function POST(
         user_id: admin.id,
         type: "booking_status_change",
         booking_id: booking.id,
-        message: `Booking confirmed: ${user.user_metadata?.name || "A trekker"} completed final verification for booking #${id} on ${booking.booking_date}.`,
+        message: `Booking confirmed: ${user.user_metadata?.name || "A trekker"} paid the booking fee for booking #${id} on ${booking.booking_date}.`,
       }))
     )
   }
