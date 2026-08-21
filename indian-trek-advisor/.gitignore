@@ -17,3 +17,7 @@ node_modules
 
 trek_advisor*
 /lib/generated/prisma
+
+# Reports
+PLATFORM_REPORT.md
+EXECUTIVE_REPORT.md

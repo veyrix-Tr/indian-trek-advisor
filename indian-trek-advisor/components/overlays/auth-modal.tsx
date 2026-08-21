@@ -444,7 +444,7 @@ export function AuthModal({
             <DialogHeader className="px-5 pt-6 sm:px-8 sm:pt-8">
               <DialogTitle className="flex flex-wrap items-center gap-2.5 text-lg text-foreground sm:text-xl">
                 <Mountain className="size-5 text-primary sm:size-6" aria-hidden="true" />
-                Welcome to Indian Trek Advisor
+                Welcome to Core Trek-kin
               </DialogTitle>
               <DialogDescription className="text-sm text-muted-foreground">
                 One account for saving treks, reviews, and booking local guides.
@@ -739,7 +739,7 @@ export function AuthModal({
               {!verificationSent && !roleChosen && (
                 <div className="px-5 sm:px-8">
                   <p className="mb-5 text-center text-sm text-muted-foreground">
-                    How would you like to use Indian Trek Advisor?
+                    How would you like to use Core Trek-kin?
                   </p>
                   <div className="grid gap-3 sm:flex sm:gap-4">
                     {(
@@ -1254,7 +1254,7 @@ export function AuthModal({
               <div className="space-y-4 px-4 py-4 text-sm leading-relaxed text-muted-foreground">
                 <section>
                   <h4 className="mb-1 font-mono text-[11px] font-semibold uppercase tracking-wider text-primary">1. Nature of the Platform</h4>
-                  <p>Indian Trek Advisor is an information and community listing service only. We are not a travel agency, tour operator, trekking company, or adventure sports organiser.</p>
+                  <p>Core Trek-kin is an information and community listing service only. We are not a travel agency, tour operator, trekking company, or adventure sports organiser.</p>
                   <p className="mt-2">All guides and service providers listed are independent third parties.</p>
                 </section>
                 <section>
@@ -1265,7 +1265,7 @@ export function AuthModal({
                 </section>
                 <section>
                   <h4 className="mb-1 font-mono text-[11px] font-semibold uppercase tracking-wider text-primary">3. Limitation of Liability</h4>
-                  <p>To the maximum extent permitted by law, Indian Trek Advisor shall not be liable for any death, personal injury, property loss, or financial loss arising from use of this Platform.</p>
+                  <p>To the maximum extent permitted by law, Core Trek-kin shall not be liable for any death, personal injury, property loss, or financial loss arising from use of this Platform.</p>
                 </section>
                 <section>
                   <h4 className="mb-1 font-mono text-[11px] font-semibold uppercase tracking-wider text-primary">4. Guide &amp; Operator Liability</h4>
@@ -1277,7 +1277,7 @@ export function AuthModal({
                 </section>
                 <section>
                   <h4 className="mb-1 font-mono text-[11px] font-semibold uppercase tracking-wider text-primary">6. Indemnification</h4>
-                  <p>You agree to indemnify and hold harmless Indian Trek Advisor from any claims arising from your use of the Platform.</p>
+                  <p>You agree to indemnify and hold harmless Core Trek-kin from any claims arising from your use of the Platform.</p>
                 </section>
                 <section>
                   <h4 className="mb-1 font-mono text-[11px] font-semibold uppercase tracking-wider text-primary">7. Guide Responsibilities</h4>
@@ -1309,30 +1309,30 @@ export function AuthModal({
               <div className="space-y-5 px-6 py-5 text-sm leading-relaxed text-muted-foreground">
                 <section>
                   <h4 className="mb-1.5 font-mono text-[11px] font-semibold uppercase tracking-wider text-primary">1. Nature of the Platform</h4>
-                  <p><strong className="text-foreground">Indian Trek Advisor</strong> is an <strong className="text-foreground">information and community listing service only</strong>. We are not a travel agency, tour operator, trekking company, or adventure sports organiser.</p>
-                  <p className="mt-2">All guides and service providers listed are <strong className="text-foreground">independent third parties</strong>.</p>
-                </section>
-                <section>
-                  <h4 className="mb-1.5 font-mono text-[11px] font-semibold uppercase tracking-wider text-primary">2. Assumption of Risk</h4>
-                  <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-3 text-xs leading-relaxed">
-                    <strong className="text-destructive">⚠ CRITICAL:</strong> Trekking involves <strong className="text-foreground">serious, inherent risks</strong> including death, altitude sickness, hypothermia, avalanche, rockfall, flash floods, and getting lost.
-                  </div>
-                </section>
-                <section>
-                  <h4 className="mb-1.5 font-mono text-[11px] font-semibold uppercase tracking-wider text-primary">3. Limitation of Liability</h4>
-                  <p>To the maximum extent permitted by law, Indian Trek Advisor shall not be liable for any death, personal injury, property loss, or financial loss arising from use of this Platform.</p>
-                </section>
-                <section>
-                  <h4 className="mb-1.5 font-mono text-[11px] font-semibold uppercase tracking-wider text-primary">4. Guide &amp; Operator Liability</h4>
-                  <p>Guides are <strong className="text-foreground">independent contractors</strong>. Verify credentials independently and obtain comprehensive travel insurance.</p>
-                </section>
-                <section>
-                  <h4 className="mb-1.5 font-mono text-[11px] font-semibold uppercase tracking-wider text-primary">5. Trail &amp; Permit Information</h4>
-                  <p>Trail data is for <strong className="text-foreground">general guidance only</strong>. Verify all permit requirements before any trek.</p>
-                </section>
-                <section>
-                  <h4 className="mb-1.5 font-mono text-[11px] font-semibold uppercase tracking-wider text-primary">6. Indemnification</h4>
-                  <p>You agree to <strong className="text-foreground">indemnify and hold harmless</strong> Indian Trek Advisor from any claims arising from your use of the Platform.</p>
+                   <p><strong className="text-foreground">Core Trek-kin</strong> is an <strong className="text-foreground">information and community listing service only</strong>. We are not a travel agency, tour operator, trekking company, or adventure sports organiser.</p>
+                   <p className="mt-2">All guides and service providers listed are <strong className="text-foreground">independent third parties</strong>.</p>
+                 </section>
+                 <section>
+                   <h4 className="mb-1.5 font-mono text-[11px] font-semibold uppercase tracking-wider text-primary">2. Assumption of Risk</h4>
+                   <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-3 text-xs leading-relaxed">
+                     <strong className="text-destructive">⚠ CRITICAL:</strong> Trekking involves <strong className="text-foreground">serious, inherent risks</strong> including death, altitude sickness, hypothermia, avalanche, rockfall, flash floods, and getting lost.
+                   </div>
+                 </section>
+                 <section>
+                   <h4 className="mb-1.5 font-mono text-[11px] font-semibold uppercase tracking-wider text-primary">3. Limitation of Liability</h4>
+                   <p>To the maximum extent permitted by law, Core Trek-kin shall not be liable for any death, personal injury, property loss, or financial loss arising from use of this Platform.</p>
+                 </section>
+                 <section>
+                   <h4 className="mb-1.5 font-mono text-[11px] font-semibold uppercase tracking-wider text-primary">4. Guide &amp; Operator Liability</h4>
+                   <p>Guides are <strong className="text-foreground">independent contractors</strong>. Verify credentials independently and obtain comprehensive travel insurance.</p>
+                 </section>
+                 <section>
+                   <h4 className="mb-1.5 font-mono text-[11px] font-semibold uppercase tracking-wider text-primary">5. Trail &amp; Permit Information</h4>
+                   <p>Trail data is for <strong className="text-foreground">general guidance only</strong>. Verify all permit requirements before any trek.</p>
+                 </section>
+                 <section>
+                   <h4 className="mb-1.5 font-mono text-[11px] font-semibold uppercase tracking-wider text-primary">6. Indemnification</h4>
+                   <p>You agree to <strong className="text-foreground">indemnify and hold harmless</strong> Core Trek-kin from any claims arising from your use of the Platform.</p>
                 </section>
                 <section>
                   <h4 className="mb-1.5 font-mono text-[11px] font-semibold uppercase tracking-wider text-primary">7. Guide Responsibilities</h4>

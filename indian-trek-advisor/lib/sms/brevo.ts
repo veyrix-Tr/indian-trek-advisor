@@ -24,7 +24,7 @@ export async function sendSMS({ to, message }: SMSParams): Promise<boolean> {
         'api-key': BREVO_API_KEY
       },
       body: JSON.stringify({
-        sender: 'TrekAdvisor',
+        sender: 'Core Trek-kin',
         recipient: formattedPhone,
         message: message,
         type: 'transactional'

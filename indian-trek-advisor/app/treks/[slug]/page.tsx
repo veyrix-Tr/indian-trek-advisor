@@ -19,9 +19,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params
   const trek = getTrekBySlug(slug)
-  if (!trek) return { title: "Trek Not Found — TrekAdvisor" }
+  if (!trek) return { title: "Trek Not Found — Core Trek-kin" }
   return {
-    title: `${trek.name} — TrekAdvisor`,
+    title: `${trek.name} — Core Trek-kin`,
     description: trek.description.slice(0, 160),
   }
 }

@@ -35,7 +35,7 @@ export function SiteFooter() {
           >
             <Mountain className="size-5 text-primary" aria-hidden="true" />
             <span>
-              Trek<span className="text-primary">Advisor</span>
+              Core Trek-kin
             </span>
           </AuthGatedLink>
           <p className="max-w-sm text-pretty text-sm leading-relaxed text-muted-foreground">
@@ -72,7 +72,7 @@ export function SiteFooter() {
             permits and conditions locally before you trek.
           </p>
           <p className="font-mono uppercase tracking-widest">
-            TrekAdvisor &mdash; Trek on your terms
+            Core Trek-kin &mdash; Trek on your terms
           </p>
         </div>
       </div>

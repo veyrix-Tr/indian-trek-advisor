@@ -322,7 +322,7 @@ export function SiteHeader() {
             <SheetHeader>
               <SheetTitle className="flex items-center gap-2">
                 <Mountain className="size-5 text-primary" aria-hidden="true" />
-                Indian Trek Advisor
+                Core Trek-kin
               </SheetTitle>
             </SheetHeader>
             <nav

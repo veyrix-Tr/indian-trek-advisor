@@ -22,7 +22,7 @@ export function LegalTermsDialog({ open, onClose }: LegalTermsDialogProps) {
             Terms, Conditions &amp; Disclaimer
           </DialogTitle>
           <p className="text-sm text-muted-foreground">
-            Indian Trek Advisor — Platform Terms of Use &amp; Liability
+            Core Trek-kin — Platform Terms of Use &amp; Liability
             Disclaimer
           </p>
         </DialogHeader>
@@ -33,7 +33,7 @@ export function LegalTermsDialog({ open, onClose }: LegalTermsDialogProps) {
               1. Nature of the Platform
             </h3>
             <p>
-              <strong className="text-foreground">Indian Trek Advisor</strong> is
+              <strong className="text-foreground">Core Trek-kin</strong> is
               an <strong className="text-foreground">information and community
               listing service only</strong>. We are not a travel agency, tour
               operator, trekking company, or adventure sports organiser. We do
@@ -46,7 +46,7 @@ export function LegalTermsDialog({ open, onClose }: LegalTermsDialogProps) {
               <strong className="text-foreground">
                 independent third parties
               </strong>
-              . Indian Trek Advisor has no employment, agency, or contractual
+              . Core Trek-kin has no employment, agency, or contractual
               relationship with any listed guide or operator.
             </p>
           </section>
@@ -126,7 +126,7 @@ export function LegalTermsDialog({ open, onClose }: LegalTermsDialogProps) {
               <strong className="text-foreground">
                 independent contractors
               </strong>
-              , not employees or agents of Indian Trek Advisor. Any agreement
+              , not employees or agents of Core Trek-kin. Any agreement
               you make with a guide or operator is solely between you and that
               individual or entity.
             </p>
@@ -164,7 +164,7 @@ export function LegalTermsDialog({ open, onClose }: LegalTermsDialogProps) {
               <strong className="text-foreground">
                 indemnify, defend, and hold harmless
               </strong>{" "}
-              Indian Trek Advisor from any claims, damages, losses, liabilities,
+              Core Trek-kin from any claims, damages, losses, liabilities,
               costs, and expenses arising from your use of the Platform, your
               violation of these Terms, your participation in any trekking or
               outdoor activity, any content you submit, or any dispute between

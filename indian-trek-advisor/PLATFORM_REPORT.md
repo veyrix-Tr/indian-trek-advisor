@@ -4,6 +4,9 @@
 **Type:** Full-stack web platform connecting solo & group trekkers with verified local trek guides across India
 **Status:** Production-feature-complete (bookings + payments live; guide payouts pending)
 **Built on:** Next.js 16 (React 19) · Supabase (Postgres, Auth, Realtime) · Cloudinary · Brevo (email/SMS) · Cashfree (payments) · Google Gemini (AI)
+**Deployed at:** https://indian-trek-advisor.vercel.app (Vercel)
+
+_Report is maintained alongside the codebase and reflects the latest committed/uncommitted changes._
 
 ---
 
@@ -19,7 +22,7 @@ TrekAdvisor is a marketplace for Indian trekking that combines **editorial trek 
 |------|------------------|
 | **Trekker** | Browse 110 treks, use an AI assistant, search & filter, save treks, book a guide, pay online, track booking status, rate guides, get notified |
 | **Guide** | Register with document verification, set availability calendar, set per-trek rates, accept/reject/completion bookings, manage payouts info, read reviews |
-| **Admin** | Verify guides, view live stats & revenue, audit every booking change, review error logs, read all bookings, complete/cancel bookings |
+| **Admin** | Verify guides, view live stats & revenue, audit every booking change, review error logs, review all guide ratings, read bookings, complete/cancel bookings |
 
 ---
 
@@ -38,8 +41,12 @@ TrekAdvisor is a marketplace for Indian trekking that combines **editorial trek 
 ### 3.3 Trek Detail Page — 7 Tabs
 Overview · Itinerary · **Permits** · **Route Map** (custom-built elevation profile + altitude bar chart with hover tooltips, rendered from trek map data) · **Local Guides** (live bookable guides for the trek) · Photos · **Gear Rental**.
 
+- **Responsive route map** — the elevation profile uses SVG `viewBox` scaling so it fits on narrow phone screens; panels enforce `min-w-0`/`max-w-full`, the tab wrapper clips horizontally, and the chart heights are tuned so wide profiles stay readable. No horizontal page scroll on mobile.
+- **Already-requested UX** — on the Local Guides tab, if a trekker already has an active request for a trek + date, each guide card shows a clear status badge (**Request Pending** / **Guide Accepted — Verify** / **Confirmed**) instead of letting them re-book.
+
 ### 3.4 Gear Rental Directory
 - 10 pre-seeded gear shops near trailheads, filterable by region and gear type (tents, sleeping bags, crampons, poles, etc.).
+- *(Navbar entry replaced by "My Bookings"; the directory remains reachable elsewhere / as a placeholder.)*
 
 ### 3.5 Trail Guide AI — "Trex"
 - Gemini-powered assistant in the header. Knows the whole platform and all treks; recommends treks/pages, answers itinerary/permits/gear questions, promotes booking guides. Chat history stored client-side, abusive/oversized input guarded.
@@ -91,11 +98,13 @@ A **database exclusion constraint** makes two overlapping *confirmed* bookings f
 
 ## 6. Payments (Cashfree)
 
-- Online payments via **Cashfree Payment Gateway (SDK v6)**: create order, hosted/embedded checkout, and server-side verification against the gateway.
+- Online payments via **Cashfree Payment Gateway — SDK v6 (backend)** and **JS SDK v3 (frontend checkout)**: create order, hosted/embedded checkout, server-side verification, and clean redirect-back handling on the bookings page.
+- The frontend `window.Cashfree` is called as a **factory function** (`Cashfree({ mode: "sandbox" | "production" })`) with **lowercase** mode values (mismatched/uppercase mode values were rejected by the SDK), then `.checkout(...)` runs on the returned instance.
+- `create-order` returns the environment `mode` and **sanitises the customer's phone** (falls back to a valid placeholder when empty — Cashfree rejects orders with a missing `customer_phone`).
+- Enablement string uses `nb` (netbanking abbreviation) so the gateway accepts the payment-method list.
 - Payment methods enabled: **cards, UPI, netbanking, wallets**.
-- **Sandbox / Production** modes via environment config (currently running in sandbox).
+- **Sandbox / Production** modes via environment config (currently sandbox; deploys)
 - Payment identity is tied to the booking; a booking's `payment_status` flips to `paid` **only** when the gateway confirms `PAID` — the booking cannot be confirmed otherwise.
-- Clean redirect-back handling on the bookings page after a hosted payment completes.
 
 ---
 
@@ -117,7 +126,8 @@ A **database exclusion constraint** makes two overlapping *confirmed* bookings f
 - **Users** — search/filter all users, drill into profiles including guide documents and tourist history.
 - **Guides** — search + inline **Verify / Revoke**, expandable details with ID & certificate documents.
 - **Verifications** — queue of unverified guides with Approve / Reject (badge shows count).
-- **Bookings** — read-only tick/filter board (All / Guide Accepted / Confirmed / Completed / Cancelled) with trekker & guide contact info, amounts, cancellation reasons, and a per-booking **status timeline**.
+- **Bookings** — read-only tick/filter board (All / Guide Accepted / Confirmed / Completed / Cancelled) with trekker & guide contact info, amounts, cancellation reasons, and a per-booking **status timeline**. Fully read-only for admins — **no admin-side actions on bookings**.
+- **Reviews** — dedicated tab listing **every guide rating** across the platform (all `guide_ratings`) with live guide stats, search by text, and review cards; powered by a dedicated admin-secured API.
 - **Audit Log** — chronological record of every booking status change, filterable by search, target status, and acting party (admin/guide/trekker).
 - **Error Log** — server-side API error monitor with source filters and full stack traces; surfaces a "run migration" banner if the table is absent.
 - Admin can also complete or cancel any booking.
@@ -134,7 +144,17 @@ A **database exclusion constraint** makes two overlapping *confirmed* bookings f
 
 ---
 
-## 10. Platform Engineering & Safety
+## 10. Responsive UI & Header
+
+- **Role-aware header links** — trekkers see Kailash Yatra / Panch Kedar / **My Bookings**; guides see **My Dashboard**; admins see the **Admin Panel + Bookings**. Profile/Saved/Reviews/Bookings are only shown to trekkers.
+- **Active-nav highlighting** — a nav item is highlighted correctly on nested pages: browsing `/treks/kedarkantha` keeps "Treks" active, and section links (Kailash/Panch Kedar) highlight independently.
+- **Mobile header** — the theme toggle and profile button are hidden on small screens; instead a trailing AI icon (sparkles) sits in the navbar and the **hamburger (three-line) menu** holds the nav links plus a visually distinct **"My Account"** section (Profile / Saved Treks / My Bookings / My Reviews / Guide Dashboard / Admin Panel) and the theme + AI toggles. Icons are grouped with breathing room so they don't crowd the nav edge.
+- **AI panel "Clear"** control is laid out in-flow (not absolutely positioned) so it never overlaps the header on narrow phones.
+- Booking cards display the **trek name** (looked up from the trek id) instead of the raw numeric trek id.
+
+---
+
+## 11. Platform Engineering & Safety
 
 - **Security:** role-checked API routes, server-side pricing (no client-trust), service-role DB client for privileged writes, RLS as a second layer, upload sanitisation, phone validation, auth checks across all booking/guide endpoints.
 - **Reliability:** automation-friendly routing, error boundaries, centralized error logging, DB constraints over app-only checks (double-booking).
@@ -144,7 +164,7 @@ A **database exclusion constraint** makes two overlapping *confirmed* bookings f
 
 ---
 
-## 11. Technology Stack
+## 12. Technology Stack
 
 | Layer | Technology |
 |-------|-----------|
@@ -160,10 +180,11 @@ A **database exclusion constraint** makes two overlapping *confirmed* bookings f
 
 ---
 
-## 12. Outstanding Items
+## 13. Outstanding Items
 
 1. **Guide payouts (disbursal)** — payout details are collected but no actual money transfer is wired yet; guides would receive funds manually/offline for now.
-2. Configure **production** Cashfree keys and set `CASHFREE_ENV=production` before going live with real money.
+2. Configure **production** Cashfree keys and set `CASHFREE_ENV=production` before going live with real money. (Sandbox keys work for testing on the deployed domain.)
+3. **Realtime publication** — the `bookings_confirmed_no_overlap` exclusion constraint and `supabase_realtime` publication membership are applied via SQL; confirm they are present in the Supabase console / SQL editor for the deployed project.
 
 Everything else — bookings, payments, verification, notifications, admin, audit — is implemented and type-checked.
 

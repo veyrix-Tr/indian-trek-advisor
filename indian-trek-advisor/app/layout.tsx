@@ -20,7 +20,7 @@ const jetbrainsMono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'TrekAdvisor — Discover India\u2019s Greatest Treks',
+  title: 'Core Trek-kin — Discover India\u2019s Greatest Treks',
   description:
     '100 trails across India with real permit info, solo safety notes, and independent local guides. No large groups. No packaged tours.',
   generator: 'v0.app',

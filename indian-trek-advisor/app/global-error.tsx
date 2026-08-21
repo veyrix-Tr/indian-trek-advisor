@@ -41,7 +41,7 @@ export default function GlobalError({
           Something Went Wrong
         </p>
         <h1 style={{ marginTop: "12px", fontSize: "28px", fontWeight: 700 }}>
-          TrekAdvisor hit a critical error
+          Core Trek-kin hit a critical error
         </h1>
         <p style={{ marginTop: "12px", maxWidth: "420px", color: "#a3a39c", lineHeight: 1.6 }}>
           Something went wrong loading the app. Please try again.

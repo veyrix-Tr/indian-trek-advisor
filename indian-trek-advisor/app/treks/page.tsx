@@ -4,7 +4,7 @@ import { TreksBrowser } from "@/components/treks/treks-browser"
 import { BackButton } from "@/components/ui/back-button"
 
 export const metadata: Metadata = {
-  title: "All Treks — TrekAdvisor",
+  title: "All Treks — Core Trek-kin",
   description:
     "Browse 110 trekking trails across India with permit info, difficulty, itineraries, and local guides. Filter by difficulty, duration, and region.",
 }
