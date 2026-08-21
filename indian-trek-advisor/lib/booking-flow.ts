@@ -18,21 +18,23 @@ export const BOOKING_FLOW: BookingStatus[] = [
 // via CANCELLABLE_STATUSES.
 //
 // Flow: pending (trekker requested) → guide_approved (guide accepted, awaiting
-// the trekker's final verification) → confirmed (trekker verified) →
+// the trekker's booking fee) → confirmed (trekker paid) →
 // completed. No admin approval step.
 export const VALID_TRANSITIONS: Partial<Record<BookingStatus, BookingStatus[]>> = {
   pending: ["guide_approved", "cancelled"],
   guide_approved: ["confirmed", "cancelled"],
-  confirmed: ["completed"],
+  confirmed: ["completed", "cancelled"],
   completed: [],
   cancelled: [],
 }
 
-// A trekker can cancel until their final verification (pending and
-// guide_approved). After confirmation the booking is locked.
+// A trekker can cancel at any stage before completion. For confirmed bookings,
+// cancellation triggers a refund request (must be > 7 days before trek date,
+// handled on the frontend).
 export const CANCELLABLE_STATUSES: BookingStatus[] = [
   "pending",
   "guide_approved",
+  "confirmed",
 ]
 
 export function isTerminal(status: BookingStatus): boolean {

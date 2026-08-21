@@ -66,6 +66,8 @@ function BookingsPageInner() {
   const [paymentModalOpen, setPaymentModalOpen] = useState(false)
   const [cancelDialogBooking, setCancelDialogBooking] = useState<Booking | null>(null)
   const [cancelReason, setCancelReason] = useState("")
+  const [refundMethod, setRefundMethod] = useState<"upi" | "bank">("upi")
+  const [refundDetails, setRefundDetails] = useState("")
   const [submitting, setSubmitting] = useState(false)
   const [actionError, setActionError] = useState<string | null>(null)
   const [toast, setToast] = useState<string | null>(null)
@@ -260,17 +262,26 @@ function BookingsPageInner() {
     setSubmitting(true)
     setActionError(null)
     try {
+      const isPaid = cancelDialogBooking.payment_status === 'paid'
       const response = await fetch(`/api/bookings/${cancelDialogBooking.id}/cancel`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ reason: cancelReason })
+        body: JSON.stringify({
+          reason: cancelReason,
+          ...(isPaid && refundDetails ? { refund_method: refundMethod, refund_details: refundDetails } : {}),
+        })
       })
 
       if (response.ok) {
         fetchBookings()
         setCancelDialogBooking(null)
         setCancelReason("")
-        showToast("Booking cancelled")
+        setRefundDetails("")
+        if (cancelDialogBooking.payment_status === 'paid') {
+          showToast("Booking cancelled. Your refund will be processed within 48 hours.")
+        } else {
+          showToast("Booking cancelled")
+        }
       } else {
         const data = await response.json()
         setActionError(data.error || "Error cancelling booking")
@@ -399,15 +410,32 @@ function BookingsPageInner() {
                         </Button>
                       )}
 
-                      {booking.status === 'confirmed' && (
-                        <div className="mt-4 flex items-center gap-2 rounded-xl border border-primary/25 bg-primary/5 px-4 py-3">
-                          <Phone className="size-4 shrink-0 text-primary" />
-                          <div>
-                            <p className="font-mono text-[10px] uppercase tracking-widest text-primary">Guide Contact</p>
-                            <p className="text-sm text-foreground">{booking.guides?.profiles?.phone || "Not provided"}</p>
+                      {booking.status === 'confirmed' && (() => {
+                        const bookingDate = new Date(booking.booking_date)
+                        const today = new Date()
+                        today.setHours(0, 0, 0, 0)
+                        const twoDaysFromNow = new Date(today)
+                        twoDaysFromNow.setDate(twoDaysFromNow.getDate() + 2)
+                        const showContact = bookingDate <= twoDaysFromNow
+
+                        return showContact ? (
+                          <div className="mt-4 flex items-center gap-2 rounded-xl border border-primary/25 bg-primary/5 px-4 py-3">
+                            <Phone className="size-4 shrink-0 text-primary" />
+                            <div>
+                              <p className="font-mono text-[10px] uppercase tracking-widest text-primary">Guide Contact</p>
+                              <p className="text-sm text-foreground">{booking.guides?.profiles?.phone || "Not provided"}</p>
+                            </div>
                           </div>
-                        </div>
-                      )}
+                        ) : (
+                          <div className="mt-4 flex items-center gap-2 rounded-xl border border-border bg-muted/30 px-4 py-3">
+                            <Phone className="size-4 shrink-0 text-muted-foreground" />
+                            <div>
+                              <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Guide Contact</p>
+                              <p className="text-xs text-muted-foreground">Contact details will be shared 2 days before the trek</p>
+                            </div>
+                          </div>
+                        )
+                      })()}
 
                       {booking.status === 'completed' && (
                         <Button
@@ -430,6 +458,26 @@ function BookingsPageInner() {
                           Cancel Booking
                         </Button>
                       )}
+
+                      {booking.status === 'confirmed' && (() => {
+                        const bookingDate = new Date(booking.booking_date)
+                        const today = new Date()
+                        today.setHours(0, 0, 0, 0)
+                        const oneWeekFromNow = new Date(today)
+                        oneWeekFromNow.setDate(oneWeekFromNow.getDate() + 7)
+                        const canCancel = bookingDate > oneWeekFromNow
+
+                        return canCancel ? (
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            className="mt-4"
+                            onClick={() => setCancelDialogBooking(booking)}
+                          >
+                            Cancel & Request Refund
+                          </Button>
+                        ) : null
+                      })()}
 
                       <StatusTimeline bookingId={booking.id} bookingDate={booking.booking_date} />
                     </CardContent>
@@ -476,15 +524,54 @@ function BookingsPageInner() {
           if (!open) {
             setCancelDialogBooking(null)
             setCancelReason("")
+            setRefundDetails("")
             setActionError(null)
           }
         }}
       >
         <DialogContent className="max-w-sm border-border bg-card">
           <DialogHeader>
-            <DialogTitle>Cancel Booking</DialogTitle>
+            <DialogTitle>
+              {cancelDialogBooking?.payment_status === 'paid' ? "Cancel & Request Refund" : "Cancel Booking"}
+            </DialogTitle>
           </DialogHeader>
           <div className="space-y-3">
+            {cancelDialogBooking?.payment_status === 'paid' && (
+              <div className="rounded-lg border border-amber-500/20 bg-amber-500/5 p-3 text-xs text-amber-700 dark:text-amber-400">
+                <p className="font-medium mb-1">Refund Policy</p>
+                <p>Since you have already paid the booking fee, your refund will be processed within <strong>48 hours</strong> of cancellation approval.</p>
+              </div>
+            )}
+
+            {cancelDialogBooking?.payment_status === 'paid' && (
+              <div className="space-y-2">
+                <label className="text-xs font-medium">Refund Method</label>
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setRefundMethod("upi")}
+                    className={`flex-1 rounded-lg border px-3 py-2 text-xs font-medium transition-colors ${refundMethod === "upi" ? "border-primary bg-primary/10 text-primary" : "border-border text-muted-foreground hover:bg-accent"}`}
+                  >
+                    UPI
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setRefundMethod("bank")}
+                    className={`flex-1 rounded-lg border px-3 py-2 text-xs font-medium transition-colors ${refundMethod === "bank" ? "border-primary bg-primary/10 text-primary" : "border-border text-muted-foreground hover:bg-accent"}`}
+                  >
+                    Bank Transfer
+                  </button>
+                </div>
+                <input
+                  type="text"
+                  value={refundDetails}
+                  onChange={(e) => setRefundDetails(e.target.value)}
+                  placeholder={refundMethod === "upi" ? "e.g. name@upi" : "Account number + IFSC"}
+                  className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+              </div>
+            )}
+
             <Textarea
               value={cancelReason}
               onChange={(e) => setCancelReason(e.target.value)}
@@ -510,9 +597,9 @@ function BookingsPageInner() {
                 variant="destructive"
                 className="flex-1"
                 onClick={handleCancelBooking}
-                disabled={submitting}
+                disabled={submitting || (cancelDialogBooking?.payment_status === 'paid' && !refundDetails)}
               >
-                {submitting ? "Cancelling..." : "Cancel Booking"}
+                {submitting ? "Cancelling..." : cancelDialogBooking?.payment_status === 'paid' ? "Request Refund" : "Cancel Booking"}
               </Button>
             </div>
           </div>

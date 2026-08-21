@@ -17,7 +17,7 @@ export const POST = withErrorHandling(async function POST(
   const supabase = getAdminClient()
 
   const body = await request.json()
-  const { reason } = body
+  const { reason, refund_method, refund_details } = body
 
   // Verify user is guide or admin
   const { data: booking } = await supabase
@@ -57,11 +57,15 @@ export const POST = withErrorHandling(async function POST(
   }
 
   // Update booking status
+  const cancellationNote = reason || "Booking cancelled"
+  const refundInfo = refund_method && refund_details
+    ? ` [Refund: ${refund_method} — ${refund_details}]`
+    : ""
   const { data: updated, error } = await supabase
     .from("bookings")
     .update({
       status: 'cancelled',
-      rejection_reason: reason || null,
+      rejection_reason: cancellationNote + refundInfo,
       cancelled_by: user.id,
       cancelled_by_role: actorRole,
       ...(isGuideActor ? { guide_responded_at: new Date().toISOString() } : {}),
@@ -115,12 +119,15 @@ export const POST = withErrorHandling(async function POST(
     .eq("account_type", "admin")
 
   if (adminProfiles && adminProfiles.length > 0) {
+    const refundMsg = refund_method && refund_details
+      ? `\nRefund requested via ${refund_method}: ${refund_details}`
+      : ""
     await supabase.from("notifications").insert(
       adminProfiles.map((admin) => ({
         user_id: admin.id,
         type: "booking_status_change",
         booking_id: booking.id,
-        message: `Booking cancelled: ${actorRole} cancelled booking #${id} for ${booking.booking_date}.${reason ? ` Reason: ${reason}` : ""}`,
+        message: `Booking cancelled: ${actorRole} cancelled booking for ${booking.booking_date} (${booking.trek_id}).${reason ? ` Reason: ${reason}` : ""}${refundMsg}`,
       }))
     )
   }

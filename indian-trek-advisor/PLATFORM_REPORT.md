@@ -1,6 +1,6 @@
-# Indian Trek Advisor — Platform Report
+# Core Trek-kin — Platform Report
 
-**Project:** Indian Trek Advisor (indiantrekadvisor.com)
+**Project:** Core Trek-kin (indiantrekadvisor.com)
 **Type:** Full-stack web platform connecting solo & group trekkers with verified local trek guides across India
 **Status:** Production-feature-complete (bookings + payments live; guide payouts pending)
 **Built on:** Next.js 16 (React 19) · Supabase (Postgres, Auth, Realtime) · Cloudinary · Brevo (email/SMS) · Cashfree (payments) · Google Gemini (AI)
@@ -12,7 +12,7 @@ _Report is maintained alongside the codebase and reflects the latest committed/u
 
 ## 1. Executive Summary
 
-TrekAdvisor is a marketplace for Indian trekking that combines **editorial trek content** with a **live guide-booking engine**. It serves three distinct user types — trekkers, trek guides, and platform admins — on a single responsive web app. The full trekker → guide booking lifecycle is implemented end-to-end: request → guide approval → online payment → confirmation → completion → rating, with notifications, SMS, admin oversight, an audit trail, and a database-level anti-double-booking guarantee.
+Core Trek-kin is a marketplace for Indian trekking that combines **editorial trek content** with a **live guide-booking engine**. It serves three distinct user types — trekkers, trek guides, and platform admins — on a single responsive web app. The full trekker → guide booking lifecycle is implemented end-to-end: request → guide approval → online payment → confirmation → completion → rating, with notifications, SMS, admin oversight, an audit trail, and a database-level anti-double-booking guarantee.
 
 ---
 
@@ -74,18 +74,19 @@ The booking lifecycle is managed by a strict state machine:
 ```
 requested → guide accepted → paid & confirmed → completed
    (pending)   (guide_approved)     (confirmed)       (completed)
-                     ↘  cancelled  ↙   (only before confirmation)
+                    ↘  cancelled  ↙       ↘  cancelled  ↙
+                   (before payment)      (with refund if >7 days)
 ```
 
-**Key rule:** a booking is **locked and non-cancellable once confirmed**. Confirmation requires the guide to have accepted *and* the trekker to have paid online.
+**Key rule:** a booking can be cancelled at any stage before completion. Before confirmation, cancellation is straightforward. After confirmation, cancellation triggers a refund request (must be >7 days before trek date; UPI/bank details required; admin notified with refund info).
 
 ### Step-by-step
-1. **Request** — Trekker picks a trek + date + guide. Price is computed **server-side** (per-trek guide base rate × number of trekkers × trek days) — clients can never set the price. Guide + admins are notified; the guide gets an SMS.
+1. **Request** — Trekker picks a trek + date + guide. Price is computed **server-side** (guide fee ₹1,500/day + trek assist ₹3,500 base + ₹1,000/additional trekker, billable days = itinerary steps − 2) — clients can never set the price. Guide + admins are notified; the guide gets an SMS.
 2. **Guide accepts** — Guide approves from their dashboard. The date-span is soft-held. A booked/confirmed overlap hard-blocks acceptance; a stale (>6h) approved request doesn't hold the date hostage.
-3. **Payment** — Trekker reaches a secure Cashfree checkout (cards, UPI, netbanking, etc.) directly from their bookings page.
-4. **Confirm** — After successful payment, the trekker's "Final Verification" confirms the booking. This **hard-locks every date in the guide's span** and **auto-cancels** (a) the trekker's other same-day requests and (b) other trekkers' requests to that guide for overlapping dates. All affected users are notified.
+3. **Payment** — Trekker pays the **booking fee** (₹500 × number of trekkers) via Cashfree (UPI/netbanking).
+4. **Confirm** — After successful payment, the booking is confirmed. This **hard-locks every date in the guide's span** and **auto-cancels** (a) the trekker's other same-day requests and (b) other trekkers' requests to that guide for overlapping dates. All affected users are notified.
 5. **Complete** — The guide (or admin) marks the trek completed, which frees the guide's calendar and prompts the trekker to rate the guide.
-6. **Cancel** — Possible before confirmation, by trekker/guide/admin; frees the calendar, notifies all parties.
+6. **Cancel** — Possible at any stage before completion. Before payment: free cancellation by trekker/guide/admin. After payment: trekker can cancel if trek date is >7 days away; requires UPI/bank details for refund; admin notified with refund info; refund processed within 48 hours.
 
 ### Anti-double-booking guarantee
 A **database exclusion constraint** makes two overlapping *confirmed* bookings for one guide physically impossible. If two trekkers finalise at the exact same moment, Postgres lets only one succeed and the other receives a clean "guide already booked for that date" message — no race condition, no double-booked guide.
@@ -130,7 +131,7 @@ A **database exclusion constraint** makes two overlapping *confirmed* bookings f
 - **Reviews** — dedicated tab listing **every guide rating** across the platform (all `guide_ratings`) with live guide stats, search by text, and review cards; powered by a dedicated admin-secured API.
 - **Audit Log** — chronological record of every booking status change, filterable by search, target status, and acting party (admin/guide/trekker).
 - **Error Log** — server-side API error monitor with source filters and full stack traces; surfaces a "run migration" banner if the table is absent.
-- Admin can also complete or cancel any booking.
+- Admin can also complete or cancel any booking (cancellation by admin also triggers refund notification).
 
 ---
 
