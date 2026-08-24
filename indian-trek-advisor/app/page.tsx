@@ -33,8 +33,8 @@ export default function HomePage() {
           { value: stats.total, label: "Trails", href: "/treks" },
           { value: stats.uttarakhand, label: "Uttarakhand", href: "/treks?state=Uttarakhand" },
           { value: stats.himachal, label: "Himachal", href: "/treks?state=Himachal+Pradesh" },
-          { value: stats.jammuLadakh, label: "J&K", href: "/treks?state=Jammu+%26+Kashmir,Ladakh" },
-          { value: stats.other, label: "Other States", href: "/treks?state=Sikkim,West+Bengal,Karnataka,Kerala,Nagaland,Meghalaya,Arunachal+Pradesh,Mizoram,Tamil+Nadu" },
+          { value: stats.jammuLadakh, label: "J&K & Ladakh", href: "/treks?state=Jammu+%26+Kashmir,Ladakh" },
+          { value: stats.other, label: "Other Regions", href: "/treks?state=Sikkim,West+Bengal,Karnataka,Kerala,Nagaland,Meghalaya,Arunachal+Pradesh,Mizoram,Tamil+Nadu" },
         ]}
       />
 

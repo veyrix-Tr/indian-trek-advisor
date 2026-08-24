@@ -99,7 +99,7 @@
     "state": "Jammu & Kashmir",
     "difficulty": "hard",
     "durationType": "multi",
-    "days": "6",
+    "days": "7",
     "distance": "75 km",
     "elevation": 4206,
     "elevationStr": "4,206m",
@@ -127,16 +127,26 @@
     "itinerary": [
       {
         "day": 1,
-        "title": "Srinagar to Sonamarg — Trek to Nichnai",
-        "distance": "25 km drive + 9 km on trail",
+        "title": "Travel to Sonamarg",
+        "distance": "80 km by road from Srinagar",
+        "elevation": "2,800m (Sonamarg)",
+        "time": "2–3 hrs drive",
+        "camp": "Sonamarg campsite / guesthouse",
+        "returnJourney": false,
+        "desc": "Drive from Srinagar along the Sindh River to Sonamarg at 2,800m — a broad alpine meadow backed by glacier peaks. Arrive, register permits, and acclimatise. The meadow is the traditional starting point for the Kashmir Great Lakes trek."
+      },
+      {
+        "day": 2,
+        "title": "Sonamarg — Trek to Nichnai",
+        "distance": "9 km on trail",
         "elevation": "3,400m",
-        "time": "5–6 hrs walking",
+        "time": "4–5 hrs",
         "camp": "Nichnai stream camp",
         "returnJourney": false,
         "desc": "Drive out of Srinagar along the Sindh River to Sonamarg at 2,800m — a broad alpine meadow backed by glacier peaks. Lace up and head into the hills, climbing steadily alongside the Nichnai Nala through meadows of wild iris to the first campsite by a clear stream."
       },
       {
-        "day": 2,
+        "day": 3,
         "title": "Nichnai to Vishansar Lake",
         "distance": "13 km",
         "elevation": "3,780m",
@@ -146,7 +156,7 @@
         "desc": "Gain the Nichnai Pass at 4,100m — the first high crossing. Below opens the jewel-blue Vishansar Lake, dotted with floating icebergs in July. Camp on the grass beside the water with Vishansar Peak filling the sky above."
       },
       {
-        "day": 3,
+        "day": 4,
         "title": "Vishansar — Krishansar — Gadsar Pass — Gadsar Lake",
         "distance": "14 km",
         "elevation": "4,206m pass",
@@ -156,7 +166,7 @@
         "desc": "Walk the short ridge to twin Krishansar, then tackle the highest point of the route — Gadsar Pass at 4,206m. The view from the top with both Kashmir lakes behind you and Gadsar Lake below is one of the great panoramas on this trek. Steady descent to camp beside the deep-blue Gadsar."
       },
       {
-        "day": 4,
+        "day": 5,
         "title": "Gadsar to Satsar Lakes",
         "distance": "13 km",
         "elevation": "3,800m",
@@ -166,7 +176,7 @@
         "desc": "Follow the Gadsar Valley past wandering Gujjar flocks to Satsar — a chain of seven small linked lakes cupped in a wildflower meadow. This section sees far fewer trekkers; the peace here is complete."
       },
       {
-        "day": 5,
+        "day": 6,
         "title": "Satsar to Gangabal — Nundkol Lakes",
         "distance": "11 km",
         "elevation": "3,576m",
@@ -176,14 +186,14 @@
         "desc": "Cross Zajibal Pass (4,080m) and drop into the Gangabal-Nundkol basin — the largest lake complex on the trek. The great Harmukh massif (5,142m) towers above the water. Catch the last light turning the lake surface gold."
       },
       {
-        "day": 6,
-        "title": "Gangabal to Naranag — Drive to Srinagar",
-        "distance": "12 km descent + 95 km by road",
-        "elevation": "2,250m village",
-        "time": "5 hrs walk + 2.5 hrs drive",
+        "day": 7,
+        "title": "Drive from Naranag to Srinagar",
+        "distance": "95 km by road",
+        "elevation": "1,580m (Srinagar)",
+        "time": "2.5 hrs drive",
         "camp": "—",
         "returnJourney": true,
-        "desc": "A sharp descent through birch and pine forest leads to the ancient Naranag temple ruins. A vehicle picks up here for the roughly 2.5-hour drive back to Srinagar through the Sindh Valley. Total return from trailhead to city is around 7–8 hours combined."
+        "desc": "A vehicle picks up at Naranag for the drive back to Srinagar through the Sindh Valley. Total return from trailhead to city is around 2.5 hours. Trek complete."
       }
     ],
     "coverImage": "https://images.pexels.com/photos/18050409/pexels-photo-18050409.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -1000,7 +1010,7 @@
     "state": "Ladakh",
     "difficulty": "hard",
     "durationType": "multi",
-    "days": "6",
+    "days": "7",
     "distance": "62 km",
     "elevation": 5260,
     "elevationStr": "5,260m",
@@ -1028,16 +1038,26 @@
     "itinerary": [
       {
         "day": 1,
-        "title": "Leh to Chilling — Trek to Skiu",
-        "distance": "75 km by road + 10 km on trail",
+        "title": "Travel to Chilling",
+        "distance": "75 km by road from Leh",
+        "elevation": "3,400m (Chilling)",
+        "time": "2–3 hrs drive",
+        "camp": "Chilling campsite",
+        "returnJourney": false,
+        "desc": "Drive from Leh along the Zanskar River to Chilling village — the road end and traditional starting point for the Markha Valley trek. Arrange permits and porter/guide at Chilling. Camp by the river."
+      },
+      {
+        "day": 2,
+        "title": "Chilling — Trek to Skiu",
+        "distance": "10 km on trail",
         "elevation": "3,380m",
-        "time": "4–5 hrs walking",
+        "time": "4–5 hrs",
         "camp": "Skiu village",
         "returnJourney": false,
         "desc": "Drive from Leh along the Zanskar River road to the Chilling crossing. Step onto the trail where the canyon narrows and the Markha River takes over. Reach Skiu — a small Ladakhi hamlet with a crumbling fort perched on the cliff above."
       },
       {
-        "day": 2,
+        "day": 3,
         "title": "Skiu to Markha Village",
         "distance": "16 km",
         "elevation": "3,700m",
@@ -1047,7 +1067,7 @@
         "desc": "The canyon trek in earnest. Rock walls hundreds of metres high on both sides. Multiple knee-deep river crossings in July. Pass the settlements of Chalak and Sara before reaching Markha — a proper village with a monastery, a ruined fort, and local homestays serving butter tea and tsampa."
       },
       {
-        "day": 3,
+        "day": 4,
         "title": "Markha to Thachungtse",
         "distance": "16 km",
         "elevation": "4,220m",
@@ -1057,7 +1077,7 @@
         "desc": "The valley gradually opens. Pass Hankar with its dramatically sited monastery. Kang Yatze (6,400m) appears ahead for the first time — a pyramid of snow dominating the upper valley."
       },
       {
-        "day": 4,
+        "day": 5,
         "title": "Thachungtse to Nimaling Plateau",
         "distance": "8 km",
         "elevation": "4,700m plateau",
@@ -1067,7 +1087,7 @@
         "desc": "A short but high climb to the Nimaling plateau — one of the most dramatically beautiful camps in Indian trekking. Flat grassland at 4,700m, Kang Yatze directly overhead, yaks grazing at the tent edges. The stars here at night are astonishing."
       },
       {
-        "day": 5,
+        "day": 6,
         "title": "Kongmaru La Pass — Descent to Chogdo",
         "distance": "15 km",
         "elevation": "5,260m pass",
@@ -1077,14 +1097,14 @@
         "desc": "The highest point of the trek. Kongmaru La at 5,260m opens a panorama across the Ladakh and Zanskar ranges. A steep descent on shale and gravel leads to the Indus Valley. Vehicles are available from Shang Sumdo."
       },
       {
-        "day": 6,
-        "title": "Drive Back to Leh — Return Journey",
-        "distance": "45 km by road",
+        "day": 7,
+        "title": "Drive from Leh back to Leh (return)",
+        "distance": "75 km by road",
         "elevation": "3,500m (Leh)",
-        "time": "2 hrs drive",
+        "time": "2–3 hrs drive",
         "camp": "—",
         "returnJourney": true,
-        "desc": "Board a vehicle at Shang Sumdo for the 45-km drive back to Leh along the Indus River highway. Arrival in Leh in roughly 2 hours. Rest day recommended before onward travel due to lingering altitude effects."
+        "desc": "Drive back to Leh from the trek endpoint. The return journey follows the Zanskar and Indus river valleys."
       }
     ],
     "coverImage": "https://images.pexels.com/photos/960316/pexels-photo-960316.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -1467,7 +1487,7 @@
     "subRegion": "Garhwal",
     "difficulty": "easy",
     "durationType": "day",
-    "days": "2",
+    "days": "4",
     "distance": "16 km",
     "elevation": 3022,
     "elevationStr": "3,022m",
@@ -1495,23 +1515,43 @@
     "itinerary": [
       {
         "day": 1,
-        "title": "Dehradun to Pantwari — Trek to Nag Tibba Base Camp",
-        "distance": "70 km drive + 5 km trek",
-        "elevation": "2,600m",
-        "time": "2.5 hrs drive + 4–5 hrs trek",
-        "camp": "Nag Tibba base camp (forest campsite)",
+        "title": "Dehradun to Pantwari",
+        "distance": "70 km drive",
+        "elevation": "1,800m (Pantwari)",
+        "time": "2.5 hrs drive",
+        "camp": "Pantwari village guesthouse / homestay",
         "returnJourney": false,
-        "desc": "Drive from Dehradun to Pantwari village (70 km, 2.5 hrs) via Mussoorie and Yamuna Bridge. The trail begins at Pantwari (1,800m) and climbs through dense oak and rhododendron forest alongside a seasonal stream. The gradient is steady but manageable. Reach the forest campsite at Nag Tibba base (2,600m) by late afternoon. Camp among tall oaks with views opening toward the Doon Valley."
+        "desc": "Drive from Dehradun to Pantwari village via Mussoorie and Yamuna Bridge. The road winds through the Yamuna Valley with views of the Garhwal Himalayan foothills. Arrive in Pantwari, register at the forest check-post, and settle in for the night. Early rest before the trek begins tomorrow."
       },
       {
         "day": 2,
-        "title": "Summit Nag Tibba (3,022m) — Return to Pantwari — Drive to Dehradun",
-        "distance": "2 km summit + 7 km descent + 70 km drive",
+        "title": "Pantwari — Trek to Nag Tibba Base Camp",
+        "distance": "5 km trek",
+        "elevation": "2,600m",
+        "time": "4–5 hrs",
+        "camp": "Nag Tibba base camp (forest campsite)",
+        "returnJourney": false,
+        "desc": "The trail begins at Pantwari (1,800m) and climbs through dense oak and rhododendron forest alongside a seasonal stream. The gradient is steady but manageable. Reach the forest campsite at Nag Tibba base (2,600m) by late afternoon. Camp among tall oaks with views opening toward the Doon Valley."
+      },
+      {
+        "day": 3,
+        "title": "Summit Nag Tibba (3,022m) — Descent to Pantwari",
+        "distance": "2 km summit + 7 km descent",
         "elevation": "3,200m summit → 1,800m Pantwari",
-        "time": "2 hrs summit + 3 hrs descend + 2.5 hrs drive",
-        "camp": "Return to Dehradun",
+        "time": "2 hrs summit + 3 hrs descend",
+        "camp": "Pantwari village guesthouse / homestay",
+        "returnJourney": false,
+        "desc": "Early morning push to the Nag Tibba summit (3,022m) — just 2 km from base camp. The final section opens to a rocky ridgeline with a Nag Devta temple. Panoramic views of Bandarpoonch (6,316m), Kedarnath Dome (6,831m), Gangotri group, Swargarohini, and the entire Doon Valley. Descend the same trail to Pantwari."
+      },
+      {
+        "day": 4,
+        "title": "Return from Pantwari to Dehradun",
+        "distance": "70 km drive",
+        "elevation": "640m (Dehradun)",
+        "time": "2.5 hrs drive",
+        "camp": "—",
         "returnJourney": true,
-        "desc": "Early morning push to the Nag Tibba summit (3,022m) — just 2 km from base camp. The final section opens to a rocky ridgeline with a Nag Devta temple. Panoramic views of Bandarpoonch (6,316m), Kedarnath Dome (6,831m), Gangotri group, Swargarohini, and the entire Doon Valley. Descend the same trail to Pantwari. Drive back to Dehradun via Mussoorie."
+        "desc": "Morning departure from Pantwari. Drive back to Dehradun via Mussoorie. The descent through the Yamuna Valley offers final views of the Garhwal Himalayan foothills."
       }
     ],
     "coverImage": "https://images.pexels.com/photos/31186000/pexels-photo-31186000.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -1589,13 +1629,13 @@
       },
       {
         "day": 4,
-        "title": "Gui to Raithal — Drive to Dehradun",
-        "distance": "5 km descent + 183 km road",
+        "title": "Raithal — Drive to Dehradun",
+        "distance": "183 km road",
         "elevation": "640m (Dehradun)",
-        "time": "3–4 hrs trek + 7–8 hrs drive",
-        "camp": "Return to Dehradun",
+        "time": "6–7 hrs drive",
+        "camp": "—",
         "returnJourney": true,
-        "desc": "Early breakfast and morning descent from Gui campsite back to Raithal (5 km, 3–4 hours) through the oak and rhododendron forest. Arrive Raithal by late morning. Drive 183 km from Raithal to Dehradun via Bhatwari, Uttarkashi, Chinyalisaur, and Mussoorie. Lunch stop in Uttarkashi. Reach Dehradun by 7:30–8:00 pm."
+        "desc": "Drive from Raithal back to Dehradun via Chakrata and Mussoorie road. The descent through the Jaunsar-Bawar region offers final views of the Bandarpoonch and Swargarohini peaks."
       }
     ],
     "coverImage": "https://images.pexels.com/photos/35080056/pexels-photo-35080056.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -1709,7 +1749,7 @@
     "subRegion": "Garhwal",
     "difficulty": "easy",
     "durationType": "multi",
-    "days": "4",
+    "days": "5",
     "distance": "27 km",
     "elevation": 4090,
     "elevationStr": "4,090m",
@@ -1767,13 +1807,23 @@
       },
       {
         "day": 4,
-        "title": "Summit Day — Chopta to Chandrashila via Tungnath, Descent to Ukhimath",
-        "distance": "13 km (5.4 km ascent + 7.6 km descent to Ukhimath)",
-        "elevation": "3,672m / 12,083 ft (Chandrashila)",
-        "time": "7–8 hrs trek + 1.5 hrs drive to Rishikesh",
-        "camp": "Return to Rishikesh",
+        "title": "Summit Day — Chopta to Chandrashila via Tungnath",
+        "distance": "5.4 km ascent",
+        "elevation": "4,000m (Chandrashila Summit)",
+        "time": "5–6 hrs",
+        "camp": "Chopta guesthouse / campsite",
+        "returnJourney": false,
+        "desc": "Early morning trek from Chopta to Tungnath (3,330m) — the highest Shiva temple in the world. Continue 1.5 km to Chandrashila summit (4,000m) for a 360° panoramic view of Nanda Devi, Trishul, Kedarnath Dome, Chaukhamba, and the entire Garhwal Himalayan range. Return to Chopta by afternoon."
+      },
+      {
+        "day": 5,
+        "title": "Chopta — Drive to Rishikesh",
+        "distance": "200 km road",
+        "elevation": "340m (Rishikesh)",
+        "time": "7–8 hrs drive",
+        "camp": "—",
         "returnJourney": true,
-        "desc": "Pre-dawn start from Chopta. 3.5 km steep paved trail to Tungnath temple (3,680m / 12,073 ft) — the highest Shiva temple in the world, 3rd of the Panch Kedar. Then 1.9 km to Chandrashila summit (3,672m / 12,083 ft) — 360° panorama of Kedarnath (6,940m), Chaukhamba (7,138m), Neelkanth (6,596m), and Nanda Devi (7,816m). Descend 7.6 km via Baniyakund trail to Ukhimath. Drive 21 km from Ukhimath, then 190 km to Rishikesh. Total trek: 13 km."
+        "desc": "Drive from Chopta via Ukhimath and Rudraprayag back to Rishikesh. The descent through the Mandakini and Alaknanda valleys offers final views of the Garhwal Himalaya."
       }
     ],
     "coverImage": "https://images.pexels.com/photos/20628922/pexels-photo-20628922.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -1822,7 +1872,7 @@
       {
         "day": 1,
         "title": "Rishikesh to Gangotri",
-        "distance": "250 km road",
+        "distance": "280 km road via Uttarkashi",
         "elevation": "3,048m / 10,000 ft",
         "time": "9–10 hrs drive",
         "camp": "Gangotri GMVN / guesthouse",
@@ -1916,7 +1966,7 @@
       {
         "day": 1,
         "title": "Rishikesh to Gangotri",
-        "distance": "250 km road",
+        "distance": "280 km road via Uttarkashi",
         "elevation": "3,048m / 10,000 ft (Gangotri)",
         "time": "9–10 hrs drive",
         "camp": "Gangotri guesthouse / GMVN",
@@ -2085,7 +2135,7 @@
     "subRegion": "Garhwal",
     "difficulty": "moderate",
     "durationType": "multi",
-    "days": "5",
+    "days": "4",
     "distance": "24 km",
     "elevation": 3800,
     "elevationStr": "3,800m",
@@ -2150,16 +2200,6 @@
         "camp": "Taluka / Sankri",
         "returnJourney": true,
         "desc": "9 km descent from the ridge down to Osla village in the Har Ki Dun valley (2,590m / 8,500 ft). The descent is steep in places. From Osla, 4 km trek to Taluka road head. Drive to Sankri for the night."
-      },
-      {
-        "day": 5,
-        "title": "Sankri to Dehradun — Return Drive",
-        "distance": "195 km road",
-        "elevation": "640m (Dehradun)",
-        "time": "10–11 hrs drive",
-        "camp": "Return to Dehradun",
-        "returnJourney": true,
-        "desc": "Drive back from Sankri/Kotgaon to Dehradun (195 km, 10–11 hrs) via Mori and Mussoorie."
       }
     ],
     "coverImage": "https://images.pexels.com/photos/33098670/pexels-photo-33098670.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -2257,13 +2297,13 @@
       },
       {
         "day": 6,
-        "title": "Descent to Janki Chatti / Hanuman Chatti — Drive to Rishikesh",
-        "distance": "12 km descent + 250 km drive",
-        "elevation": "350m (Rishikesh)",
-        "time": "5 hrs trek + 9 hrs drive",
-        "camp": "Return to Rishikesh",
+        "title": "Janki Chatti / Hanuman Chatti — Drive to Rishikesh",
+        "distance": "250 km drive",
+        "elevation": "340m (Rishikesh)",
+        "time": "8–10 hrs drive",
+        "camp": "—",
         "returnJourney": true,
-        "desc": "12 km descent from the Yamunotri-side camp through Seema / Phulchatti to Janki Chatti or Hanuman Chatti road head on the Yamunotri Highway. Drive 250 km back to Rishikesh via Barkot and Dehradun."
+        "desc": "Drive from Janki Chatti or Hanuman Chatti back to Rishikesh via Yamunotri road, Dehradun. The long descent through the Yamuna Valley offers final views of the Garhwal Himalaya."
       }
     ],
     "coverImage": "https://images.pexels.com/photos/14928394/pexels-photo-14928394.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -2283,7 +2323,7 @@
     "subRegion": "Kumaon",
     "difficulty": "moderate",
     "durationType": "multi",
-    "days": "5",
+    "days": "6",
     "distance": "50 km",
     "elevation": 3660,
     "elevationStr": "3,660m",
@@ -2311,16 +2351,26 @@
     "itinerary": [
       {
         "day": 1,
-        "title": "Kathgodam to Khati",
-        "distance": "225 km road + 3 km walk",
+        "title": "Travel to Khati Village",
+        "distance": "200 km road via Almora and Binsar",
+        "elevation": "1,600m (Khati)",
+        "time": "7–8 hrs drive",
+        "camp": "Khati village homestay / campsite",
+        "returnJourney": false,
+        "desc": "Drive from Kathgodam to Khati village via Someshwar and Binsar. The road climbs through the Kumaon foothills to the trailhead village of Khati (1,600m). Register permits and settle in for the night."
+      },
+      {
+        "day": 2,
+        "title": "Khati — Trek along Pindari River",
+        "distance": "3 km walk + continue on trail",
         "elevation": "2,200m (Khati)",
-        "time": "8 hrs drive + 1 hr walk",
+        "time": "Trek continues from Khati",
         "camp": "Khati village GMVN / homestay",
         "returnJourney": false,
         "desc": "Drive from Kathgodam via Almora and Bageshwar to Kharkia (225 km, 8 hrs) — the road terminus. Walk 3 km to Khati (2,200m), the last inhabited village and true start of the Pindari trek. Collect permits at Kharkia. Khati has GMVN rest houses and homestays with views of Nanda Kot and Lapsadhura."
       },
       {
-        "day": 2,
+        "day": 3,
         "title": "Khati to Dwali",
         "distance": "12 km",
         "elevation": "2,580m (Dwali)",
@@ -2330,7 +2380,7 @@
         "desc": "12 km from Khati along the Pindar river to Dwali (2,580m). Trail passes through a landslide zone with views into the Kafni Valley on the left. Dwali is the three-way junction — Kafni Glacier turns south, Sunderdhunga opens west, and Pindari continues east."
       },
       {
-        "day": 3,
+        "day": 4,
         "title": "Dwali to Phurkia",
         "distance": "8 km",
         "elevation": "3,353m (Phurkia)",
@@ -2340,7 +2390,7 @@
         "desc": "8 km from Dwali to Phurkia (3,353m) through dense birch forest with the Pindar River roaring below. The valley narrows and Nanda Kot (6,861m) comes into view. GMVN rest house at Phurkia."
       },
       {
-        "day": 4,
+        "day": 5,
         "title": "Phurkia to Pindari Glacier Zero Point — Return to Dwali",
         "distance": "6 km to Zero Point + 11 km return",
         "elevation": "3,660m (Zero Point / 12,300 ft)",
@@ -2350,7 +2400,7 @@
         "desc": "3 km up to the Pindari Glacier Zero Point (3,660m / 12,300 ft) — the viewpoint overlooking the glacier snout below Nanda Kot (6,861m) and Nandakhan. The glacier pours down between sheer rock walls. Return 3 km to Phurkia then 8 km back to Dwali."
       },
       {
-        "day": 5,
+        "day": 6,
         "title": "Dwali to Kharkia — Return to Kathgodam",
         "distance": "15 km trail + 225 km drive",
         "elevation": "390m (Kathgodam)",
@@ -2491,7 +2541,7 @@
     "subRegion": "Garhwal",
     "difficulty": "hard",
     "durationType": "multi",
-    "days": "5",
+    "days": "4",
     "distance": "26 km",
     "elevation": 4700,
     "elevationStr": "4,700m",
@@ -2556,16 +2606,6 @@
         "camp": "Tugasi village",
         "returnJourney": true,
         "desc": "Pre-dawn start from Khulara. 5 km steep scramble to the Pangarchulla summit (4,700m / 15,419 ft). The route goes over loose shale, boulder fields, and a final snow/rock ridge. Summit views: Nanda Devi, Trishul, Kamet, Dronagiri, Mana, and Chaukhamba at extremely close range. Descend 6 km to Tugasi. Total: 11 km summit day."
-      },
-      {
-        "day": 5,
-        "title": "Tugasi to Rishikesh — Return Drive",
-        "distance": "15 km road to Joshimath + 230 km to Rishikesh",
-        "elevation": "350m (Rishikesh)",
-        "time": "9–10 hrs drive",
-        "camp": "Return to Rishikesh",
-        "returnJourney": true,
-        "desc": "Drive from Tugasi/Joshimath back to Rishikesh (245 km total, 9–10 hours)."
       }
     ],
     "coverImage": "https://images.pexels.com/photos/29292360/pexels-photo-29292360.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -3597,7 +3637,7 @@
     "subRegion": "Kumaon (Dharchula)",
     "difficulty": "moderate",
     "durationType": "multi",
-    "days": "6",
+    "days": "5",
     "distance": "72 km",
     "elevation": 4700,
     "elevationStr": "4,700m",
@@ -3672,16 +3712,6 @@
         "camp": "Gunji or Dharchula (drive back)",
         "returnJourney": true,
         "desc": "Drive from Gunji to Kalapani (Kali Mandir darshan + Ved Vyas Gufa, where the Mahabharata was written), then 20-22 km total to Nabhidhang viewpoint (4,300m). From Nabhidhang, Om Parvat (5,590m / 18,340 ft) is clearly visible — natural snow permanently forms the sacred OM symbol on the mountain face. Best viewed in early morning light. Spend time in prayer and silence. Drive back via Gunji to Dharchula (90 km, 5-6 hrs). Overnight in Dharchula."
-      },
-      {
-        "day": 6,
-        "title": "Dharchula to Pithoragarh to Kathgodam — Return Drive",
-        "distance": "96 km + 196 km = 292 km",
-        "elevation": "554m (Kathgodam)",
-        "time": "12-14 hrs total",
-        "camp": "Return / overnight Pithoragarh",
-        "returnJourney": true,
-        "desc": "Drive from Dharchula to Pithoragarh (96 km, 4-5 hrs). Onward 196 km to Kathgodam (9-10 hrs). Option: break at Chaukori or Almora and drive to Kathgodam on Day 7."
       }
     ],
     "coverImage": "https://images.pexels.com/photos/5686577/pexels-photo-5686577.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -3729,16 +3759,26 @@
     "itinerary": [
       {
         "day": 1,
-        "title": "Kathgodam to Khati",
-        "distance": "225 km road + 3 km walk",
+        "title": "Travel to Khati Village",
+        "distance": "200 km road via Almora and Binsar",
+        "elevation": "1,600m (Khati)",
+        "time": "7–8 hrs drive",
+        "camp": "Khati village homestay / campsite",
+        "returnJourney": false,
+        "desc": "Drive from Kathgodam to Khati village via Someshwar and Binsar. The road climbs through the Kumaon foothills to the trailhead village of Khati (1,600m). Register permits and settle in."
+      },
+      {
+        "day": 2,
+        "title": "Khati — Trek to Sunderdhunga Base",
+        "distance": "3 km walk + continue on trail",
         "elevation": "2,200m (Khati)",
-        "time": "8 hrs drive + 1 hr walk",
+        "time": "Trek continues from Khati",
         "camp": "Khati village GMVN / homestay",
         "returnJourney": false,
         "desc": "Drive from Kathgodam via Almora and Bageshwar to Kharkia (225 km, 8 hrs). Collect biosphere entry permits at Kharkia check-post. Walk 3 km to Khati (2,200m) — the last inhabited village, trek base for Sunderdhunga, Kafni, and Pindari routes."
       },
       {
-        "day": 2,
+        "day": 3,
         "title": "Khati to Dwali — Sunderdhunga Branch",
         "distance": "12 km",
         "elevation": "2,580m (Dwali)",
@@ -3748,7 +3788,7 @@
         "desc": "12 km from Khati to Dwali (2,580m) — the three-way junction. Turn west here into the Sunderdhunga valley. Kafni turns south; Pindari continues east. The wilderness begins."
       },
       {
-        "day": 3,
+        "day": 4,
         "title": "Dwali to Jatoli",
         "distance": "7 km into Sunderdhunga valley",
         "elevation": "2,750m",
@@ -3758,7 +3798,7 @@
         "desc": "Enter the Sunderdhunga valley. The gorge narrows into a cathedral of rock walls draped with waterfalls. Maiktoli (6,803m) and Tharakot (6,099m) emerge above the valley head. Complete wilderness from here."
       },
       {
-        "day": 4,
+        "day": 5,
         "title": "Jatoli to Kathaliya",
         "distance": "9 km",
         "elevation": "3,600m",
@@ -3768,7 +3808,7 @@
         "desc": "Sustained climb to the high pastures of Kathaliya (3,600m) with Maiktoli (6,803m) looming directly ahead and Nanda Devi visible between the ridges. Herder camps here in summer only — otherwise complete solitude."
       },
       {
-        "day": 5,
+        "day": 6,
         "title": "Kathaliya to Sunderdhunga Glacier Snout",
         "distance": "7 km",
         "elevation": "4,200m",
@@ -3778,7 +3818,7 @@
         "desc": "Reach the glacier — white and blue ice flanked by Maiktoli (6,803m), Tharakot (6,099m), and Mrigthuni (6,855m). The 'Beautiful Stones' boulder landscape is extraordinary. One of Kumaon's finest wilderness destinations."
       },
       {
-        "day": 6,
+        "day": 7,
         "title": "Glacier to Khati",
         "distance": "23 km",
         "elevation": "2,200m (Khati)",
@@ -3786,16 +3826,6 @@
         "camp": "Khati village",
         "returnJourney": true,
         "desc": "Descend from glacier via Jatoli and Dwali back to Khati (23 km). Long but mostly downhill."
-      },
-      {
-        "day": 7,
-        "title": "Khati to Kathgodam — Return Drive",
-        "distance": "3 km walk + 225 km drive",
-        "elevation": "390m (Kathgodam)",
-        "time": "1 hr walk + 8 hrs drive",
-        "camp": "Return to Kathgodam",
-        "returnJourney": true,
-        "desc": "Walk 3 km from Khati to Kharkia, then drive 225 km to Kathgodam via Bageshwar and Almora. Arrive by evening for onward trains."
       }
     ],
     "coverImage": "https://images.pexels.com/photos/12795418/pexels-photo-12795418.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -3815,7 +3845,7 @@
     "subRegion": "Kumaon (Bageshwar)",
     "difficulty": "moderate",
     "durationType": "multi",
-    "days": "5",
+    "days": "6",
     "distance": "50 km",
     "elevation": 3800,
     "elevationStr": "3,800m",
@@ -3843,16 +3873,26 @@
     "itinerary": [
       {
         "day": 1,
-        "title": "Kathgodam to Khati",
-        "distance": "225 km road + 3 km walk",
+        "title": "Travel to Khati Village",
+        "distance": "200 km road via Almora and Binsar",
+        "elevation": "1,600m (Khati)",
+        "time": "7–8 hrs drive",
+        "camp": "Khati village homestay / campsite",
+        "returnJourney": false,
+        "desc": "Drive from Kathgodam to Khati village via Someshwar and Binsar. The road climbs through the Kumaon foothills to the trailhead village of Khati (1,600m). Register permits and settle in."
+      },
+      {
+        "day": 2,
+        "title": "Khati — Trek to Kafni Glacier",
+        "distance": "3 km walk + continue on trail",
         "elevation": "2,200m (Khati)",
-        "time": "8 hrs drive + 1 hr walk",
+        "time": "Trek continues from Khati",
         "camp": "Khati village GMVN / homestay",
         "returnJourney": false,
         "desc": "Drive from Kathgodam via Almora and Bageshwar to Kharkia (225 km, 8 hrs). Collect permits at Kharkia check-post. Walk 3 km to Khati (2,200m) — the last village and base for Kafni, Pindari, and Sunderdhunga treks."
       },
       {
-        "day": 2,
+        "day": 3,
         "title": "Khati to Dwali — Kafni Branch",
         "distance": "12 km",
         "elevation": "2,580m (Dwali)",
@@ -3862,7 +3902,7 @@
         "desc": "12 km from Khati to Dwali (2,580m) — the junction where the Kafni stream joins from the south. Turn south into the Kafni Valley here. Pindari continues east; Sunderdhunga opens west."
       },
       {
-        "day": 3,
+        "day": 4,
         "title": "Dwali to Kafni Glacier Base",
         "distance": "10 km up Kafni valley",
         "elevation": "3,800m",
@@ -3872,7 +3912,7 @@
         "desc": "Turn south into the Kafni Valley. The gorge narrows through dense forest before emerging at the glacier snout (3,800m). Nanda Khat (6,611m) and Kuchela (6,264m) tower directly above. Complete wilderness."
       },
       {
-        "day": 4,
+        "day": 5,
         "title": "Kafni Glacier Exploration — Return to Khati",
         "distance": "22 km return",
         "elevation": "2,200m (Khati)",
@@ -3882,7 +3922,7 @@
         "desc": "Morning at the glacier — explore the moraine and ice margin with Nanda Khat looming above. Return 10 km to Dwali then 12 km to Khati."
       },
       {
-        "day": 5,
+        "day": 6,
         "title": "Khati to Kathgodam — Return Drive",
         "distance": "3 km walk + 225 km drive",
         "elevation": "390m (Kathgodam)",
@@ -4292,7 +4332,7 @@
     "region": "Uttarakhand",
     "difficulty": "moderate",
     "durationType": "multi",
-    "days": "8",
+    "days": "7",
     "distance": "58 km",
     "elevation": 3600,
     "elevationStr": "3,600m",
@@ -4387,16 +4427,6 @@
         "camp": "Sagar village",
         "returnJourney": true,
         "desc": "12 km steep descent from Panar (3,400m) to Sagar village (1,700m). Poles essential."
-      },
-      {
-        "day": 8,
-        "title": "Sagar to Rishikesh Return Drive",
-        "distance": "215 km via Gopeshwar",
-        "elevation": "350m (Rishikesh)",
-        "time": "8-9 hrs drive",
-        "camp": "Return to Rishikesh",
-        "returnJourney": true,
-        "desc": "5 km to Gopeshwar/Chamoli then 215 km to Rishikesh via Nandprayag, Rudraprayag, Devprayag."
       }
     ],
     "coverImage": "https://imgs.search.brave.com/sKKT-Psl9X1EMfClZKeCLJUQ4S1G8k_7V7RzgRwlGSM/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9oaW1h/bGF5YW5kcmVhbXRy/ZWtzLmluL3dwLWNv/bnRlbnQvdXBsb2Fk/cy8yMDIzLzA4L0th/bHBlc2h3YXItVGVt/cGxlLTEuanBn",
@@ -4937,7 +4967,7 @@
     "region": "Uttarakhand",
     "difficulty": "moderate",
     "durationType": "multi",
-    "days": "5",
+    "days": "4",
     "distance": "65 km",
     "elevation": 3497,
     "elevationStr": "3,497m",
@@ -5008,16 +5038,6 @@
         "camp": "Ransi village",
         "returnJourney": true,
         "desc": "Descend 6.5 km from Madmaheshwar to Bantoli (3-3.5 hrs — steep, poles essential), then 7 km Bantoli to Ransi (mostly uphill on return, allow extra time). Total: 13.5 km, 6-7 hrs."
-      },
-      {
-        "day": 5,
-        "title": "Ransi to Rishikesh Return Drive",
-        "distance": "24 km to Ukhimath + 190 km to Rishikesh",
-        "elevation": "350m (Rishikesh)",
-        "time": "7-8 hrs",
-        "camp": "Return to Rishikesh",
-        "returnJourney": true,
-        "desc": "Drive from Ransi (24 km) to Ukhimath, then 190 km to Rishikesh via Rudraprayag and Devprayag."
       }
     ],
     "coverImage": "https://imgs.search.brave.com/obof7UxLBUYgfjkCcji7qJLgVANoio7nJ9LrvBfsaFE/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9kYXNo/Ym9hcmQuZW5saXZl/dHJpcHMuY29tL3N0/b3JhZ2UvcGFja2Fn/ZS10aHVtYm5haWwv/MDFLUFdZRDRQNFEw/OE1UN1ZZRU1LRzVU/Q1guanBn",
@@ -5092,13 +5112,13 @@
       },
       {
         "day": 3,
-        "title": "Kedarnath to Gaurikund — Drive to Rishikesh",
-        "distance": "16 km descent + 210 km road",
-        "elevation": "350m (Rishikesh)",
-        "time": "4-5 hrs descent + 8-9 hrs drive",
-        "camp": "Return to Rishikesh",
+        "title": "Gaurikund — Drive to Rishikesh",
+        "distance": "210 km road",
+        "elevation": "340m (Rishikesh)",
+        "time": "7–8 hrs drive",
+        "camp": "—",
         "returnJourney": true,
-        "desc": "Descend 16 km from Kedarnath (3,583m) to Gaurikund (1,982m) — 4-5 hours. Last descent departure from Kedarnath: 6:30 PM. Shared jeep 5 km back to Sonprayag. Drive 210 km to Rishikesh (8-9 hrs). Helicopter: Phata helipad 15.3 km from Gaurikund, 5-7 min flight. Also from Sirsi, Guptkashi, Agastyamuni. Advance booking essential in peak season (May-June)."
+        "desc": "Drive from Gaurikund back to Rishikesh via Guptkashi, Rudraprayag, and Devprayag. The descent through the Mandakini and Alaknanda valleys offers final views of the Garhwal Himalaya."
       }
     ],
     "coverImage": "https://imgs.search.brave.com/Ec1Fw53oDe90j-Ux0FWzN7SNNEISKjbQPXc3SiUPPPI/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly91cGxv/YWQud2lraW1lZGlh/Lm9yZy93aWtpcGVk/aWEvY29tbW9ucy90/aHVtYi81LzU2L0tl/ZGFybmF0aF9UZW1w/bGVfaW5fUmFpbnlf/c2Vhc29uLmpwZy81/MTJweC1LZWRhcm5h/dGhfVGVtcGxlX2lu/X1JhaW55X3NlYXNv/bi5qcGc",
@@ -5317,7 +5337,7 @@
       {
         "day": 1,
         "title": "Kathgodam to Munsiyari",
-        "distance": "285 km by road",
+        "distance": "270 km by road via Almora",
         "elevation": "2,200m",
         "time": "9–10 hrs drive",
         "camp": "Munsiyari guesthouses",
@@ -5364,7 +5384,7 @@
     "region": "Kumaon",
     "difficulty": "moderate",
     "durationType": "multi",
-    "days": "9",
+    "days": "7",
     "distance": "65 km",
     "elevation": 4620,
     "elevationStr": "4,620m",
@@ -5390,7 +5410,7 @@
       {
         "day": 1,
         "title": "Kathgodam to Dharchula",
-        "distance": "280 km road",
+        "distance": "270 km road via Almora and Pithoragarh",
         "elevation": "895m (Dharchula)",
         "time": "9–10 hrs drive",
         "camp": "Dharchula guesthouse",
@@ -5456,26 +5476,6 @@
         "camp": "Nagling Village",
         "returnJourney": true,
         "desc": "Begin the return journey. The trail from Duktu descends through the valley on the return route toward Nagling — a different Rung village offering a new perspective on the valley landscape."
-      },
-      {
-        "day": 8,
-        "title": "Nagling to Bungling — Drive to Dharchula",
-        "distance": "12 km trek + drive",
-        "elevation": "895m (Dharchula)",
-        "time": "5 hrs trek + 2 hrs drive",
-        "camp": "Dharchula",
-        "returnJourney": true,
-        "desc": "Final trekking day — 12 km from Nagling to Bungling village, the last settlement before the road begins. From Bungling, a jeep can be arranged back to Dharchula. Overnight in Dharchula."
-      },
-      {
-        "day": 9,
-        "title": "Dharchula to Kathgodam — Return Drive",
-        "distance": "280 km road",
-        "elevation": "390m (Kathgodam)",
-        "time": "9–10 hrs drive",
-        "camp": "Return to Kathgodam / Delhi",
-        "returnJourney": true,
-        "desc": "Drive back through the Kumaon hills to Kathgodam for onward trains or buses to Delhi. The return drive through Pithoragarh, Almora, and Nainital region is scenic throughout."
       }
     ],
     "coverImage": "https://images.pexels.com/photos/12795418/pexels-photo-12795418.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -5673,7 +5673,7 @@
     "subRegion": "Kedarnath–Rudraprayag",
     "difficulty": "moderate",
     "durationType": "multi",
-    "days": "4",
+    "days": "5",
     "distance": "44 km",
     "elevation": 4135,
     "elevationStr": "4,135m",
@@ -5700,16 +5700,26 @@
     "itinerary": [
       {
         "day": 1,
-        "title": "Rishikesh → Gaurikund → Kedarnath",
-        "distance": "232 km drive + 14 km trek",
+        "title": "Rishikesh to Gaurikund",
+        "distance": "210 km by road via Rudraprayag",
+        "elevation": "1,980m (Gaurikund)",
+        "time": "7–8 hrs drive",
+        "camp": "Gaurikund guesthouse / campsite",
+        "returnJourney": false,
+        "desc": "Drive from Rishikesh to Gaurikund via Devprayag, Rudraprayag, and Guptkashi. The road follows the Mandakini River valley. Gaurikund is the road-head and starting point for the Kedarnath trek. Register and settle in."
+      },
+      {
+        "day": 2,
+        "title": "Gaurikund — Trek to Kedarnath",
+        "distance": "14 km trek",
         "elevation": "3,584m",
-        "time": "7 hrs drive + 6–7 hrs trek",
+        "time": "6–7 hrs",
         "camp": "Kedarnath dharamshala or guesthouse",
         "returnJourney": false,
         "desc": "Drive from Rishikesh via Rudraprayag and Guptkashi to Gaurikund (232 km, 7 hrs). Register yatra at Gaurikund counter. The 14 km trail to Kedarnath passes through Jungle Chatti and Rambara alongside the Mandakini gorge — India's busiest pilgrimage trail, shared with ponies, mules, and palanquins. Attend evening aarti at the ancient Kedarnath Jyotirlinga temple."
       },
       {
-        "day": 2,
+        "day": 3,
         "title": "Kedarnath — Acclimatisation Day",
         "distance": "Short walks locally",
         "elevation": "3,584m",
@@ -5719,7 +5729,7 @@
         "desc": "Crucial acclimatisation at Kedarnath before the 4,500m Vasuki Top the next day. Visit the Kedarnath temple (built by the Pandavas; restored by Adi Shankaracharya in the 8th century). Walk to Gandhi Sarovar lake (1.5 km) and observe the Chorabari Glacier. Rest well — the Vasuki Tal extension the next day is demanding."
       },
       {
-        "day": 3,
+        "day": 4,
         "title": "Kedarnath → Vasuki Top (4,500m) → Vasuki Tal (4,135m) → Kedarnath",
         "distance": "16 km round trip",
         "elevation": "4,500m (ridge) / 4,135m (lake)",
@@ -5729,14 +5739,14 @@
         "desc": "Start by 5–6 AM. The trail climbs steeply from Kedarnath to Vasuki Top ridge (c.4,500m) — panoramic views of Chaukhamba (7,138m), Kedar Dome (6,831m), and the deep Mandakini Valley below. Then descend ~900m on the north face to Vasuki Tal itself: a large, clear glacial lake (~0.5 km radius) fringed with Brahma Kamal flowers. The Chaturangi Glacier is nearby. Spend an hour at the lake, then retrace back over Vasuki Top and return to Kedarnath before dark. A guide is strongly recommended for this section."
       },
       {
-        "day": 4,
-        "title": "Kedarnath → Gaurikund → Rishikesh",
-        "distance": "14 km descent + 232 km drive",
-        "elevation": "1,980m (Gaurikund)",
-        "time": "5–6 hrs trek + 7 hrs drive",
-        "camp": "Return to Rishikesh",
+        "day": 5,
+        "title": "Kedarnath — Gaurikund — Drive to Rishikesh",
+        "distance": "14 km descent + 210 km drive",
+        "elevation": "340m (Rishikesh)",
+        "time": "6–7 hrs total",
+        "camp": "—",
         "returnJourney": true,
-        "desc": "Early descent on the 14 km Kedarnath–Gaurikund trail. Drive back to Rishikesh via four sacred river confluences (Panch Prayag) of the Garhwal Himalayas."
+        "desc": "Early morning darshan at Kedarnath temple. Descend 14 km to Gaurikund, then drive back to Rishikesh via Guptkashi, Rudraprayag, and Devprayag."
       }
     ],
     "coverImage": "https://images.pexels.com/photos/25533704/pexels-photo-25533704.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -6062,7 +6072,7 @@
     "region": "Uttarakhand",
     "difficulty": "easy",
     "durationType": "multi",
-    "days": "2",
+    "days": "4",
     "distance": "8 km",
     "elevation": 3048,
     "elevationStr": "3,048m",
@@ -6096,23 +6106,43 @@
     "itinerary": [
       {
         "day": 1,
-        "title": "Rishikesh to Pokhri — Trek to Kartik Swami",
-        "distance": "185 km drive + 4 km walk",
-        "elevation": "3,048m",
-        "time": "6 hrs drive + 2.5 hrs walk",
-        "camp": "Return to Pokhri or Rudraprayag guesthouses",
+        "title": "Rishikesh to Pokhri",
+        "distance": "185 km drive",
+        "elevation": "1,800m (Pokhri)",
+        "time": "6 hrs drive",
+        "camp": "Pokhri guesthouse / homestay",
         "returnJourney": false,
-        "desc": "Drive to Pokhri village near Rudraprayag. A 4 km forest trail climbs to the Kartik Swami temple at 3,048m — a compact shrine on a peak with a 270° panorama of Himalayan peaks. Return the same day."
+        "desc": "Drive from Rishikesh to Pokhri via Devprayag and Srinagar. The road follows the Alaknanda River through the Garhwal foothills. Pokhri is a quiet hill town with views of the Nanda Devi and Trishul peaks on clear days. Settle in and acclimatise."
       },
       {
         "day": 2,
-        "title": "Return to Rishikesh",
-        "distance": "185 km by road",
-        "elevation": "340m",
+        "title": "Pokhri — Trek to Kartik Swami",
+        "distance": "4 km trek",
+        "elevation": "3,050m",
+        "time": "2.5–3 hrs",
+        "camp": "Kartik Swami temple campsite",
+        "returnJourney": false,
+        "desc": "Trek from Pokhri through oak and rhododendron forest to the Kartik Swami temple at 3,050m. The trail is well-marked and passes through serene forest clearings. The temple at the summit offers panoramic views of the Nanda Devi, Trishul, and Chaukhamba peaks. Camp near the temple for the night."
+      },
+      {
+        "day": 3,
+        "title": "Kartik Swami — Descent to Pokhri",
+        "distance": "4 km descent",
+        "elevation": "1,800m (Pokhri)",
+        "time": "2 hrs",
+        "camp": "Pokhri guesthouse / homestay",
+        "returnJourney": false,
+        "desc": "Sunrise at Kartik Swami temple with the Himalayan peaks glowing gold. Descend back through the forest to Pokhri. Afternoon free to explore the town or relax."
+      },
+      {
+        "day": 4,
+        "title": "Return from Pokhri to Rishikesh",
+        "distance": "185 km drive",
+        "elevation": "340m (Rishikesh)",
         "time": "6 hrs drive",
         "camp": "—",
         "returnJourney": true,
-        "desc": "Drive back to Rishikesh from Pokhri/Rudraprayag."
+        "desc": "Morning departure from Pokhri. Drive back to Rishikesh via Srinagar and Devprayag. The descent through the Alaknanda Valley offers final views of the Garhwal Himalayan peaks."
       }
     ],
     "coverImage": "https://images.pexels.com/photos/11477237/pexels-photo-11477237.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -6219,7 +6249,7 @@
     "subRegion": "Kullu–Manali",
     "difficulty": "moderate",
     "durationType": "multi",
-    "days": "4",
+    "days": "5",
     "distance": "18 km",
     "elevation": 4300,
     "elevationStr": "4,300m",
@@ -6246,16 +6276,26 @@
     "itinerary": [
       {
         "day": 1,
-        "title": "Manali to Gulaba — Trek to Gulaba Meadows (Jonker Thatch)",
-        "distance": "22 km road + 3 km trek",
+        "title": "Travel to Gulaba",
+        "distance": "22 km by road from Manali",
+        "elevation": "2,600m (Gulaba roadhead)",
+        "time": "1 hr drive",
+        "camp": "Gulaba village guesthouse / campsite",
+        "returnJourney": false,
+        "desc": "Drive 22 km from Manali to Gulaba roadhead on the Manali–Leh highway. Register at the forest check-post. Gulaba is the traditional starting point for the Bhrigu Lake trek. Settle in for the night."
+      },
+      {
+        "day": 2,
+        "title": "Gulaba — Trek to Gulaba Meadows (Jonker Thatch)",
+        "distance": "3 km trek",
         "elevation": "3,135m (Jonker Thatch)",
-        "time": "1 hr drive + 1.5 hrs trek",
+        "time": "1.5 hrs",
         "camp": "Gulaba Meadows / Jonker Thatch (3,135m)",
         "returnJourney": false,
         "desc": "Drive 22 km from Manali to Gulaba roadhead on the Manali–Leh highway. Register at the forest check-post. The trail immediately enters open oak and deodar forest, then opens onto vast alpine meadows. Jonker Thatch (also called Gulaba Meadows/Gulaba Bugyal) is the first campsite — a wide grassy shelf with first views of Hanuman Tibba and the Seven Sister peaks. Short day by design — the altitude gain to 3,135m in just 90 minutes of trekking requires a slow approach."
       },
       {
-        "day": 2,
+        "day": 3,
         "title": "Jonker Thatch — Rola Kholi",
         "distance": "5 km",
         "elevation": "3,800m (Rola Kholi)",
@@ -6265,7 +6305,7 @@
         "desc": "A steep but beautiful climb from the Jonker Thatch meadow through birch and rhododendron to Rola Kholi (3,800m) — a massive bowl-shaped grazing ground used by Gaddi shepherds. The treeline is left behind completely here. Views of Solang Valley, Manali, and the entire Pir Panjal range expanding with each metre of altitude. Rola Kholi is the base camp for the lake — the final push begins tomorrow."
       },
       {
-        "day": 3,
+        "day": 4,
         "title": "Rola Kholi — Bhrigu Lake — Return to Rola Kholi",
         "distance": "10 km round trip",
         "elevation": "4,300m (Bhrigu Lake)",
@@ -6275,14 +6315,14 @@
         "desc": "Early start — by 6 AM. The trail climbs steeply from Rola Kholi on a rocky ridge path above the meadows. The lake often sits in cloud by early afternoon. Bhrigu Lake (4,300m) is a sacred glacial lake named after Maharishi Bhrigu — one of the Saptarishis — who is believed to have meditated on its shores. The lake is unusually deep and rarely freezes completely even in winter. Panoramic views: Deo Tibba (6,001m), Hanuman Tibba (5,982m), Indrasan (6,221m), the Pir Panjal and Dhauladhar ranges. Descend by the same route to Rola Kholi for the night."
       },
       {
-        "day": 4,
-        "title": "Rola Kholi — Gulaba — Drive to Manali",
-        "distance": "8 km descent + 22 km drive",
+        "day": 5,
+        "title": "Gulaba — Drive to Manali",
+        "distance": "22 km drive",
         "elevation": "2,050m (Manali)",
-        "time": "3–4 hrs trek + 1 hr drive",
-        "camp": "Return to Manali",
+        "time": "1 hr drive",
+        "camp": "—",
         "returnJourney": true,
-        "desc": "Descend 8 km through the meadows and forest back to Gulaba roadhead. The descent is easier on the legs than the ascent — allow 3 hours at a comfortable pace. Drive back to Manali (22 km). Typically back in Manali by 3–4 PM."
+        "desc": "Descend from Rola Kholi to Gulaba roadhead. Drive back to Manali (22 km). Typically back in Manali by 3–4 PM."
       }
     ],
     "coverImage": "https://images.pexels.com/photos/1205230/pexels-photo-1205230.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -6302,7 +6342,7 @@
     "subRegion": "Kullu–Manali",
     "difficulty": "easy",
     "durationType": "multi",
-    "days": "3",
+    "days": "4",
     "distance": "22 km",
     "elevation": 3700,
     "elevationStr": "3,700m",
@@ -6329,16 +6369,26 @@
     "itinerary": [
       {
         "day": 1,
-        "title": "Manali to Solang Nullah — Trek to Dhundi",
-        "distance": "8 km trek (22 km drive)",
+        "title": "Manali to Solang Nullah",
+        "distance": "22 km by road from Manali",
+        "elevation": "2,500m (Solang Nullah)",
+        "time": "1 hr drive",
+        "camp": "Solang Nullah campsite",
+        "returnJourney": false,
+        "desc": "Drive from Manali to Solang Nullah (22 km) — the road-head for the Beas Kund trek. The valley opens up with views of the Pir Panjal range. Set up camp or stay at a nearby guesthouse."
+      },
+      {
+        "day": 2,
+        "title": "Solang Nullah — Trek to Dhundi",
+        "distance": "8 km trek",
         "elevation": "2,840m",
-        "time": "3–4 hrs trek",
+        "time": "4–5 hrs",
         "camp": "Dhundi forest campsite (2,840m)",
         "returnJourney": false,
         "desc": "Drive 22 km from Manali to Dhundi (via Solang Nullah ski resort) and register at the TMS check-post. The trail begins at Dhundi — just past the small hydro project — and follows the Beas River upstream through deodar and pine forest. Dhundi (2,840m) is a pleasant meadow clearing at the valley narrows, with Hanuman Tibba visible in the distance — a perfect first camp."
       },
       {
-        "day": 2,
+        "day": 3,
         "title": "Dhundi — Bakarthach — Beas Kund — Bakarthach",
         "distance": "10 km",
         "elevation": "3,700m (lake)",
@@ -6348,7 +6398,7 @@
         "desc": "The most rewarding day. The trail leaves Dhundi and enters a wide upper valley of magnificent wildflower meadows at Bakarthach (3,400m). Leave your heavy pack at Bakarthach and day-hike the final 2.5 km to Beas Kund. The sacred glacial pool sits beneath snowfields with Hanuman Tibba and Friendship Peak towering above. Return to Bakarthach for camp."
       },
       {
-        "day": 3,
+        "day": 4,
         "title": "Bakarthach — Dhundi — Solang Nullah — Manali",
         "distance": "8 km trek + drive",
         "elevation": "2,480m",
@@ -6458,7 +6508,7 @@
     "subRegion": "Parvati Valley–Spiti",
     "difficulty": "expert",
     "durationType": "multi",
-    "days": "8",
+    "days": "9",
     "distance": "77 km",
     "elevation": 5320,
     "elevationStr": "5,320m",
@@ -6485,16 +6535,26 @@
     "itinerary": [
       {
         "day": 1,
-        "title": "Bhuntar/Bhuntar — Barshaini — Kheerganga",
-        "distance": "40 km road + 12 km trek",
+        "title": "Travel to Barshaini",
+        "distance": "40 km by road from Bhuntar",
+        "elevation": "2,200m (Barshaini)",
+        "time": "1.5 hrs drive",
+        "camp": "Barshaini guesthouse / campsite",
+        "returnJourney": false,
+        "desc": "Drive from Bhuntar to Barshaini village (40 km) via Kasol. Barshaini is the road-head at the confluence of the Parvati and Tosh rivers. Register permits and settle in."
+      },
+      {
+        "day": 2,
+        "title": "Barshaini — Trek to Kheerganga",
+        "distance": "12 km trek",
         "elevation": "2,960m",
-        "time": "5 hrs drive + 4 hrs trek",
+        "time": "5–6 hrs",
         "camp": "Kheerganga (2,960m) — hot springs",
         "returnJourney": false,
         "desc": "Drive via Bhuntar and Manikaran (visiting the sacred hot springs) to Barshaini roadhead. Register at the TMS/forest check-post. The trail ascends through the Parvati Valley's famous canyon — a dramatic gorge of waterfalls and dense forests — to Kheerganga, where natural hot springs offer a magnificent camp experience."
       },
       {
-        "day": 2,
+        "day": 3,
         "title": "Kheerganga — Tunda Bhuj",
         "distance": "10 km",
         "elevation": "3,400m",
@@ -6504,7 +6564,7 @@
         "desc": "Above Kheerganga the valley narrows and the forest gives way to high-altitude meadows. Tunda Bhuj is the last treeline camp — a wide meadow with views up the valley toward the permanent snowfields. Wildlife (Himalayan brown bear) occasionally seen in this section."
       },
       {
-        "day": 3,
+        "day": 4,
         "title": "Tunda Bhuj — Mantalai Lake",
         "distance": "12 km",
         "elevation": "4,100m",
@@ -6514,7 +6574,7 @@
         "desc": "A long approach day through increasingly barren terrain. Mantalai Lake (4,100m) is a stunning glacial lake — the main feeder of the Parvati River — in a dramatic high-altitude bowl. From here the glacier and the pass headwall are visible. This is the last reliable water source before the glacier."
       },
       {
-        "day": 4,
+        "day": 5,
         "title": "Acclimatisation at Mantalai — Glacier reconnaissance",
         "distance": "4 km exploration",
         "elevation": "4,100m–4,400m",
@@ -6524,7 +6584,7 @@
         "desc": "Rest day at Mantalai Lake for essential acclimatisation. The guide will lead a glacier reconnaissance walk to identify the safest route through the lower icefield. Check crampons, rope, and ice axe — these will be needed from tomorrow. Weather assessment is critical at this point."
       },
       {
-        "day": 5,
+        "day": 6,
         "title": "Mantalai — Glacier High Camp",
         "distance": "7 km on glacier",
         "elevation": "4,800m",
@@ -6534,7 +6594,7 @@
         "desc": "The most technically serious day. The Parvati glacier is crossed with crampons and rope — the guide sets the line. Crevasses are present in the upper section; stay roped. The high camp at 4,800m is a flat snow platform with an extraordinary 360° view of the surrounding peaks."
       },
       {
-        "day": 6,
+        "day": 7,
         "title": "Glacier High Camp — Pin Parvati Pass — Descent to Spiti side",
         "distance": "12 km",
         "elevation": "5,320m (pass), 4,600m (camp)",
@@ -6544,7 +6604,7 @@
         "desc": "Alpine start at 4 AM. The final 520m to the pass is steep snow/ice — fixed rope in sections. The summit of the pass offers one of the most dramatic vistas in the Indian Himalayas: the green Parvati Valley behind, the brown Tibetan desert of Spiti ahead. The descent on the Spiti side is steep on scree and loose rock — take time, use poles."
       },
       {
-        "day": 7,
+        "day": 8,
         "title": "Spiti side descent — Pin Valley — Mudh village",
         "distance": "20 km",
         "elevation": "3,760m (Mudh)",
@@ -6554,7 +6614,7 @@
         "desc": "The full descent to Mudh through the Pin Valley. The landscape is completely transformed — bare brown rock, brilliant blue sky, and the geometric terraced fields of Pin Valley coming into view. Mudh is the last village before the wilderness — a warm meal and a roof feel magnificent."
       },
       {
-        "day": 8,
+        "day": 9,
         "title": "Mudh — Kaza — Departure",
         "distance": "50 km road",
         "elevation": "3,800m (Kaza)",
@@ -6581,7 +6641,7 @@
     "subRegion": "Kullu Valley",
     "difficulty": "moderate",
     "durationType": "multi",
-    "days": "4",
+    "days": "5",
     "distance": "29 km",
     "elevation": 3660,
     "elevationStr": "3,660m",
@@ -6608,16 +6668,26 @@
     "itinerary": [
       {
         "day": 1,
-        "title": "Manali — Naggar — Rumsu — Naya Tapru / Ghan Kuradi",
-        "distance": "23 km drive + 6 km trek",
+        "title": "Manali to Naggar / Rumsu",
+        "distance": "23 km by road from Manali",
+        "elevation": "1,800m (Naggar)",
+        "time": "1 hr drive",
+        "camp": "Naggar guesthouse / campsite",
+        "returnJourney": false,
+        "desc": "Drive from Manali to Naggar village (23 km) on the Naggar–Jari road. Naggar has the historic castle and Roerich Art Gallery. Continue by local jeep to Rumsu if starting from there. Register and settle in."
+      },
+      {
+        "day": 2,
+        "title": "Rumsu — Trek to Naya Tapru / Ghan Kuradi",
+        "distance": "6 km trek",
         "elevation": "2,950m (Naya Tapru)",
-        "time": "1 hr drive + 5–6 hrs trek",
+        "time": "3–4 hrs",
         "camp": "Naya Tapru / Ghan Kuradi campsite (2,950m)",
         "returnJourney": false,
         "desc": "Drive 23 km from Manali to Rumsu (2,100m) via Naggar — visit Naggar Castle and the Roerich Gallery en route. Register at the check-post. The trek begins at Rumsu village and climbs steeply through dense forests of deodar, walnut, chestnut, and oak. Pass through the open clearing of Stiling and the forest meadow of Ghan Kuradi. Naya Tapru (2,950m) is a vast open meadow — the first camp with sweeping views of Kullu Valley and the Pir Panjal range."
       },
       {
-        "day": 2,
+        "day": 3,
         "title": "Naya Tapru — Chaklani Meadows",
         "distance": "4 km",
         "elevation": "3,463m (Chaklani)",
@@ -6627,7 +6697,7 @@
         "desc": "A steady climb from Naya Tapru through rhododendron and high-altitude shrub to the magnificent open meadows of Chaklani (3,463m). The Pir Panjal range — Hanuman Tibba, Friendship Peak, Indrasan (6,221m), Deo Tibba (6,001m) — fills the northern skyline. Chaklani is one of the finest meadow camps in the Kullu valley. From here a 2 km ridge walk tomorrow reaches the pass."
       },
       {
-        "day": 3,
+        "day": 4,
         "title": "Chaklani — Chandrakhani Pass — Nagruni — Malana Village",
         "distance": "12 km",
         "elevation": "3,660m (pass), 2,652m (Malana)",
@@ -6637,7 +6707,7 @@
         "desc": "Early start for the 2 km ridge walk from Chaklani to Chandrakhani Pass (3,660m) — a superb 360° panorama of the Kullu, Parvati, Malana, and Dhauladhar ranges. From the pass the trail descends steeply to Nagruni (3,395m) and then through Magic Valley to Malana village (2,652m). Approach Malana with full respect — do not touch any village structure, deity, or resident; outsiders must stay on designated paths. The Jamlu Devta temple is architecturally extraordinary."
       },
       {
-        "day": 4,
+        "day": 5,
         "title": "Malana — Malana Dam Road — Bhuntar/Manali",
         "distance": "7 km trek + 60 km drive",
         "elevation": "1,030m (Bhuntar) / 2,050m (Manali)",
@@ -6760,7 +6830,7 @@
         "desc": "Final descent to Barua village (2,900m) in the Baspa Valley on the Kinnaur side — fruit orchards, traditional wooden architecture, and Buddhist prayer flags. Pre-arranged vehicle drives back to Shimla via the Sutlej gorge, or continue to explore Sangla and Chitkul in the Baspa Valley."
       },
       {
-        "day": 5,
+        "day": 8,
         "title": "Barua — Sangla — Chitkul (Optional Extension)",
         "distance": "15 km road or 20 km trek",
         "elevation": "3,450m (Chitkul)",
@@ -6770,7 +6840,7 @@
         "desc": "Explore the stunning Baspa Valley — Sangla (2,680m) with its ancient Kamru Fort and Buddhist temple, and Chitkul (3,450m), the last village in the Baspa Valley and one of India's most beautiful mountain villages. The valley is a destination in itself."
       },
       {
-        "day": 6,
+        "day": 9,
         "title": "Sangla/Chitkul — Shimla or Manali — Return",
         "distance": "170 km Sangla to Shimla",
         "elevation": "2,206m (Shimla)",
@@ -6919,8 +6989,18 @@
     "itinerary": [
       {
         "day": 1,
-        "title": "Manali — Jagatsukh — Khanol — Chikka",
-        "distance": "12 km (5 km road + 7 km trek)",
+        "title": "Manali to Jagatsukh / Khanol",
+        "distance": "5 km by road from Manali",
+        "elevation": "1,800m (Jagatsukh)",
+        "time": "30 mins drive",
+        "camp": "Jagatsukh guesthouse / campsite",
+        "returnJourney": false,
+        "desc": "Drive from Manali to Jagatsukh village (5 km) — the traditional starting point for the Deo Tibba trek. The village has ancient temples and views of the Kullu Valley. Settle in and prepare for the trek."
+      },
+      {
+        "day": 2,
+        "title": "Jagatsukh — Khanol — Chikka",
+        "distance": "7 km trek",
         "elevation": "2,900m",
         "time": "4–5 hrs",
         "camp": "Chikka forest camp (2,900m)",
@@ -6928,7 +7008,7 @@
         "desc": "Drive or walk to Jagatsukh and register at the check-post. The trail ascends through dense deodar and horse chestnut forest. Chikka is a wide forest clearing with a gurgling stream — a perfect first camp with views of the ridge above."
       },
       {
-        "day": 2,
+        "day": 3,
         "title": "Chikka — Seri Meadow",
         "distance": "10 km",
         "elevation": "3,600m",
@@ -6938,7 +7018,7 @@
         "desc": "Above Chikka the forest thins to give way to open rhododendron and birch. Seri meadow is a breathtaking open alpine plateau with the first direct view of Deo Tibba's ice-capped summit. Camp here on the flat meadow grass."
       },
       {
-        "day": 3,
+        "day": 4,
         "title": "Seri — Tenta Meadow",
         "distance": "8 km",
         "elevation": "4,000m",
@@ -6948,7 +7028,7 @@
         "desc": "From Seri the trail climbs steeply through rocky terrain into the high-alpine zone. Tenta meadow at 4,000m is directly beneath the south face of Deo Tibba — the peak towers above and the glacier is visible clearly. An extraordinary camp on the edge of the permanent snow zone."
       },
       {
-        "day": 4,
+        "day": 5,
         "title": "Tenta — Deo Tibba Base Camp — Return to Tenta",
         "distance": "10 km",
         "elevation": "4,270m (BC)",
@@ -6958,7 +7038,7 @@
         "desc": "Day hike to the base camp proper at 4,270m — a morainic platform with close views of the Deo Tibba glacier and the seracs of the south face above. The ascent route for the peak (non-technical as far as the glacier, then technical) is visible. Return to Tenta for the night."
       },
       {
-        "day": 5,
+        "day": 6,
         "title": "Tenta — Seri — Chikka",
         "distance": "18 km descent",
         "elevation": "2,900m",
@@ -6966,16 +7046,6 @@
         "camp": "Chikka",
         "returnJourney": true,
         "desc": "Relaxed descent through familiar terrain — the meadows are beautiful in the afternoon light heading south. Many trekkers stop for a long rest at Seri before the final descent to Chikka."
-      },
-      {
-        "day": 6,
-        "title": "Chikka — Jagatsukh — Manali",
-        "distance": "12 km trek + road",
-        "elevation": "2,050m",
-        "time": "3–4 hrs",
-        "camp": "Return to Manali",
-        "returnJourney": true,
-        "desc": "Final morning descent through the deodar forest to Jagatsukh and back to Manali. The valley floor's warmth after days at altitude is immediately noticeable."
       }
     ],
     "coverImage": "https://images.pexels.com/photos/37454913/pexels-photo-37454913.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -6995,7 +7065,7 @@
     "subRegion": "Kangra–Kullu",
     "difficulty": "expert",
     "durationType": "multi",
-    "days": "7",
+    "days": "8",
     "distance": "65 km",
     "elevation": 4877,
     "elevationStr": "4,877m",
@@ -7082,13 +7152,23 @@
       },
       {
         "day": 7,
-        "title": "Thamsar Lake — Thamsar Pass — Billing meadow",
+        "title": "Thamsar Lake — Thamsar Pass — Descent to Billing",
         "distance": "13 km",
-        "elevation": "4,715m (pass)",
+        "elevation": "4,715m (pass) → 2,400m (Billing)",
         "time": "7–8 hrs",
-        "camp": "Billing meadow (2,400m)",
-        "returnJourney": true,
+        "camp": "Billing meadow campsite / guesthouse",
+        "returnJourney": false,
         "desc": "Cross Thamsar Pass (4,715m) — the exit from the wilderness. The long descent to the vast Billing meadow passes through dramatic mixed forest. Billing (world-famous for paragliding) has guesthouses and vehicle access to Bir in the Kangra Valley."
+      },
+      {
+        "day": 8,
+        "title": "Billing / Bir — Drive to Dharamshala or Pathankot",
+        "distance": "140 km by road",
+        "elevation": "1,300m (Dharamshala)",
+        "time": "4–5 hrs drive",
+        "camp": "—",
+        "returnJourney": true,
+        "desc": "Drive from Billing/Bir to Dharamshala or Pathankot. The route descends through the Kangra Valley with views of the Dhauladhar range. Trek complete."
       }
     ],
     "coverImage": "https://images.pexels.com/photos/37835730/pexels-photo-37835730.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -7110,7 +7190,7 @@
     "subRegion": "Chamba",
     "difficulty": "moderate",
     "durationType": "multi",
-    "days": "5",
+    "days": "4",
     "distance": "35 km",
     "elevation": 4080,
     "elevationStr": "4,080m",
@@ -7174,16 +7254,6 @@
         "camp": "Bharmour hotel",
         "returnJourney": true,
         "desc": "Morning holy dip and final prayers at the lake. Trek 13 km back to Hadsar (Dhancho → Hadsar: 7 km, then Hadsar reachable in 6-7 hrs total). Note: ponies and palanquins are NOT available for the descent — too steep. Drive 13 km from Hadsar back to Bharmour. Helicopter option (Yatra season only): Hadsar helipad to lake ~Rs 8,000 return. Last bus from Hadsar at 5 PM."
-      },
-      {
-        "day": 5,
-        "title": "Bharmour to Pathankot / Chandigarh — Return Drive",
-        "distance": "165 km to Pathankot / 250 km to Chandigarh",
-        "elevation": "310m (Pathankot)",
-        "time": "6-8 hrs drive",
-        "camp": "Return / onward journey",
-        "returnJourney": true,
-        "desc": "Drive from Bharmour via Chamba to Pathankot (165 km, 6 hrs) or Chandigarh (250 km, 8 hrs). Optional: visit Khajjiar (Switzerland of India) and Dalhousie en route."
       }
     ],
     "coverImage": "https://imgs.search.brave.com/RraqJCnk4yLrUgDX_Iv7rWmwbSgkL-OQbT7G3sPEGB4/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pMC53/cC5jb20vbmF0dXJl/YWRtaXJlLmluL3dw/LWNvbnRlbnQvdXBs/b2Fkcy8yMDI0LzA1/L21hbmltYWhlc2gt/a2FpbGFzaC15YXRy/YS0yMDI0LW5hdHVy/ZS1hZG1pcmUtR2F1/cmkta3VuZC5qcGc_/cmVzaXplPTI1OSwx/OTQmc3NsPTE",
@@ -7203,7 +7273,7 @@
     "subRegion": "Dharamshala–Dhauladhar",
     "difficulty": "easy",
     "durationType": "multi",
-    "days": "2",
+    "days": "4",
     "distance": "18 km",
     "elevation": 2828,
     "elevationStr": "2,828m",
@@ -7230,23 +7300,43 @@
     "itinerary": [
       {
         "day": 1,
-        "title": "Dharamshala / McLeod Ganj to Triund",
+        "title": "Travel to McLeod Ganj / Dharamshala",
+        "distance": "520 km by road from Delhi",
+        "elevation": "1,457m (McLeod Ganj)",
+        "time": "10–12 hrs drive",
+        "camp": "McLeod Ganj hotel / guesthouse",
+        "returnJourney": false,
+        "desc": "Drive from Delhi to McLeod Ganj via Chandigarh and Kangra. The route climbs from the plains through the Shivalik foothills into the Dhauladhar range. McLeod Ganj sits at 1,457m with views of the Kangra Valley. Settle in, explore the town, and acclimatise."
+      },
+      {
+        "day": 2,
+        "title": "McLeod Ganj / Dharamkot to Triund",
         "distance": "9 km trek from McLeod Ganj / 7 km from Dharamkot",
         "elevation": "2,828m / 9,278 ft (Triund)",
         "time": "4–5 hrs",
         "camp": "Triund ridge campsite / rest house",
         "returnJourney": false,
-        "desc": "Trek from McLeod Ganj (1,457m) or Dharamkot (1,614m) through the Triund Forest (Kangra Forest Dept trail). 9 km from McLeod Ganj, 7 km from Dharamkot. The trail climbs through oak and rhododendron forest past Magic View Cafe, then enters open grassland for the last 2 km to Triund ridge (2,828m). Snow line ridge and Dhauladhar massif dominate the north. The Kangra Valley spread below to the south."
+        "desc": "Trek from McLeod Ganj (1,457m) or Dharamkot (1,614m) through the Triund Forest. 9 km from McLeod Ganj, 7 km from Dharamkot. The trail climbs through oak and rhododendron forest past Magic View Cafe, then enters open grassland for the last 2 km to Triund ridge (2,828m). Snow line ridge and Dhauladhar massif dominate the north."
       },
       {
-        "day": 2,
-        "title": "Triund — Return to McLeod Ganj",
+        "day": 3,
+        "title": "Triund — Descent to McLeod Ganj",
         "distance": "9 km descent",
         "elevation": "1,457m (McLeod Ganj)",
         "time": "3 hrs",
-        "camp": "Return to Dharamshala / McLeod Ganj",
+        "camp": "McLeod Ganj hotel / guesthouse",
+        "returnJourney": false,
+        "desc": "Sunrise from Triund ridge over the Kangra valley is spectacular. Descend 9 km back to McLeod Ganj via Dharamkot. Afternoon free to explore McLeod Ganj, visit the Dalai Lama Temple, or relax at a cafe."
+      },
+      {
+        "day": 4,
+        "title": "Return from McLeod Ganj to Delhi",
+        "distance": "520 km by road",
+        "elevation": "216m (Delhi)",
+        "time": "10–12 hrs drive",
+        "camp": "—",
         "returnJourney": true,
-        "desc": "Sunrise from Triund ridge over the Kangra valley is spectacular. Descend 9 km back to McLeod Ganj via Dharamkot. The entire round trip is 18 km. Many do this as a single-day trek from Dharamshala."
+        "desc": "Morning departure from McLeod Ganj. The drive descends through the Kangra Valley and Shivalik foothills back to Delhi. Stop at Kangra or Pathankot if time permits."
       }
     ],
     "coverImage": "https://images.pexels.com/photos/34668747/pexels-photo-34668747.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -7293,16 +7383,26 @@
     "itinerary": [
       {
         "day": 1,
-        "title": "Dharamshala — Kareri Village — Reoti Gad",
-        "distance": "25 km drive + 7 km trek",
+        "title": "Dharamshala to Kareri Village",
+        "distance": "25 km by road from Dharamshala",
+        "elevation": "1,800m (Kareri Village)",
+        "time": "1 hr drive",
+        "camp": "Kareri Village homestay",
+        "returnJourney": false,
+        "desc": "Drive from Dharamshala to Kareri Village (25 km). The village is the trailhead for the Kareri Lake trek. Register at the forest check-post and settle in at a local homestay."
+      },
+      {
+        "day": 2,
+        "title": "Kareri Village — Trek to Reoti Gad",
+        "distance": "7 km trek",
         "elevation": "2,000m",
-        "time": "2 hrs drive + 3–4 hrs trek",
+        "time": "3–4 hrs",
         "camp": "Reoti Gad campsite (2,000m)",
         "returnJourney": false,
         "desc": "Drive from Dharamshala to Kareri village. Register TMS at the check-post. The trail follows the Gaj Khad river through beautiful mixed forest — cedar, walnut, and horse chestnut — above the stream. Reoti Gad is a pleasant streamside camp."
       },
       {
-        "day": 2,
+        "day": 3,
         "title": "Reoti Gad — Kareri Lake",
         "distance": "9 km",
         "elevation": "2,934m",
@@ -7312,7 +7412,7 @@
         "desc": "Above Reoti Gad the forest opens to meadows and the Dhauladhar wall begins to appear. The lake occupies a wide flat bowl — the glacier feeding it is visible above, and the sheer rockface of the Dhauladhar peaks rises directly behind."
       },
       {
-        "day": 3,
+        "day": 4,
         "title": "Kareri Lake exploration — Return to Reoti Gad",
         "distance": "9 km",
         "elevation": "2,000m",
@@ -7320,16 +7420,6 @@
         "camp": "Reoti Gad",
         "returnJourney": true,
         "desc": "Morning at the lake for wildlife and bird watching — the lake is an important waterbird stopover; Himalayan golden eagles are regularly seen soaring the updrafts above the cliff face. Return descent to Reoti Gad."
-      },
-      {
-        "day": 4,
-        "title": "Reoti Gad — Kareri Village — Dharamshala",
-        "distance": "7 km + drive",
-        "elevation": "1,500m",
-        "time": "3 hrs",
-        "camp": "Return to Dharamshala",
-        "returnJourney": true,
-        "desc": "Final easy descent through the forest valley to Kareri village, then the drive back to Dharamshala. The Kangra Valley panorama on the drive is beautiful."
       }
     ],
     "coverImage": "https://images.pexels.com/photos/35131054/pexels-photo-35131054.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -7452,7 +7542,7 @@
     "subRegion": "Sirmaur–Shimla",
     "difficulty": "moderate",
     "durationType": "multi",
-    "days": "3",
+    "days": "4",
     "distance": "30 km",
     "elevation": 3647,
     "elevationStr": "3,647m",
@@ -7479,16 +7569,26 @@
     "itinerary": [
       {
         "day": 1,
-        "title": "Solan/Nahan — Nauradhar — Teel",
-        "distance": "50 km road + 7 km trek",
+        "title": "Travel to Nauradhar",
+        "distance": "50 km by road from Solan/Nahan",
+        "elevation": "1,600m (Nauradhar)",
+        "time": "2 hrs drive",
+        "camp": "Nauradhar guesthouse / campsite",
+        "returnJourney": false,
+        "desc": "Drive from Solan or Nahan to Nauradhar village (50 km). Nauradhar is the traditional base for the Churdhar trek. Register at the forest check-post and settle in."
+      },
+      {
+        "day": 2,
+        "title": "Nauradhar — Trek to Teel",
+        "distance": "7 km trek",
         "elevation": "2,700m",
-        "time": "2 hrs drive + 3 hrs trek",
+        "time": "3–4 hrs",
         "camp": "Teel forest rest house/campsite (2,700m)",
         "returnJourney": false,
         "desc": "Drive from Solan or Nahan to Nauradhar check-post. Register at TMS post. The trail ascends immediately through beautiful mixed forest — oaks, deodars, and spectacular rhododendron. Teel forest rest house is a comfortable overnight base at the treeline edge."
       },
       {
-        "day": 2,
+        "day": 3,
         "title": "Teel — Churdhar Summit — Return to Teel",
         "distance": "16 km",
         "elevation": "3,647m (summit)",
@@ -7498,14 +7598,14 @@
         "desc": "The summit day — an alpine start recommended to catch clear views before afternoon haze. The trail climbs above treeline onto the open ridge before the final steep push to the summit temple. Shirgul Maharaj temple at the top — priests provide prasad to pilgrims. The plains-to-peaks panorama is extraordinary. Return to Teel carefully in afternoon."
       },
       {
-        "day": 3,
+        "day": 4,
         "title": "Teel — Nauradhar — Return",
         "distance": "7 km descent",
-        "elevation": "2,238m",
-        "time": "2–3 hrs",
-        "camp": "Return to Solan/Nahan",
+        "elevation": "1,600m (Nauradhar)",
+        "time": "3 hrs",
+        "camp": "—",
         "returnJourney": true,
-        "desc": "Final leisurely descent through the forest. The birding on this section is outstanding — Himalayan monal, Koklas pheasant, and various laughing thrushes inhabit the forest. Return to Nauradhar and drive to Solan or Nahan."
+        "desc": "Descend from Teel back to Nauradhar. Drive back to Solan or Nahan."
       }
     ],
     "coverImage": "https://images.pexels.com/photos/1098395/pexels-photo-1098395.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -7525,7 +7625,7 @@
     "subRegion": "Kullu–Shimla",
     "difficulty": "easy",
     "durationType": "multi",
-    "days": "2",
+    "days": "4",
     "distance": "20 km",
     "elevation": 3120,
     "elevationStr": "3,120m",
@@ -7552,23 +7652,43 @@
     "itinerary": [
       {
         "day": 1,
-        "title": "Kullu/Manali or Shimla — Aut/Banjar — Jalori Pass",
-        "distance": "120 km road from Kullu",
-        "elevation": "3,120m",
+        "title": "Travel to Aut / Banjar",
+        "distance": "120 km by road from Kullu",
+        "elevation": "1,400m (Aut)",
         "time": "4–5 hrs drive",
-        "camp": "Jalori Pass guesthouse/tent (3,120m)",
+        "camp": "Aut / Banjar guesthouse",
         "returnJourney": false,
-        "desc": "Drive from Kullu via Aut and up the spectacular Banjar Valley road to Jalori Pass. Register TMS and collect forest entry receipt. Evening walk to the Jalori meadow for sunset views of the Kullu Valley peaks. The road itself is an adventure — hairpin bends through apple orchards above the Tirthan gorge."
+        "desc": "Drive from Kullu or Manali to Aut via the Beas River valley. The road follows the river through apple orchards and pine forests. Aut is the gateway to the Jalori Pass route. Settle in and prepare for the trek."
       },
       {
         "day": 2,
-        "title": "Jalori Pass — Serolsar Lake — Raghupur Fort — Return",
-        "distance": "20 km (lake: 15 km; fort: 3 km extra)",
-        "elevation": "3,165m (fort)",
-        "time": "6–7 hrs total",
-        "camp": "Jalori Pass or return to Banjar/Shoja",
+        "title": "Aut / Banjar — Jalori Pass — Serolsar Lake",
+        "distance": "15 km trek",
+        "elevation": "3,120m (Jalori Pass) / 2,800m (Serolsar Lake)",
+        "time": "5–6 hrs",
+        "camp": "Serolsar Lake campsite / rest house",
+        "returnJourney": false,
+        "desc": "Drive or trek from Aut to Jalori Pass (3,120m) — the highest point of the route. From the pass, trek to Serolsar Lake (2,800m) through dense forest. The lake is a pristine alpine body of water surrounded by towering trees. Camp by the lake for the night."
+      },
+      {
+        "day": 3,
+        "title": "Serolsar Lake — Jalori Pass — Aut / Banjar",
+        "distance": "15 km descent",
+        "elevation": "1,400m (Aut)",
+        "time": "5–6 hrs",
+        "camp": "Aut / Banjar guesthouse",
+        "returnJourney": false,
+        "desc": "Morning at Serolsar Lake — the still water reflects the surrounding forest and peaks. Trek back to Jalori Pass and descend to Aut / Banjar. Optional visit to Raghupur Fort (3 km from the pass) for panoramic views."
+      },
+      {
+        "day": 4,
+        "title": "Return from Aut / Banjar to Kullu / Manali",
+        "distance": "120 km by road",
+        "elevation": "1,200m (Kullu)",
+        "time": "4–5 hrs drive",
+        "camp": "—",
         "returnJourney": true,
-        "desc": "Morning walk through enchanting dense oak and rhododendron forest to Serolsar Lake. The Buddhni Mata shrine at the lakeside is ancient and beautifully maintained. Afternoon: climb to Raghupur Fort for the panoramic 360° view — Dhauladhar behind, Spiti peaks ahead, and Kullu Valley below. Return to Jalori for the drive down."
+        "desc": "Morning departure from Aut / Banjar. Drive back to Kullu or Manali along the Beas River valley. Final views of the Kullu Valley and apple orchards."
       }
     ],
     "coverImage": "https://images.pexels.com/photos/37936212/pexels-photo-37936212.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -7588,7 +7708,7 @@
     "subRegion": "Parvati Valley",
     "difficulty": "easy",
     "durationType": "multi",
-    "days": "2",
+    "days": "4",
     "distance": "24 km",
     "elevation": 2960,
     "elevationStr": "2,960m",
@@ -7615,23 +7735,43 @@
     "itinerary": [
       {
         "day": 1,
-        "title": "Bhuntar / Kasol to Barshaini — Trek to Kheerganga",
-        "distance": "30 km road to Barshaini + 12 km trek",
+        "title": "Travel to Bhuntar / Kasol",
+        "distance": "520 km by road from Delhi",
+        "elevation": "1,300m (Bhuntar)",
+        "time": "10–12 hrs drive",
+        "camp": "Bhuntar / Kasol guesthouse",
+        "returnJourney": false,
+        "desc": "Drive from Delhi to Bhuntar via Chandigarh and Kullu. The route follows the Beas River valley through the Kullu Valley. Bhuntar is the gateway to the Parvati Valley. Settle in and acclimatise."
+      },
+      {
+        "day": 2,
+        "title": "Bhuntar / Kasol — Barshaini — Trek to Kheerganga",
+        "distance": "30 km road + 12 km trek",
         "elevation": "2,950m / 9,678 ft (Kheerganga)",
         "time": "1.5 hrs drive + 5–6 hrs trek",
         "camp": "Kheerganga — open meadow with hot springs",
         "returnJourney": false,
-        "desc": "Drive from Bhuntar via Kasol to Barshaini village (30 km, 1.5 hrs). Trek begins at Barshaini. 12 km one-way trek along the Parvati River valley via Nakthan, Rudra Nag waterfall, and dense forest to Kheerganga (2,950m). The trail climbs 1,150m. Kheerganga is famous for the natural hot sulphur spring pools. Lord Shiva and Kartikeya are believed to have meditated here."
+        "desc": "Drive from Bhuntar via Kasol to Barshaini village (30 km, 1.5 hrs). Trek begins at Barshaini. 12 km one-way trek along the Parvati River valley via Nakthan, Rudra Nag waterfall, and dense forest to Kheerganga (2,950m). The trail climbs 1,150m. Kheerganga is famous for the natural hot sulphur spring pools."
       },
       {
-        "day": 2,
-        "title": "Kheerganga — Return to Barshaini",
+        "day": 3,
+        "title": "Kheerganga — Descent to Barshaini",
         "distance": "12 km descent",
         "elevation": "2,200m (Barshaini)",
         "time": "4–5 hrs",
-        "camp": "Return to Kasol / Bhuntar",
+        "camp": "Kasol / Bhuntar guesthouse",
+        "returnJourney": false,
+        "desc": "Morning soak in the hot springs, then 12 km descent from Kheerganga back to Barshaini. Drive to Kasol or Bhuntar for the night. Total trek: 24 km round trip."
+      },
+      {
+        "day": 4,
+        "title": "Return from Bhuntar to Delhi",
+        "distance": "520 km by road",
+        "elevation": "216m (Delhi)",
+        "time": "10–12 hrs drive",
+        "camp": "—",
         "returnJourney": true,
-        "desc": "Morning soak in the hot springs, then 12 km descent from Kheerganga back to Barshaini. Drive to Kasol or Bhuntar for onward connections. Total trek: 24 km round trip."
+        "desc": "Morning departure from Bhuntar. Drive back to Delhi via Kullu and Chandigarh. The descent through the Kullu Valley offers final views of the Himalayan foothills."
       }
     ],
     "coverImage": "https://images.pexels.com/photos/944395/pexels-photo-944395.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -7764,7 +7904,7 @@
     "subRegion": "Kullu–Lahaul",
     "difficulty": "hard",
     "durationType": "multi",
-    "days": "5",
+    "days": "6",
     "distance": "40 km",
     "elevation": 4800,
     "elevationStr": "4,800m",
@@ -7791,16 +7931,26 @@
     "itinerary": [
       {
         "day": 1,
-        "title": "Manali — Solang Nullah — Dhundi",
-        "distance": "14 km road + 8 km trek",
+        "title": "Manali to Solang Nullah / Dhundi",
+        "distance": "14 km by road from Manali",
+        "elevation": "2,500m (Solang/Dhundi)",
+        "time": "45 mins drive",
+        "camp": "Solang Nullah campsite",
+        "returnJourney": false,
+        "desc": "Drive from Manali to Solang Nullah and continue to Dhundi (14 km total). The road-head for the Kalihani Pass trek. Set up camp and prepare for the crossing."
+      },
+      {
+        "day": 2,
+        "title": "Solang Nullah — Dhundi — Trek forward",
+        "distance": "8 km trek",
         "elevation": "2,900m",
-        "time": "30 min drive + 4 hrs trek",
+        "time": "4–5 hrs",
         "camp": "Dhundi camp (2,900m)",
         "returnJourney": false,
         "desc": "Register TMS at Solang Nullah check-post. The approach follows the Beas Kund trail up the Solang valley through forest and meadow. Dhundi is the established campsite at the valley's first narrows."
       },
       {
-        "day": 2,
+        "day": 3,
         "title": "Dhundi — Bakarthach Meadow",
         "distance": "8 km",
         "elevation": "3,400m",
@@ -7810,7 +7960,7 @@
         "desc": "Above Dhundi the trail opens to the magnificent Bakarthach meadow — the same camp as the Beas Kund approach. Excellent views of Hanuman Tibba and Friendship Peak. The route branches here: Beas Kund goes left, Kalihani ascends right."
       },
       {
-        "day": 3,
+        "day": 4,
         "title": "Bakarthach — Kalihani High Camp",
         "distance": "7 km on moraine and snow",
         "elevation": "4,300m",
@@ -7820,7 +7970,7 @@
         "desc": "The route diverges from the Beas Kund trail and ascends the Kalihani glacier moraine. The upper glacier is visible ahead — crampons packed and ready. The high camp at 4,300m is on the glacier edge with extraordinary peak panoramas."
       },
       {
-        "day": 4,
+        "day": 5,
         "title": "High Camp — Kalihani Pass — Shuru (Lahaul)",
         "distance": "14 km crossing",
         "elevation": "4,800m (pass)",
@@ -7830,7 +7980,7 @@
         "desc": "Alpine start at 4 AM. Crampons on for the glacier ascent to the pass. Kalihani Pass (4,800m) is a wide snow saddle — the Lahaul peaks suddenly appear to the north and the Zanskar range is visible beyond. The descent on the Lahaul side is long — steep snow then rocky moraine to the valley floor."
       },
       {
-        "day": 5,
+        "day": 6,
         "title": "Lahaul valley — Keylong or vehicle to Manali",
         "distance": "Road to Keylong or Manali",
         "elevation": "3,100m (Keylong)",
@@ -7857,7 +8007,7 @@
     "subRegion": "Lahaul & Spiti",
     "difficulty": "hard",
     "durationType": "multi",
-    "days": "8",
+    "days": "7",
     "distance": "95 km",
     "elevation": 3962,
     "elevationStr": "3,962m",
@@ -7951,16 +8101,6 @@
         "camp": "Tholang",
         "returnJourney": true,
         "desc": "Begin the return. The downhill walking is much faster — the same valley looks entirely different heading south, with new views of the CB peaks from behind. "
-      },
-      {
-        "day": 8,
-        "title": "Tholang — Shukto — Udaipur — Manali",
-        "distance": "25 km + drive",
-        "elevation": "2,050m",
-        "time": "6 hrs trek + 4 hrs drive",
-        "camp": "Manali",
-        "returnJourney": true,
-        "desc": "Complete the return to Shukto, then road to Udaipur. Celebrate with dinner at Udaipur's guesthouses (Lahauli food is excellent — Chha Gosht, locally grown barley flatbreads) before the final drive back to Manali through the Atal Tunnel."
       }
     ],
     "coverImage": "https://images.pexels.com/photos/38168221/pexels-photo-38168221.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -7980,7 +8120,7 @@
     "subRegion": "Parvati Valley",
     "difficulty": "moderate",
     "durationType": "multi",
-    "days": "4",
+    "days": "5",
     "distance": "35 km",
     "elevation": 4050,
     "elevationStr": "4,050m",
@@ -8007,16 +8147,26 @@
     "itinerary": [
       {
         "day": 1,
-        "title": "Kullu/Bhuntar — Manikaran — Barshaini — Tosh Village",
-        "distance": "35 km road + 6 km trek/jeep",
+        "title": "Bhuntar to Barshaini / Tosh Village",
+        "distance": "35 km by road from Bhuntar",
+        "elevation": "2,200m (Barshaini/Tosh)",
+        "time": "1.5 hrs drive",
+        "camp": "Tosh Village guesthouse / homestay",
+        "returnJourney": false,
+        "desc": "Drive from Bhuntar to Barshaini (30 km) and continue to Tosh Village (5 km by jeep or walk). Tosh is a picturesque village at 2,200m with views of the Parvati Valley. Settle in and acclimatise."
+      },
+      {
+        "day": 2,
+        "title": "Tosh Village — Trek to Glacier Base",
+        "distance": "6 km trek",
         "elevation": "2,400m",
-        "time": "2 hrs drive + 2 hrs walk",
+        "time": "3–4 hrs",
         "camp": "Tosh village guesthouse (2,400m)",
         "returnJourney": false,
         "desc": "Drive to Barshaini. Register TMS. Walk or take shared jeep 6 km up to Tosh village. The village is extraordinarily beautiful — traditional timber houses with carved facades and slate roofs stacked on the steep hillside, with the glacier headwall visible far above. Explore the village and the ancient Sun Temple."
       },
       {
-        "day": 2,
+        "day": 3,
         "title": "Tosh Village — Nudhar Meadow",
         "distance": "8 km",
         "elevation": "3,200m",
@@ -8026,7 +8176,7 @@
         "desc": "Above Tosh the trail enters a beautiful hanging valley with wide meadow benches. The White Sail peak becomes increasingly dominant as height is gained. Nudhar meadow is a broad pastoral ground with excellent camping — no facilities, full self-sufficiency required."
       },
       {
-        "day": 3,
+        "day": 4,
         "title": "Nudhar — Tosh Glacier Base",
         "distance": "6 km",
         "elevation": "4,050m",
@@ -8036,14 +8186,14 @@
         "desc": "The approach to the glacier through rocky high-alpine terrain. The glacier base at 4,050m under the White Sail south face is a dramatic environment — large boulder fields, glacial streams, and the ice face above."
       },
       {
-        "day": 4,
-        "title": "Glacier Base — Tosh Village — Barshaini",
-        "distance": "14 km descent",
-        "elevation": "1,920m",
-        "time": "5–6 hrs",
-        "camp": "Barshaini or overnight Tosh village",
+        "day": 5,
+        "title": "Tosh Village — Barshaini — Bhuntar",
+        "distance": "14 km descent + 35 km drive",
+        "elevation": "1,300m (Bhuntar)",
+        "time": "5–6 hrs total",
+        "camp": "—",
         "returnJourney": true,
-        "desc": "Return descent to Tosh and down to Barshaini. The descent offers different perspectives on the Tosh Nullah — the valley opens dramatically on the way down. Final drive to Manikaran and Kullu/Bhuntar."
+        "desc": "Descend from Tosh Village to Barshaini, then drive to Bhuntar. Trek complete."
       }
     ],
     "coverImage": "https://images.pexels.com/photos/36244058/pexels-photo-36244058.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -8063,7 +8213,7 @@
     "subRegion": "Shimla",
     "difficulty": "easy",
     "durationType": "day",
-    "days": "1",
+    "days": "3",
     "distance": "4 km",
     "elevation": 2455,
     "elevationStr": "2,455m",
@@ -8090,13 +8240,33 @@
     "itinerary": [
       {
         "day": 1,
+        "title": "Travel to Shimla",
+        "distance": "370 km by road",
+        "elevation": "2,205m (Shimla)",
+        "time": "7–8 hrs drive",
+        "camp": "Shimla hotel / guesthouse",
+        "returnJourney": false,
+        "desc": "Drive from Chandigarh or Delhi to Shimla via the scenic NH5. The climb from the plains through the Shivalik foothills and into the pine-covered ridges is dramatic. Arrive in Shimla by evening, check in, and acclimatise. Walk the Mall Road and enjoy views of the snow-capped Himalayan range from Scandal Point."
+      },
+      {
+        "day": 2,
         "title": "Shimla Ridge → Jakhu Temple → Return",
         "distance": "4 km round-trip",
         "elevation": "2,455m",
         "time": "1.5–2 hrs total",
-        "camp": "Day trek — return to Shimla",
+        "camp": "Shimla hotel / guesthouse",
         "returnJourney": false,
-        "desc": "Start from the Ridge near Christ Church (near the State Library arrow sign pointing to Jakhoo). The 2.5km forested deodar path ascends steeply through Jakhu Reserve — ponies available for hire at the base. The 108-foot (33-metre) Hanuman statue appears dramatically as you emerge from the trees. Views of the entire Shimla town, surrounding valleys, and Himalayan peaks on clear days. Return by same path or take the ropeway down. Per official HP TMS Day 1: 'Start from Ridge Shimla, 30 minutes walk from Ridge to the Temple.'"
+        "desc": "Start from the Ridge near Christ Church (near the State Library arrow sign pointing to Jakhoo). The 2.5km forested deodar path ascends steeply through Jakhu Reserve — ponies available for hire at the base. The 108-foot (33-metre) Hanuman statue appears dramatically as you emerge from the trees. Views of the entire Shimla town, surrounding valleys, and Himalayan peaks on clear days. Return by same path or take the ropeway down."
+      },
+      {
+        "day": 3,
+        "title": "Return from Shimla",
+        "distance": "370 km by road",
+        "elevation": "640m (Plains)",
+        "time": "7–8 hrs drive",
+        "camp": "—",
+        "returnJourney": true,
+        "desc": "Morning departure from Shimla. The drive descends through the Shivalik foothills back to Chandigarh or Delhi. Stop at Panchkula or Pinjore Gardens if time permits."
       }
     ],
     "coverImage": "https://images.pexels.com/photos/5860770/pexels-photo-5860770.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -8116,7 +8286,7 @@
     "subRegion": "Mandi",
     "difficulty": "easy",
     "durationType": "multi",
-    "days": "2",
+    "days": "4",
     "distance": "14 km",
     "elevation": 2730,
     "elevationStr": "2,730m",
@@ -8143,23 +8313,43 @@
     "itinerary": [
       {
         "day": 1,
-        "title": "Mandi → Baggi → Prashar Lake",
-        "distance": "25 km drive + 7 km trek",
-        "elevation": "2,730m",
-        "time": "1.5 hrs drive + 3–4 hrs trek",
-        "camp": "Prashar Lake Homestay (9418047099) or tent",
+        "title": "Travel to Mandi",
+        "distance": "460 km by road from Delhi",
+        "elevation": "760m (Mandi)",
+        "time": "8–10 hrs drive",
+        "camp": "Mandi hotel / guesthouse",
         "returnJourney": false,
-        "desc": "Drive from Mandi to Baggi (27–30 km by road to the trailhead). Register TMS at Baggi check-post (official landmark: Baggi Bridge). The trail ascends through oak forest and meadows to the Prashar ridge. The 13th-century pagoda temple and floating island are extraordinary. Overnight at Prashar Lake Homestay for the sunset and Himalayan panorama."
+        "desc": "Drive from Delhi to Mandi via Chandigarh and Bilaspur. The route follows the Beas River valley through the lower Himalayan foothills. Mandi is the gateway to the Prashar Lake trail. Settle in and explore the old town with its historic temples."
       },
       {
         "day": 2,
-        "title": "Prashar Lake sunrise → Return to Baggi → Mandi",
-        "distance": "7 km descent",
-        "elevation": "2,100m (Baggi)",
-        "time": "2–3 hrs",
-        "camp": "Return to Mandi",
-        "returnJourney": true,
+        "title": "Mandi — Baggi — Trek to Prashar Lake",
+        "distance": "25 km drive + 7 km trek",
+        "elevation": "2,730m",
+        "time": "1.5 hrs drive + 3–4 hrs trek",
+        "camp": "Prashar Lake Homestay or tent",
+        "returnJourney": false,
+        "desc": "Drive from Mandi to Baggi (27–30 km by road to the trailhead). Register TMS at Baggi check-post. The trail ascends through oak forest and meadows to the Prashar ridge. The 13th-century pagoda temple and floating island are extraordinary. Overnight at Prashar Lake for the sunset and Himalayan panorama."
+      },
+      {
+        "day": 3,
+        "title": "Prashar Lake — Descent to Baggi — Mandi",
+        "distance": "7 km descent + 25 km drive",
+        "elevation": "760m (Mandi)",
+        "time": "2–3 hrs trek + 1.5 hrs drive",
+        "camp": "Mandi hotel / guesthouse",
+        "returnJourney": false,
         "desc": "Sunrise at Prashar Lake: the Kullu–Manali peaks and Dhauladhar chain glow gold at first light with the floating island in the foreground. Descent through the forest to Baggi. Drive back to Mandi."
+      },
+      {
+        "day": 4,
+        "title": "Return from Mandi to Delhi",
+        "distance": "460 km by road",
+        "elevation": "216m (Delhi)",
+        "time": "8–10 hrs drive",
+        "camp": "—",
+        "returnJourney": true,
+        "desc": "Morning departure from Mandi. Drive back to Delhi via Bilaspur and Chandigarh. Final views of the lower Himalayan foothills."
       }
     ],
     "coverImage": "https://images.pexels.com/photos/4032759/pexels-photo-4032759.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -8179,7 +8369,7 @@
     "subRegion": "Dharamshala–Dhauladhar",
     "difficulty": "moderate",
     "durationType": "multi",
-    "days": "2",
+    "days": "4",
     "distance": "16 km",
     "elevation": 2676,
     "elevationStr": "2,676m",
@@ -8206,23 +8396,43 @@
     "itinerary": [
       {
         "day": 1,
-        "title": "McLeod Ganj → Bhagsu Nag → Leta Forest → Karthani",
-        "distance": "8 km",
-        "elevation": "2,676m",
-        "time": "4–5 hrs",
-        "camp": "Karthani — self tent (2,676m)",
+        "title": "Travel to McLeod Ganj",
+        "distance": "520 km by road from Delhi",
+        "elevation": "1,457m (McLeod Ganj)",
+        "time": "10–12 hrs drive",
+        "camp": "McLeod Ganj hotel / guesthouse",
         "returnJourney": false,
-        "desc": "Register TMS at Bhagsu Bus Stand above McLeod Ganj. Visit the Bhagsu Nag temple and waterfall before ascending. The trail enters the Leta forest — dense Dhauladhar sanctuary zone with oak and rhododendron. Karthani is a forest clearing camp with Dhauladhar peak views — carry all supplies."
+        "desc": "Drive from Delhi to McLeod Ganj via Chandigarh and Kangra. The route climbs from the plains through the Shivalik foothills into the Dhauladhar range. McLeod Ganj sits at 1,457m with views of the Kangra Valley. Settle in and explore the town."
       },
       {
         "day": 2,
+        "title": "McLeod Ganj → Bhagsu Nag → Leta Forest → Karthani",
+        "distance": "8 km",
+        "elevation": "2,200m (Karthani)",
+        "time": "4–5 hrs",
+        "camp": "Karthani village homestay / campsite",
+        "returnJourney": false,
+        "desc": "Trek from McLeod Ganj through Bhagsu Nag village and into the Leta Forest. The trail climbs through dense oak and rhododendron forest with views of the Kangra Valley below. Reach Karthani village by afternoon — a quiet settlement with traditional Himachali architecture."
+      },
+      {
+        "day": 3,
         "title": "Karthani → Leta Forest → Bhagsu Nag → McLeod Ganj",
         "distance": "8 km",
-        "elevation": "2,290m (Bhagsu)",
+        "elevation": "1,457m (McLeod Ganj)",
         "time": "3–4 hrs",
-        "camp": "Return to McLeod Ganj",
+        "camp": "McLeod Ganj hotel / guesthouse",
+        "returnJourney": false,
+        "desc": "Morning at Karthani with views of the Dhauladhar range. Descend through the Leta Forest and Bhagsu Nag village back to McLeod Ganj. Afternoon free to explore the town or visit the Dalai Lama Temple."
+      },
+      {
+        "day": 4,
+        "title": "Return from McLeod Ganj to Delhi",
+        "distance": "520 km by road",
+        "elevation": "216m (Delhi)",
+        "time": "10–12 hrs drive",
+        "camp": "—",
         "returnJourney": true,
-        "desc": "Morning in the forest clearing with bird calls and mountain air. Return descent through the Leta zone back to Bhagsu Nag. McLeod Ganj with its Tibetan restaurants and cafes awaits after the quiet of the forest."
+        "desc": "Morning departure from McLeod Ganj. Drive back to Delhi via Kangra and Chandigarh. Final views of the Dhauladhar range and Kangra Valley."
       }
     ],
     "coverImage": "https://images.pexels.com/photos/29358714/pexels-photo-29358714.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -8242,7 +8452,7 @@
     "subRegion": "Kangra",
     "difficulty": "moderate",
     "durationType": "day",
-    "days": "1",
+    "days": "3",
     "distance": "12 km",
     "elevation": 2438,
     "elevationStr": "2,438m",
@@ -8269,13 +8479,33 @@
     "itinerary": [
       {
         "day": 1,
+        "title": "Travel to Boh Village",
+        "distance": "50 km by road from Dharamshala",
+        "elevation": "1,500m (Boh Village)",
+        "time": "2–3 hrs drive",
+        "camp": "Boh Village homestay / guesthouse",
+        "returnJourney": false,
+        "desc": "Drive from Dharamshala or McLeod Ganj to Boh Village via Shahpur. The road winds through Kangra Valley tea gardens and pine forests. Arrive at Boh Village, register at the TMS check-post, and settle in for the night. The village sits at the mouth of the Boh Valley with views of the Dhauladhar range ahead."
+      },
+      {
+        "day": 2,
         "title": "Boh Village → Khabru Waterfall → Return",
         "distance": "12 km round-trip",
         "elevation": "2,438m",
         "time": "4–6 hrs total",
-        "camp": "Day trek — return to Boh/Dharamshala",
+        "camp": "Boh Village homestay / guesthouse",
         "returnJourney": false,
-        "desc": "Drive 30 km from Shahpur to Boh Village. Register TMS at Boh check-post. The trail follows the Boh Valley upstream through forest and meadow to the Khabru Waterfall — a scenic natural cascade with Dhauladhar peaks visible above. The valley has 'beautiful scenery and forest' per HP TMS. Return by the same route in the afternoon."
+        "desc": "The trail follows the Boh Valley upstream through forest and meadow to the Khabru Waterfall — a scenic natural cascade with Dhauladhar peaks visible above. The valley has beautiful scenery and forest. Return by the same route in the afternoon."
+      },
+      {
+        "day": 3,
+        "title": "Return from Boh Village",
+        "distance": "50 km by road to Dharamshala",
+        "elevation": "1,500m",
+        "time": "2–3 hrs drive",
+        "camp": "—",
+        "returnJourney": true,
+        "desc": "Morning departure from Boh Village. Drive back to Dharamshala or McLeod Ganj via Shahpur. The descent through the Kangra Valley offers final views of the Dhauladhar range."
       }
     ],
     "coverImage": "https://images.pexels.com/photos/32031275/pexels-photo-32031275.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -8378,7 +8608,7 @@
     "subRegion": "Sirmaur",
     "difficulty": "moderate",
     "durationType": "multi",
-    "days": "2",
+    "days": "4",
     "distance": "26 km",
     "elevation": 3647,
     "elevationStr": "3,647m",
@@ -8405,23 +8635,43 @@
     "itinerary": [
       {
         "day": 1,
-        "title": "Nohradhar → Forest Camp",
-        "distance": "9 km steep ascent",
-        "elevation": "3,000m",
-        "time": "5–6 hrs",
-        "camp": "Forest rest house or camp (3,000m)",
+        "title": "Travel to Nohradhar",
+        "distance": "200 km by road from Chandigarh",
+        "elevation": "1,600m (Nohradhar)",
+        "time": "5–6 hrs drive",
+        "camp": "Nohradhar guesthouse / homestay",
         "returnJourney": false,
-        "desc": "Register TMS at Nohradhar. The trail is steep from the start through exceptional mixed Himalayan forest — oak, rhododendron, deodar. Excellent bird habitat: Himalayan monal, Koklas pheasant. Camp at forest rest house near treeline."
+        "desc": "Drive from Chandigarh or Dehradun to Nohradhar via Nahan and Paonta Sahib. The route climbs through the Shivalik foothills into the Sirmaur district. Nohradhar is the base village for the Churdhar trek. Settle in and prepare for the climb."
       },
       {
         "day": 2,
-        "title": "Forest Camp → Churdhar Summit → Return to Nohradhar",
+        "title": "Nohradhar → Forest Camp",
+        "distance": "9 km steep ascent",
+        "elevation": "2,800m (Forest Camp)",
+        "time": "5–6 hrs",
+        "camp": "Forest campsite",
+        "returnJourney": false,
+        "desc": "Trek from Nohradhar through dense forest of oak, rhododendron, and deodar. The trail is steep but well-marked. Reach the forest campsite by late afternoon. Camp among tall trees with views of the Churdhar peak ahead."
+      },
+      {
+        "day": 3,
+        "title": "Forest Camp → Churdhar Summit → Descent to Nohradhar",
         "distance": "15 km",
-        "elevation": "3,647m (summit)",
+        "elevation": "3,647m (Churdhar Summit)",
         "time": "8–9 hrs total",
-        "camp": "Return to Nohradhar",
+        "camp": "Nohradhar guesthouse / homestay",
+        "returnJourney": false,
+        "desc": "Early morning push to the Churdhar summit (3,647m) — the highest peak in the Sirmaur district. The summit offers panoramic views of the Yamuna Valley, Churdhar Wildlife Sanctuary, and the distant snow-capped Himalayan range. Descend the same trail to Nohradhar by evening."
+      },
+      {
+        "day": 4,
+        "title": "Return from Nohradhar to Chandigarh",
+        "distance": "200 km by road",
+        "elevation": "300m (Chandigarh)",
+        "time": "5–6 hrs drive",
+        "camp": "—",
         "returnJourney": true,
-        "desc": "Early start for the exposed summit ridge. Shirgul Maharaj temple at the top. The panorama from 3,647m: Punjab/Haryana plains visible 200 km south; Greater Himalayan peaks including Swargarohini and Bandarpoonch to the north. Return via the same steep path — trekking poles essential for the knee-testing descent."
+        "desc": "Morning departure from Nohradhar. Drive back through Paonta Sahib and Nahan to Chandigarh or Dehradun. Final views of the Sirmaur hills and Churdhar range."
       }
     ],
     "coverImage": "https://images.pexels.com/photos/1098395/pexels-photo-1098395.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -8493,13 +8743,13 @@
       },
       {
         "day": 3,
-        "title": "Return to Deedag → Sangrah",
-        "distance": "8 km descent",
-        "elevation": "1,500m (road)",
-        "time": "4–5 hrs",
-        "camp": "Return to Sangrah/Nahan",
+        "title": "Deedag — Sangrah — Return",
+        "distance": "8 km descent + drive",
+        "elevation": "1,200m (Sangrah)",
+        "time": "3–4 hrs total",
+        "camp": "—",
         "returnJourney": true,
-        "desc": "Morning descent through the forest back to Deedag. Drive from Deedag to Sangrah or Nahan for onward travel."
+        "desc": "Descend from the summit area back to Deedag and continue to Sangrah. Drive back to Nahan or Chandigarh."
       }
     ]
   },
@@ -8514,7 +8764,7 @@
     "subRegion": "Sirmaur",
     "difficulty": "hard",
     "durationType": "multi",
-    "days": "3",
+    "days": "4",
     "distance": "36 km",
     "elevation": 3647,
     "elevationStr": "3,647m",
@@ -8566,13 +8816,23 @@
       },
       {
         "day": 3,
-        "title": "Upper camp → Churdhar Summit → Return descent",
-        "distance": "12 km",
-        "elevation": "3,647m (summit)",
-        "time": "7–8 hrs",
-        "camp": "Mid-slope camp or Habban (long day)",
+        "title": "Churdhar Summit — Descent to Banalidhar",
+        "distance": "12 km descent",
+        "elevation": "3,647m → 1,800m (Banalidhar)",
+        "time": "5–6 hrs",
+        "camp": "Banalidhar guesthouse",
+        "returnJourney": false,
+        "desc": "Summit Churdhar peak (3,647m) for panoramic views of the Sirmaur hills, Yamuna Valley, and distant snow-capped Himalayan range. Descend to Banalidhar through forest."
+      },
+      {
+        "day": 4,
+        "title": "Banalidhar — Habban — Return",
+        "distance": "25 km drive",
+        "elevation": "1,200m (Habban)",
+        "time": "1 hr drive",
+        "camp": "—",
         "returnJourney": true,
-        "desc": "Summit day. Shirgul Maharaj temple at Churdhar. The complete plains-to-peaks panorama from one of Himachal's most isolated summit approaches — all the more rewarding for the remote journey here."
+        "desc": "Drive from Banalidhar to Habban and continue to Nahan or Solan. Trek complete."
       }
     ]
   },
@@ -8587,7 +8847,7 @@
     "subRegion": "Kinnaur",
     "difficulty": "easy",
     "durationType": "multi",
-    "days": "7",
+    "days": "5",
     "distance": "55 km",
     "elevation": 4890,
     "elevationStr": "4,890m",
@@ -8661,26 +8921,6 @@
         "camp": "High meadow (3,800m)",
         "returnJourney": true,
         "desc": "Cross the Bawa Pass at 4,890m — extraordinary Kinnaur high-altitude panorama. The deep Sutlej gorge, Kinnaur Kailash (6,050m), and the Tibetan plateau beyond the border are visible. Descend to high meadow."
-      },
-      {
-        "day": 6,
-        "title": "High meadow → Bhawanagar descent",
-        "distance": "18 km",
-        "elevation": "2,400m",
-        "time": "6–7 hrs",
-        "camp": "Bhawanagar / Forest Rest House",
-        "returnJourney": true,
-        "desc": "Long return descent to Bhawanagar through the valley and village zones."
-      },
-      {
-        "day": 7,
-        "title": "Bhawanagar → Recong Peo → Departure",
-        "distance": "Road",
-        "elevation": "2,290m (R-Peo)",
-        "time": "2 hrs drive",
-        "camp": "Return to Recong Peo or Shimla",
-        "returnJourney": true,
-        "desc": "Drive from Bhawanagar back to Recong Peo. Depart for Shimla (235 km, 7 hrs) or Manali via Wangtu–Rampur."
       }
     ],
     "coverImage": "https://images.pexels.com/photos/29943762/pexels-photo-29943762.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -8700,7 +8940,7 @@
     "subRegion": "Sirmaur–Haripurdhar",
     "difficulty": "easy",
     "durationType": "day",
-    "days": "1",
+    "days": "3",
     "distance": "8 km",
     "elevation": 2500,
     "elevationStr": "2,500m",
@@ -8727,13 +8967,33 @@
     "itinerary": [
       {
         "day": 1,
+        "title": "Travel to Haripurdhar",
+        "distance": "240 km by road via Nahan",
+        "elevation": "1,800m (Haripurdhar)",
+        "time": "6–7 hrs drive",
+        "camp": "Haripurdhar guesthouse / hotel",
+        "returnJourney": false,
+        "desc": "Drive from Chandigarh or Dehradun to Haripurdhar via Paonta Sahib and Nahan. The route climbs through the Shivalik foothills into the Sirmaur district. Haripurdhar is a small hill town with panoramic views of the Churdhar peak and surrounding valleys. Settle in and explore the town market."
+      },
+      {
+        "day": 2,
         "title": "Haripurdhar → Bhangayini Mata Temple → Old Fort (FRH)",
         "distance": "8 km one-way",
         "elevation": "2,500m (FRH)",
         "time": "3–4 hrs",
-        "camp": "Trekker's Hostel (9736000034) or return same day",
+        "camp": "Haripurdhar guesthouse / hotel",
         "returnJourney": false,
-        "desc": "Begin at Haripurdhar bus stop and visit the Maa Bhangayini Temple. Register TMS. The forest walk to the old fort / Trekker's Hostel passes through pine and oak — the Sirmaur hills are visible across the valleys. The Trekker's Hostel offers overnight accommodation in a heritage forest rest house setting."
+        "desc": "Begin at Haripurdhar bus stop and visit the Maa Bhangayini Temple. Register TMS. The forest walk to the old fort / Trekker's Hostel passes through pine and oak — the Sirmaur hills are visible across the valleys. The Trekker's Hostel offers overnight accommodation in a heritage forest rest house setting. Return to Haripurdhar by evening."
+      },
+      {
+        "day": 3,
+        "title": "Return from Haripurdhar",
+        "distance": "240 km by road to Chandigarh",
+        "elevation": "1,800m",
+        "time": "6–7 hrs drive",
+        "camp": "—",
+        "returnJourney": true,
+        "desc": "Morning departure from Haripurdhar. The drive descends through Nahan and Paonta Sahib back to Chandigarh or Dehradun. Final views of the Churdhar range and Sirmaur hills."
       }
     ],
     "coverImage": "https://images.pexels.com/photos/17148593/pexels-photo-17148593.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -8753,7 +9013,7 @@
     "subRegion": "Sirmaur–Nahan",
     "difficulty": "easy",
     "durationType": "day",
-    "days": "1",
+    "days": "3",
     "distance": "7 km",
     "elevation": 1350,
     "elevationStr": "1,350m",
@@ -8780,13 +9040,33 @@
     "itinerary": [
       {
         "day": 1,
+        "title": "Travel to Banethi",
+        "distance": "180 km by road from Chandigarh",
+        "elevation": "1,200m (Banethi)",
+        "time": "5–6 hrs drive",
+        "camp": "Banethi Forest Rest House / guesthouse",
+        "returnJourney": false,
+        "desc": "Drive from Chandigarh or Dehradun to Banethi via Nahan and Paonta Sahib. The road climbs through the Shivalik foothills into the Sirmaur district. Banethi is a quiet settlement with the historic 1905 Forest Rest House. Settle in and explore the colonial-era sandstone-and-wood building."
+      },
+      {
+        "day": 2,
         "title": "Banethi Forest Rest House → Nauni → Jamta",
         "distance": "7 km one-way",
         "elevation": "1,350m",
         "time": "2–3 hrs",
-        "camp": "Day trek — Grand View Resort Jamta (9418148267) or Sirmaur Retreat (8988241648) for overnight option",
+        "camp": "Banethi Forest Rest House / guesthouse",
         "returnJourney": false,
-        "desc": "Start from the 1905 Banethi Forest Rest House (01702-222240) — the sandstone-and-wood colonial building is a landmark worth exploring before the walk. The pine forest path to Nauni and Jamta is 'breezy and tranquil' per HP TMS. Jamta's dual outlook — Nahan town and plains behind, Churdhar range ahead — is the scenic payoff of this short but rewarding nature trail."
+        "desc": "Start from the 1905 Banethi Forest Rest House — the sandstone-and-wood colonial building is a landmark worth exploring before the walk. The pine forest path to Nauni and Jamta is breezy and tranquil. Jamta's dual outlook — Nahan town and plains behind, Churdhar range ahead — is the scenic payoff. Return to Banethi by evening."
+      },
+      {
+        "day": 3,
+        "title": "Return from Banethi",
+        "distance": "180 km by road to Chandigarh",
+        "elevation": "1,200m",
+        "time": "5–6 hrs drive",
+        "camp": "—",
+        "returnJourney": true,
+        "desc": "Morning departure from Banethi. Drive back through Nahan and Paonta Sahib to Chandigarh or Dehradun. Final views of the Sirmaur hills and Churdhar range."
       }
     ],
     "coverImage": "https://images.pexels.com/photos/21558505/pexels-photo-21558505.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -8907,7 +9187,7 @@
     "subRegion": "Gangotri–Uttarkashi",
     "difficulty": "hard",
     "durationType": "multi",
-    "days": "9",
+    "days": "7",
     "distance": "65 km",
     "elevation": 4880,
     "elevationStr": "4,880m",
@@ -9001,26 +9281,6 @@
         "camp": "Bhojbasa",
         "returnJourney": true,
         "desc": "Retrace through Nandanvan and back across the Gangotri Glacier to Bhojbasa. The views looking back at the glacial wilderness are as dramatic on the return as on the approach."
-      },
-      {
-        "day": 8,
-        "title": "Bhojbasa → Gangotri",
-        "distance": "14 km descent",
-        "elevation": "3,048m",
-        "time": "4–5 hrs",
-        "camp": "Gangotri guesthouse",
-        "returnJourney": true,
-        "desc": "Final descent through the birch forest and along the Bhagirathi back to Gangotri. Visit the Gangotri temple aarti in the evening."
-      },
-      {
-        "day": 9,
-        "title": "Gangotri → Uttarkashi → Dehradun",
-        "distance": "258 km drive",
-        "elevation": "640m (Dehradun)",
-        "time": "10–11 hrs",
-        "camp": "Return to Dehradun",
-        "returnJourney": true,
-        "desc": "Drive back from Gangotri to Dehradun through the Bhagirathi gorge, past Harsil, Uttarkashi, and Tehri Lake. The drive through the Himalayan valleys is spectacular."
       }
     ],
     "coverImage": "https://images.pexels.com/photos/18590571/pexels-photo-18590571.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -9125,13 +9385,13 @@
       },
       {
         "day": 6,
-        "title": "Bheem Dwar to Thachru to Jaon — Return",
-        "distance": "10.5 km Bheem Dwar to Thachru + 11-12 km Thachru to Jaon = ~22 km descent",
-        "elevation": "1,950m (Jaon)",
-        "time": "8-10 hrs descent",
-        "camp": "Jaon village",
+        "title": "Jaon Village — Return to Shimla / Chandigarh",
+        "distance": "170 km drive from Shimla",
+        "elevation": "2,200m (Jaon)",
+        "time": "5–6 hrs drive",
+        "camp": "—",
         "returnJourney": true,
-        "desc": "Full descent day: Bheem Dwar → Thachru (10.5 km, 4-5 hrs) then Thachru → Jaon (11-12 km, 4-5 hrs) — knees and poles essential. Some strong trekkers combine the descent into 1 day (22 km). Reach Jaon by evening. Drive back to Shimla (170 km, 8-9 hrs) or halt overnight in Jaon / Rampur."
+        "desc": "Drive from Jaon Village back to Shimla or Chandigarh via Rampur and Narkanda. The descent through the Sutlej Valley offers final views of the Kinnaur and Kullu ranges."
       }
     ],
     "coverImage": "https://images.pexels.com/photos/21715005/pexels-photo-21715005.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -9233,7 +9493,7 @@
     "subRegion": "Kullu–Manali",
     "difficulty": "expert",
     "durationType": "multi",
-    "days": "7",
+    "days": "8",
     "distance": "58 km",
     "elevation": 5289,
     "elevationStr": "5,289m",
@@ -9260,16 +9520,26 @@
     "itinerary": [
       {
         "day": 1,
-        "title": "Manali — Solang Nullah — Dhundi",
-        "distance": "18 km drive + 4 km trek",
+        "title": "Manali to Solang Nullah / Dhundi",
+        "distance": "18 km by road from Manali",
+        "elevation": "2,500m (Solang/Dhundi)",
+        "time": "45 mins drive",
+        "camp": "Solang Nullah campsite",
+        "returnJourney": false,
+        "desc": "Drive from Manali to Solang Nullah and continue to Dhundi (18 km). The road-head for the Friendship Peak trek. Set up camp and prepare for the ascent."
+      },
+      {
+        "day": 2,
+        "title": "Solang Nullah — Dhundi — Trek forward",
+        "distance": "4 km trek",
         "elevation": "2,600m (Dhundi)",
-        "time": "1 hr drive + 2 hrs trek",
+        "time": "2–3 hrs",
         "camp": "Dhundi camp (2,600m)",
         "returnJourney": false,
         "desc": "Drive from Manali to Solang Nullah ski resort (14 km). Register at the forest check-post (carry HP TMS receipt and IMF permit). Trek from Solang up the Solang Nullah valley to Dhundi — a wide river meadow at the tree line with the Pir Panjal peaks emerging above. Equipment check and crampon familiarisation at camp."
       },
       {
-        "day": 2,
+        "day": 3,
         "title": "Dhundi — Bakarthach Meadows",
         "distance": "8 km",
         "elevation": "3,400m",
@@ -9279,7 +9549,7 @@
         "desc": "The trail climbs through the magnificent Bakarthach meadows — one of the finest wildflower valleys in Himachal. At 3,400m the views of Hanuman Tibba and the Friendship Peak glacier come into view. Acclimatisation afternoon walk to 3,600m recommended."
       },
       {
-        "day": 3,
+        "day": 4,
         "title": "Bakarthach — Beas Kund — Lady Leg Camp",
         "distance": "8 km",
         "elevation": "4,200m",
@@ -9289,7 +9559,7 @@
         "desc": "Pass the sacred Beas Kund lake (3,700m) — source of the Beas River — and continue up the moraine and snow slopes to the glacier base camp known as Lady Leg camp (4,200m). First use of crampons may begin from this section. Crevasse awareness briefing at camp."
       },
       {
-        "day": 4,
+        "day": 5,
         "title": "Acclimatisation — Glacier Training at Lady Leg Camp",
         "distance": "2–3 km",
         "elevation": "4,200m–4,500m",
@@ -9299,7 +9569,7 @@
         "desc": "Rest and acclimatisation day. Guide conducts crampon technique, ice axe arrest, and rope team movement training on the lower glacier slopes. This training day is mandatory for all participants — summit safety depends on these skills. Afternoon rest."
       },
       {
-        "day": 5,
+        "day": 6,
         "title": "Lady Leg Camp — High Camp",
         "distance": "5 km on glacier",
         "elevation": "4,700m",
@@ -9309,7 +9579,7 @@
         "desc": "Move across the glacier to the high camp below the summit headwall. Roped glacier travel through the icefield — crevasses require careful navigation. The high camp at 4,700m is a spectacular snow platform with close views of the summit snowfield. Early dinner and attempt to sleep by 7 PM for the alpine start."
       },
       {
-        "day": 6,
+        "day": 7,
         "title": "Summit Day — Friendship Peak 5,289m — Return to Base",
         "distance": "10 km",
         "elevation": "5,289m summit, return to 4,200m",
@@ -9319,14 +9589,14 @@
         "desc": "Alpine start at 3–4 AM with headlamps. The summit push follows the snow ridge and 50° headwall to the summit. Fixed rope used on the steepest section. The summit at 5,289m: Hanuman Tibba and Deo Tibba fill the view to the northwest; the Spiti ranges and Rohtang to the east. Descend carefully back to high camp, retrieve remaining gear, and push down to Lady Leg camp or Bakarthach."
       },
       {
-        "day": 7,
-        "title": "Return — Bakarthach — Dhundi — Solang — Manali",
-        "distance": "20 km descent",
-        "elevation": "2,480m (Solang)",
-        "time": "6–7 hrs",
-        "camp": "Return to Manali hotels",
+        "day": 8,
+        "title": "Bakarthach — Dhundi — Solang — Manali",
+        "distance": "20 km descent + 18 km drive",
+        "elevation": "2,050m (Manali)",
+        "time": "6–7 hrs total",
+        "camp": "—",
         "returnJourney": true,
-        "desc": "Full descent through the Beas Kund valley and Bakarthach meadows back to Solang Nullah. Drive to Manali. The recovery after the summit push — hot food, hot shower, and the satisfaction of a genuine Himalayan summit."
+        "desc": "Descend from the upper camps through Dhundi and Solang Nullah back to Manali. The descent passes through oak and rhododendron forest with views of the Pir Panjal range."
       }
     ],
     "coverImage": "https://images.pexels.com/photos/38385122/pexels-photo-38385122.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -9459,7 +9729,7 @@
     "subRegion": "Mandi–Kullu",
     "difficulty": "easy",
     "durationType": "multi",
-    "days": "2",
+    "days": "4",
     "distance": "14 km",
     "elevation": 2730,
     "elevationStr": "2,730m",
@@ -9486,23 +9756,43 @@
     "itinerary": [
       {
         "day": 1,
-        "title": "Mandi / Chandigarh — Baggi — Prashar Lake",
-        "distance": "25–140 km road + 7 km trek",
-        "elevation": "2,730m",
-        "time": "1–4 hrs drive + 3–4 hrs trek",
-        "camp": "Prashar Lake Homestay (9418047099) or tent",
+        "title": "Travel to Mandi",
+        "distance": "460 km by road from Delhi",
+        "elevation": "760m (Mandi)",
+        "time": "8–10 hrs drive",
+        "camp": "Mandi hotel / guesthouse",
         "returnJourney": false,
-        "desc": "Drive from Mandi (25 km) or Chandigarh (140 km) to Baggi Bridge trailhead on the Mandi–Kullu Highway. Register HP TMS receipt and pay forest entry fee at Baggi check-post. The trail ascends through dense oak and rhododendron forest on a well-worn path — a beautiful forest walk with increasingly dramatic views as the trees thin. The lake and the 13th-century wooden pagoda emerge suddenly on reaching the ridge. Book the Prashar Lake Homestay in advance (9418047099) for the authentic experience — home-cooked Himachali dinner, warm blankets, and the lakeside at dusk with no day-trippers."
+        "desc": "Drive from Delhi or Chandigarh to Mandi via Bilaspur. The route follows the Beas River valley through the lower Himalayan foothills. Mandi is the gateway to the Prashar Lake trail. Settle in and explore the old town with its historic temples."
       },
       {
         "day": 2,
-        "title": "Prashar Lake Sunrise — Return to Baggi — Mandi",
-        "distance": "7 km descent",
-        "elevation": "2,100m (Baggi)",
+        "title": "Mandi — Baggi — Trek to Prashar Lake",
+        "distance": "25–140 km road + 7 km trek",
+        "elevation": "2,730m",
+        "time": "1–4 hrs drive + 3–4 hrs trek",
+        "camp": "Prashar Lake Homestay or tent",
+        "returnJourney": false,
+        "desc": "Drive from Mandi to Baggi (27–30 km by road to the trailhead). Register TMS at Baggi check-post. The trail ascends through oak forest and meadows to the Prashar ridge. The 13th-century pagoda temple and floating island are extraordinary. Overnight at Prashar Lake for the sunset and Himalayan panorama."
+      },
+      {
+        "day": 3,
+        "title": "Prashar Lake — Descent to Baggi — Mandi",
+        "distance": "7 km descent + 25–140 km drive",
+        "elevation": "760m (Mandi)",
         "time": "2–3 hrs descent",
-        "camp": "Return to Mandi or onward",
+        "camp": "Mandi hotel / guesthouse",
+        "returnJourney": false,
+        "desc": "Sunrise at Prashar Lake: the Kullu–Manali peaks and Dhauladhar chain glow gold at first light with the floating island in the foreground. Descent through the forest to Baggi. Drive back to Mandi."
+      },
+      {
+        "day": 4,
+        "title": "Return from Mandi to Delhi / Chandigarh",
+        "distance": "460 km by road",
+        "elevation": "216m (Delhi)",
+        "time": "8–10 hrs drive",
+        "camp": "—",
         "returnJourney": true,
-        "desc": "The Prashar Lake sunrise is the reason to stay overnight — the Kullu–Manali peaks, Hanuman Tibba, and the Dhauladhar chain emerge in gold against the pre-dawn sky with the floating island silhouetted on the still lake surface. The 13th-century pagoda glows in the morning light. Descend through the forest to Baggi by mid-morning. Drive back to Mandi or continue toward Kullu–Manali."
+        "desc": "Morning departure from Mandi. Drive back to Delhi or Chandigarh via Bilaspur. Final views of the lower Himalayan foothills."
       }
     ],
     "coverImage": "https://images.pexels.com/photos/4032759/pexels-photo-4032759.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -9521,7 +9811,7 @@
     "state": "Karnataka",
     "difficulty": "hard",
     "durationType": "multi",
-    "days": "2",
+    "days": "4",
     "elevation": 1712,
     "distance": "28 km",
     "elevationStr": "1,712m",
@@ -9549,23 +9839,43 @@
     "itinerary": [
       {
         "day": 1,
-        "title": "Bengaluru to Kukke Subramanya (Night Drive)",
-        "distance": "22–28 km",
-        "elevation": "1,215m start",
-        "time": "Overnight drive",
-        "camp": "Kukke Subramanya guesthouse",
+        "title": "Travel to Kukke Subramanya",
+        "distance": "350 km by road from Bengaluru",
+        "elevation": "600m (Kukke Subramanya)",
+        "time": "7–8 hrs drive",
+        "camp": "Kukke Subramanya guesthouse / lodge",
         "returnJourney": false,
-        "desc": "Depart Bengaluru at 8–9 PM for the overnight drive to Kukke Subramanya via Hassan, Sakleshpur, and Mangaluru highway. The Sakleshpur–Kukke section passes through the dramatic ghats of the Western Ghats. Arrive early morning, freshen up, and have breakfast before the trek begins."
+        "desc": "Drive from Bengaluru to Kukke Subramanya via Hassan and Mudigere. The route passes through the Western Ghats foothills with rubber and coffee plantations. Kukke Subramanya is a temple town at the base of the Kumara Parvatha range. Settle in and visit the Subramanya Temple."
       },
       {
         "day": 2,
-        "title": "Kukke Subramanya — Full Trek to Kumara Parvatha Summit and Return",
-        "distance": "22–28 km",
-        "elevation": "1,712m summit",
-        "time": "9–12 hrs",
-        "camp": "Return to Kukke / Drive to Bengaluru",
+        "title": "Kukke Subramanya — Trek to Kumara Parvatha Summit and Return",
+        "distance": "22–28 km round trip",
+        "elevation": "1,712m (Kumara Parvatha Summit)",
+        "time": "8–10 hrs",
+        "camp": "Kukke Subramanya guesthouse / lodge",
+        "returnJourney": false,
+        "desc": "Early morning start for the Kumara Parvatha trek. The trail climbs through dense shola grasslands and forest. The summit at 1,712m offers panoramic views of the Western Ghats — the Bisle valley, Pushpagiri range, and the misty ridges stretching to the coast. Return to Kukke Subramanya by evening."
+      },
+      {
+        "day": 3,
+        "title": "Rest day at Kukke Subramanya",
+        "distance": "Temple visit / local exploration",
+        "elevation": "600m",
+        "time": "Free day",
+        "camp": "Kukke Subramanya guesthouse / lodge",
+        "returnJourney": false,
+        "desc": "Rest day after the demanding trek. Visit the Subramanya Temple, explore the surrounding forest trails, or simply relax. The town is a good base for exploring the Western Ghats biodiversity."
+      },
+      {
+        "day": 4,
+        "title": "Return from Kukke Subramanya to Bengaluru",
+        "distance": "350 km by road",
+        "elevation": "920m (Bengaluru)",
+        "time": "7–8 hrs drive",
+        "camp": "—",
         "returnJourney": true,
-        "desc": "Start as early as 5–6 AM. Pick up permits at the forest checkpost. The trail climbs continuously through dense shola forest, passing Bhattarmane (a rest stop with food available). The route crosses Shesha Parvatha's grassy ridge — the classic viewpoint for the concealed Kumara Parvatha dome beyond. From Shesha Parvatha, a final steep ascent leads to the summit cairn with panoramic views of rolling Western Ghats ridges receding to the horizon. Descend on the same route (or crossover to Beedahalli if booked). Reach Kukke by 5–6 PM. Drive back overnight to Bengaluru."
+        "desc": "Morning departure from Kukke Subramanya. Drive back to Bengaluru via Mudigere and Hassan. Final views of the Western Ghats foothills and coffee plantations."
       }
     ],
     "coverImage": "https://images.pexels.com/photos/34954441/pexels-photo-34954441.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -9584,7 +9894,7 @@
     "state": "Kerala",
     "difficulty": "moderate",
     "durationType": "multi",
-    "days": "2",
+    "days": "4",
     "elevation": 2640,
     "distance": "20 km",
     "elevationStr": "2,640m",
@@ -9612,23 +9922,43 @@
     "itinerary": [
       {
         "day": 1,
-        "title": "Kochi / Coimbatore to Munnar",
-        "distance": "16 km",
+        "title": "Travel to Munnar",
+        "distance": "130 km by road from Coimbatore",
         "elevation": "1,600m (Munnar)",
         "time": "4–5 hrs drive",
         "camp": "Munnar guesthouse / hotel",
         "returnJourney": false,
-        "desc": "Drive to Munnar through the spectacular Ghats — the climb from Coimbatore through Anamalai and the Pallivasal valley, or from Kochi through Muvattupuzha and Adimali. Munnar sits at the confluence of three mountain streams (Muthirapuzha, Nallathanni, Kundaly) in a bowl of tea estates at 1,600m. The town is the gateway to the high Cardamom Hills. Arrange the Meesapulimala permit and guide at the DTPC office in Munnar (open early morning) or at Rhodovalley forest station directly."
+        "desc": "Drive from Coimbatore or Kochi to Munnar through the spectacular Ghats — the climb from Coimbatore through Anamalai and the Pallivasal valley, or from Kochi through Muvattupuzha and Adimali. Munnar sits at the confluence of three mountain streams in a bowl of tea estates at 1,600m. Arrange the Meesapulimala permit and guide at the DTPC office."
       },
       {
         "day": 2,
-        "title": "Rhodovalley to Meesapulimala Summit and Return",
+        "title": "Munnar — Rhodovalley — Meesapulimala Summit — Return",
         "distance": "16 km",
         "elevation": "2,640m summit",
         "time": "6–8 hrs",
-        "camp": "Return to Munnar / drive",
+        "camp": "Munnar guesthouse / hotel",
+        "returnJourney": false,
+        "desc": "Drive 35 km from Munnar to Rhodovalley tea estate (start early — 5:30–6 AM). Meet the assigned forest guide and begin the ridge traverse through the shola grasslands. The route climbs through eight consecutive peaks, each offering expanding views of the rolling Cardamom and Palani hills. Nilgiri Tahr are commonly spotted. The final summit at 2,640m looks out across one of the great panoramas of South India. Descend by the same route and drive back to Munnar."
+      },
+      {
+        "day": 3,
+        "title": "Rest day at Munnar",
+        "distance": "Tea estate exploration",
+        "elevation": "1,600m",
+        "time": "Free day",
+        "camp": "Munnar guesthouse / hotel",
+        "returnJourney": false,
+        "desc": "Rest day in Munnar. Visit the tea museum, explore the surrounding tea estates, or take a walk to the Eravikulam National Park. Munnar's cool climate and lush greenery make it a pleasant place to recover."
+      },
+      {
+        "day": 4,
+        "title": "Return from Munnar to Coimbatore / Kochi",
+        "distance": "130 km by road",
+        "elevation": "410m (Coimbatore)",
+        "time": "4–5 hrs drive",
+        "camp": "—",
         "returnJourney": true,
-        "desc": "Drive 35 km from Munnar to Rhodovalley tea estate (start early — 5:30–6 AM). Meet the assigned forest guide and begin the ridge traverse through the shola grasslands. The route climbs through eight consecutive peaks, each offering expanding views of the rolling Cardamom and Palani hills. Nilgiri Tahr are commonly spotted grazing on the slopes. The final summit at 2,640m looks out across one of the great panoramas of South India — the Western Ghats extending in folds of green to the hazy plains far below. Descend by the same route and drive back to Munnar or continue to Coimbatore / Kochi."
+        "desc": "Morning departure from Munnar. The descent through the Ghats offers final views of the Western Ghats and tea-covered hills. Drive to Coimbatore or Kochi for onward connections."
       }
     ],
     "coverImage": "https://images.pexels.com/photos/17045417/pexels-photo-17045417.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -9695,13 +10025,13 @@
       },
       {
         "day": 3,
-        "title": "Dzukou Valley Exploration — Return to Kohima",
-        "distance": "18–20 km",
-        "elevation": "1,444m (Kohima)",
-        "time": "3–4 hrs descent",
-        "camp": "Return to Kohima",
+        "title": "Dzukou Valley — Return to Kohima",
+        "distance": "20 km descent + drive",
+        "elevation": "1,484m (Kohima)",
+        "time": "6–7 hrs total",
+        "camp": "—",
         "returnJourney": true,
-        "desc": "Spend the early morning exploring the valley floor — walk along the Dzukou stream, observe the wildflowers, and take in the panoramic views of the Naga hills receding in every direction. Descend via the Viswema route back to Kohima. Optional extension: descent via the Jakhama route (steeper — involves 8,000+ steps down) for a different experience."
+        "desc": "Descend from Dzukou Valley back to the trailhead. Drive or arrange transport back to Kohima. Trek complete."
       }
     ],
     "coverImage": "https://images.pexels.com/photos/8061236/pexels-photo-8061236.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -9720,7 +10050,7 @@
     "state": "Meghalaya",
     "difficulty": "moderate",
     "durationType": "multi",
-    "days": "2",
+    "days": "4",
     "elevation": 1484,
     "distance": "14 km",
     "elevationStr": "1,484m",
@@ -9748,23 +10078,43 @@
     "itinerary": [
       {
         "day": 1,
-        "title": "Guwahati / Kolkata to Shillong to Cherrapunji",
-        "distance": "7 km",
+        "title": "Travel to Cherrapunji",
+        "distance": "150 km by road from Guwahati via Shillong",
         "elevation": "1,484m (Cherrapunji)",
-        "time": "5–6 hrs drive",
+        "time": "4–5 hrs drive",
         "camp": "Cherrapunji guesthouse / homestay",
         "returnJourney": false,
-        "desc": "Drive from Guwahati (nearest major airport) through Assam foothills into the Meghalaya highlands to Shillong (100 km), then a further 54 km to Cherrapunji. The descent from Shillong Plateau to Sohra (Cherrapunji) passes cliffs overlooking the Bangladesh plains — one of the most dramatic road descents in India. Cherrapunji sits at 1,484m and holds multiple world rainfall records. Explore the Nohkalikai Falls (one of India's tallest plunge waterfalls at 340m) in the afternoon."
+        "desc": "Drive from Guwahati (nearest major airport) through Assam foothills into the Meghalaya highlands to Shillong (100 km), then a further 54 km to Cherrapunji. The descent from Shillong Plateau to Sohra (Cherrapunji) passes cliffs overlooking the Bangladesh plains — one of the most dramatic road descents in India. Cherrapunji sits at 1,484m and holds multiple world rainfall records."
       },
       {
         "day": 2,
-        "title": "Tyrna to Double Decker Root Bridge — Full Trek",
+        "title": "Cherrapunji — Tyrna — Double Decker Root Bridge — Return",
         "distance": "7 km",
         "elevation": "1,150m (Nongriat)",
         "time": "5–6 hrs",
-        "camp": "Return to Cherrapunji / Shillong",
+        "camp": "Cherrapunji guesthouse / homestay",
+        "returnJourney": false,
+        "desc": "Drive 20 minutes from Cherrapunji to Tyrna village (start by 6–7 AM). The trek begins: 3,500 stone steps descend steeply through dense rainforest draped in moss, ferns, and orchids. Cross two suspension bridges over crystal-clear rivers. Reach Nongriat village (1.5–2 hours). The Double Decker Living Root Bridge is a short walk from the village — two tiers of intertwined rubber tree roots forming a bridge over 30m wide and centuries old. Dip feet in the natural pools below. Optional 1-hour extension to Rainbow Falls. Climb back — allow 2.5–3 hours for the ascent."
+      },
+      {
+        "day": 3,
+        "title": "Rest day at Cherrapunji",
+        "distance": "Local exploration",
+        "elevation": "1,484m",
+        "time": "Free day",
+        "camp": "Cherrapunji guesthouse / homestay",
+        "returnJourney": false,
+        "desc": "Rest day in Cherrapunji. Visit Nohkalikai Falls (340m — one of India's tallest plunge waterfalls), the Seven Sisters Falls, and the Mawsmai Cave. The town offers stunning views of the Bangladesh plains and the surrounding Khasi Hills."
+      },
+      {
+        "day": 4,
+        "title": "Return from Cherrapunji to Guwahati",
+        "distance": "150 km by road to Guwahati via Shillong",
+        "elevation": "55m (Guwahati)",
+        "time": "4–5 hrs drive",
+        "camp": "—",
         "returnJourney": true,
-        "desc": "Drive 20 minutes from Cherrapunji to Tyrna village (start by 6–7 AM). The trek begins: 3,500 stone steps descend steeply through dense rainforest draped in moss, ferns, and orchids. Cross two suspension bridges over crystal-clear rivers (the water is a brilliant blue-green). Reach Nongriat village (1.5–2 hours). The Double Decker Living Root Bridge is a short walk from the village — two tiers of intertwined rubber tree roots forming a bridge over 30m wide and centuries old. Dip feet in the natural pools below (fish nibble toes). Optional 1-hour extension to Rainbow Falls. Climb back — allow 2.5–3 hours for the ascent. Drive back to Cherrapunji or Shillong."
+        "desc": "Morning departure from Cherrapunji. Drive back through Shillong and the Meghalaya highlands to Guwahati. Final views of the Khasi Hills and the Brahmaputra Valley."
       }
     ],
     "coverImage": "https://images.pexels.com/photos/27820314/pexels-photo-27820314.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -10017,7 +10367,7 @@
     "state": "Uttarakhand",
     "difficulty": "hard",
     "durationType": "multi",
-    "days": "5",
+    "days": "4",
     "distance": "48 km",
     "elevation": 3600,
     "elevationStr": "3,600m",
@@ -10079,16 +10429,6 @@
         "camp": "Lyuti Bugyal",
         "returnJourney": true,
         "desc": "Descend 12 km from Rudranath back to Lyuti Bugyal via Pitradhar and Panar Bugyal. Reach Lyuti by noon."
-      },
-      {
-        "day": 5,
-        "title": "Lyuti Bugyal to Sagar — Drive to Rishikesh",
-        "distance": "8.5-9 km descent + 215 km road",
-        "elevation": "350m (Rishikesh)",
-        "time": "4-5 hrs trek + 7-8 hrs drive",
-        "camp": "Return to Rishikesh",
-        "returnJourney": true,
-        "desc": "Descend 8.5-9 km from Lyuti back to Sagar via Mauli Kharak, Kalchant Bugyal, and Pung Bugyal (4-5 hrs). Drive 215 km from Sagar/Gopeshwar to Rishikesh via Chamoli, Nandprayag, Karnaprayag, Rudraprayag, and Devprayag."
       }
     ],
     "coverImage": "https://imgs.search.brave.com/OVfhvnzIZHOC3qsZIbJOrisGxRB-d-v2TQxBevusyjA/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/dG91cm15aG9saWRh/eS5jb20vdXBsb2Fk/L2Jsb2dpbWFnZS9y/dWRyYW5hdGglMjB0/cmVrLndlYnA",

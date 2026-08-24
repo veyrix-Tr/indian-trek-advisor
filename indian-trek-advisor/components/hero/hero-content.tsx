@@ -53,7 +53,7 @@ export function HeroSection() {
           transition={{ delay: 0.15, duration: 0.6 }}
           className="inline-block rounded-full bg-black/40 px-4 py-4.5 font-mono text-[13px] uppercase tracking-[0.18em] text-yellow-100 sm:text-xs"
         >
-          {"\u25B2"} India &middot; Solo Trekkers &middot; Small Groups &middot; Local Guides
+          {"\u25B2"} Solo Trekkers &middot; Small Groups &middot; Customize Treks
         </motion.p>
 
         <h1 className="text-balance px-1 text-[2.6rem] font-bold leading-[1.05] tracking-tight text-white sm:text-6xl md:text-7xl">
@@ -93,9 +93,9 @@ export function HeroSection() {
           transition={{ delay: 1.05, duration: 0.7 }}
           className="max-w-2xl text-pretty leading-relaxed text-white/85 md:text-lg"
         >
-          100 trails across India &mdash; with real permit info, solo safety
-          notes, and independent local guides. No large groups. No packaged
-          tours.
+          100 trails &mdash; with real permit info, solo safety notes, and
+          independent local guides who customize treks to your needs. No large
+          groups. No packaged tours.
         </motion.p>
 
         <motion.div
