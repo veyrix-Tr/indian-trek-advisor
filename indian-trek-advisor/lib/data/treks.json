@@ -6425,7 +6425,7 @@
     "subRegion": "Dharamshala–Dhauladhar",
     "difficulty": "hard",
     "durationType": "multi",
-    "days": "4",
+    "days": "5",
     "distance": "44 km",
     "elevation": 4342,
     "elevationStr": "4,342m",
@@ -6452,6 +6452,16 @@
     "itinerary": [
       {
         "day": 1,
+        "title": "Reach McLeod Ganj — Gear Check & Forest Permit",
+        "distance": "480 km from Delhi by road | 1.5 hrs by air to Gaggal (Kangra) Airport",
+        "elevation": "1,457m (McLeod Ganj)",
+        "time": "10–12 hrs by overnight bus | 1.5 hrs by flight + 30 min taxi",
+        "camp": "McLeod Ganj guesthouse / Dharamkot homestay",
+        "returnJourney": false,
+        "desc": "Travel to McLeod Ganj by overnight HRTC/Volvo bus from Delhi ISBT (10–12 hrs, ₹800–1,800) or fly to Gaggal Airport (Kangra, 20 km from McLeod Ganj, taxi ₹800–1,200). Pathankot Railway Station (85–90 km) is the nearest railhead — shared taxi to McLeod Ganj 3–4 hrs. Obtain Forest Department permit from Regional Mountaineering Centre, McLeod Ganj. Evening stroll to Dharamkot to preview the trail start."
+      },
+      {
+        "day": 2,
         "title": "McLeod Ganj / Dharamkot — Trek to Triund",
         "distance": "9 km from McLeod Ganj / 7 km from Dharamkot",
         "elevation": "2,825m",
@@ -6461,7 +6471,7 @@
         "desc": "Register at the Dharamkot forest check-post and ascend through cedar, oak, and rhododendron forest via Gallu Devi temple. The famous 22 Curves section near the top is steep but brief. Triund meadow opens suddenly onto a wall of white Dhauladhar peaks to the north and the entire Kangra Valley spreading to the south horizon. This is one of the most dramatic camp locations in Himachal Pradesh. HPFD rest house available (advance booking required at Dharamshala)."
       },
       {
-        "day": 2,
+        "day": 3,
         "title": "Triund — Snowline Café — Laka Got (Ilaqa Got)",
         "distance": "7 km",
         "elevation": "3,250m (Laka Got)",
@@ -6471,7 +6481,7 @@
         "desc": "The trail above Triund enters true alpine terrain. Pass Snowline Café (the last tea stall) at around 3,100m. Continue past to Ilaqa Got — a wide open grazing meadow at the snout of the Laka glacier. The boulder fields begin above here. Laka Got (3,250m) is the established base camp for the Indrahar Pass ascent — a spectacular setting with the sheer Dhauladhar headwall towering above. Lahesh Cave (3,500m) is a further 30–40 minutes — smaller groups sometimes camp there instead."
       },
       {
-        "day": 3,
+        "day": 4,
         "title": "Laka Got / Lahesh Cave — Indrahar Pass — Laka Got return",
         "distance": "12 km",
         "elevation": "4,342m (pass)",
@@ -6481,7 +6491,7 @@
         "desc": "Alpine start at 4–5 AM essential — the weather deteriorates by noon. From Lahesh Cave the cairn-marked trail climbs steeply through boulder fields and rock staircases built by Gaddi shepherds. Indrahar Pass (4,342m) offers one of the most extraordinary panoramas in the Indian Himalayas: Kangra Valley and the plains behind, the Chamba-Ravi watershed ahead, and peaks from Hanuman Tibba to Mani Mahesh Kailash in view. Return by the same route to Laka Got or push down to Triund."
       },
       {
-        "day": 4,
+        "day": 5,
         "title": "Laka Got / Triund — McLeod Ganj — Departure",
         "distance": "16 km descent",
         "elevation": "1,457m (McLeod Ganj)",
@@ -6962,7 +6972,7 @@
     "subRegion": "Kullu–Manali",
     "difficulty": "moderate",
     "durationType": "multi",
-    "days": "6",
+    "days": "7",
     "distance": "55 km",
     "elevation": 4270,
     "elevationStr": "4,270m",
@@ -6989,23 +6999,23 @@
     "itinerary": [
       {
         "day": 1,
-        "title": "Manali to Jagatsukh / Khanol",
-        "distance": "5 km by road from Manali",
-        "elevation": "1,800m (Jagatsukh)",
-        "time": "30 mins drive",
-        "camp": "Jagatsukh guesthouse / campsite",
+        "title": "Reach Manali",
+        "distance": "540 km from Delhi",
+        "elevation": "2,050m (Manali) / 2,100m (Jagatsukh)",
+        "time": "14–16 hrs by overnight bus | 1 hr by air to Bhuntar",
+        "camp": "",
         "returnJourney": false,
-        "desc": "Drive from Manali to Jagatsukh village (5 km) — the traditional starting point for the Deo Tibba trek. The village has ancient temples and views of the Kullu Valley. Settle in and prepare for the trek."
+        "desc": "Travel to Manali by overnight Volvo bus from Delhi ISBT or fly to Bhuntar Airport (50 km from Manali, taxi ₹800–1,200)."
       },
       {
         "day": 2,
-        "title": "Jagatsukh — Khanol — Chikka",
-        "distance": "7 km trek",
+        "title": "Manali — Jagatsukh — Khanol — Chikka",
+        "distance": "+ 1 hr drive",
         "elevation": "2,900m",
         "time": "4–5 hrs",
-        "camp": "Chikka forest camp (2,900m)",
+        "camp": "Jagatsukh village guesthouse / Chikka forest camp 12 km  + 7 km trek)",
         "returnJourney": false,
-        "desc": "Drive or walk to Jagatsukh and register at the check-post. The trail ascends through dense deodar and horse chestnut forest. Chikka is a wide forest clearing with a gurgling stream — a perfect first camp with views of the ridge above."
+        "desc": "From Manali, drive 8 km south to Jagatsukh — a traditional Kullu village famous for its Shiva and Gauri-Shankar temples. Trek to Deo Tibba begins here. Drive another 5 km to Khanol (road end), then 7 km trek through deodar forest to Chikka camp (2,900m) for overnight stay. Drive or walk to Jagatsukh and register at the check-post. The trail ascends through dense deodar and horse chestnut forest. Chikka is a wide forest clearing with a gurgling stream — a perfect first camp with views of the ridge above."
       },
       {
         "day": 3,
@@ -7046,6 +7056,16 @@
         "camp": "Chikka",
         "returnJourney": true,
         "desc": "Relaxed descent through familiar terrain — the meadows are beautiful in the afternoon light heading south. Many trekkers stop for a long rest at Seri before the final descent to Chikka."
+      },
+      {
+        "day": 7,
+        "title": "Chikka — Jagatsukh — Manali",
+        "distance": "12 km trek + road",
+        "elevation": "2,050m",
+        "time": "3–4 hrs",
+        "camp": "Return to Manali",
+        "returnJourney": true,
+        "desc": "Final morning descent through the deodar forest to Jagatsukh and back to Manali. The valley floor's warmth after days at altitude is immediately noticeable."
       }
     ],
     "coverImage": "https://images.pexels.com/photos/37454913/pexels-photo-37454913.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -7065,7 +7085,7 @@
     "subRegion": "Kangra–Kullu",
     "difficulty": "expert",
     "durationType": "multi",
-    "days": "8",
+    "days": "9",
     "distance": "65 km",
     "elevation": 4877,
     "elevationStr": "4,877m",
@@ -7092,6 +7112,16 @@
     "itinerary": [
       {
         "day": 1,
+        "title": "Reach Manali — Gear Check & Early Start",
+        "distance": "540 km from Delhi | 50 km from Bhuntar Airport to Manali",
+        "elevation": "2,050m (Manali)",
+        "time": "14–16 hrs by overnight bus | 1 hr by air to Bhuntar",
+        "camp": "Manali guesthouse / Old Manali",
+        "returnJourney": false,
+        "desc": "Travel to Manali by overnight Volvo bus from Delhi ISBT (14–16 hrs) or fly to Bhuntar Airport and taxi in. Chandigarh (310 km) for those arriving by train. Bara Bhangal is a remote, challenging 10-day traverse — stock up fully at Manali market (last supplies available). Confirm guide, porter and equipment. This is a serious expedition: inform local police of trek plan. Trek to Lama Dugh begins from Manali outskirts (10 km on Day 2)."
+      },
+      {
+        "day": 2,
         "title": "Manali — Lama Dugh Base",
         "distance": "10 km trek from Manali outskirts",
         "elevation": "3,100m",
@@ -7101,7 +7131,7 @@
         "desc": "TMS check at Manali. Ascend through forest above the Beas River to the broad meadow of Lama Dugh — the traditional Gaddi grazing ground and first camp. Views of the Kullu Valley behind and the Dhauladhar wall ahead."
       },
       {
-        "day": 2,
+        "day": 3,
         "title": "Lama Dugh — Snowline Camp",
         "distance": "8 km",
         "elevation": "3,900m",
@@ -7111,7 +7141,7 @@
         "desc": "Above Lama Dugh the trail steepens into boulder fields and the first permanent snow. The Kalihani headwall is visible ahead — a dramatic wall of rock and ice."
       },
       {
-        "day": 3,
+        "day": 4,
         "title": "Snowline — Kalihani Pass — Descent to Bara Bhangal valley",
         "distance": "12 km",
         "elevation": "4,877m (pass)",
@@ -7121,7 +7151,7 @@
         "desc": "Alpine start. The Kalihani Pass (4,877m) is the highest point of the trek — a steep snow/rock ascent. From the top, the wild Bara Bhangal drainage opens below. The descent on the Kangra side is long and rocky."
       },
       {
-        "day": 4,
+        "day": 5,
         "title": "Valley camp — Bara Bhangal village",
         "distance": "10 km",
         "elevation": "2,194m",
@@ -7131,7 +7161,7 @@
         "desc": "Reach Bara Bhangal — a magical settlement of stone houses and ancient wooden temples completely isolated from roads. The Gaddi families offer basic accommodation. Register with ITBP at the village post. Explore the ancient Shiva temples and experience the extraordinary isolation."
       },
       {
-        "day": 5,
+        "day": 6,
         "title": "Rest day at Bara Bhangal",
         "distance": "Village exploration",
         "elevation": "2,194m",
@@ -7141,7 +7171,7 @@
         "desc": "Essential rest before the second pass crossing. The village has a primary school, a small ITBP post, and ancient temples. Witness the traditional Gaddi culture — the daily rhythms of a community that has lived without roads for generations."
       },
       {
-        "day": 6,
+        "day": 7,
         "title": "Bara Bhangal — Thamsar Lake camp",
         "distance": "12 km",
         "elevation": "4,200m",
@@ -7151,24 +7181,24 @@
         "desc": "Ascend from Bara Bhangal up the spectacular gorge toward Thamsar Pass. The lake below the pass at 4,200m is one of the Himalayas' hidden gems — completely unknown to all but a few Gaddi shepherds and serious trekkers."
       },
       {
-        "day": 7,
-        "title": "Thamsar Lake — Thamsar Pass — Descent to Billing",
+        "day": 8,
+        "title": "Thamsar Lake — Thamsar Pass — Billing meadow",
         "distance": "13 km",
-        "elevation": "4,715m (pass) → 2,400m (Billing)",
+        "elevation": "4,715m (pass)",
         "time": "7–8 hrs",
-        "camp": "Billing meadow campsite / guesthouse",
-        "returnJourney": false,
+        "camp": "Billing meadow (2,400m)",
+        "returnJourney": true,
         "desc": "Cross Thamsar Pass (4,715m) — the exit from the wilderness. The long descent to the vast Billing meadow passes through dramatic mixed forest. Billing (world-famous for paragliding) has guesthouses and vehicle access to Bir in the Kangra Valley."
       },
       {
-        "day": 8,
-        "title": "Billing / Bir — Drive to Dharamshala or Pathankot",
-        "distance": "140 km by road",
-        "elevation": "1,300m (Dharamshala)",
-        "time": "4–5 hrs drive",
-        "camp": "—",
+        "day": 9,
+        "title": "Bir-Billing – chandigarh",
+        "distance": "",
+        "elevation": "",
+        "time": "7–8 hrs",
+        "camp": "",
         "returnJourney": true,
-        "desc": "Drive from Billing/Bir to Dharamshala or Pathankot. The route descends through the Kangra Valley with views of the Dhauladhar range. Trek complete."
+        "desc": "Drive from Bir to Chandigarh/ Delhi"
       }
     ],
     "coverImage": "https://images.pexels.com/photos/37835730/pexels-photo-37835730.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -7300,43 +7330,43 @@
     "itinerary": [
       {
         "day": 1,
-        "title": "Travel to McLeod Ganj / Dharamshala",
-        "distance": "520 km by road from Delhi",
+        "title": "Reach McLeod Ganj — Orientation & Acclimatisation",
+        "distance": "480 km from Delhi by road | 1.5 hrs by air to Gaggal (Kangra) Airport",
         "elevation": "1,457m (McLeod Ganj)",
-        "time": "10–12 hrs drive",
-        "camp": "McLeod Ganj hotel / guesthouse",
+        "time": "10–12 hrs by overnight bus | 1.5 hrs by flight",
+        "camp": "McLeod Ganj guesthouse",
         "returnJourney": false,
-        "desc": "Drive from Delhi to McLeod Ganj via Chandigarh and Kangra. The route climbs from the plains through the Shivalik foothills into the Dhauladhar range. McLeod Ganj sits at 1,457m with views of the Kangra Valley. Settle in, explore the town, and acclimatise."
+        "desc": "Travel to McLeod Ganj by overnight HRTC/Volvo bus from Delhi ISBT (10–12 hrs, ₹800–1,800) or fly to Gaggal Airport (Kangra, 20 km, taxi ₹800–1,200). Nearest railway station: Pathankot (85 km, taxi 3 hrs). Arrive morning; check into guesthouse. Explore Namgyal Monastery, Tibetan Market and Bhagsunag Waterfall. The trek to Triund starts from Dharamkot (3 km walk or 10-min taxi from McLeod Ganj) the following morning."
       },
       {
         "day": 2,
-        "title": "McLeod Ganj / Dharamkot to Triund",
+        "title": "Dharamshala / McLeod Ganj to Triund",
         "distance": "9 km trek from McLeod Ganj / 7 km from Dharamkot",
         "elevation": "2,828m / 9,278 ft (Triund)",
         "time": "4–5 hrs",
         "camp": "Triund ridge campsite / rest house",
         "returnJourney": false,
-        "desc": "Trek from McLeod Ganj (1,457m) or Dharamkot (1,614m) through the Triund Forest. 9 km from McLeod Ganj, 7 km from Dharamkot. The trail climbs through oak and rhododendron forest past Magic View Cafe, then enters open grassland for the last 2 km to Triund ridge (2,828m). Snow line ridge and Dhauladhar massif dominate the north."
+        "desc": "Trek from McLeod Ganj (1,457m) or Dharamkot (1,614m) through the Triund Forest (Kangra Forest Dept trail). 9 km from McLeod Ganj, 7 km from Dharamkot. The trail climbs through oak and rhododendron forest past Magic View Cafe, then enters open grassland for the last 2 km to Triund ridge (2,828m). Snow line ridge and Dhauladhar massif dominate the north. The Kangra Valley spread below to the south."
       },
       {
         "day": 3,
-        "title": "Triund — Descent to McLeod Ganj",
+        "title": "Triund — Return to McLeod Ganj",
         "distance": "9 km descent",
         "elevation": "1,457m (McLeod Ganj)",
         "time": "3 hrs",
-        "camp": "McLeod Ganj hotel / guesthouse",
+        "camp": "Return to Dharamshala / McLeod Ganj",
         "returnJourney": false,
-        "desc": "Sunrise from Triund ridge over the Kangra valley is spectacular. Descend 9 km back to McLeod Ganj via Dharamkot. Afternoon free to explore McLeod Ganj, visit the Dalai Lama Temple, or relax at a cafe."
+        "desc": "Sunrise from Triund ridge over the Kangra valley is spectacular. Descend 9 km back to McLeod Ganj via Dharamkot. The entire round trip is 18 km. Many do this as a single-day trek from Dharamshala."
       },
       {
         "day": 4,
-        "title": "Return from McLeod Ganj to Delhi",
-        "distance": "520 km by road",
-        "elevation": "216m (Delhi)",
-        "time": "10–12 hrs drive",
-        "camp": "—",
+        "title": "Return to Delhi",
+        "distance": "480 km from Mc leod ganji by road | 1.5 hrs by air to Gaggal (Kangra) Airport",
+        "elevation": "",
+        "time": "",
+        "camp": "",
         "returnJourney": true,
-        "desc": "Morning departure from McLeod Ganj. The drive descends through the Kangra Valley and Shivalik foothills back to Delhi. Stop at Kangra or Pathankot if time permits."
+        "desc": "Drive back to Delhi from McLeod Ganj by overnight HRTC/Volvo bus or fly to Delhi via Gaggal Airport (Kangra). The trek is complete."
       }
     ],
     "coverImage": "https://images.pexels.com/photos/34668747/pexels-photo-34668747.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -8525,7 +8555,7 @@
     "subRegion": "Kangra–Dhauladhar",
     "difficulty": "hard",
     "durationType": "multi",
-    "days": "4",
+    "days": "5",
     "distance": "32 km",
     "elevation": 4164,
     "elevationStr": "4,164m",
@@ -8552,6 +8582,16 @@
     "itinerary": [
       {
         "day": 1,
+        "title": "Reach Dharamshala — Drive to Ghera Village",
+        "distance": "480 km from Delhi | 20 km from Gaggal Airport + 15 km to Ghera",
+        "elevation": "1,400m (Ghera Village)",
+        "time": "10–12 hrs overnight bus | 1.5 hrs flight + 40 min taxi",
+        "camp": "Ghera village homestay",
+        "returnJourney": false,
+        "desc": "Travel to Dharamshala by overnight bus from Delhi or fly to Gaggal Airport. Take a local taxi from McLeod Ganj to Ghera village (15 km, 40 min) on the Dharamshala–Dalhousie road. Ghera is a small Gaddi shepherd village at 1,400m, the starting point for this offbeat Gaj Pass trail. Stay at village homestay. Pathankot railway station is 85 km — shared taxi 2.5 hrs."
+      },
+      {
+        "day": 2,
         "title": "Dharamshala → Ghera → Rawa → Bonthu",
         "distance": "8 km from Ghera",
         "elevation": "2,800m",
@@ -8561,7 +8601,7 @@
         "desc": "Drive to Ghera. Register TMS. Ascend through the lower Dhauladhar grassland and forest past the Rawa shepherd hamlet. Bonthu is a small seasonal Gaddi settlement — basic overnight possible in a shepherd shelter or self-tent."
       },
       {
-        "day": 2,
+        "day": 3,
         "title": "Bonthu → Bagga High Camp",
         "distance": "8 km",
         "elevation": "3,600m",
@@ -8571,7 +8611,7 @@
         "desc": "Above Bonthu the trail enters the upper Dhauladhar meadows. Bagga is the last shepherd camp before the pass — a wide grassy shelf with Kangra Valley views far below and the Gag Pass headwall above."
       },
       {
-        "day": 3,
+        "day": 4,
         "title": "Bagga → Gaj Pass (4,164m) → Lamdal",
         "distance": "9 km",
         "elevation": "4,164m pass",
@@ -8581,7 +8621,7 @@
         "desc": "Ascend to Gag Pass through rocky terrain. The pass commands views of the Kangra Valley behind and the wild Lam Dal Lake zone ahead. Steep descent into the Lamdal forest — one of the most isolated areas in the Dhauladhar."
       },
       {
-        "day": 4,
+        "day": 5,
         "title": "Lamdal → Return to road → Dharamshala",
         "distance": "7 km + road",
         "elevation": "1,457m",
@@ -8635,43 +8675,43 @@
     "itinerary": [
       {
         "day": 1,
-        "title": "Travel to Nohradhar",
-        "distance": "200 km by road from Chandigarh",
-        "elevation": "1,600m (Nohradhar)",
-        "time": "5–6 hrs drive",
-        "camp": "Nohradhar guesthouse / homestay",
+        "title": "Reach Nohradhar — Travel from Chandigarh or Shimla",
+        "distance": "340 km from Delhi | 170 km from Chandigarh | 120 km from Shimla",
+        "elevation": "1,450m (Nohradhar)",
+        "time": "7–8 hrs by road from Delhi via Ambala–Nahan",
+        "camp": "Nohradhar Forest Rest House / local guesthouse",
         "returnJourney": false,
-        "desc": "Drive from Chandigarh or Dehradun to Nohradhar via Nahan and Paonta Sahib. The route climbs through the Shivalik foothills into the Sirmaur district. Nohradhar is the base village for the Churdhar trek. Settle in and prepare for the climb."
+        "desc": "Travel by road from Delhi via Ambala → Nahan → Sangrah → Nohradhar (340 km, 7–8 hrs). From Chandigarh: 170 km, 4 hrs. From Shimla: 120 km via Chopal, 3.5 hrs. Nearest airport: Chandigarh (170 km). Nearest railhead: Ambala Cantt (170 km) or Chandigarh, then bus/taxi to Nohradhar. Book Forest Rest House in advance through HP Forest Department. Nohradhar is the market town at the base of Churdhar (3,647m). Trek begins in the village itself — no further travel needed."
       },
       {
         "day": 2,
         "title": "Nohradhar → Forest Camp",
         "distance": "9 km steep ascent",
-        "elevation": "2,800m (Forest Camp)",
+        "elevation": "3,000m",
         "time": "5–6 hrs",
-        "camp": "Forest campsite",
+        "camp": "Forest rest house or camp (3,000m)",
         "returnJourney": false,
-        "desc": "Trek from Nohradhar through dense forest of oak, rhododendron, and deodar. The trail is steep but well-marked. Reach the forest campsite by late afternoon. Camp among tall trees with views of the Churdhar peak ahead."
+        "desc": "Register TMS at Nohradhar. The trail is steep from the start through exceptional mixed Himalayan forest — oak, rhododendron, deodar. Excellent bird habitat: Himalayan monal, Koklas pheasant. Camp at forest rest house near treeline."
       },
       {
         "day": 3,
-        "title": "Forest Camp → Churdhar Summit → Descent to Nohradhar",
+        "title": "Forest Camp → Churdhar Summit → Return to Nohradhar",
         "distance": "15 km",
-        "elevation": "3,647m (Churdhar Summit)",
+        "elevation": "3,647m (summit)",
         "time": "8–9 hrs total",
-        "camp": "Nohradhar guesthouse / homestay",
-        "returnJourney": false,
-        "desc": "Early morning push to the Churdhar summit (3,647m) — the highest peak in the Sirmaur district. The summit offers panoramic views of the Yamuna Valley, Churdhar Wildlife Sanctuary, and the distant snow-capped Himalayan range. Descend the same trail to Nohradhar by evening."
+        "camp": "Return to Nohradhar",
+        "returnJourney": true,
+        "desc": "Early start for the exposed summit ridge. Shirgul Maharaj temple at the top. The panorama from 3,647m: Punjab/Haryana plains visible 200 km south; Greater Himalayan peaks including Swargarohini and Bandarpoonch to the north. Return via the same steep path — trekking poles essential for the knee-testing descent."
       },
       {
         "day": 4,
-        "title": "Return from Nohradhar to Chandigarh",
-        "distance": "200 km by road",
-        "elevation": "300m (Chandigarh)",
-        "time": "5–6 hrs drive",
-        "camp": "—",
+        "title": "Travel from Nohradhar to Chandigarh or Shimla",
+        "distance": "340 km from Delhi | 170 km from Chandigarh | 120 km from Shimla",
+        "elevation": "",
+        "time": "",
+        "camp": "",
         "returnJourney": true,
-        "desc": "Morning departure from Nohradhar. Drive back through Paonta Sahib and Nahan to Chandigarh or Dehradun. Final views of the Sirmaur hills and Churdhar range."
+        "desc": "Drive from Nohradhar back to Chandigarh (170 km, 4 hrs) or Shimla (120 km, 3.5 hrs) via Nahan and Ambala. The trek is complete."
       }
     ],
     "coverImage": "https://images.pexels.com/photos/1098395/pexels-photo-1098395.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
@@ -8691,7 +8731,7 @@
     "subRegion": "Sirmaur",
     "difficulty": "hard",
     "durationType": "multi",
-    "days": "3",
+    "days": "5",
     "distance": "28 km",
     "elevation": 3647,
     "elevationStr": "3,647m",
@@ -8723,6 +8763,16 @@
     "itinerary": [
       {
         "day": 1,
+        "title": "Reach Deedag Village — Forest Entry Point",
+        "distance": "340 km from Delhi via Chandigarh–Nahan | 120 km from Chandigarh",
+        "elevation": "1,600m (Deedag)",
+        "time": "7 hrs from Delhi | 3 hrs from Chandigarh",
+        "camp": "Deedag forest camp / village homestay",
+        "returnJourney": false,
+        "desc": "Travel from Delhi via NH44 to Chandigarh, then south via Nahan towards Deedag village in Sirmour district (340 km total, 7 hrs). From Chandigarh: 120 km, 3 hrs. Deedag is the southern forest approach to Churdhar — less visited than the Nohradhar route and more forested. Register at forest check post. Overnight in village or basic forest camp."
+      },
+      {
+        "day": 2,
         "title": "Nahan/Sangrah → Deedag → Forest Camp",
         "distance": "10 km",
         "elevation": "2,700m",
@@ -8732,7 +8782,7 @@
         "desc": "Drive from Nahan or Sangrah to Deedag trailhead. Register TMS. Ascend through Sirmaur's distinctive outer Himalayan mixed forest. The forest biodiversity on this approach is outstanding — large undisturbed woodland with pheasant and deer."
       },
       {
-        "day": 2,
+        "day": 3,
         "title": "Forest Camp → Ridge approach → Churdhar Summit",
         "distance": "10 km",
         "elevation": "3,647m (summit)",
@@ -8742,14 +8792,24 @@
         "desc": "Climb through the upper forest and onto the open Churdhardhar ridge. Shirgul Maharaj temple at the summit. The same extraordinary 360° panorama: plains and peaks simultaneously visible. Descend to mid-camp or camp near summit for next day's return."
       },
       {
-        "day": 3,
-        "title": "Deedag — Sangrah — Return",
-        "distance": "8 km descent + drive",
-        "elevation": "1,200m (Sangrah)",
-        "time": "3–4 hrs total",
-        "camp": "—",
+        "day": 4,
+        "title": "Return to Deedag → Sangrah",
+        "distance": "8 km descent",
+        "elevation": "1,500m (road)",
+        "time": "4–5 hrs",
+        "camp": "Return to Sangrah/Nahan",
         "returnJourney": true,
-        "desc": "Descend from the summit area back to Deedag and continue to Sangrah. Drive back to Nahan or Chandigarh."
+        "desc": "Morning descent through the forest back to Deedag. Drive from Deedag to Sangrah or Nahan for onward travel."
+      },
+      {
+        "day": 5,
+        "title": "Return Sangrah- Delhi",
+        "distance": "",
+        "elevation": "",
+        "time": "",
+        "camp": "",
+        "returnJourney": true,
+        "desc": "Travel from Delhi via NH44 to Chandigarh, then south via Nahan towards Deedag village in Sirmour district (340 km total, 7 hrs). From Chandigarh: 120 km, 3 hrs."
       }
     ]
   },
@@ -8764,7 +8824,7 @@
     "subRegion": "Sirmaur",
     "difficulty": "hard",
     "durationType": "multi",
-    "days": "4",
+    "days": "5",
     "distance": "36 km",
     "elevation": 3647,
     "elevationStr": "3,647m",
@@ -8796,6 +8856,16 @@
     "itinerary": [
       {
         "day": 1,
+        "title": "Reach Habban Village — Rajgarh Route",
+        "distance": "360 km from Delhi via Chandigarh–Nahan–Rajgarh",
+        "elevation": "1,500m (Habban)",
+        "time": "8 hrs from Delhi | 4 hrs from Chandigarh",
+        "camp": "Habban village homestay / orchard rest house",
+        "returnJourney": false,
+        "desc": "Travel from Delhi via NH44 → Chandigarh → Nahan → Rajgarh → Habban (360 km, 8 hrs). From Chandigarh: 150 km, 4 hrs. Habban is a beautiful apple-orchard village in Sirmour at 1,500m — the western approach to Churdhar via Banalidhar ridge. Nearest railhead: Chandigarh (150 km). Settle in village homestay, meet local guide, and prepare for the forested ascent through apple orchards and oak belts."
+      },
+      {
+        "day": 2,
         "title": "Rajgarh/Sangrah → Habban → Banalidhar base",
         "distance": "12 km from Habban",
         "elevation": "2,600m",
@@ -8805,7 +8875,7 @@
         "desc": "Drive to Habban. Register TMS. The trail immediately enters exceptional outer Himalayan forest — one of the finest sections of undisturbed old-growth woodland in Sirmaur. Bird and wildlife watching outstanding throughout."
       },
       {
-        "day": 2,
+        "day": 3,
         "title": "Banalidhar base → Banalidhar ridge → Upper camp",
         "distance": "12 km",
         "elevation": "3,200m",
@@ -8815,24 +8885,24 @@
         "desc": "The Banalidhar ridge itself — wide and forested, with expanding views of the Sirmaur valleys. The trail narrows toward the main Churdhardhar crest. Navigation requires a guide in sections where the path is unclear."
       },
       {
-        "day": 3,
-        "title": "Churdhar Summit — Descent to Banalidhar",
-        "distance": "12 km descent",
-        "elevation": "3,647m → 1,800m (Banalidhar)",
-        "time": "5–6 hrs",
-        "camp": "Banalidhar guesthouse",
-        "returnJourney": false,
-        "desc": "Summit Churdhar peak (3,647m) for panoramic views of the Sirmaur hills, Yamuna Valley, and distant snow-capped Himalayan range. Descend to Banalidhar through forest."
+        "day": 4,
+        "title": "Upper camp → Churdhar Summit → Return descent",
+        "distance": "12 km",
+        "elevation": "3,647m (summit)",
+        "time": "7–8 hrs",
+        "camp": "Mid-slope camp or Habban (long day)",
+        "returnJourney": true,
+        "desc": "Summit day. Shirgul Maharaj temple at Churdhar. The complete plains-to-peaks panorama from one of Himachal's most isolated summit approaches — all the more rewarding for the remote journey here."
       },
       {
-        "day": 4,
-        "title": "Banalidhar — Habban — Return",
-        "distance": "25 km drive",
-        "elevation": "1,200m (Habban)",
-        "time": "1 hr drive",
-        "camp": "—",
+        "day": 5,
+        "title": "Habban → Chandigarh/ Delhi",
+        "distance": "360 km to Delhi via Chandigarh–Nahan–Rajgarh",
+        "elevation": "",
+        "time": "8 hrs to Delhi | 4 hrs to Chandigarh",
+        "camp": "",
         "returnJourney": true,
-        "desc": "Drive from Banalidhar to Habban and continue to Nahan or Solan. Trek complete."
+        "desc": "Drive from Habban back to Chandigarh (150 km, 4 hrs) or Delhi (360 km, 8 hrs) via Rajgarh, Nahan, and Ambala. The trek is complete."
       }
     ]
   },
