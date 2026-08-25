@@ -37,7 +37,7 @@ export function computeBookingAmount(
 export interface BookingPricing {
   /** Total itinerary steps (including travel to/from base). */
   totalDays: number
-  /** Billable trekking days (totalDays − 2, excluding travel to/from base). */
+  /** Billable trekking days (totalDays − 1, excluding travel-to-base day). */
   billableDays: number
   /** Number of people in the group. */
   numPeople: number
@@ -58,11 +58,11 @@ export interface BookingPricing {
 /**
  * Server-side pricing computation. Clients never dictate the amount.
  *
- * Billable days = total itinerary steps − 2 (exclude travel-to-base and
- * return-from-base days, which are drive days the guide doesn't staff).
+ * Billable days = total itinerary steps − 1 (exclude travel-to-base day;
+ * return day is included as the guide accompanies the group).
  *
  * Formula:
- *   billableDays  = max(1, totalDays − 2)
+ *   billableDays  = max(1, totalDays − 1)
  *   Guide fee     = ₹1,500 × billableDays
  *   Trek assist   = (₹3,500 + ₹1,000 × max(0, numPeople − 1)) × billableDays
  *   Total         = guideFee + trekAssistFee
@@ -79,8 +79,8 @@ export function computeBookingPricing(params: {
   const guideRequired = params.guideRequired ?? true
   const trekAssistRequired = params.trekAssistRequired ?? false
 
-  // Exclude first and last itinerary days (travel to/from base)
-  const billableDays = Math.max(1, totalDays - 2)
+  // Exclude first itinerary day (travel to base); return day is billable
+  const billableDays = Math.max(1, totalDays - 1)
 
   const guideFee = guideRequired
     ? GUIDE_FEE_PER_DAY * billableDays

@@ -299,16 +299,6 @@
     "imageCreditUrl": "https://banzaras.in/"
   },
   {
-    "id": 30,
-    "name": "Tapovan (Shivling Base Camp)",
-    "region": "Uttarakhand",
-    "slug": "tapovan-shivling-base-camp",
-    "filename": "tapovan-shivling-base-camp.jpg",
-    "searchQuery": "Tapovan meadow Shivling peak Gangotri",
-    "image": "https://picsum.photos/seed/tapovan-shivling-base-camp/900/600",
-    "isPlaceholder": true
-  },
-  {
     "id": 31,
     "name": "Sahastra Tal",
     "region": "Uttarakhand",

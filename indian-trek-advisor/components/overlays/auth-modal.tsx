@@ -44,7 +44,7 @@ const KNOWN_TREKS = [
   "Dodital Trek", "Deoriatal Chandrashila", "Gaumukh Tapovan", "Kedartal",
   "Rupin Pass", "Phulara Ridge", "Bali Pass", "Pindari Glacier",
   "Milam Glacier", "Pangarchulla Peak", "Satopanth Tal", "Auden's Col",
-  "Ali Bedni Bugyal", "Tapovan (Shivling Base Camp)", "Sahastra Tal",
+  "Ali Bedni Bugyal", "Sahastra Tal",
   "Bagji Bugyal", "Ronti Saddle", "Dev Kyara", "Kagbhushandi Tal",
   "Kalindi Khal", "Adi Kailash Yatra", "Sunderdhunga Glacier",
   "Kafni Glacier", "Khatling Glacier", "Tungnath Yatra", "Panwali Kantha",

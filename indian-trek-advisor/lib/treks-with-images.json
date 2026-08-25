@@ -374,19 +374,6 @@
     "imageCreditUrl": "https://banzaras.in/"
   },
   {
-    "id": 30,
-    "name": "Tapovan (Shivling Base Camp)",
-    "region": "Uttarakhand",
-    "slug": "tapovan-shivling-base-camp",
-    "filename": "tapovan-shivling-base-camp.jpg",
-    "searchQuery": "Tapovan meadow Shivling peak Gangotri",
-    "image": "https://images.pexels.com/photos/18590571/pexels-photo-18590571.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "isPlaceholder": false,
-    "imageThumbnail": "https://images.pexels.com/photos/18590571/pexels-photo-18590571.jpeg?auto=compress&cs=tinysrgb&h=350",
-    "imageCredit": "Photo by INDU BIKASH SARKER on Pexels",
-    "imageCreditUrl": "https://www.pexels.com/photo/mountain-bhagirathi-bhogbasa-gangotri-uttrakhand-india-18590571/"
-  },
-  {
     "id": 31,
     "name": "Sahastra Tal",
     "region": "Uttarakhand",
