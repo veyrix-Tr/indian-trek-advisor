@@ -21,3 +21,6 @@ trek_advisor*
 # Reports
 PLATFORM_REPORT.md
 EXECUTIVE_REPORT.md
+/dist/
+.vinext/
+.wrangler/

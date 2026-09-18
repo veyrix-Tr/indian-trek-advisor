@@ -1,5 +1,4 @@
 import { Suspense } from 'react'
-import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import { Space_Grotesk, JetBrains_Mono } from 'next/font/google'
 import { Toaster } from 'sonner'
@@ -73,7 +72,6 @@ export default function RootLayout({
               },
             }}
           />
-          {process.env.NODE_ENV === 'production' && <Analytics />}
         </ThemeProvider>
       </body>
     </html>
