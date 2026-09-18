@@ -16,6 +16,7 @@ import { CheckCircle, XCircle, Clock, User, Calendar, FileText, AlertCircle, Use
 import { STATUS_CONFIG, getStatusConfig } from "@/lib/booking-status"
 import { StatusTimeline } from "@/components/booking/status-timeline"
 import { inr } from "@/lib/pricing"
+import { toast } from "sonner"
 
 interface Booking {
   id: string
@@ -75,6 +76,8 @@ export function GuideBookingsTab({ bookings, onRefresh, filterHint }: GuideBooki
   async function handleAction(bookingId: string, action: "approve" | "complete") {
     setLoadingId(bookingId)
     setError(null)
+    const actionLabel = action === "approve" ? "Accepting" : "Completing"
+    const loadingToast = toast.loading(`${actionLabel} booking...`)
     try {
       let url = ""
       let body: Record<string, string> = {}
@@ -92,13 +95,17 @@ export function GuideBookingsTab({ bookings, onRefresh, filterHint }: GuideBooki
       })
 
       if (res.ok) {
+        const successLabel = action === "approve" ? "Booking accepted" : "Booking completed"
+        toast.success(successLabel, { id: loadingToast })
         onRefresh?.()
       } else {
         const data = await res.json()
         setError(data.error || "Action failed")
+        toast.error(data.error || "Action failed", { id: loadingToast })
       }
     } catch (err) {
       setError("Network error. Please try again.")
+      toast.error("Network error. Please try again.", { id: loadingToast })
     }
     setLoadingId(null)
   }
@@ -107,6 +114,7 @@ export function GuideBookingsTab({ bookings, onRefresh, filterHint }: GuideBooki
     if (!rejectBooking) return
     setRejecting(true)
     setError(null)
+    const loadingToast = toast.loading("Rejecting booking...")
     try {
       const res = await fetch(`/api/bookings/${rejectBooking.id}/cancel`, {
         method: "POST",
@@ -116,13 +124,16 @@ export function GuideBookingsTab({ bookings, onRefresh, filterHint }: GuideBooki
       if (res.ok) {
         setRejectBooking(null)
         setRejectReason("")
+        toast.success("Booking rejected", { id: loadingToast })
         onRefresh?.()
       } else {
         const data = await res.json()
         setError(data.error || "Action failed")
+        toast.error(data.error || "Action failed", { id: loadingToast })
       }
     } catch (err) {
       setError("Network error. Please try again.")
+      toast.error("Network error. Please try again.", { id: loadingToast })
     }
     setRejecting(false)
   }

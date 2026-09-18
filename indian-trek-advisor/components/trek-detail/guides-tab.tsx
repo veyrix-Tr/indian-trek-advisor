@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { parseTrekDays, computeBookingPricing, inr } from "@/lib/pricing"
 import { createClient } from "@/utils/supabase/client"
+import { toast } from "sonner"
 import {
   Dialog,
   DialogContent,
@@ -137,6 +138,7 @@ export function GuidesTab({ trek }: { trek: Trek }) {
     }
     setSubmitting(true)
     setBookingError(null)
+    const loadingToast = toast.loading("Sending booking request...")
 
     const notes = (document.getElementById('booking-notes') as HTMLTextAreaElement)?.value || ''
 
@@ -158,14 +160,17 @@ export function GuidesTab({ trek }: { trek: Trek }) {
 
       if (response.ok) {
         setBookingSuccess(true)
+        toast.success("Booking request sent!", { id: loadingToast })
         fetchGuides()
       } else {
         const data = await response.json()
         setBookingError(data.error || "Error creating booking. Please try again.")
+        toast.error(data.error || "Failed to send request", { id: loadingToast })
       }
     } catch (error) {
       console.error("Error creating booking:", error)
       setBookingError("Network error. Please try again.")
+      toast.error("Network error. Please try again.", { id: loadingToast })
     }
     setSubmitting(false)
   }

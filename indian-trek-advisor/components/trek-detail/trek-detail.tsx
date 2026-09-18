@@ -22,6 +22,7 @@ import {
   BookmarkCheck,
 } from "lucide-react"
 import { createClient } from "@/utils/supabase/client"
+import { toast } from "sonner"
 import type { Trek, MapWaypoint } from "@/lib/data"
 import { DIFFICULTY_META } from "@/lib/data"
 import { Button } from "@/components/ui/button"
@@ -108,7 +109,7 @@ export function TrekDetail({
     try {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) {
-        alert("Please sign in to save treks")
+        toast.error("Please sign in to save treks")
         setLoading(false)
         return
       }
@@ -136,9 +137,11 @@ export function TrekDetail({
 
       if (!error) {
         setIsSaved(!isSaved)
+        toast.success(isSaved ? "Trek removed from saved" : "Trek saved!")
       }
     } catch (err) {
       console.error("Error saving trek:", err)
+      toast.error("Failed to save trek")
     }
     setLoading(false)
   }

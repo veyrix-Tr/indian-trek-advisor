@@ -21,6 +21,7 @@ import { createClient } from "@/utils/supabase/client"
 import { AuthGatedLink } from "@/components/auth-gated-link"
 import { useAuthGuard } from "@/hooks/use-auth-guard"
 import { NotificationBell } from "@/components/notification-bell"
+import { toast } from "sonner"
 
 const BASE_LINKS = [
   { href: "/", label: "Home" },
@@ -73,8 +74,10 @@ export function SiteHeader() {
   }, [])
 
   async function handleSignOut() {
+    toast.loading("Signing out...")
     const supabase = createClient()
     await supabase.auth.signOut()
+    toast.success("Signed out")
     router.refresh()
   }
 
@@ -87,6 +90,9 @@ export function SiteHeader() {
     // "/treks?section=kailash") keep exact section matching so only one tab
     // highlights on the listing page.
     if (path === "/treks" && !qs) {
+      // Don't highlight plain "Treks" when a section filter is active —
+      // let the section-specific link (Kailash Yatra / Panch Kedar) take it.
+      if (searchParams.get("section")) return pathname === "/treks" && !searchParams.get("section")
       return pathname === "/treks" || pathname.startsWith("/treks/")
     }
 

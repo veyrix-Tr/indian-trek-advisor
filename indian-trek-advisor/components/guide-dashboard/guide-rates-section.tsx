@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { IndianRupee, Save, CheckCircle2, AlertCircle } from "lucide-react"
 import { getTrekById } from "@/lib/data"
+import { toast } from "sonner"
 
 interface Rate {
   id: string
@@ -29,6 +30,7 @@ function RateRow({ rate, onSaved }: { rate: Rate; onSaved: (id: string, base_rat
       return
     }
     setSaving(true)
+    const loadingToast = toast.loading("Saving rate...")
     try {
       const res = await fetch("/api/guide/rates", {
         method: "PUT",
@@ -38,11 +40,14 @@ function RateRow({ rate, onSaved }: { rate: Rate; onSaved: (id: string, base_rat
       if (res.ok) {
         onSaved(rate.id, parsed)
         setFeedback("success")
+        toast.success("Rate saved", { id: loadingToast })
       } else {
         setFeedback("error")
+        toast.error("Failed to save rate", { id: loadingToast })
       }
     } catch {
       setFeedback("error")
+      toast.error("Network error", { id: loadingToast })
     }
     setSaving(false)
     setTimeout(() => setFeedback(null), 2500)

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ChevronLeft, ChevronRight, MapPin, CalendarRange, CheckCircle2, AlertCircle } from "lucide-react"
 import { bookingDateSpan } from "@/lib/booking-span"
+import { toast } from "sonner"
 
 interface Booking {
   id: string
@@ -125,6 +126,7 @@ export function GuideAvailabilityCalendar({ bookings = [], onSave }: Availabilit
   const handleSave = async () => {
     setSaving(true)
     setFeedback(null)
+    const loadingToast = toast.loading("Saving availability...")
     try {
       const res = await fetch("/api/guide/availability", {
         method: "POST",
@@ -137,15 +139,18 @@ export function GuideAvailabilityCalendar({ bookings = [], onSave }: Availabilit
 
       if (!res.ok) {
         setFeedback({ type: "error", message: "Failed to save. Please try again." })
+        toast.error("Failed to save availability", { id: loadingToast })
       } else {
         if (onSave) {
           onSave(Array.from(unavailableDates))
         }
         setFeedback({ type: "success", message: "Availability updated" })
+        toast.success("Availability updated", { id: loadingToast })
       }
     } catch (error) {
       console.error("Error saving availability:", error)
       setFeedback({ type: "error", message: "Failed to save. Please try again." })
+      toast.error("Network error. Please try again.", { id: loadingToast })
     }
     setSaving(false)
     setTimeout(() => setFeedback(null), 2500)

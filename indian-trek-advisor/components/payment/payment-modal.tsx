@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { IndianRupee, Loader2, AlertCircle, Phone } from "lucide-react"
 import { createClient } from "@/utils/supabase/client"
+import { toast } from "sonner"
 
 interface PaymentModalProps {
   bookingId: string
@@ -80,8 +81,10 @@ export function PaymentModal({
       if (updateError) throw updateError
 
       setHasPhone(true)
+      toast.success("Phone number saved")
     } catch (err: any) {
       setError(err.message || "Failed to save phone number")
+      toast.error(err.message || "Failed to save phone number")
     } finally {
       setSavingPhone(false)
     }
@@ -90,6 +93,7 @@ export function PaymentModal({
   const handlePayment = async () => {
     setLoading(true)
     setError(null)
+    const loadingToast = toast.loading("Creating payment order...")
 
     try {
       const response = await fetch("/api/payments/create-order", {
@@ -103,6 +107,7 @@ export function PaymentModal({
       if (!response.ok) {
         throw new Error(data.error || "Failed to create payment order")
       }
+      toast.loading("Opening payment gateway...", { id: loadingToast })
 
       // Initialize Cashfree checkout (v3 SDK): window.Cashfree is a factory
       // function invoked as Cashfree({ mode }) — NOT `new`. Mode must be the
@@ -130,6 +135,7 @@ export function PaymentModal({
 
     } catch (err: any) {
       setError(err.message || "Failed to initiate payment")
+      toast.error(err.message || "Failed to initiate payment", { id: loadingToast })
       setLoading(false)
     }
   }
@@ -145,14 +151,17 @@ export function PaymentModal({
       const data = await response.json()
 
       if (data.success) {
+        toast.success("Payment verified!")
         onSuccess()
         onClose()
       } else {
         setError("Payment verification failed")
+        toast.error("Payment verification failed")
         setLoading(false)
       }
     } catch (err: any) {
       setError("Failed to verify payment")
+      toast.error("Failed to verify payment")
       setLoading(false)
     }
   }

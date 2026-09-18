@@ -9,6 +9,7 @@ import { Save, MapPin, Award, Mountain, Phone, BadgeCheck, ShieldAlert } from "l
 import { formatPhoneNumber, isValidPhoneNumber } from "@/lib/utils/phone"
 import { GuideRatesSection } from "./guide-rates-section"
 import { GuidePayoutSection } from "./guide-payout-section"
+import { toast } from "sonner"
 
 interface GuideProfile {
   experience?: string
@@ -57,6 +58,7 @@ export function GuideSettingsTab({ profile }: { profile: GuideProfile | null }) 
 
     setSaving(true)
     setSaveError(null)
+    const loadingToast = toast.loading("Saving profile...")
     try {
       // Format phone number before sending
       const formData = {
@@ -71,15 +73,17 @@ export function GuideSettingsTab({ profile }: { profile: GuideProfile | null }) 
       })
       if (res.ok) {
         setSaved(true)
+        toast.success("Profile saved", { id: loadingToast })
         setTimeout(() => setSaved(false), 2000)
       } else {
         const data = await res.json()
         setSaveError(data.error || "Failed to save profile")
+        toast.error(data.error || "Failed to save profile", { id: loadingToast })
         setTimeout(() => setSaveError(null), 3000)
       }
     } catch (err) {
       setSaveError("Network error. Please try again.")
-      setTimeout(() => setSaveError(null), 3000)
+      toast.error("Network error. Please try again.", { id: loadingToast })
     }
     setSaving(false)
   }

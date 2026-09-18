@@ -2,7 +2,7 @@
 
 import { useState, useEffect, Suspense } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion } from "framer-motion"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -13,13 +13,15 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import { Calendar, Star, Phone, IndianRupee, AlertCircle, CheckCircle2, Users, Clock, XCircle } from "lucide-react"
+import { Calendar, Star, Phone, IndianRupee, AlertCircle, Users, XCircle } from "lucide-react"
 import { RatingModal } from "@/components/rating-modal"
 import { PaymentModal } from "@/components/payment/payment-modal"
 import { getStatusConfig } from "@/lib/booking-status"
 import { createClient } from "@/utils/supabase/client"
 import { StatusTimeline } from "@/components/booking/status-timeline"
 import { inr } from "@/lib/pricing"
+import { toast } from "sonner"
+import { useOverlays } from "@/components/overlays/overlay-provider"
 
 interface Booking {
   id: string
@@ -59,6 +61,7 @@ export default function BookingsPage() {
 function BookingsPageInner() {
   const [bookings, setBookings] = useState<Booking[]>([])
   const [loading, setLoading] = useState(true)
+  const [unauthorized, setUnauthorized] = useState(false)
   const [ratingModalOpen, setRatingModalOpen] = useState(false)
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null)
 
@@ -70,7 +73,7 @@ function BookingsPageInner() {
   const [refundDetails, setRefundDetails] = useState("")
   const [submitting, setSubmitting] = useState(false)
   const [actionError, setActionError] = useState<string | null>(null)
-  const [toast, setToast] = useState<string | null>(null)
+  const { openAuth } = useOverlays()
 
   useEffect(() => {
     fetchBookings()
@@ -117,8 +120,6 @@ function BookingsPageInner() {
   }, [searchParams, router])
 
   // Live updates: subscribe to changes on this trekkers' bookings and refresh.
-  // Realtime needs `bookings` in the supabase_realtime publication; a poll runs
-  // as a fallback so status changes still show up automatically.
   useEffect(() => {
     let unsubChannel: (() => void) | null = null
     let pollTimer: ReturnType<typeof setInterval> | null = null
@@ -180,6 +181,11 @@ function BookingsPageInner() {
   const fetchBookings = async () => {
     try {
       const response = await fetch("/api/trekker/bookings")
+      if (response.status === 401) {
+        setUnauthorized(true)
+        setLoading(false)
+        return
+      }
       const data = await response.json()
       setBookings(data.bookings || [])
     } catch (error) {
@@ -188,13 +194,7 @@ function BookingsPageInner() {
     setLoading(false)
   }
 
-  function showToast(message: string) {
-    setToast(message)
-    setTimeout(() => setToast(null), 3000)
-  }
-
   const handlePaymentSuccess = () => {
-    // After successful payment, proceed with final verification
     handleFinalVerification()
   }
 
@@ -202,6 +202,7 @@ function BookingsPageInner() {
     if (!paymentDialogBooking) return
     setSubmitting(true)
     setActionError(null)
+    const loadingToast = toast.loading("Confirming booking...")
     try {
       const response = await fetch(`/api/bookings/${paymentDialogBooking.id}/user-verify`, {
         method: "POST",
@@ -212,13 +213,15 @@ function BookingsPageInner() {
         fetchBookings()
         setPaymentDialogBooking(null)
         setPaymentModalOpen(false)
-        showToast("Booking confirmed! Your dates are locked in.")
+        toast.success("Booking confirmed! Your dates are locked in.", { id: loadingToast })
       } else {
         const data = await response.json()
         setActionError(data.error || "Error confirming booking")
+        toast.error(data.error || "Error confirming booking", { id: loadingToast })
       }
     } catch (error) {
       setActionError("Network error. Please try again.")
+      toast.error("Network error. Please try again.", { id: loadingToast })
     }
     setSubmitting(false)
   }
@@ -236,7 +239,7 @@ function BookingsPageInner() {
 
   const submitRating = async (rating: number, review: string) => {
     if (!selectedBooking) return
-
+    const loadingToast = toast.loading("Submitting rating...")
     try {
       const response = await fetch("/api/trekker/rate-guide", {
         method: "POST",
@@ -250,10 +253,13 @@ function BookingsPageInner() {
 
       if (response.ok) {
         fetchBookings()
-        showToast("Rating submitted successfully!")
+        toast.success("Rating submitted!", { id: loadingToast })
+      } else {
+        toast.error("Failed to submit rating", { id: loadingToast })
       }
     } catch (error) {
       console.error("Error submitting rating:", error)
+      toast.error("Network error. Please try again.", { id: loadingToast })
     }
   }
 
@@ -261,6 +267,7 @@ function BookingsPageInner() {
     if (!cancelDialogBooking) return
     setSubmitting(true)
     setActionError(null)
+    const loadingToast = toast.loading("Cancelling booking...")
     try {
       const isPaid = cancelDialogBooking.payment_status === 'paid'
       const response = await fetch(`/api/bookings/${cancelDialogBooking.id}/cancel`, {
@@ -278,16 +285,18 @@ function BookingsPageInner() {
         setCancelReason("")
         setRefundDetails("")
         if (cancelDialogBooking.payment_status === 'paid') {
-          showToast("Booking cancelled. Your refund will be processed within 48 hours.")
+          toast.success("Booking cancelled. Refund will be processed within 48 hours.", { id: loadingToast })
         } else {
-          showToast("Booking cancelled")
+          toast.success("Booking cancelled", { id: loadingToast })
         }
       } else {
         const data = await response.json()
         setActionError(data.error || "Error cancelling booking")
+        toast.error(data.error || "Error cancelling booking", { id: loadingToast })
       }
     } catch (error) {
       setActionError("Network error. Please try again.")
+      toast.error("Network error. Please try again.", { id: loadingToast })
     }
     setSubmitting(false)
   }
@@ -299,6 +308,21 @@ function BookingsPageInner() {
           {[1, 2].map((i) => (
             <div key={i} className="h-32 animate-pulse rounded-xl border border-border/60 bg-card/40" />
           ))}
+        </div>
+      </div>
+    )
+  }
+
+  if (unauthorized) {
+    return (
+      <div className="min-h-screen pt-24 pb-12">
+        <div className="mx-auto max-w-4xl px-4 md:px-6">
+          <Card className="border-border/60 bg-card/60 backdrop-blur-xl">
+            <CardContent className="p-10 text-center space-y-4">
+              <p className="text-muted-foreground">You need to be signed in to view your bookings.</p>
+              <Button onClick={() => openAuth()}>Sign In</Button>
+            </CardContent>
+          </Card>
         </div>
       </div>
     )
@@ -605,21 +629,6 @@ function BookingsPageInner() {
           </div>
         </DialogContent>
       </Dialog>
-
-      {/* Toast */}
-      <AnimatePresence>
-        {toast && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            className="fixed bottom-6 left-1/2 z-50 flex -translate-x-1/2 items-center gap-2 rounded-xl border border-primary/25 bg-card px-4 py-3 text-sm shadow-xl"
-          >
-            <CheckCircle2 className="size-4 text-primary" />
-            {toast}
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   )
 }

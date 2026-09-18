@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Calendar, ArrowRight, MapPin, Clock, User, Bell, CheckCircle, XCircle } from "lucide-react"
 import { getStatusConfig } from "@/lib/booking-status"
+import { toast } from "sonner"
 
 interface Booking {
   id: string
@@ -58,6 +59,7 @@ function ActionRequiredPanel({
 
   async function handleAction(bookingId: string, action: "approve" | "reject") {
     setLoadingId(bookingId)
+    const loadingToast = toast.loading(action === "approve" ? "Accepting booking..." : "Rejecting booking...")
     try {
       const url =
         action === "approve"
@@ -69,9 +71,14 @@ function ActionRequiredPanel({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       })
-      if (res.ok) onRefresh?.()
+      if (res.ok) {
+        toast.success(action === "approve" ? "Booking accepted" : "Booking rejected", { id: loadingToast })
+        onRefresh?.()
+      } else {
+        toast.error("Action failed", { id: loadingToast })
+      }
     } catch {
-      // swallowed — the row simply stops loading and stays visible for retry
+      toast.error("Network error", { id: loadingToast })
     }
     setLoadingId(null)
   }

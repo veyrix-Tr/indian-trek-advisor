@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Wallet, Save, CheckCircle2, AlertCircle } from "lucide-react"
+import { toast } from "sonner"
 
 interface Payout {
   method: "upi" | "bank_transfer"
@@ -52,6 +53,7 @@ export function GuidePayoutSection() {
   async function handleSave() {
     setSaving(true)
     setFeedback(null)
+    const loadingToast = toast.loading("Saving payout details...")
     try {
       const res = await fetch("/api/guide/payout", {
         method: "PUT",
@@ -60,12 +62,15 @@ export function GuidePayoutSection() {
       })
       if (res.ok) {
         setFeedback({ type: "success", message: "Payout details saved" })
+        toast.success("Payout details saved", { id: loadingToast })
       } else {
         const data = await res.json()
         setFeedback({ type: "error", message: data.error || "Failed to save" })
+        toast.error(data.error || "Failed to save", { id: loadingToast })
       }
     } catch {
       setFeedback({ type: "error", message: "Network error. Please try again." })
+      toast.error("Network error. Please try again.", { id: loadingToast })
     }
     setSaving(false)
     setTimeout(() => setFeedback(null), 3000)

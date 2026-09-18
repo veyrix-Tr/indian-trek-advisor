@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Bell, Calendar, CreditCard, Star, ShieldCheck, Check } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/utils/supabase/client"
+import { toast } from "sonner"
 
 export interface AppNotification {
   id: string
@@ -140,6 +141,7 @@ export function NotificationBell() {
     setNotifications((prev) => prev.map((n) => ({ ...n, read: true })))
     try {
       await fetch("/api/notifications/read-all", { method: "POST" })
+      toast.success("All notifications marked as read")
     } catch {
       // same fallback reasoning as markRead
     }
