@@ -145,7 +145,7 @@ export function GuideAvailabilityCalendar({ bookings = [], onSave }: Availabilit
           onSave(Array.from(unavailableDates))
         }
         setFeedback({ type: "success", message: "Availability updated" })
-        toast.success("Availability updated", { id: loadingToast })
+        toast.dismiss(loadingToast)
       }
     } catch (error) {
       console.error("Error saving availability:", error)

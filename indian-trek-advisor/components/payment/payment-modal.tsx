@@ -81,7 +81,6 @@ export function PaymentModal({
       if (updateError) throw updateError
 
       setHasPhone(true)
-      toast.success("Phone number saved")
     } catch (err: any) {
       setError(err.message || "Failed to save phone number")
       toast.error(err.message || "Failed to save phone number")
@@ -107,7 +106,6 @@ export function PaymentModal({
       if (!response.ok) {
         throw new Error(data.error || "Failed to create payment order")
       }
-      toast.loading("Opening payment gateway...", { id: loadingToast })
 
       // Initialize Cashfree checkout (v3 SDK): window.Cashfree is a factory
       // function invoked as Cashfree({ mode }) — NOT `new`. Mode must be the
@@ -124,11 +122,13 @@ export function PaymentModal({
       }
 
       cashfree.checkout(checkoutOptions).then((result: any) => {
+        toast.dismiss(loadingToast)
         if (result.redirect) {
           // Payment completed, verify and update
           verifyPayment(data.order_id)
         } else if (result.error) {
           setError(result.error.message || "Payment failed")
+          toast.error(result.error.message || "Payment failed")
           setLoading(false)
         }
       })
@@ -141,6 +141,7 @@ export function PaymentModal({
   }
 
   const verifyPayment = async (orderId: string) => {
+    const t = toast.loading("Verifying payment...")
     try {
       const response = await fetch("/api/payments/verify", {
         method: "POST",
@@ -151,17 +152,17 @@ export function PaymentModal({
       const data = await response.json()
 
       if (data.success) {
-        toast.success("Payment verified!")
+        toast.dismiss(t)
         onSuccess()
         onClose()
       } else {
         setError("Payment verification failed")
-        toast.error("Payment verification failed")
+        toast.error("Payment verification failed", { id: t })
         setLoading(false)
       }
     } catch (err: any) {
       setError("Failed to verify payment")
-      toast.error("Failed to verify payment")
+      toast.error("Failed to verify payment", { id: t })
       setLoading(false)
     }
   }

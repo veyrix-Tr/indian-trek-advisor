@@ -74,10 +74,9 @@ export function SiteHeader() {
   }, [])
 
   async function handleSignOut() {
-    toast.loading("Signing out...")
     const supabase = createClient()
     await supabase.auth.signOut()
-    toast.success("Signed out")
+    router.push("/")
     router.refresh()
   }
 

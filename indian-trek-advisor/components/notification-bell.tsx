@@ -141,7 +141,6 @@ export function NotificationBell() {
     setNotifications((prev) => prev.map((n) => ({ ...n, read: true })))
     try {
       await fetch("/api/notifications/read-all", { method: "POST" })
-      toast.success("All notifications marked as read")
     } catch {
       // same fallback reasoning as markRead
     }

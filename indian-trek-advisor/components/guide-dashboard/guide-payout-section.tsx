@@ -62,7 +62,7 @@ export function GuidePayoutSection() {
       })
       if (res.ok) {
         setFeedback({ type: "success", message: "Payout details saved" })
-        toast.success("Payout details saved", { id: loadingToast })
+        toast.dismiss(loadingToast)
       } else {
         const data = await res.json()
         setFeedback({ type: "error", message: data.error || "Failed to save" })

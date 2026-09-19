@@ -73,7 +73,7 @@ export function GuideSettingsTab({ profile }: { profile: GuideProfile | null }) 
       })
       if (res.ok) {
         setSaved(true)
-        toast.success("Profile saved", { id: loadingToast })
+        toast.dismiss(loadingToast)
         setTimeout(() => setSaved(false), 2000)
       } else {
         const data = await res.json()

@@ -52,11 +52,12 @@ export default function ProfilePage() {
 
   async function saveGuideFields(silent = true) {
     if (!guide || !user) return
+    const t = silent ? undefined : toast.loading("Saving profile...")
     await supabase.from("guides").update({
       experience,
       base_location: baseLocation,
     }).eq("user_id", user.id)
-    if (!silent) toast.success("Guide profile saved", { duration: 2000 })
+    if (!silent && t) toast.dismiss(t)
   }
 
   useEffect(() => {

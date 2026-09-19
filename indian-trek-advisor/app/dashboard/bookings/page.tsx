@@ -213,7 +213,7 @@ function BookingsPageInner() {
         fetchBookings()
         setPaymentDialogBooking(null)
         setPaymentModalOpen(false)
-        toast.success("Booking confirmed! Your dates are locked in.", { id: loadingToast })
+        toast.dismiss(loadingToast)
       } else {
         const data = await response.json()
         setActionError(data.error || "Error confirming booking")
@@ -253,7 +253,7 @@ function BookingsPageInner() {
 
       if (response.ok) {
         fetchBookings()
-        toast.success("Rating submitted!", { id: loadingToast })
+        toast.dismiss(loadingToast)
       } else {
         toast.error("Failed to submit rating", { id: loadingToast })
       }
@@ -284,11 +284,7 @@ function BookingsPageInner() {
         setCancelDialogBooking(null)
         setCancelReason("")
         setRefundDetails("")
-        if (cancelDialogBooking.payment_status === 'paid') {
-          toast.success("Booking cancelled. Refund will be processed within 48 hours.", { id: loadingToast })
-        } else {
-          toast.success("Booking cancelled", { id: loadingToast })
-        }
+        toast.dismiss(loadingToast)
       } else {
         const data = await response.json()
         setActionError(data.error || "Error cancelling booking")

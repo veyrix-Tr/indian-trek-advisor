@@ -40,9 +40,8 @@ function RateRow({ rate, onSaved }: { rate: Rate; onSaved: (id: string, base_rat
       if (res.ok) {
         onSaved(rate.id, parsed)
         setFeedback("success")
-        toast.success("Rate saved", { id: loadingToast })
+        toast.dismiss(loadingToast)
       } else {
-        setFeedback("error")
         toast.error("Failed to save rate", { id: loadingToast })
       }
     } catch {

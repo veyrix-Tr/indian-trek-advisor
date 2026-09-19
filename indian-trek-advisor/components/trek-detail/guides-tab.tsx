@@ -160,7 +160,7 @@ export function GuidesTab({ trek }: { trek: Trek }) {
 
       if (response.ok) {
         setBookingSuccess(true)
-        toast.success("Booking request sent!", { id: loadingToast })
+        toast.dismiss(loadingToast)
         fetchGuides()
       } else {
         const data = await response.json()

@@ -137,7 +137,6 @@ export function TrekDetail({
 
       if (!error) {
         setIsSaved(!isSaved)
-        toast.success(isSaved ? "Trek removed from saved" : "Trek saved!")
       }
     } catch (err) {
       console.error("Error saving trek:", err)

@@ -96,7 +96,7 @@ export function GuideBookingsTab({ bookings, onRefresh, filterHint }: GuideBooki
 
       if (res.ok) {
         const successLabel = action === "approve" ? "Booking accepted" : "Booking completed"
-        toast.success(successLabel, { id: loadingToast })
+        toast.dismiss(loadingToast)
         onRefresh?.()
       } else {
         const data = await res.json()
@@ -124,7 +124,7 @@ export function GuideBookingsTab({ bookings, onRefresh, filterHint }: GuideBooki
       if (res.ok) {
         setRejectBooking(null)
         setRejectReason("")
-        toast.success("Booking rejected", { id: loadingToast })
+        toast.dismiss(loadingToast)
         onRefresh?.()
       } else {
         const data = await res.json()

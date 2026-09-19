@@ -163,6 +163,7 @@ export default function AdminPage() {
 
   async function handleVerifyGuide(userId: string, verified: boolean) {
     setVerifying(userId)
+    const t = toast.loading(verified ? "Verifying guide..." : "Revoking verification...")
     await fetch("/api/admin/verify-guide", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -171,7 +172,7 @@ export default function AdminPage() {
     setAllGuides((prev) =>
       prev.map((g) => (g.user_id === userId ? { ...g, verified } : g))
     )
-    toast.success(verified ? "Guide verified" : "Verification revoked")
+    toast.dismiss(t)
     setVerifying(null)
   }
 

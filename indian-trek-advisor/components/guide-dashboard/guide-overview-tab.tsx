@@ -72,7 +72,7 @@ function ActionRequiredPanel({
         body: JSON.stringify(body),
       })
       if (res.ok) {
-        toast.success(action === "approve" ? "Booking accepted" : "Booking rejected", { id: loadingToast })
+        toast.dismiss(loadingToast)
         onRefresh?.()
       } else {
         toast.error("Action failed", { id: loadingToast })
