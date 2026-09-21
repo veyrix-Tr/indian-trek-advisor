@@ -83,7 +83,7 @@ export default function HomePage() {
             <SectionHeading
               eyebrow="Five Temples of Shiva"
               title="Panch Kedar Yatra"
-              description="Kedarnath, Tungnath, Rudranath, Madhyamaheshwar and Kalpeshwar — the five sacred Kedar shrines, each reached on foot through Garhwal's high country."
+              description="Kedarnath, Tungnath, Rudranath, Madhyamaheshwar and Kalpeshwar Rudranath — the five sacred Kedar shrines, each reached on foot through Garhwal's high country."
             />
             <BandLink href="/treks?section=panch-kedar" label="Walk the Five Kedars" />
           </div>

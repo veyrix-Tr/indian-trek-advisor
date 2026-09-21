@@ -33,9 +33,13 @@ export async function proxy(request: NextRequest) {
   })
 
   if (needsAuth) {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
+    let user = null
+    try {
+      const { data } = await supabase.auth.getUser()
+      user = data.user
+    } catch {
+      // Invalid/expired refresh token — treat as unauthenticated
+    }
 
     if (!user) {
       const url = new URL("/", request.url)

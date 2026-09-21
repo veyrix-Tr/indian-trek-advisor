@@ -48,7 +48,7 @@ const KNOWN_TREKS = [
   "Bagji Bugyal", "Ronti Saddle", "Dev Kyara", "Kagbhushandi Tal",
   "Kalindi Khal", "Adi Kailash Yatra", "Sunderdhunga Glacier",
   "Kafni Glacier", "Khatling Glacier", "Tungnath Yatra", "Panwali Kantha",
-  "Bagini Glacier", "Kalpeshwar Yatra", "Binsar Wildlife Sanctuary Trek",
+  "Bagini Glacier", "Kalpeshwar Rudranath Yatra", "Binsar Wildlife Sanctuary Trek",
   "Nanda Devi Base Camp", "Ralam Glacier Trek", "Gorson Bugyal",
   "Chandrashila Trek", "Madmaheshwar Yatra", "Kedarnath Yatra",
   "Yamunotri Trek", "Hemkund Sahib Trek", "Khaliya Top Trek",

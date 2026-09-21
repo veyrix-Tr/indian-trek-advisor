@@ -86,7 +86,7 @@
         "desc": "Morning departure from Sankri down the Tons Valley. The drive reverses the approach route through Mori, Naitwar, Purola, and Mussoorie hills back to Dehradun city. Total return journey roughly 7–8 hours by shared jeep or private vehicle."
       }
     ],
-    "coverImage": "https://imgs.search.brave.com/Ec1Fw53oDe90j-Ux0FWzN7SNNEISKjbQPXc3SiUPPPI/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly91cGxv/YWQud2lraW1lZGlh/Lm9yZy93aWtpcGVk/aWEvY29tbW9ucy90/aHVtYi81LzU2L0tl/ZGFybmF0aF9UZW1w/bGVfaW5fUmFpbnlf/c2Vhc29uLmpwZy81/MTJweC1LZWRhcm5h/dGhfVGVtcGxlX2lu/X1JhaW55X3NlYXNv/bi5qcGc",
+    "coverImage": "https://plus.unsplash.com/premium_photo-1692299547886-5b72fea75f56?q=80&w=1176&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "coverImageFilename": "kedarkantha.jpg"
   },
   {
@@ -3544,7 +3544,7 @@
     "difficulty": "moderate",
     "durationType": "multi",
     "days": "5",
-    "distance": "72 km",
+    "distance": "6 km",
     "elevation": 4700,
     "elevationStr": "4,700m",
     "description": "A deeply spiritual yatra-trek to Adi Kailash (also called Chota Kailash) — the Kumaon Himalayan counterpart to the Tibetan Mount Kailash — in the Byans Valley of Pithoragarh district near the Nepal and Tibet border. The route passes ancient temples, high border villages, and the stunning Parvati Sarovar lake. Now accessible by road to Jolingkong (for the yatra), but a proper trek approach via Gunji or Budhi reveals the full mountain grandeur.",
@@ -3973,7 +3973,7 @@
     "difficulty": "easy",
     "days": "3",
     "durationType": "multi",
-    "distance": "28 km",
+    "distance": "10 km",
     "elevation": 4000,
     "elevationStr": "4,000m",
     "description": "Uttarakhand's most accessible high-altitude trek. Chopta — the 'Mini Switzerland of India' — sits at 2,700m above a meadow of rhododendrons. A 3.5 km trail leads to Tungnath, the highest Shiva temple in the world at 3,680m, and on to Chandrashila summit at 4,000m.",
@@ -4230,7 +4230,7 @@
     "id": 315,
     "category": "panch_kedar",
     "panchaKedarOrder": 5,
-    "name": "Kalpeshwar Yatra",
+    "name": "Kalpeshwar Rudranath Yatra",
     "baseCamp": "Helang",
     "district": "Chamoli",
     "country": "India",
@@ -4641,7 +4641,7 @@
     "difficulty": "moderate",
     "durationType": "multi",
     "days": "3",
-    "distance": "18 km",
+    "distance": "36 km",
     "elevation": 3892,
     "elevationStr": "3,892m",
     "description": "India's most sacred short trek, leading from the temple town of Gangotri to Gaumukh — the snout of the Gangotri Glacier where the River Ganga emerges from a cave of ice. A deeply spiritual and dramatically beautiful walk through Gangotri National Park between canyon walls and the Bhagirathi River. No climb above 4,000m — suitable for all serious trekkers.",
@@ -4714,7 +4714,7 @@
     "difficulty": "easy",
     "durationType": "multi",
     "days": "3",
-    "distance": "18 km",
+    "distance": "8 km",
     "elevation": 3056,
     "elevationStr": "3,056m",
     "reviews": [
@@ -4874,7 +4874,7 @@
     "difficulty": "moderate",
     "durationType": "multi",
     "days": "4",
-    "distance": "65 km",
+    "distance": "36 km",
     "elevation": 3497,
     "elevationStr": "3,497m",
     "reviews": [
@@ -5041,7 +5041,7 @@
     "difficulty": "easy",
     "durationType": "multi",
     "days": "3",
-    "distance": "24 km",
+    "distance": "10 km",
     "elevation": 3293,
     "elevationStr": "3,293m",
     "reviews": [

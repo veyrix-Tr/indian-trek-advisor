@@ -607,3 +607,17 @@
     background: oklch(0.78 0.095 165 / 10%);
   }
 }
+
+/* Sonner toast theme overrides */
+[data-sonner-toaster] [data-sonner-toast] {
+  border-left: 4px solid var(--primary) !important;
+}
+[data-sonner-toaster] [data-sonner-toast][data-type="loading"] {
+  border-left-color: var(--primary) !important;
+}
+[data-sonner-toaster] [data-sonner-toast][data-type="error"] {
+  border-left-color: #ef4444 !important;
+}
+[data-sonner-toaster] [data-sonner-toast][data-type="success"] {
+  border-left-color: #22c55e !important;
+}
